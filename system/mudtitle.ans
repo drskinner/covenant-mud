@@ -1,20 +1,22 @@
-[2J
 
+There are many people that we wish to acknowledge for their contributions to
+Covenant MUD.
 
+* The original world setting was developed by Darryl Askew, Myles Skinner,
+  and Bryant Telfer.
 
-              DRAW YOUR [1;36mANSI[m TITLE SCREEN IN HERE...................
+* The bulk of the current MUD development is being carried out by the
+members of our wizlist, and we have received significant contributions
+in the past from Blaine, Duithal, Lacdannon, Lancelord, Talish, and Wynn.
 
+* Covenant MUD has, at its core, a stripped-down and much streamlined version
+of SmaugFUSS. SMAUG was derived from MERC, which was itself derived from DIKU.
+The original DIKU authors are: Katja Nyboe, Sebastian Hammer, Michael Seifert,
+Hans Henrik Staerfeldt, and Tom Madsen. See HELP DIKU for full information.
 
+We have also borrowed some interface design elements from DaleMUD. Please see
+HELP CREDITS for details. 
 
-
-
-
-
-
-
-
-
-
-
+Enjoy your stay!
 
                                 [Press Enter] 

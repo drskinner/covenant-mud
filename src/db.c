@@ -1006,9 +1006,9 @@ void load_helps( FILE * fp )
          continue;
       }
 
-      if( !str_cmp( pHelp->keyword, "greeting" ) )
+      if (!str_cmp(pHelp->keyword, "\"_GREETING\""))
          help_greeting = pHelp->text;
-      add_help( pHelp );
+      add_help(pHelp);
    }
 }
 

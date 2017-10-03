@@ -4956,27 +4956,26 @@ sweltering sun often describe an encounter with a great brass dragon who
 resides in a chamber which prevents the usage of magic...
 ~
 
--1 GREETING~
+-1 "_GREETING"~
 .
-         /     _      _            _      _    _____
-        /      |\    /|     /\     |      |   /     \     ***************
-       /       | \  / |    /  \    |      |  |            *   \\._.//   *
-      /        |  \/  |   /    \   |      |  |            *   (0...0)   *
-     /_______  |      |  |______|  |      |  |            *    ).:.(    *
-            /  |      |  |      |  |      |  |            *    {o o}    *
-           /   |      |  |      |  |      |  |     __     *   / ' ' \   *
-          /    |      |  |      |  |      |  |       |    *-'^^.VxvxV.^^'-*
-         /     |      |  |      |   \____/    \_____/     ***************
-        / 
+   m#"""#m#
+  #"     "#                                                               #
+ ##       "                                                              ##
+ ##           m""""m  "##"   "#"  m#""m  "##mm"""m    m"""#m  "##mm"""m "##""
+ ##          #      #  ##     #  #     #  ###"   "m m#m    "#  ###"   "m ##
+ ##         ##      ## "#m   m" ##     ## ##"     # "#"   mm## ##"     # ##
+ ##         ##      ##  ##   #  ##""""""" ##      #    mm#" ## ##      # ##
+ ##         ##      ##  "#m m"  ##        ##      #  m#"    ## ##      # ##
+ ##         ##      ##   ## #   ##      # ##      # m#"     ## ##      # ##
+ "#       # "#      #"   "#m"   "#     m" ##      # ##     m## ##      # ##
+  "#m   m##  "m    m"     ##     "mm  m"  ##      # "#m  mm"## ##      # ## m
+    """"" "    """"       ""       """   """"    """  """"   """""    """ ""
 
-SmaugFUSS 1.9 changes by Samson. Other bugfixes and changes provided by
-various members of the SMAUG community. Their contributions are greatly
-appreciated.
-SMAUG 1.4 written by Thoric (Derek Snider) with Altrag, Blodkai, Haus, Narn,
-Scryn, Swordbearer, Tricops, Gorog, Rennard, Grishnakh, Fireblade and Nivek.
-Original MERC 2.1 code by Hatchet, Furey, and Kahn.
-Original DikuMUD code by:
-Hans Staerfeldt, Katja Nyboe, Tom Madsen, Michael Seifert && Sebastian Hammer
+                          So Pre-Alpha, We're Omega!
+                        (now more Pre-Alpha than ever)
+
+                Our web presence is at http://www.tierceron.com
+
 
 Enter your character's name, or type new: ~
 
