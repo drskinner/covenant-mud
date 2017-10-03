@@ -1,0 +1,33 @@
+# Compiled source #
+###################
+*.o
+dependencies.d
+resolver
+
+# Log files #
+#############
+*.log
+log/*
+
+# Runtime data #
+################
+*.dat
+area/boot.txt
+area/core*
+backup/*
+boards/*
+clans/*
+corpses/*
+deleted/*
+gods/*
+player/*
+system/*.txt
+src/nohup.out
+vault/*
+watch/*
+building/*.are
+building/*.bak
+
+# Executable #
+##############
+smaug
