@@ -69,15 +69,15 @@
 typedef struct homebuy_data HOMEBUY_DATA;
 struct homebuy_data
 {
-   HOMEBUY_DATA *next;
-   HOMEBUY_DATA *prev;
-   const char *bidder;
-   const char *seller;
-   int vnum;
-   int bid;
-   int endtime;
-   short incpercent;
-   bool apartment;
+  HOMEBUY_DATA *next;
+  HOMEBUY_DATA *prev;
+  const char *bidder;
+  const char *seller;
+  int vnum;
+  int bid;
+  int endtime;
+  short incpercent;
+  bool apartment;
 };
 
 extern HOMEBUY_DATA *first_homebuy;
@@ -87,11 +87,11 @@ extern HOMEBUY_DATA *last_homebuy;
 typedef struct home_data HOME_DATA;
 struct home_data
 {
-   HOME_DATA *next;
-   HOME_DATA *prev;
-   const char *name;
-   int vnum[MAX_HOUSE_ROOMS];
-   bool apartment;
+  HOME_DATA *next;
+  HOME_DATA *prev;
+  const char *name;
+  int vnum[MAX_HOUSE_ROOMS];
+  bool apartment;
 };
 
 extern HOME_DATA *first_home;
@@ -101,27 +101,27 @@ extern HOME_DATA *last_home;
 typedef struct accessories_data ACCESSORIES_DATA;
 struct accessories_data
 {
-   ACCESSORIES_DATA *next;
-   ACCESSORIES_DATA *prev;
-   int vnum;
-   int price;
-   bool mob;
+  ACCESSORIES_DATA *next;
+  ACCESSORIES_DATA *prev;
+  int vnum;
+  int price;
+  bool mob;
 };
 
 extern ACCESSORIES_DATA *first_accessory;
 extern ACCESSORIES_DATA *last_accessory;
 
 /* Commands added for housing system. */
-DECLARE_DO_FUN( do_accessories ); // Only command for housing accessories.
-DECLARE_DO_FUN( do_gohome );      // Command for a player to be instantly transported to their residence.
-DECLARE_DO_FUN( do_homebuy );     // Main housing auction command.
-DECLARE_DO_FUN( do_house );       // House personalization command and also immortal command to manually edit residences.
-DECLARE_DO_FUN( do_residence );   // Command to list current houses and their stats.
-DECLARE_DO_FUN( do_sellhouse );   // Player command to sell their residence and place it on auction.
+DECLARE_DO_FUN(do_accessories); // Only command for housing accessories.
+DECLARE_DO_FUN(do_gohome);      // Command for a player to be instantly transported to their residence.
+DECLARE_DO_FUN(do_homebuy);     // Main housing auction command.
+DECLARE_DO_FUN(do_house);       // House personalization command and also immortal command to manually edit residences.
+DECLARE_DO_FUN(do_residence);   // Command to list current houses and their stats.
+DECLARE_DO_FUN(do_sellhouse);   // Player command to sell their residence and place it on auction.
 
 /* Functions for accessories functionality */
-void save_accessories(  );
-void fread_accessories( FILE * fp );
+void save_accessories();
+void fread_accessories(FILE * fp);
 
 /* External Prototypes */
-void save_house_by_vnum( int vnum );
+void save_house_by_vnum(int vnum);

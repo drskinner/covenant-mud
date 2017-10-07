@@ -33,8 +33,8 @@
 #define MOB_FILE	"mobs.dat"  /* For storing mobs across hotboots */
 
 /* warmboot code */
-void hotboot_recover( void );
+void hotboot_recover(void);
 
-void load_world( void );
+void load_world(void);
 
-DECLARE_DO_FUN( do_hotboot ); /* Hotboot command - Samson 3-31-01 */
+DECLARE_DO_FUN(do_hotboot); /* Hotboot command - Samson 3-31-01 */

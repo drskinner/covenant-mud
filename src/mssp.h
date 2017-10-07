@@ -107,9 +107,9 @@ struct mssp_info
 #define MAX_MSSP_VAR1 4
 #define MAX_MSSP_VAR2 3
 
-bool load_mssp_data( void );
-void send_mssp_data( DESCRIPTOR_DATA * d );
-void free_mssp_info( void );
+bool load_mssp_data(void);
+void send_mssp_data(DESCRIPTOR_DATA * d);
+void free_mssp_info(void);
 
 //GNUC_FORMAT macro was contrived by Elanthis
 #ifdef __GNUC__
@@ -118,4 +118,4 @@ void free_mssp_info( void );
 #  define GNUC_FORMAT(fmt,args)
 #endif
 
-void mssp_reply( DESCRIPTOR_DATA * d, const char *var, const char *fmt, ... ) GNUC_FORMAT( 3, 4 );
+void mssp_reply(DESCRIPTOR_DATA * d, const char *var, const char *fmt, ...) GNUC_FORMAT(3, 4);

@@ -7,34 +7,34 @@ typedef struct snswap_data SNSWAP_DATA;
 
 struct weather_data
 {
-   int mmhg;
-   int change;
-   int sky;
-   int sunlight;
-   int temp;
+  int mmhg;
+  int change;
+  int sky;
+  int sunlight;
+  int temp;
 };
 
 struct plane_data
 {
-   PLANE_DATA *next;
-   PLANE_DATA *prev;
-   AFSWAP_DATA *first_afswap;
-   AFSWAP_DATA *last_afswap;
-   SNSWAP_DATA *first_snswap;
-   SNSWAP_DATA *last_snswap;
-   char *name;
-   int stronger;
-   int weaker;
-   int nullified;
-   int reverse;
-   int reflected;
-   short month_ofs;
-   short mintemp;
-   short maxtemp;
-   short climate;
-   short gravity;
-   TIME_INFO_DATA time_info;
-   WEATHER_DATA weather_data;
+  PLANE_DATA *next;
+  PLANE_DATA *prev;
+  AFSWAP_DATA *first_afswap;
+  AFSWAP_DATA *last_afswap;
+  SNSWAP_DATA *first_snswap;
+  SNSWAP_DATA *last_snswap;
+  char *name;
+  int stronger;
+  int weaker;
+  int nullified;
+  int reverse;
+  int reflected;
+  short month_ofs;
+  short mintemp;
+  short maxtemp;
+  short climate;
+  short gravity;
+  TIME_INFO_DATA time_info;
+  WEATHER_DATA weather_data;
 };
 
 #define CLIMATE_ARCTIC       0   /* VERY cold */
@@ -51,18 +51,18 @@ struct plane_data
 
 struct snswap_data
 {
-   SNSWAP_DATA *next;
-   SNSWAP_DATA *prev;
-   short old_sn;
-   short new_sn;
-   short swap_chance;
+  SNSWAP_DATA *next;
+  SNSWAP_DATA *prev;
+  short old_sn;
+  short new_sn;
+  short swap_chance;
 };
 
 struct afswap_data
 {
-   AFSWAP_DATA *next;
-   AFSWAP_DATA *prev;
-   int old_af;
-   int new_af;
-   short swap_chance;
+  AFSWAP_DATA *next;
+  AFSWAP_DATA *prev;
+  int old_af;
+  int new_af;
+  short swap_chance;
 };

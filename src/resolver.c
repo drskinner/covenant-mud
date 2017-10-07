@@ -42,42 +42,42 @@
 #include <netdb.h>
 #include <sys/socket.h>
 
-char *resolve_address( int address )
+char *resolve_address(int address)
 {
-   static char addr_str[256];
-   struct hostent *from;
-   int addr;
+  static char addr_str[256];
+  struct hostent *from;
+  int addr;
     
-   if( ( from = gethostbyaddr( (char*)&address, sizeof(address), AF_INET ) ) != NULL )
-   {
-      strcpy( addr_str, 
-    	strcmp( from->h_name, "localhost" ) ? from->h_name : "local-host" );
-   }
-   else
-   {
-    	addr = ntohl( address );
-    	snprintf( addr_str, 256, "%d.%d.%d.%d",
-	    ( addr >> 24 ) & 0xFF, ( addr >> 16 ) & 0xFF,
-	    ( addr >>  8 ) & 0xFF, ( addr       ) & 0xFF );
-   } 
-   return addr_str;
+  if ((from = gethostbyaddr((char*)&address, sizeof(address), AF_INET)) != NULL)
+  {
+    strcpy(addr_str, 
+	    strcmp(from->h_name, "localhost") ? from->h_name : "local-host");
+  }
+  else
+  {
+    addr = ntohl(address);
+    snprintf(addr_str, 256, "%d.%d.%d.%d",
+	      (addr >> 24) & 0xFF, (addr >> 16) & 0xFF,
+	      (addr >>  8) & 0xFF, (addr      ) & 0xFF);
+  } 
+  return addr_str;
 }
 
-int main( int argc, char *argv[] )
+int main(int argc, char *argv[])
 {
-   int ip;
-   char *address;
+  int ip;
+  char *address;
     
-   if( argc != 2 )
-   {
-      printf( "unknown.host\r\n" );
-    	exit( 0 );
-   }
+  if (argc != 2)
+  {
+    printf("unknown.host\r\n");
+    exit(0);
+  }
     
-   ip = atoi( argv[1] );
+  ip = atoi(argv[1]);
     
-   address = resolve_address( ip );
+  address = resolve_address(ip);
     
-   printf( "%s\r\n", address );
-   exit( 0 );
+  printf("%s\r\n", address);
+  exit(0);
 }
