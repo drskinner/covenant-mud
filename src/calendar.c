@@ -582,7 +582,7 @@ void start_summer(void)
 
 void start_fall(void)
 {
-  echo_to_all(AT_ORANGE, "The leaves begin changing colors signaling the start of fall.\r\n", ECHOTAR_ALL);
+  echo_to_all(AT_BROWN, "The leaves begin changing colors signaling the start of fall.\r\n", ECHOTAR_ALL);
   return;
 }
 

@@ -1469,7 +1469,7 @@ void obj_update(void)
 
     case ITEM_BLOODSTAIN:
       message = "$p dries up into flakes and blows away.";
-      AT_TEMP = AT_ORANGE;
+      AT_TEMP = AT_BROWN;
       break;
 
     case ITEM_SCRAPS:
@@ -2395,7 +2395,7 @@ void time_update(void)
 	  };
 	  time_info.sunlight = SUN_LIGHT;
 	  echo = echo_strings[n];
-	  echo_color = AT_ORANGE;
+	  echo_color = AT_BROWN;
 	  break;
 	}
 

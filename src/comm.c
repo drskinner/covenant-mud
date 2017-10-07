@@ -3959,7 +3959,7 @@ bool pager_output(DESCRIPTOR_DATA * d)
   }
   d->pagecmd = -1;
   if (xIS_SET(ch->act, PLR_ANSI))
-    if (write_to_descriptor(d, ANSI_LBLUE, 0) == FALSE)
+    if (write_to_descriptor(d, ANSI_BLUE, 0) == FALSE)
       return FALSE;
   if ((ret = write_to_descriptor(d, "(C)ontinue, (N)on-stop, (R)efresh, (B)ack, (Q)uit: [C] ", 0)) == FALSE)
     return FALSE;
