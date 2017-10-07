@@ -606,7 +606,7 @@ void show_list_to_char(OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShowN
       break;
     case ITEM_CORPSE_PC:
     case ITEM_CORPSE_NPC:
-      set_char_color(AT_ORANGE, ch);
+      set_char_color(AT_BROWN, ch);
       break;
     case ITEM_MONEY:
     case ITEM_TREASURE:
