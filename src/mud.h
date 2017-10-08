@@ -3512,6 +3512,7 @@ extern const char **const p_message_table[18];
 extern const char *skill_tname[];
 extern short const movement_loss[SECT_MAX];
 extern const char *const dir_name[];
+extern const char *const ansi_dir_name[];
 extern const char *const where_name[MAX_WHERE_NAME];
 extern const short rev_dir[];
 extern const int trap_door[];

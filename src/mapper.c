@@ -543,13 +543,13 @@ void show_map(CHAR_DATA * ch, char *text)
     pos = get_line(p, 63);
     if (pos > 0)
     {
-      mudstrlcat(buf, color_str(AT_RMDESC, ch), MAX_STRING_LENGTH * 2);
+      mudstrlcat(buf, color_str(AT_ROOM_DESC, ch), MAX_STRING_LENGTH * 2);
       strncat(buf, p, pos);
       p += pos;
     }
     else
     {
-      mudstrlcat(buf, color_str(AT_RMDESC, ch), MAX_STRING_LENGTH * 2);
+      mudstrlcat(buf, color_str(AT_ROOM_DESC, ch), MAX_STRING_LENGTH * 2);
       mudstrlcat(buf, p, MAX_STRING_LENGTH * 2);
       alldesc = TRUE;
     }
@@ -623,7 +623,7 @@ void show_map(CHAR_DATA * ch, char *text)
 
       strcpy(c, whatColor(text, p));
       if (c[0] == '\0')
-	mudstrlcpy(col, color_str(AT_RMDESC, ch), 10);
+	mudstrlcpy(col, color_str(AT_ROOM_DESC, ch), 10);
       else
 	snprintf(col, 10, "%s", c);
 
@@ -654,7 +654,7 @@ void show_map(CHAR_DATA * ch, char *text)
 
     strcpy(c, whatColor(text, p));
     if (c[0] == '\0')
-      mudstrlcpy(col, color_str(AT_RMDESC, ch), 10);
+      mudstrlcpy(col, color_str(AT_ROOM_DESC, ch), 10);
     else
       snprintf(col, 10, "%s", c);
 
@@ -689,7 +689,7 @@ void show_map(CHAR_DATA * ch, char *text)
 
       strcpy(c, whatColor(text, p));
       if (c[0] == '\0')
-	mudstrlcpy(col, color_str(AT_RMDESC, ch), 10);
+	mudstrlcpy(col, color_str(AT_ROOM_DESC, ch), 10);
       else
 	snprintf(col, 10, "%s", c);
 
