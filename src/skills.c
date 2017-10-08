@@ -5404,7 +5404,7 @@ void do_scan(CHAR_DATA* ch, const char* argument)
     }
     char_from_room(ch);
     char_to_room(ch, pexit->to_room);
-    set_char_color(AT_RMNAME, ch);
+    set_char_color(AT_ROOM_NAME, ch);
     send_to_char(ch->in_room->name, ch);
     send_to_char("\r\n", ch);
     show_list_to_char(ch->in_room->first_content, ch, FALSE, FALSE);

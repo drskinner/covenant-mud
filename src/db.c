@@ -400,7 +400,7 @@ void boot_db(bool fCopyOver)
   {
     log_string("Not found.  Creating new configuration.");
     sysdata.alltimemax = 0;
-    sysdata.mud_name = str_dup("(Name not set)");
+    sysdata.mud_name = str_dup("Covenant MUD");
     sysdata.port_name = str_dup("mud");
     sysdata.admin_email = str_dup("(not set)");
     update_timers();

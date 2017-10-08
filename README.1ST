@@ -1,8 +1,6 @@
 Covenant MUD Readme
 -------------------
-This repository houses the latest release of Covenant MUD, which uses SmaugFUSS 1.9 as a jumping-off
-point. Apparently there is no "readme" file for SmaugFUSS 1.9, but this project is cloned from the latest
-stable version, a pull request merged into master on 23 September, 2017.
+This repository houses the latest release of Covenant MUD, which uses SmaugFUSS 1.9 as a jumping-off point. Apparently there is no "readme" file for SmaugFUSS 1.9, but this project is cloned from the latest stable version, a pull request merged into master on 23 September, 2017.
 
 SmaugFUSS 1.7 Readme
 --------------------

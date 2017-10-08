@@ -1166,7 +1166,7 @@ void print_compass(CHAR_DATA * ch)
     else
       exit_info[pexit->vdir] = 1;
   }
-  set_char_color(AT_RMNAME, ch);
+  set_char_color(AT_ROOM_NAME, ch);
   ch_printf_color(ch, "\r\n%-50s         %s%s    %s%s    %s%s\r\n",
 		   ch->in_room->name,
 		   exit_colors[exit_info[DIR_NORTHWEST]], exit_info[DIR_NORTHWEST] ? "NW" : "- ",
@@ -1248,32 +1248,20 @@ void do_look(CHAR_DATA * ch, const char *argument)
 
   if (arg1[0] == '\0' || !str_cmp(arg1, "auto"))
   {
-    /*
-     * 'look' or 'look auto' 
-     */
-    if (xIS_SET(ch->act, PLR_COMPASS))
-      print_compass(ch);
-    else
-    {
-      set_char_color(AT_RMNAME, ch);
-      send_to_char(ch->in_room->name, ch);
-      send_to_char("\r\n", ch);
-    }
-    set_char_color(AT_RMDESC, ch);
+    /* 'look' or 'look auto' */
 
-    if (arg1[0] == '\0' || (!IS_NPC(ch) && !xIS_SET(ch->act, PLR_BRIEF)))
-    {
-      if (xIS_SET(ch->act, PLR_AUTOMAP))
-	draw_room_map(ch, roomdesc(ch));
-      else
-	send_to_char(roomdesc(ch), ch);
+    set_char_color(AT_ROOM_NAME, ch);
+    send_to_char(ch->in_room->name, ch);
+    send_to_char("\r\n", ch);
+    set_char_color(AT_ROOM_DESC, ch);
+
+    if (arg1[0] == '\0' || (!IS_NPC(ch) && !xIS_SET(ch->act, PLR_BRIEF))) {
+      send_to_char(roomdesc(ch), ch);
     }
 
-    /*
-     * Added AUTOMAP check because it shows them next to the map now if its active 
-     */
-    if (!IS_NPC(ch) && (xIS_SET(ch->act, PLR_AUTOEXIT) && !xIS_SET(ch->act, PLR_AUTOMAP)))
+    if (!IS_NPC(ch) && xIS_SET(ch->act, PLR_AUTOEXIT)) {
       do_exits(ch, "auto");
+    }
 
     show_list_to_char(ch->in_room->first_content, ch, FALSE, FALSE);
     show_char_to_char(ch->in_room->first_person, ch);
@@ -2088,18 +2076,18 @@ void do_exits(CHAR_DATA* ch, const char* argument)
 	if (IS_SET(pexit->exit_info, EX_CLOSED))
 	{
 	  if (pexit->keyword && (!str_cmp("door", pexit->keyword) || !str_cmp("gate", pexit->keyword) || pexit->keyword[0] == '\0'))
-	    snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "[%s]", dir_name[pexit->vdir]);
+	    snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "[%s]", ansi_dir_name[pexit->vdir]);
 	}
 	else
 	{
-	  mudstrlcat(buf, dir_name[pexit->vdir], MAX_STRING_LENGTH);
 	  mudstrlcat(buf, " ", MAX_STRING_LENGTH);
+	  mudstrlcat(buf, ansi_dir_name[pexit->vdir], MAX_STRING_LENGTH);
 	}
       }
       else
       {
 	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "%-5s - %s\r\n",
-		  capitalize(dir_name[pexit->vdir]), room_is_dark(pexit->to_room) ? "Too dark to tell" : pexit->to_room->name);
+		  capitalize(ansi_dir_name[pexit->vdir]), room_is_dark(pexit->to_room) ? "Too dark to tell" : pexit->to_room->name);
       }
     }
   }

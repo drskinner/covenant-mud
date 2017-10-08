@@ -669,7 +669,7 @@ const char *color_str(short AType, CHAR_DATA * ch)
   case 13:
     return (ANSI_BRIGHT_MAGENTA);
   case 14:
-    return (ANSI_BRIGHT_BLUE);
+    return (ANSI_BRIGHT_CYAN);
   case 15:
     return (ANSI_BRIGHT_WHITE);
 
@@ -1046,7 +1046,7 @@ int colorcode(const char *src, char *dst, DESCRIPTOR_DATA * d, int dstlen, int *
 
     case 'C':  /* Bright Cyan */
       if (ansi)
-	mudstrlcpy(dst, ANSI_BRIGHT_BLUE, dstlen);
+	mudstrlcpy(dst, ANSI_BRIGHT_CYAN, dstlen);
       break;
 
     case 'W':  /* White */

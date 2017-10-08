@@ -31,6 +31,15 @@ const char *const dir_name[] = {
   "northeast", "northwest", "southeast", "southwest", "somewhere"
 };
 
+const char *const ansi_dir_name [] = {
+  "&GNorth&w", "&YEast&w",
+  "&BSouth&w", "&MWest&w",
+  "&CUp&w", "&WDown&w",
+  "Northeast", "Northwest",
+  "Southeast", "Southwest",
+  "&RSomewhere&w"
+};
+
 const int trap_door[] = {
   TRAP_N, TRAP_E, TRAP_S, TRAP_W, TRAP_U, TRAP_D,
   TRAP_NE, TRAP_NW, TRAP_SE, TRAP_SW
