@@ -93,7 +93,7 @@ const char *const pc_displays[MAX_COLORS] = {
   "intermud", "helpfiles", "who5", "score5",  // 100
   "who6", "who7", "prac", "prac2",            // 104
   "prac3", "prac4", "mxpprompt", "guildtalk", // 108
-  "board", "board2", "board3", "avtalk",      // 112
+  "board", "board2", "board3", "null",        // 112
   "music", "quest", "ask"                     // 115
 };
 

@@ -2069,23 +2069,22 @@ struct timer_data
 #define CHANNEL_CLAN       BV11
 #define CHANNEL_BUILD      BV12
 #define CHANNEL_HIGH       BV13
-#define CHANNEL_AVTALK     BV14
-#define CHANNEL_PRAY       BV15
-#define CHANNEL_COUNCIL    BV16
-#define CHANNEL_GUILD      BV17
-#define CHANNEL_COMM       BV18
-#define CHANNEL_TELLS      BV19
-#define CHANNEL_ORDER      BV20
-#define CHANNEL_NEWBIE     BV21
-#define CHANNEL_WARTALK    BV22
-#define CHANNEL_RACETALK   BV23
-#define CHANNEL_WARN       BV24
-#define CHANNEL_WHISPER    BV25
-#define CHANNEL_AUTH       BV26
-#define CHANNEL_TRAFFIC    BV27
-#define CHANNEL_RETIRED    BV28
-#define CHANNEL_BUG        BV29
-#define CHANNEL_DEATH      BV30
+#define CHANNEL_PRAY       BV14
+#define CHANNEL_COUNCIL    BV15
+#define CHANNEL_GUILD      BV16
+#define CHANNEL_COMM       BV17
+#define CHANNEL_TELLS      BV18
+#define CHANNEL_ORDER      BV19
+#define CHANNEL_NEWBIE     BV20
+#define CHANNEL_WARTALK    BV21
+#define CHANNEL_RACETALK   BV22
+#define CHANNEL_WARN       BV23
+#define CHANNEL_WHISPER    BV24
+#define CHANNEL_AUTH       BV25
+#define CHANNEL_TRAFFIC    BV26
+#define CHANNEL_RETIRED    BV27
+#define CHANNEL_BUG        BV28
+#define CHANNEL_DEATH      BV29
 
 /* Area defines - Scryn 8/11
  *
@@ -3701,7 +3700,6 @@ DECLARE_DO_FUN(do_at);
 DECLARE_DO_FUN(do_atobj);
 DECLARE_DO_FUN(do_auction);
 DECLARE_DO_FUN(do_authorize);
-DECLARE_DO_FUN(do_avtalk);
 DECLARE_DO_FUN(do_backstab);
 DECLARE_DO_FUN(do_balzhur);
 DECLARE_DO_FUN(do_bamfin);
