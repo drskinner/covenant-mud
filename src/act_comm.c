@@ -487,7 +487,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     break;
 
   case CHANNEL_IMMTALK:
-    sprintf(buf, "&B::&W$n&B:: \"$t\"&w");
+    snprintf(buf, MAX_STRING_LENGTH, "&B::&W$n&B:: \"$t\"&w");
     position = ch->position;
     ch->position = POS_STANDING;
     act(AT_IMMORT, buf, ch, argument, NULL, TO_CHAR);
