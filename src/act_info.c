@@ -3985,8 +3985,6 @@ void do_channels(CHAR_DATA* ch, const char* argument)
     ch_printf_color(ch, "%s", !IS_SET(ch->deaf, CHANNEL_TRAFFIC) ? " &G+TRAFFIC" : " &g-traffic");
     ch_printf_color(ch, "%s", !IS_SET(ch->deaf, CHANNEL_QUEST) ? " &G+QUEST" : " &g-quest");
     ch_printf_color(ch, "%s", !IS_SET(ch->deaf, CHANNEL_WARTALK) ? " &G+WARTALK" : " &g-wartalk");
-    if (IS_HERO(ch))
-      ch_printf_color(ch, "%s", !IS_SET(ch->deaf, CHANNEL_AVTALK) ? " &G+AVATAR" : " &g-avatar");
     ch_printf_color(ch, "%s", !IS_SET(ch->deaf, CHANNEL_MUSIC) ? " &G+MUSIC" : " &g-music");
     ch_printf_color(ch, "%s", !IS_SET(ch->deaf, CHANNEL_ASK) ? " &G+ASK" : " &g-ask");
     ch_printf_color(ch, "%s", !IS_SET(ch->deaf, CHANNEL_SHOUT) ? " &G+SHOUT" : " &g-shout");
@@ -4097,8 +4095,6 @@ void do_channels(CHAR_DATA* ch, const char* argument)
   else if (!str_cmp(arg + 1, "pray") && IS_IMMORTAL(ch))
   bit = CHANNEL_PRAY;
 */
-    else if (!str_cmp(arg + 1, "avatar") && IS_HERO(ch))
-      bit = CHANNEL_AVTALK;
     else if (!str_cmp(arg + 1, "monitor") && IS_IMMORTAL(ch))
       bit = CHANNEL_MONITOR;
     else if (!str_cmp(arg + 1, "death"))
@@ -4168,8 +4164,6 @@ void do_channels(CHAR_DATA* ch, const char* argument)
        * if (ch->pcdata->guild)
        * REMOVE_BIT (ch->deaf, CHANNEL_GUILD);
        */
-      if (ch->level >= LEVEL_IMMORTAL)
-	REMOVE_BIT(ch->deaf, CHANNEL_AVTALK);
 
       /*
        * if (ch->level >= sysdata.log_level)
@@ -4201,8 +4195,6 @@ void do_channels(CHAR_DATA* ch, const char* argument)
        * if (IS_GUILDED(ch))
        * SET_BIT (ch->deaf, CHANNEL_GUILD);
        */
-      if (ch->level >= LEVEL_IMMORTAL)
-	SET_BIT(ch->deaf, CHANNEL_AVTALK);
 
       /*
        * if (ch->level >= sysdata.log_level)

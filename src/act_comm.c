@@ -378,12 +378,6 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     return;
   }
 
-  if (!sysdata.pk_channels && IS_PKILL(ch) && !IS_IMMORTAL(ch) && channel == CHANNEL_AVTALK)
-  {
-    send_to_char("Deadlies cannot use that channel.\r\n", ch);
-    return;
-  }
-
   if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
   {
     send_to_char("You can't do that here.\r\n", ch);
@@ -457,11 +451,6 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
       set_char_color(AT_IMMORT, ch);
       ch_printf(ch, "(%d) ", (!IS_NPC(ch)) ? ch->pcdata->wizinvis : ch->mobinvis);
       break;
-
-    case CHANNEL_AVTALK:
-      set_char_color(AT_AVATAR, ch);
-      ch_printf(ch, "(%d) ", (!IS_NPC(ch)) ? ch->pcdata->wizinvis : ch->mobinvis);
-      break;
     }
   }
 
@@ -498,8 +487,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     break;
 
   case CHANNEL_IMMTALK:
-  case CHANNEL_AVTALK:
-    snprintf(buf, MAX_STRING_LENGTH, "$n%c $t", channel == CHANNEL_IMMTALK ? '>' : ':');
+    snprintf(buf, MAX_STRING_LENGTH, "&B::&W$n&B:: \"$t\"&w");
     position = ch->position;
     ch->position = POS_STANDING;
     act(AT_IMMORT, buf, ch, argument, NULL, TO_CHAR);
@@ -573,8 +561,6 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
       if (channel == CHANNEL_IMMTALK && !IS_IMMORTAL(och))
 	continue;
       if (channel == CHANNEL_WARTALK && NOT_AUTHED(och))
-	continue;
-      if (channel == CHANNEL_AVTALK && !IS_HERO(och))
 	continue;
       if (channel == CHANNEL_HIGHGOD && get_trust(och) < sysdata.muse_level)
 	continue;
@@ -668,7 +654,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
 
       MOBtrigger = FALSE;
       mudstrlcat(lbuf, buf, MAX_STRING_LENGTH);
-      if (channel == CHANNEL_IMMTALK || channel == CHANNEL_AVTALK)
+      if (channel == CHANNEL_IMMTALK)
 	act(AT_IMMORT, lbuf, ch, sbuf, vch, TO_VICT);
       else if (channel == CHANNEL_WARTALK)
 	act(AT_WARTALK, lbuf, ch, sbuf, vch, TO_VICT);
@@ -945,18 +931,6 @@ void do_think(CHAR_DATA* ch, const char* argument)
     return;
   }
   talk_channel(ch, argument, CHANNEL_HIGH, "think");
-  return;
-}
-
-void do_avtalk(CHAR_DATA* ch, const char* argument)
-{
-  if (NOT_AUTHED(ch))
-  {
-    send_to_char("Huh?\r\n", ch);
-    return;
-  }
-
-  talk_channel(ch, drunk_speech(argument, ch), CHANNEL_AVTALK, "avtalk");
   return;
 }
 
