@@ -1357,7 +1357,6 @@ void actiondesc(CHAR_DATA * ch, OBJ_DATA * obj)
 
   switch (obj->item_type)
   {
-  case ITEM_BLOOD:
   case ITEM_FOUNTAIN:
     act(AT_ACTION, charbuf, ch, obj, ch, TO_CHAR);
     act(AT_ACTION, roombuf, ch, obj, ch, TO_ROOM);

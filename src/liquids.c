@@ -1258,7 +1258,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
   if (arg[0] == '\0')
   {
     for (obj = ch->in_room->first_content; obj; obj = obj->next_content)
-      if ((obj->item_type == ITEM_FOUNTAIN) || (obj->item_type == ITEM_BLOOD) || (obj->item_type == ITEM_PUDDLE))
+      if ((obj->item_type == ITEM_FOUNTAIN) || (obj->item_type == ITEM_PUDDLE))
 	break;
 
     if (!obj)
@@ -1298,57 +1298,6 @@ void do_drink(CHAR_DATA* ch, const char* argument)
       act(AT_ACTION, "$n gets down and tries to drink from $p... (Is $e feeling ok?)", ch, obj, NULL, TO_ROOM);
       act(AT_ACTION, "You get down on the ground and try to drink from $p...", ch, obj, NULL, TO_CHAR);
     }
-    break;
-
-  case ITEM_BLOOD:
-    if (IS_VAMPIRE(ch) && !IS_NPC(ch))
-    {
-      if (obj->timer > 0   /* if timer, must be spilled blood */
-	  && ch->level > 5 && ch->pcdata->condition[COND_BLOODTHIRST] > (5 + ch->level / 10))
-      {
-	send_to_char("It is beneath you to stoop to drinking blood from the ground!\r\n", ch);
-	send_to_char("Unless in dire need, you'd much rather have blood from a victim's neck!\r\n", ch);
-	return;
-      }
-
-      if (ch->pcdata->condition[COND_BLOODTHIRST] < (10 + ch->level))
-      {
-	if (ch->pcdata->condition[COND_FULL] >= MAX_COND_VALUE
-	    || ch->pcdata->condition[COND_THIRST] >= MAX_COND_VALUE)
-	{
-	  send_to_char("You are too full to drink any blood.\r\n", ch);
-	  return;
-	}
-
-	if (!oprog_use_trigger(ch, obj, NULL, NULL))
-	{
-	  act(AT_BLOOD, "$n drinks from the spilled blood.", ch, NULL, NULL, TO_ROOM);
-	  set_char_color(AT_BLOOD, ch);
-	  send_to_char("You relish in the replenishment of this vital fluid...\r\n", ch);
-	  if (obj->value[1] <= 1)
-	  {
-	    set_char_color(AT_BLOOD, ch);
-	    send_to_char("You drink the last drop of blood from the spill.\r\n", ch);
-	    act(AT_BLOOD, "$n drinks the last drop of blood from the spill.", ch, NULL, NULL, TO_ROOM);
-	  }
-	}
-
-	gain_condition(ch, COND_BLOODTHIRST, 1);
-	gain_condition(ch, COND_FULL, 1);
-	gain_condition(ch, COND_THIRST, 1);
-	if (--obj->value[1] <= 0)
-	{
-	  if (obj->serial == cur_obj)
-	    global_objcode = rOBJ_DRUNK;
-	  extract_obj(obj);
-	  make_bloodstain(ch);
-	}
-      }
-      else
-	send_to_char("Alas... you cannot consume any more blood.\r\n", ch);
-    }
-    else
-      send_to_char("It is not in your nature to do such things.\r\n", ch);
     break;
 
   case ITEM_POTION:
@@ -1684,8 +1633,7 @@ void do_fill(CHAR_DATA* ch, const char* argument)
      */
   case ITEM_DRINK_CON:
     src_item1 = ITEM_FOUNTAIN;
-    src_item2 = ITEM_BLOOD;
-    src_item3 = ITEM_PUDDLE;
+    src_item2 = ITEM_PUDDLE;
     break;
   case ITEM_HERB_CON:
     src_item1 = ITEM_HERB;
@@ -1824,9 +1772,6 @@ void do_fill(CHAR_DATA* ch, const char* argument)
 	return;
       case ITEM_FOUNTAIN:
 	send_to_char("There is no fountain, pool, or puddle here!\r\n", ch);
-	return;
-      case ITEM_BLOOD:
-	send_to_char("There is no blood pool here!\r\n", ch);
 	return;
       case ITEM_HERB_CON:
 	send_to_char("There are no herbs here!\r\n", ch);
@@ -1997,25 +1942,6 @@ void do_fill(CHAR_DATA* ch, const char* argument)
     obj->value[1] = obj->value[0];
     act(AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR);
     act(AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM);
-    return;
-
-  case ITEM_BLOOD:
-    if (obj->value[1] != 0 && obj->value[2] != 13)
-    {
-      send_to_char("There is already another liquid in it.\r\n", ch);
-      return;
-    }
-    obj->value[2] = 13;
-    if (source->value[1] < diff)
-      diff = source->value[1];
-    obj->value[1] += diff;
-    act(AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR);
-    act(AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM);
-    if ((source->value[1] -= diff) < 1)
-    {
-      extract_obj(source);
-      make_bloodstain(ch);
-    }
     return;
 
   case ITEM_HERB:

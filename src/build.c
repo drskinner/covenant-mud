@@ -112,15 +112,16 @@ const char *const area_flags[] = {
 };
 
 const char *const o_types[] = {
-  "none", "light", "scroll", "wand", "staff", "weapon", "_fireweapon", "_missile",
-  "treasure", "armor", "potion", "_worn", "furniture", "trash", "_oldtrap",
-  "container", "_note", "drinkcon", "key", "food", "money", "pen", "boat",
-  "corpse", "corpse_pc", "fountain", "pill", "blood", "bloodstain",
-  "scraps", "pipe", "herbcon", "herb", "incense", "fire", "book", "switch",
-  "lever", "pullchain", "button", "dial", "rune", "runepouch", "match", "trap",
-  "map", "portal", "paper", "tinder", "lockpick", "spike", "disease", "oil",
-  "fuel", "puddle", "journal", "missileweapon", "projectile", "quiver", "shovel",
-  "salve", "cook", "keyring", "odor", "chance", "piece", "housekey", "mix"
+  "none", "light", "scroll", "wand", "staff", "weapon", "shelf",
+  "furniture", "treasure", "armor", "potion", "worn", "other", "trash",
+  "_oldtrap", "container", "_note", "drinkcon", "key", "food", "money",
+  "pen", "boat", "corpse", "corpse_pc", "fountain", "pill", "plant",
+  "jewellery", "scraps", "pipe", "herbcon", "herb", "incense", "fire",
+  "book", "switch", "lever", "pullchain", "button", "dial", "rune",
+  "runepouch", "match", "trap", "map", "portal", "paper", "tinder",
+  "lockpick", "spike", "disease", "oil", "fuel", "puddle", "journal",
+  "missileweapon", "projectile", "quiver", "shovel", "salve", "cook",
+  "keyring", "odor", "chance", "piece", "housekey", "mix"
 };
 
 const char *const a_types[] = {

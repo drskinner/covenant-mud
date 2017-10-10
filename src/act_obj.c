@@ -2110,7 +2110,6 @@ void wear_obj(CHAR_DATA * ch, OBJ_DATA * obj, bool fReplace, short wear_bit)
 	|| obj->item_type == ITEM_POTION
 	|| obj->item_type == ITEM_SCROLL
 	|| obj->item_type == ITEM_DRINK_CON
-	|| obj->item_type == ITEM_BLOOD
 	|| obj->item_type == ITEM_PIPE
 	|| obj->item_type == ITEM_HERB || obj->item_type == ITEM_KEY || !oprog_use_trigger(ch, obj, NULL, NULL))
     {
