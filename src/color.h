@@ -149,7 +149,7 @@ DECLARE_DO_FUN(do_color);
 #define AT_WHITE_BLINK  AT_WHITE + AT_BLINK
 
 #define AT_PLAIN        33
-#define AT_ACTION       34
+#define AT_ACTION       AT_PLAIN
 #define AT_EXITS        AT_GREY
 #define AT_LOG          AT_GREY
 #define AT_ROOM_NAME    AT_WHITE
