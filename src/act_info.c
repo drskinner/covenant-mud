@@ -601,8 +601,8 @@ void show_list_to_char(OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShowN
     default:
       set_char_color(AT_OBJECT, ch);
       break;
-    case ITEM_BLOOD:
-      set_char_color(AT_BLOOD, ch);
+    case ITEM_PLANT:
+      set_char_color(AT_LGREEN, ch);
       break;
     case ITEM_CORPSE_PC:
     case ITEM_CORPSE_NPC:

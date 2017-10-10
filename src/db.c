@@ -2833,6 +2833,7 @@ OBJ_DATA *create_object(OBJ_INDEX_DATA * pObjIndex, int level)
   case ITEM_LIGHT:
   case ITEM_TREASURE:
   case ITEM_FURNITURE:
+  case ITEM_SHELF:
   case ITEM_TRASH:
   case ITEM_CONTAINER:
   case ITEM_DRINK_CON:
@@ -2860,8 +2861,8 @@ OBJ_DATA *create_object(OBJ_INDEX_DATA * pObjIndex, int level)
   case ITEM_CORPSE_NPC:
   case ITEM_CORPSE_PC:
   case ITEM_FOUNTAIN:
-  case ITEM_BLOOD:
-  case ITEM_BLOODSTAIN:
+  case ITEM_PLANT:
+  case ITEM_JEWEL:
   case ITEM_SCRAPS:
   case ITEM_PIPE:
   case ITEM_HERB_CON:
@@ -8586,7 +8587,7 @@ void fread_sysdata(SYSTEM_DATA * sys, FILE * fp)
 	if (!sys->time_of_max)
 	  sys->time_of_max = str_dup("(not recorded)");
 	if (!sys->mud_name)
-	  sys->mud_name = str_dup("(Name Not Set)");
+	  sys->mud_name = str_dup("Covenant MUD");
 	if (!sys->port_name)
 	  sys->port_name = str_dup("mud");
 	if (!sys->admin_email)

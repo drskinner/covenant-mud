@@ -1462,16 +1462,6 @@ void obj_update(void)
       AT_TEMP = AT_HUNGRY;
       break;
 
-    case ITEM_BLOOD:
-      message = "$p slowly seeps into the ground.";
-      AT_TEMP = AT_BLOOD;
-      break;
-
-    case ITEM_BLOODSTAIN:
-      message = "$p dries up into flakes and blows away.";
-      AT_TEMP = AT_BROWN;
-      break;
-
     case ITEM_SCRAPS:
       message = "$p crumble and decay into nothing.";
       AT_TEMP = AT_OBJECT;
