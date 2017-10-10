@@ -2144,7 +2144,7 @@ void do_emote(CHAR_DATA* ch, const char* argument)
     ;
 
   mudstrlcpy(buf, argument, MAX_STRING_LENGTH);
-  if (isalpha(plast[-1]))
+  if (isalnum(plast[-1]))
     mudstrlcat(buf, ".", MAX_STRING_LENGTH);
   for (vch = ch->in_room->first_person; vch; vch = vch->next_in_room)
   {
@@ -2180,10 +2180,11 @@ void do_emote(CHAR_DATA* ch, const char* argument)
       sbuf = scramble(buf, ch->speaking);
 #endif
     MOBtrigger = FALSE;
-    if (argument[0] == '\'' || argument[0] == '-' || argument[0] == ',')
-      act(AT_ACTION, "$n$t", ch, sbuf, vch, (vch == ch ? TO_CHAR : TO_VICT));
-    else
+    if (isalnum(argument[0])) {
       act(AT_ACTION, "$n $t", ch, sbuf, vch, (vch == ch ? TO_CHAR : TO_VICT));
+    } else {
+      act(AT_ACTION, "$n$t", ch, sbuf, vch, (vch == ch ? TO_CHAR : TO_VICT));
+    }
   }
 
   ch->act = actflags;
