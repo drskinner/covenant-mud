@@ -2802,6 +2802,11 @@ OBJ_DATA *create_object(OBJ_INDEX_DATA * pObjIndex, int level)
   obj->name = QUICKLINK(pObjIndex->name);
   obj->short_descr = QUICKLINK(pObjIndex->short_descr);
   obj->description = QUICKLINK(pObjIndex->description);
+  if (pObjIndex->full_desc != NULL) {
+    obj->full_desc = QUICKLINK(pObjIndex->full_desc);
+  } else {
+    obj->full_desc = STRALLOC("");
+  }
   obj->action_desc = QUICKLINK(pObjIndex->action_desc);
   obj->owner = STRALLOC("");
   obj->item_type = pObjIndex->item_type;
@@ -5348,6 +5353,7 @@ void delete_obj(OBJ_INDEX_DATA * obj)
   STRFREE(obj->name);
   STRFREE(obj->short_descr);
   STRFREE(obj->description);
+  STRFREE(obj->full_desc);
   STRFREE(obj->action_desc);
 
   hash = obj->vnum % MAX_KEY_HASH;
@@ -5509,8 +5515,9 @@ OBJ_INDEX_DATA *make_object(int vnum, int cvnum, const char *name)
   {
     snprintf(buf, MAX_STRING_LENGTH, "A newly created %s", name);
     pObjIndex->short_descr = STRALLOC(buf);
-    snprintf(buf, MAX_STRING_LENGTH, "Some god dropped a newly created %s here.", name);
+    snprintf(buf, MAX_STRING_LENGTH, "Someone dropped a newly created %s here.", name);
     pObjIndex->description = STRALLOC(buf);
+    pObjIndex->full_desc = STRALLOC("");
     pObjIndex->action_desc = STRALLOC("");
 
     // it's safe to cast these because we just created the object
@@ -6737,6 +6744,10 @@ void fread_fuss_object(FILE * fp, AREA_DATA * tarea)
 
 	fMatch = TRUE;
 	break;
+      }
+
+      if (!str_cmp(word, "Full")) {
+	KEY("Full", pObjIndex->full_desc, fread_string(fp));
       }
       break;
 

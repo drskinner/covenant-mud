@@ -2072,6 +2072,8 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
 	      STRFREE(obj->name);
 	    if (obj->description)
 	      STRFREE(obj->description);
+            if (obj->full_desc)
+              STRFREE(obj->full_desc);
 	    if (obj->short_descr)
 	      STRFREE(obj->short_descr);
 	    DISPOSE(obj);
@@ -2334,6 +2336,8 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
 	STRFREE(obj->name);
       if (obj->description)
 	STRFREE(obj->description);
+      if (obj->full_desc)
+        STRFREE(obj->full_desc);
       if (obj->short_descr)
 	STRFREE(obj->short_descr);
       while ((ed = obj->first_extradesc) != NULL)

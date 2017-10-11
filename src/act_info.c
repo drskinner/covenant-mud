@@ -1547,13 +1547,11 @@ void do_look(CHAR_DATA * ch, const char *argument)
       {
 	if ((cnt += obj->count) < number)
 	  continue;
-	pdesc = get_extra_descr(obj->name, obj->pIndexData->first_extradesc);
-	if (!pdesc)
-	  pdesc = get_extra_descr(obj->name, obj->first_extradesc);
-	if (!pdesc)
-	  send_to_char_color("You see nothing special.\r\n", ch);
-	else
-	  send_to_char_color(pdesc, ch);
+        if (obj->full_desc && obj->full_desc[0] != '\0') {
+          send_to_char_color(obj->full_desc, ch);
+        } else {
+          ch_printf(ch, "You see nothing special about %s.\n\r", obj->short_descr);
+        }
 	if (obj->item_type == ITEM_PUDDLE)
 	{
 	  LIQ_TABLE *liq = get_liq_vnum(obj->value[2]);
@@ -1594,13 +1592,11 @@ void do_look(CHAR_DATA * ch, const char *argument)
       {
 	if ((cnt += obj->count) < number)
 	  continue;
-	pdesc = get_extra_descr(obj->name, obj->pIndexData->first_extradesc);
-	if (!pdesc)
-	  pdesc = get_extra_descr(obj->name, obj->first_extradesc);
-	if (!pdesc)
-	  send_to_char("You see nothing special.\r\n", ch);
-	else
-	  send_to_char_color(pdesc, ch);
+        if (obj->full_desc && obj->full_desc[0] != '\0') {
+          send_to_char_color(obj->full_desc, ch);
+        } else {
+          ch_printf(ch, "You see nothing special about %s.\n\r", obj->short_descr);
+        }
 	if (obj->item_type == ITEM_PUDDLE)
 	{
 	  LIQ_TABLE *liq = get_liq_vnum(obj->value[2]);

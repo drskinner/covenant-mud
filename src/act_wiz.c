@@ -1828,6 +1828,9 @@ void do_ostat(CHAR_DATA* ch, const char* argument)
   ch_printf_color(ch, "&cTopSerial#: &w%d\r\n", cur_obj_serial);
   ch_printf_color(ch, "&cShort description: &C%s\r\n", obj->short_descr);
   ch_printf_color(ch, "&cLong description : &C%s\r\n", obj->description);
+  ch_printf_color(ch, "&cObject has full description? [&R%s&c]&w\r\n",
+                  ((obj->full_desc && obj->full_desc[0] != '\0') ? "Yes" : "No"));
+
   if (obj->action_desc && obj->action_desc[0] != '\0')
     ch_printf_color(ch, "&cAction description: &w%s\r\n", obj->action_desc);
   if (IS_OBJ_STAT(obj, ITEM_PERSONAL) && obj->owner && obj->owner[0] != '\0')
