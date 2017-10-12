@@ -234,8 +234,8 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
     {
       if (value >= MAX_NPC_CLASS || value < 0)
       {
-	progbug("MpMset: Invalid npc class", ch);
-	return;
+        progbug("MpMset: Invalid npc class", ch);
+        return;
       }
       victim->Class = value;
       return;
@@ -643,15 +643,15 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_actflag(arg3);
       if (value < 0 || value >= MAX_BITS)
-	progbug("MpMset: Invalid flag", ch);
+        progbug("MpMset: Invalid flag", ch);
       else
       {
-	if (value == ACT_PROTOTYPE)
-	  progbug("MpMset: can't set prototype flag", ch);
-	else if (value == ACT_IS_NPC)
-	  progbug("MpMset: can't remove npc flag", ch);
-	else
-	  xTOGGLE_BIT(victim->act, value);
+        if (value == ACT_PROTOTYPE)
+          progbug("MpMset: can't set prototype flag", ch);
+        else if (value == ACT_IS_NPC)
+          progbug("MpMset: can't remove npc flag", ch);
+        else
+          xTOGGLE_BIT(victim->act, value);
       }
     }
     return;
@@ -675,9 +675,9 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_aflag(arg3);
       if (value < 0 || value >= MAX_BITS)
-	progbug("MpMset: Invalid affected", ch);
+        progbug("MpMset: Invalid affected", ch);
       else
-	xTOGGLE_BIT(victim->affected_by, value);
+        xTOGGLE_BIT(victim->affected_by, value);
     }
     return;
   }
@@ -758,9 +758,9 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_risflag(arg3);
       if (value < 0 || value > 31)
-	progbug("MpMset: Invalid resistant", ch);
+        progbug("MpMset: Invalid resistant", ch);
       else
-	TOGGLE_BIT(victim->resistant, 1 << value);
+        TOGGLE_BIT(victim->resistant, 1 << value);
     }
     return;
   }
@@ -782,9 +782,9 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_risflag(arg3);
       if (value < 0 || value > 31)
-	progbug("MpMset: Invalid immune", ch);
+        progbug("MpMset: Invalid immune", ch);
       else
-	TOGGLE_BIT(victim->immune, 1 << value);
+        TOGGLE_BIT(victim->immune, 1 << value);
     }
     return;
   }
@@ -806,9 +806,9 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_risflag(arg3);
       if (value < 0 || value > 31)
-	progbug("MpMset: Invalid susceptible", ch);
+        progbug("MpMset: Invalid susceptible", ch);
       else
-	TOGGLE_BIT(victim->susceptible, 1 << value);
+        TOGGLE_BIT(victim->susceptible, 1 << value);
     }
     return;
   }
@@ -830,9 +830,9 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_partflag(arg3);
       if (value < 0 || value > 31)
-	progbug("MpMset: Invalid part", ch);
+        progbug("MpMset: Invalid part", ch);
       else
-	TOGGLE_BIT(victim->xflags, 1 << value);
+        TOGGLE_BIT(victim->xflags, 1 << value);
     }
     return;
   }
@@ -854,9 +854,9 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_attackflag(arg3);
       if (value < 0)
-	progbug("MpMset: Invalid attack", ch);
+        progbug("MpMset: Invalid attack", ch);
       else
-	xTOGGLE_BIT(victim->attacks, value);
+        xTOGGLE_BIT(victim->attacks, value);
     }
     return;
   }
@@ -878,9 +878,9 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_defenseflag(arg3);
       if (value < 0 || value >= MAX_BITS)
-	progbug("MpMset: Invalid defense", ch);
+        progbug("MpMset: Invalid defense", ch);
       else
-	xTOGGLE_BIT(victim->defenses, value);
+        xTOGGLE_BIT(victim->defenses, value);
     }
     return;
   }
@@ -930,32 +930,32 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       value = get_langflag(arg3);
       v2 = get_langnum(arg3);
       if (value == LANG_UNKNOWN)
-	progbug("MpMset: Invalid speaks", ch);
+        progbug("MpMset: Invalid speaks", ch);
       else if (!IS_NPC(victim))
       {
-	if (!(value &= VALID_LANGS))
-	{
-	  progbug("MpMset: Invalid player language", ch);
-	  continue;
-	}
-	if (v2 == -1)
-	  ch_printf(ch, "Unknown language: %s\r\n", arg3);
-	else
-	  TOGGLE_BIT(victim->speaks, 1 << v2);
+        if (!(value &= VALID_LANGS))
+        {
+          progbug("MpMset: Invalid player language", ch);
+          continue;
+        }
+        if (v2 == -1)
+          ch_printf(ch, "Unknown language: %s\r\n", arg3);
+        else
+          TOGGLE_BIT(victim->speaks, 1 << v2);
       }
       else
       {
-	if (v2 == -1)
-	  ch_printf(ch, "Unknown language: %s\r\n", arg3);
-	else
-	  TOGGLE_BIT(victim->speaks, 1 << v2);
+        if (v2 == -1)
+          ch_printf(ch, "Unknown language: %s\r\n", arg3);
+        else
+          TOGGLE_BIT(victim->speaks, 1 << v2);
       }
     }
     if (!IS_NPC(victim))
     {
       REMOVE_BIT(victim->speaks, race_table[victim->race]->language);
       if (!knows_language(victim, victim->speaking, victim))
-	victim->speaking = race_table[victim->race]->language;
+        victim->speaking = race_table[victim->race]->language;
     }
     return;
   }
@@ -977,14 +977,14 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_langflag(arg3);
       if (value == LANG_UNKNOWN)
-	progbug("MpMset: Invalid speaking", ch);
+        progbug("MpMset: Invalid speaking", ch);
       else
       {
-	v2 = get_langnum(arg3);
-	if (v2 == -1)
-	  ch_printf(ch, "Unknown language: %s\r\n", arg3);
-	else
-	  TOGGLE_BIT(victim->speaks, 1 << v2);
+        v2 = get_langnum(arg3);
+        if (v2 == -1)
+          ch_printf(ch, "Unknown language: %s\r\n", arg3);
+        else
+          TOGGLE_BIT(victim->speaks, 1 << v2);
       }
     }
     return;
@@ -1104,13 +1104,13 @@ void do_mposet(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_oflag(arg3);
       if (value < 0 || value >= MAX_BITS)
-	progbug("MpOset: Invalid flag", ch);
+        progbug("MpOset: Invalid flag", ch);
       else
       {
-	if (value == ITEM_PROTOTYPE)
-	  progbug("MpOset: can't set prototype flag", ch);
-	else
-	  xTOGGLE_BIT(obj->extra_flags, value);
+        if (value == ITEM_PROTOTYPE)
+          progbug("MpOset: can't set prototype flag", ch);
+        else
+          xTOGGLE_BIT(obj->extra_flags, value);
       }
     }
     return;
@@ -1128,9 +1128,9 @@ void do_mposet(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_wflag(arg3);
       if (value < 0 || value > 31)
-	progbug("MpOset: Invalid wear", ch);
+        progbug("MpOset: Invalid wear", ch);
       else
-	TOGGLE_BIT(obj->wear_flags, 1 << value);
+        TOGGLE_BIT(obj->wear_flags, 1 << value);
     }
     return;
   }
@@ -1235,18 +1235,18 @@ void do_mposet(CHAR_DATA* ch, const char* argument)
       bitv = 0;
       while (argument[0] != '\0')
       {
-	argument = one_argument(argument, arg3);
-	if (loc == APPLY_AFFECT)
-	  value = get_aflag(arg3);
-	else
-	  value = get_risflag(arg3);
-	if (value < 0 || value > 31)
-	  progbug("MpOset: bad affect flag", ch);
-	else
-	  SET_BIT(bitv, 1 << value);
+        argument = one_argument(argument, arg3);
+        if (loc == APPLY_AFFECT)
+          value = get_aflag(arg3);
+        else
+          value = get_risflag(arg3);
+        if (value < 0 || value > 31)
+          progbug("MpOset: bad affect flag", ch);
+        else
+          SET_BIT(bitv, 1 << value);
       }
       if (!bitv)
-	return;
+        return;
       value = bitv;
     }
     else
@@ -1289,11 +1289,11 @@ void do_mposet(CHAR_DATA* ch, const char* argument)
     {
       if (++count == loc)
       {
-	UNLINK(paf, obj->first_affect, obj->last_affect, next, prev);
-	DISPOSE(paf);
-	send_to_char("Removed.\r\n", ch);
-	--top_affect;
-	return;
+        UNLINK(paf, obj->first_affect, obj->last_affect, next, prev);
+        DISPOSE(paf);
+        send_to_char("Removed.\r\n", ch);
+        --top_affect;
+        return;
       }
     }
     progbug("MpOset: rmaffect not found", ch);
@@ -1375,12 +1375,12 @@ void do_mposet(CHAR_DATA* ch, const char* argument)
 
       value = -1;
       for (x = 0; x < sizeof(attack_table) / sizeof(attack_table[0]); x++)
-	if (!str_cmp(arg3, attack_table[x]))
-	  value = x;
+        if (!str_cmp(arg3, attack_table[x]))
+          value = x;
       if (value < 0)
       {
-	progbug("MpOset: Invalid weapon type", ch);
-	return;
+        progbug("MpOset: Invalid weapon type", ch);
+        return;
       }
       tmp = 3;
       break;

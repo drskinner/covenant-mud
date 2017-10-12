@@ -127,7 +127,7 @@ void do_timezone(CHAR_DATA* ch, const char* argument)
 
   ch->pcdata->timezone = i;
   ch_printf(ch, "Your time zone is now %s %s (%s)\r\n", tzone_table[i].name,
-	     tzone_table[i].zone, c_time(current_time, i));
+             tzone_table[i].zone, c_time(current_time, i));
 }
 
 /* Ever so slightly modified version of "friendly_ctime" provided by Aurora.
@@ -157,7 +157,7 @@ char *c_time(time_t curtime, int tz)
     curtime += ptime->tm_gmtoff;
 #else
     curtime += timezone; /* timezone external variable in time.h holds the 
-			  * difference in seconds to GMT. */
+                          * difference in seconds to GMT. */
 #endif
     curtime += (60 * 60 * tzone_table[tz].gmt_offset);  /* Add the offset hours */
   }
@@ -170,9 +170,9 @@ char *c_time(time_t curtime, int tz)
 #endif
 
   snprintf(strtime, 128, "%3s %3s %d, %d %d:%02d:%02d %cM %s",
-	    day[ptime->tm_wday], month[ptime->tm_mon], ptime->tm_mday, ptime->tm_year + 1900,
-	    ptime->tm_hour == 0 ? 12 : ptime->tm_hour > 12 ? ptime->tm_hour - 12 : ptime->tm_hour,
-	    ptime->tm_min, ptime->tm_sec, ptime->tm_hour < 12 ? 'A' : 'P', tzonename);
+            day[ptime->tm_wday], month[ptime->tm_mon], ptime->tm_mday, ptime->tm_year + 1900,
+            ptime->tm_hour == 0 ? 12 : ptime->tm_hour > 12 ? ptime->tm_hour - 12 : ptime->tm_hour,
+            ptime->tm_min, ptime->tm_sec, ptime->tm_hour < 12 ? 'A' : 'P', tzonename);
   return strtime;
 }
 
@@ -199,7 +199,7 @@ char *mini_c_time(time_t curtime, int tz)
     curtime += ptime->tm_gmtoff;
 #else
     curtime += timezone; /* timezone external variable in time.h holds the
-			  * difference in seconds to GMT. */
+                          * difference in seconds to GMT. */
 #endif
     curtime += (60 * 60 * tzone_table[tz].gmt_offset);  /* Add the offset hours */
   }
@@ -212,8 +212,8 @@ char *mini_c_time(time_t curtime, int tz)
 #endif
 
   snprintf(strtime, 128, "%02d/%02d/%02d %02d:%02d%c", ptime->tm_mon + 1, ptime->tm_mday, ptime->tm_year - 100,
-	    ptime->tm_hour == 0 ? 12 : ptime->tm_hour > 12 ? ptime->tm_hour - 12 : ptime->tm_hour, ptime->tm_min,
-	    ptime->tm_hour < 12 ? 'A' : 'P');
+            ptime->tm_hour == 0 ? 12 : ptime->tm_hour > 12 ? ptime->tm_hour - 12 : ptime->tm_hour, ptime->tm_min,
+            ptime->tm_hour < 12 ? 'A' : 'P');
   return strtime;
 }
 
@@ -280,43 +280,43 @@ char *sec_to_hms(time_t loctime, char *tstr)
 
       if (t_rem > 0)
       {
-	t_rem /= DUR_HRDY;
-	dy = t_rem % DUR_DYWK;
-	t_rem -= dy;
+        t_rem /= DUR_HRDY;
+        dy = t_rem % DUR_DYWK;
+        t_rem -= dy;
 
-	if (t_rem > 0)
-	{
-	  wk = t_rem / DUR_DYWK;
+        if (t_rem > 0)
+        {
+          wk = t_rem / DUR_DYWK;
 
-	  if (wk)
-	  {
-	    sflg = 1;
-	    snprintf(buff, MSL, "%d week%c", wk, DUR_ADDS(wk));
-	    mudstrlcat(tstr, buff, MSL);
-	  }
-	}
-	if (dy)
-	{
-	  if (sflg == 1)
-	    mudstrlcat(tstr, " ", MSL);
-	  sflg = 1;
-	  snprintf(buff, MSL, "%d day%c", dy, DUR_ADDS(dy));
-	  mudstrlcat(tstr, buff, MSL);
-	}
+          if (wk)
+          {
+            sflg = 1;
+            snprintf(buff, MSL, "%d week%c", wk, DUR_ADDS(wk));
+            mudstrlcat(tstr, buff, MSL);
+          }
+        }
+        if (dy)
+        {
+          if (sflg == 1)
+            mudstrlcat(tstr, " ", MSL);
+          sflg = 1;
+          snprintf(buff, MSL, "%d day%c", dy, DUR_ADDS(dy));
+          mudstrlcat(tstr, buff, MSL);
+        }
       }
       if (hr)
       {
-	if (sflg == 1)
-	  mudstrlcat(tstr, " ", MSL);
-	sflg = 1;
-	snprintf(buff, MSL, "%d hour%c", hr, DUR_ADDS(hr));
-	mudstrlcat(tstr, buff, MSL);
+        if (sflg == 1)
+          mudstrlcat(tstr, " ", MSL);
+        sflg = 1;
+        snprintf(buff, MSL, "%d hour%c", hr, DUR_ADDS(hr));
+        mudstrlcat(tstr, buff, MSL);
       }
     }
     if (mn)
     {
       if (sflg == 1)
-	mudstrlcat(tstr, " ", MSL);
+        mudstrlcat(tstr, " ", MSL);
       sflg = 1;
       snprintf(buff, MSL, "%d minute%c", mn, DUR_ADDS(mn));
       mudstrlcat(tstr, buff, MSL);
@@ -361,7 +361,7 @@ void fread_timedata(FILE * fp)
 
     case 'E':
       if (!str_cmp(word, "End"))
-	return;
+        return;
       break;
 
     case 'M':
@@ -371,9 +371,9 @@ void fread_timedata(FILE * fp)
       KEY("Myear", time_info.year, fread_number(fp));
       break;
       /* Uncomment if you have Samson's Pfile Cleanup Snippet installed.
-	 case 'P':
-	 KEY("Purgetime", new_pfile_time_t, fread_number(fp));
-	 break; */
+         case 'P':
+         KEY("Purgetime", new_pfile_time_t, fread_number(fp));
+         break; */
     }
 
     if (!fMatch)
@@ -406,28 +406,28 @@ bool load_timedata(void)
       letter = fread_letter(fp);
       if (letter == '*')
       {
-	fread_to_eol(fp);
-	continue;
+        fread_to_eol(fp);
+        continue;
       }
 
       if (letter != '#')
       {
-	bug("%s", "Load_timedata: # not found.");
-	break;
+        bug("%s", "Load_timedata: # not found.");
+        break;
       }
 
       word = fread_word(fp);
       if (!str_cmp(word, "TIME"))
       {
-	fread_timedata(fp);
-	break;
+        fread_timedata(fp);
+        break;
       }
       else if (!str_cmp(word, "END"))
-	break;
+        break;
       else
       {
-	bug("Load_timedata: bad section - %s.", word);
-	break;
+        bug("Load_timedata: bad section - %s.", word);
+        break;
       }
     }
     fclose(fp);
@@ -452,10 +452,10 @@ void save_timedata(void)
   else
   {
     fprintf(fp, "%s", "#TIME\n");
-    fprintf(fp, "Mhour	%d\n", time_info.hour);
-    fprintf(fp, "Mday	%d\n", time_info.day);
-    fprintf(fp, "Mmonth	%d\n", time_info.month);
-    fprintf(fp, "Myear	%d\n", time_info.year);
+    fprintf(fp, "Mhour  %d\n", time_info.hour);
+    fprintf(fp, "Mday   %d\n", time_info.day);
+    fprintf(fp, "Mmonth %d\n", time_info.month);
+    fprintf(fp, "Myear  %d\n", time_info.year);
     // Uncomment if you have Samson's Pfile Cleanup Snippet installed.
     //fprintf(fp, "Purgetime %ld\n", (long int)new_pfile_time_t);
     fprintf(fp, "%s", "End\n\n");
@@ -488,13 +488,13 @@ void do_time(CHAR_DATA* ch, const char* argument)
     suf = "th";
 
   ch_printf(ch, "&wIt is &W%d&w o'clock &W%s&w, Day of &W%s&w,&W %d%s&w day in the Month of &W%s&w.\r\n"
-	     "&wIt is the season of %s&w, in the year &W%d&w.\r\n"
-	     "&wThe mud started up at  :  &W %s\r\n"
-	     "&wThe system time        :  &W %s\r\n",
-	     (time_info.hour % sysdata.hournoon == 0) ? sysdata.hournoon : time_info.hour % sysdata.hournoon,
-	     time_info.hour >= sysdata.hournoon ? "pm" : "am", day_name[(time_info.day) % sysdata.daysperweek], day, suf,
-	     month_name[time_info.month], season_name[time_info.season], time_info.year, str_boot_time,
-	     c_time(current_time, -1));
+             "&wIt is the season of %s&w, in the year &W%d&w.\r\n"
+             "&wThe mud started up at  :  &W %s\r\n"
+             "&wThe system time        :  &W %s\r\n",
+             (time_info.hour % sysdata.hournoon == 0) ? sysdata.hournoon : time_info.hour % sysdata.hournoon,
+             time_info.hour >= sysdata.hournoon ? "pm" : "am", day_name[(time_info.day) % sysdata.daysperweek], day, suf,
+             month_name[time_info.month], season_name[time_info.season], time_info.year, str_boot_time,
+             c_time(current_time, -1));
 
   ch_printf(ch, "&wYour local time        :  &W %s&D\r\n", c_time(current_time, ch->pcdata->timezone));
   holiday = get_holiday(time_info.month, day - 1);
@@ -541,9 +541,9 @@ void start_winter(void)
       {
       case SECT_WATER_SWIM:
       case SECT_WATER_NOSWIM:
-	room->winter_sector = room->sector_type;
-	room->sector_type = SECT_ICE;
-	break;
+        room->winter_sector = room->sector_type;
+        room->sector_type = SECT_ICE;
+        break;
       }
     }
   }
@@ -566,8 +566,8 @@ void start_spring(void)
     {
       if (room->sector_type == SECT_ICE && room->winter_sector != -1)
       {
-	room->sector_type = room->winter_sector;
-	room->winter_sector = -1;
+        room->sector_type = room->winter_sector;
+        room->winter_sector = -1;
       }
     }
   }
@@ -611,14 +611,14 @@ void season_update(void)
     {
       for (room = room_index_hash[iHash]; room; room = room->next)
       {
-	switch (room->sector_type)
-	{
-	case SECT_WATER_SWIM:
-	case SECT_WATER_NOSWIM:
-	  room->winter_sector = room->sector_type;
-	  room->sector_type = SECT_ICE;
-	  break;
-	}
+        switch (room->sector_type)
+        {
+        case SECT_WATER_SWIM:
+        case SECT_WATER_NOSWIM:
+          room->winter_sector = room->sector_type;
+          room->sector_type = SECT_ICE;
+          break;
+        }
       }
     }
   }
@@ -698,11 +698,11 @@ void do_holidays(CHAR_DATA* ch, const char* argument)
 {
   HOLIDAY_DATA *day;
 
-  send_to_pager("&RHoliday		       &YMonth	        &GDay\r\n", ch);
+  send_to_pager("&RHoliday                     &YMonth          &GDay\r\n", ch);
   send_to_pager("&g----------------------+----------------+---------------\r\n", ch);
 
   for (day = first_holiday; day; day = day->next)
-    pager_printf(ch, "&G%-21s	&g%-11s	%-2d\r\n", day->name, month_name[day->month - 1], day->day);
+    pager_printf(ch, "&G%-21s   &g%-11s %-2d\r\n", day->name, month_name[day->month - 1], day->day);
 
   return;
 }
@@ -736,9 +736,9 @@ void fread_day(HOLIDAY_DATA * day, FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if (!day->announce)
-	  day->announce = str_dup("Today is a holiday, but who the hell knows which one.");
-	return;
+        if (!day->announce)
+          day->announce = str_dup("Today is a holiday, but who the hell knows which one.");
+        return;
       }
       break;
 
@@ -780,37 +780,37 @@ void load_holidays(void)
       letter = fread_letter(fp);
       if (letter == '*')
       {
-	fread_to_eol(fp);
-	continue;
+        fread_to_eol(fp);
+        continue;
       }
 
       if (letter != '#')
       {
-	bug("%s", "load_holidays: # not found.");
-	break;
+        bug("%s", "load_holidays: # not found.");
+        break;
       }
 
       word = fread_word(fp);
       if (!str_cmp(word, "HOLIDAY"))
       {
-	if (daycount >= sysdata.maxholiday)
-	{
-	  bug("load_holidays: more holidays than %d, increase Max Holiday in cset.", sysdata.maxholiday);
-	  fclose(fp);
-	  return;
-	}
-	CREATE(day, HOLIDAY_DATA, 1);
-	fread_day(day, fp);
-	daycount++;
-	LINK(day, first_holiday, last_holiday, next, prev);
-	continue;
+        if (daycount >= sysdata.maxholiday)
+        {
+          bug("load_holidays: more holidays than %d, increase Max Holiday in cset.", sysdata.maxholiday);
+          fclose(fp);
+          return;
+        }
+        CREATE(day, HOLIDAY_DATA, 1);
+        fread_day(day, fp);
+        daycount++;
+        LINK(day, first_holiday, last_holiday, next, prev);
+        continue;
       }
       else if (!str_cmp(word, "END"))
-	break;
+        break;
       else
       {
-	bug("load_holidays: bad section: %s.", word);
-	continue;
+        bug("load_holidays: bad section: %s.", word);
+        continue;
       }
     }
     fclose(fp);
@@ -838,10 +838,10 @@ void save_holidays(void)
     for (day = first_holiday; day; day = day->next)
     {
       fprintf(fp, "%s", "#HOLIDAY\n");
-      fprintf(fp, "Name		%s~\n", day->name);
-      fprintf(fp, "Announce	%s~\n", day->announce);
-      fprintf(fp, "Month		%d\n", day->month);
-      fprintf(fp, "Day		%d\n", day->day);
+      fprintf(fp, "Name         %s~\n", day->name);
+      fprintf(fp, "Announce     %s~\n", day->announce);
+      fprintf(fp, "Month                %d\n", day->month);
+      fprintf(fp, "Day          %d\n", day->day);
       fprintf(fp, "%s", "End\n\n");
     }
     fprintf(fp, "%s", "#END\n");
@@ -895,8 +895,8 @@ void do_setholiday(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(arg1, day->name))
       {
-	send_to_char("A holiday with that name exists already!\r\n", ch);
-	return;
+        send_to_char("A holiday with that name exists already!\r\n", ch);
+        return;
       }
     }
 
@@ -960,9 +960,9 @@ void do_setholiday(CHAR_DATA* ch, const char* argument)
       while (month_name[x] != '\0' && str_cmp(month_name[x], " ") && x < sysdata.monthsperyear)
 
       {
-	ch_printf(ch, "&R(&W%d&R)&Y%s\r\n", count, month_name[x]);
-	x++;
-	count++;
+        ch_printf(ch, "&R(&W%d&R)&Y%s\r\n", count, month_name[x]);
+        x++;
+        count++;
       }
       return;
     }

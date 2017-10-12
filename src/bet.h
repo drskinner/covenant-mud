@@ -12,7 +12,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *			Auction bid parsing routines			    *
+ *                      Auction bid parsing routines                        *
  ****************************************************************************/
 #include <ctype.h>
 
@@ -146,13 +146,13 @@ int parsebet(const int currentbet, char *s)
     if (s[0] == '+') /* add percent (default 25%) */
     {
       if (s[1] == '\0')
-	return (currentbet * 125) / 100;
+        return (currentbet * 125) / 100;
       return (currentbet * (100 + atoi(s + 1))) / 100;
     }
     if (s[0] == '*' || s[0] == 'x') /* multiply (default is by 2) */
     {
       if (s[1] == '\0')
-	return (currentbet * 2);
+        return (currentbet * 2);
       return (currentbet * atoi(s + 1));
     }
   }

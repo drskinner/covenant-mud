@@ -136,7 +136,7 @@ void do_renumber(CHAR_DATA* ch, const char* argument)
   if (new_base == area->low_r_vnum && new_base == area->low_o_vnum && new_base == area->low_m_vnum && !fill_gaps)
   {
     ch_printf(ch,
-	       "You don't want to change the base vnum and you don't want to fill gaps...\r\nSo what DO you wanna do?\r\n");
+               "You don't want to change the base vnum and you don't want to fill gaps...\r\nSo what DO you wanna do?\r\n");
     return;
   }
 
@@ -158,8 +158,8 @@ void do_renumber(CHAR_DATA* ch, const char* argument)
   if (ch->level == LEVEL_SAVIOR)
   {
     if (area->low_r_vnum < ch->pcdata->r_range_lo || area->hi_r_vnum > ch->pcdata->r_range_hi ||
-	area->low_m_vnum < ch->pcdata->m_range_lo || area->hi_m_vnum > ch->pcdata->m_range_hi ||
-	area->low_o_vnum < ch->pcdata->o_range_lo || area->hi_o_vnum > ch->pcdata->o_range_hi)
+        area->low_m_vnum < ch->pcdata->m_range_lo || area->hi_m_vnum > ch->pcdata->m_range_hi ||
+        area->low_o_vnum < ch->pcdata->o_range_lo || area->hi_o_vnum > ch->pcdata->o_range_hi)
     {
       ch_printf(ch, "You can't renumber that area ('%s').\r\n", area->filename);
       return;
@@ -177,8 +177,8 @@ void do_renumber(CHAR_DATA* ch, const char* argument)
   if (ch->level == LEVEL_SAVIOR)
   {
     if (r_area->low_room < ch->pcdata->r_range_lo || r_area->hi_room > ch->pcdata->r_range_hi ||
-	r_area->low_obj < ch->pcdata->o_range_lo || r_area->hi_obj > ch->pcdata->o_range_hi ||
-	r_area->low_mob < ch->pcdata->m_range_lo || r_area->hi_mob > ch->pcdata->m_range_hi)
+        r_area->low_obj < ch->pcdata->o_range_lo || r_area->hi_obj > ch->pcdata->o_range_hi ||
+        r_area->low_mob < ch->pcdata->m_range_lo || r_area->hi_mob > ch->pcdata->m_range_hi)
     {
       DISPOSE(r_area);
       ch_printf(ch, "The renumbered area would be outside your assigned vnum range.\r\n");
@@ -188,8 +188,8 @@ void do_renumber(CHAR_DATA* ch, const char* argument)
   else if (is_proto)
   {
     if (r_area->low_room < area->low_r_vnum || r_area->hi_room > area->hi_r_vnum ||
-	r_area->low_obj < area->low_o_vnum || r_area->hi_obj > area->hi_o_vnum ||
-	r_area->low_mob < area->low_m_vnum || r_area->hi_mob > area->hi_m_vnum)
+        r_area->low_obj < area->low_o_vnum || r_area->hi_obj > area->hi_o_vnum ||
+        r_area->low_mob < area->low_m_vnum || r_area->hi_mob > area->hi_m_vnum)
     {
       DISPOSE(r_area);
       ch_printf(ch, "Moving a proto area out of its range would create problems.\r\nWait till the area is finished to move it.\r\n");
@@ -224,7 +224,7 @@ void do_renumber(CHAR_DATA* ch, const char* argument)
    * ok, do it! 
    */
   pager_printf(ch, "Renumbering area '%s' to new base %d, filling gaps: %s\r\n",
-		area->filename, new_base, fill_gaps ? "yes" : "no");
+                area->filename, new_base, fill_gaps ? "yes" : "no");
   renumber_area(ch, area, r_area, is_proto, verbose);
   pager_printf(ch, "Done.\r\n");
 
@@ -269,8 +269,8 @@ bool check_vnums(CHAR_DATA * ch, AREA_DATA * tarea, RENUMBER_AREA * r_area)
     if (tarea == area)
       ;
     else if (!(high < area->low_r_vnum || low > area->hi_r_vnum) ||
-	     !(high < area->low_o_vnum || low > area->hi_o_vnum) ||
-	     !(high < area->low_m_vnum || low > area->hi_m_vnum))
+             !(high < area->low_o_vnum || low > area->hi_o_vnum) ||
+             !(high < area->low_m_vnum || low > area->hi_m_vnum))
     {
       ch_printf(ch, "This operation would overwrite area %s! Use checkvnums first.\r\n", area->filename);
       return TRUE;
@@ -334,30 +334,30 @@ RENUMBER_DATA *gather_one_list(short type, int low, int high, int new_base, bool
     case REN_ROOM:
       room = get_room_index(i);
       if (room != NULL)
-	found = TRUE;
+        found = TRUE;
       break;
     case REN_OBJ:
       obj = get_obj_index(i);
       if (obj != NULL)
-	found = TRUE;
+        found = TRUE;
       break;
     case REN_MOB:
       mob = get_mob_index(i);
       if (mob != NULL)
-	found = TRUE;
+        found = TRUE;
       break;
     }
 
     if (found)
     {
       if (cur_vnum > highest)
-	highest = cur_vnum;
+        highest = cur_vnum;
       if (cur_vnum != i)
       {
-	CREATE(r_data->next, RENUMBER_DATA, 1);
-	r_data = r_data->next;
-	r_data->old_vnum = i;
-	r_data->new_vnum = cur_vnum;
+        CREATE(r_data->next, RENUMBER_DATA, 1);
+        r_data = r_data->next;
+        r_data->old_vnum = i;
+        r_data->new_vnum = cur_vnum;
       }
       cur_vnum++;
     }
@@ -434,11 +434,11 @@ void renumber_area(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, boo
     else
     {
       for (room_prev = room_index_hash[iHash]; room_prev && room_prev->next != room; room_prev = room_prev->next)
-	;
+        ;
       if (room_prev == NULL)
       {
-	bug("renumber_area: Couldn't find a room in the hash table! Skipping it.\r\n");
-	continue;
+        bug("renumber_area: Couldn't find a room in the hash table! Skipping it.\r\n");
+        continue;
       }
       room_prev->next = room->next;
       room->next = NULL;
@@ -497,13 +497,13 @@ void renumber_area(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, boo
     if (mob->pShop)
     {
       if (verbose)
-	pager_printf(ch, "(Mobs) Fixing shop for mob %d -> %d\r\n", r_data->old_vnum, r_data->new_vnum);
+        pager_printf(ch, "(Mobs) Fixing shop for mob %d -> %d\r\n", r_data->old_vnum, r_data->new_vnum);
       mob->pShop->keeper = r_data->new_vnum;
     }
     if (mob->rShop)
     {
       if (verbose)
-	pager_printf(ch, "(Mobs) Fixing repair shop for mob %d -> %d\r\n", r_data->old_vnum, r_data->new_vnum);
+        pager_printf(ch, "(Mobs) Fixing repair shop for mob %d -> %d\r\n", r_data->old_vnum, r_data->new_vnum);
       mob->rShop->keeper = r_data->new_vnum;
     }
 
@@ -516,11 +516,11 @@ void renumber_area(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, boo
     else
     {
       for (mob_prev = mob_index_hash[iHash]; mob_prev && mob_prev->next != mob; mob_prev = mob_prev->next)
-	;
+        ;
       if (mob_prev == NULL)
       {
-	bug("renumber_area: Couldn't find a mob in the hash table! Skipping it.\r\n");
-	continue;
+        bug("renumber_area: Couldn't find a mob in the hash table! Skipping it.\r\n");
+        continue;
       }
       mob_prev->next = mob->next;
       mob->next = NULL;
@@ -575,11 +575,11 @@ void renumber_area(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, boo
     else
     {
       for (obj_prev = obj_index_hash[iHash]; obj_prev && obj_prev->next != obj; obj_prev = obj_prev->next)
-	;
+        ;
       if (obj_prev == NULL)
       {
-	bug("renumber_area: Couldn't find an obj in the hash table! Skipping it.\r\n");
-	continue;
+        bug("renumber_area: Couldn't find an obj in the hash table! Skipping it.\r\n");
+        continue;
       }
       obj_prev->next = obj->next;
       obj->next = NULL;
@@ -627,7 +627,7 @@ void renumber_area(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, boo
     {
       translate_reset(preset, r_area);
       for (treset = preset->first_reset; treset; treset = preset->next_reset)
-	translate_reset(treset, r_area);
+        translate_reset(treset, r_area);
     }
   }
 
@@ -657,26 +657,26 @@ void translate_exits(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, b
        */
       new_vnum = find_translation(pexit->vnum, r_area->r_room);
       if (new_vnum != NOT_FOUND)
-	pexit->vnum = new_vnum;
+        pexit->vnum = new_vnum;
       /*
        * if this room was moved 
        */
       if (pexit->rvnum != i)
       {
-	old_vnum = pexit->rvnum;
-	pexit->rvnum = i;
-	/*
-	 * all reverse exits in other areas will be wrong 
-	 */
-	rv_exit = get_exit_to(pexit->to_room, rev_dir[pexit->vdir], old_vnum);
-	if (rv_exit && pexit->to_room->area != area)
-	{
-	  if (rv_exit->vnum != i)
-	  {
-	    pager_printf(ch, "...    fixing reverse exit in area %s.\r\n", pexit->to_room->area->filename);
-	    rv_exit->vnum = i;
-	  }
-	}
+        old_vnum = pexit->rvnum;
+        pexit->rvnum = i;
+        /*
+         * all reverse exits in other areas will be wrong 
+         */
+        rv_exit = get_exit_to(pexit->to_room, rev_dir[pexit->vdir], old_vnum);
+        if (rv_exit && pexit->to_room->area != area)
+        {
+          if (rv_exit->vnum != i)
+          {
+            pager_printf(ch, "...    fixing reverse exit in area %s.\r\n", pexit->to_room->area->filename);
+            rv_exit->vnum = i;
+          }
+        }
       }
 
       /*
@@ -684,10 +684,10 @@ void translate_exits(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area, b
        */
       if (pexit->key != -1)
       {
-	new_vnum = find_translation(pexit->key, r_area->r_obj);
-	if (new_vnum == NOT_FOUND)
-	  continue;
-	pexit->key = new_vnum;
+        new_vnum = find_translation(pexit->key, r_area->r_obj);
+        if (new_vnum == NOT_FOUND)
+          continue;
+        pexit->key = new_vnum;
       }
     }
   }
@@ -709,43 +709,43 @@ void translate_objvals(CHAR_DATA * ch, AREA_DATA * area, RENUMBER_AREA * r_area,
       new_vnum = find_translation(obj->value[2], r_area->r_obj);
       if (new_vnum != NOT_FOUND)
       {
-	if (verbose)
-	  pager_printf(ch, "...    container %d; fixing objval2 (key vnum) %d -> %d\r\n", i, obj->value[2], new_vnum);
-	obj->value[2] = new_vnum;
+        if (verbose)
+          pager_printf(ch, "...    container %d; fixing objval2 (key vnum) %d -> %d\r\n", i, obj->value[2], new_vnum);
+        obj->value[2] = new_vnum;
       }
       else if (verbose)
-	pager_printf(ch, "...    container %d; no need to fix.\r\n", i);
+        pager_printf(ch, "...    container %d; no need to fix.\r\n", i);
     }
     else if (obj->item_type == ITEM_SWITCH || obj->item_type == ITEM_LEVER ||
-	     obj->item_type == ITEM_PULLCHAIN || obj->item_type == ITEM_BUTTON)
+             obj->item_type == ITEM_PULLCHAIN || obj->item_type == ITEM_BUTTON)
     {
       /*
        * levers might have room vnum references in their objvals 
        */
       if (IS_SET(obj->value[0], TRIG_TELEPORT)
-	  || IS_SET(obj->value[0], TRIG_TELEPORTALL)
-	  || IS_SET(obj->value[0], TRIG_TELEPORTPLUS)
-	  || IS_SET(obj->value[0], TRIG_RAND4)
-	  || IS_SET(obj->value[0], TRIG_RAND6) || IS_SET(obj->value[0], TRIG_DOOR))
+          || IS_SET(obj->value[0], TRIG_TELEPORTALL)
+          || IS_SET(obj->value[0], TRIG_TELEPORTPLUS)
+          || IS_SET(obj->value[0], TRIG_RAND4)
+          || IS_SET(obj->value[0], TRIG_RAND6) || IS_SET(obj->value[0], TRIG_DOOR))
       {
-	new_vnum = find_translation(obj->value[1], r_area->r_room);
-	if (new_vnum != NOT_FOUND)
-	{
-	  if (verbose)
-	    pager_printf(ch, "...    lever %d: fixing source room (%d -> %d)\r\n", i, obj->value[1], new_vnum);
-	  obj->value[1] = new_vnum;
-	}
-	if (IS_SET(obj->value[0], TRIG_DOOR) && IS_SET(obj->value[0], TRIG_PASSAGE))
-	{
-	  new_vnum = find_translation(obj->value[2], r_area->r_room);
-	  if (new_vnum != NOT_FOUND)
-	  {
-	    if (verbose)
-	      pager_printf(ch, "...    lever %d: fixing dest room (passage) (%d -> %d)\r\n",
-			    i, obj->value[2], new_vnum);
-	    obj->value[2] = new_vnum;
-	  }
-	}
+        new_vnum = find_translation(obj->value[1], r_area->r_room);
+        if (new_vnum != NOT_FOUND)
+        {
+          if (verbose)
+            pager_printf(ch, "...    lever %d: fixing source room (%d -> %d)\r\n", i, obj->value[1], new_vnum);
+          obj->value[1] = new_vnum;
+        }
+        if (IS_SET(obj->value[0], TRIG_DOOR) && IS_SET(obj->value[0], TRIG_PASSAGE))
+        {
+          new_vnum = find_translation(obj->value[2], r_area->r_room);
+          if (new_vnum != NOT_FOUND)
+          {
+            if (verbose)
+              pager_printf(ch, "...    lever %d: fixing dest room (passage) (%d -> %d)\r\n",
+                            i, obj->value[2], new_vnum);
+            obj->value[2] = new_vnum;
+          }
+        }
       }
     }
   }
@@ -813,7 +813,7 @@ void warn_in_prog(CHAR_DATA * ch, int low, int high, const char *where, int vnum
     {
       start_number = p;
       while (isdigit(*p) && *p)
-	p++;
+        p++;
 
       char* temp = (char*) malloc((p - start_number + 1) * sizeof(char));
       memcpy(temp, start_number, p - start_number + 1);
@@ -822,13 +822,13 @@ void warn_in_prog(CHAR_DATA * ch, int low, int high, const char *where, int vnum
 
       if (num >= low && num <= high)
       {
-	pager_printf(ch,
-		      "Warning! %s prog in %s vnum %d might contain a reference to %d.\r\n(Translation: Room %d, Obj %d, Mob %d)\r\n",
-		      mprog_type_to_name(mprog->type), where, vnum, num, find_translation(num, r_area->r_room),
-		      find_translation(num, r_area->r_obj), find_translation(num, r_area->r_mob));
+        pager_printf(ch,
+                      "Warning! %s prog in %s vnum %d might contain a reference to %d.\r\n(Translation: Room %d, Obj %d, Mob %d)\r\n",
+                      mprog_type_to_name(mprog->type), where, vnum, num, find_translation(num, r_area->r_room),
+                      find_translation(num, r_area->r_obj), find_translation(num, r_area->r_mob));
       }
       if (*p == '\0')
-	break;
+        break;
     }
     p++;
   }
@@ -845,7 +845,7 @@ void translate_reset(RESET_DATA * reset, RENUMBER_AREA * r_data)
    * code what to do. it's pretty straightforward 
    */
   const char *action_table[] = { "Mm1r3", "Oo1r3", "Ho1", "Po1o3",
-				 "Go1", "Eo1", "Dr1", "Rr1", NULL
+                                 "Go1", "Eo1", "Dr1", "Rr1", NULL
   };
   const char *p;
   RENUMBER_DATA *r_table;
@@ -878,11 +878,11 @@ void translate_reset(RESET_DATA * reset, RENUMBER_AREA * r_data)
   {
     bug("translate_reset: B command found.");
     if ((reset->arg2 & BIT_RESET_TYPE_MASK) == BIT_RESET_DOOR ||
-	(reset->arg2 & BIT_RESET_TYPE_MASK) == BIT_RESET_ROOM)
+        (reset->arg2 & BIT_RESET_TYPE_MASK) == BIT_RESET_ROOM)
     {
       new_vnum = find_translation(reset->arg1, r_data->r_obj);
       if (new_vnum != NOT_FOUND)
-	reset->arg1 = new_vnum;
+        reset->arg1 = new_vnum;
     }
     return;
   }
@@ -894,37 +894,37 @@ void translate_reset(RESET_DATA * reset, RENUMBER_AREA * r_data)
       p = action_table[i] + 1;
       while (*p)
       {
-	if (*p == 'm')
-	  r_table = r_data->r_mob;
-	else if (*p == 'o')
-	  r_table = r_data->r_obj;
-	else if (*p == 'r')
-	  r_table = r_data->r_room;
-	else
-	{
-	  bug("translate_reset: Invalid action found in action table.\r\n");
-	  p += 2;
-	  continue;
-	}
-	p++;
+        if (*p == 'm')
+          r_table = r_data->r_mob;
+        else if (*p == 'o')
+          r_table = r_data->r_obj;
+        else if (*p == 'r')
+          r_table = r_data->r_room;
+        else
+        {
+          bug("translate_reset: Invalid action found in action table.\r\n");
+          p += 2;
+          continue;
+        }
+        p++;
 
-	if (*p == '1')
-	  parg = &(reset->arg1);
-	else if (*p == '2')
-	  parg = &(reset->arg2);
-	else if (*p == '3')
-	  parg = &(reset->arg3);
-	else
-	{
-	  bug("translate_reset: Invalid argument number found in action table.\r\n");
-	  p++;
-	  continue;
-	}
-	p++;
+        if (*p == '1')
+          parg = &(reset->arg1);
+        else if (*p == '2')
+          parg = &(reset->arg2);
+        else if (*p == '3')
+          parg = &(reset->arg3);
+        else
+        {
+          bug("translate_reset: Invalid argument number found in action table.\r\n");
+          p++;
+          continue;
+        }
+        p++;
 
-	new_vnum = find_translation(*parg, r_table);
-	if (new_vnum != NOT_FOUND)
-	  *parg = new_vnum;
+        new_vnum = find_translation(*parg, r_table);
+        if (new_vnum != NOT_FOUND)
+          *parg = new_vnum;
 
       }
       return;

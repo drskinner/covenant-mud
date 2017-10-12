@@ -72,12 +72,12 @@
 #include "globals.h"
 #endif
 
-#define IMCKEY(literal, field, value)		\
-  if(!strcasecmp((word), (literal)))	\
-  {						\
-    (field) = (value);				\
-    fMatch = TRUE;				\
-    break;					\
+#define IMCKEY(literal, field, value)           \
+  if(!strcasecmp((word), (literal)))    \
+  {                                             \
+    (field) = (value);                          \
+    fMatch = TRUE;                              \
+    break;                                      \
   }
 
 int imcwait;   /* Reconnect timer */
@@ -147,7 +147,7 @@ size_t imcstrlcpy(char *dst, const char *src, size_t siz)
     do
     {
       if((*d++ = *s++) == 0)
-	break;
+        break;
     }
     while(--n != 0);
   }
@@ -252,46 +252,46 @@ char *imcstrrep(const char *src, const char *sch, const char *rep)
     {
       searching = TRUE;
       for(y = 0; y < lensch; y++)
-	if(src[x + y] != sch[y])
-	  searching = FALSE;
+        if(src[x + y] != sch[y])
+          searching = FALSE;
 
       if(searching)
       {
-	for(y = 0; y < lenrep; y++, in_p++)
-	{
-	  if(in_p == (LGST - 1))
-	  {
-	    newsrc[in_p] = '\0';
-	    return newsrc;
-	  }
-	  if(src[x - 1] == sch[0])
-	  {
-	    if(rep[0] == '\033')
-	    {
-	      if(y < lensch)
-	      {
-		if(y == 0)
-		  newsrc[in_p - 1] = sch[y];
-		else
-		  newsrc[in_p] = sch[y];
-	      }
-	      else
-		y = lenrep;
-	    }
-	    else
-	    {
-	      if(y == 0)
-		newsrc[in_p - 1] = rep[y];
-	      newsrc[in_p] = rep[y];
-	    }
-	  }
-	  else
-	    newsrc[in_p] = rep[y];
-	}
-	x += lensch - 1;
-	in_p--;
-	searching = FALSE;
-	continue;
+        for(y = 0; y < lenrep; y++, in_p++)
+        {
+          if(in_p == (LGST - 1))
+          {
+            newsrc[in_p] = '\0';
+            return newsrc;
+          }
+          if(src[x - 1] == sch[0])
+          {
+            if(rep[0] == '\033')
+            {
+              if(y < lensch)
+              {
+                if(y == 0)
+                  newsrc[in_p - 1] = sch[y];
+                else
+                  newsrc[in_p] = sch[y];
+              }
+              else
+                y = lenrep;
+            }
+            else
+            {
+              if(y == 0)
+                newsrc[in_p - 1] = rep[y];
+              newsrc[in_p] = rep[y];
+            }
+          }
+          else
+            newsrc[in_p] = rep[y];
+        }
+        x += lensch - 1;
+        in_p--;
+        searching = FALSE;
+        continue;
       }
     }
     if(in_p == (LGST - 1))
@@ -690,7 +690,7 @@ CHAR_DATA *imc_find_user(const char *name)
   for(d = first_descriptor; d; d = d->next)
   {
     if((vch = d->character ? d->character : d->original) != NULL && !strcasecmp(CH_IMCNAME(vch), name)
-	&& d->connected == CON_PLAYING)
+        && d->connected == CON_PLAYING)
       return vch;
   }
   return NULL;
@@ -734,13 +734,13 @@ bool imc_isignoring(CHAR_DATA * ch, const char *ignore)
     if(!strcasecmp(imc_nameof(temp->name), "*"))
     {
       if(!strcasecmp(imc_mudof(temp->name), imc_mudof(ignore)))
-	return TRUE;
+        return TRUE;
     }
 
     if(!strcasecmp(imc_mudof(temp->name), "*"))
     {
       if(!strcasecmp(imc_nameof(temp->name), imc_nameof(ignore)))
-	return TRUE;
+        return TRUE;
     }
 
     if(!str_prefix(ignore, temp->name))
@@ -984,25 +984,25 @@ void imcformat_channel(CHAR_DATA * ch, IMC_CHANNEL * d, int format, bool all)
     for(c = first_imc_channel; c; c = c->next)
     {
       if(!c->local_name || c->local_name[0] == '\0')
-	continue;
+        continue;
 
       if(format == 1 || format == 4)
       {
-	snprintf(buf, LGST, "~R[~Y%s~R] ~C%%s: ~c%%s", c->local_name);
-	IMCSTRFREE(c->regformat);
-	c->regformat = IMCSTRALLOC(buf);
+        snprintf(buf, LGST, "~R[~Y%s~R] ~C%%s: ~c%%s", c->local_name);
+        IMCSTRFREE(c->regformat);
+        c->regformat = IMCSTRALLOC(buf);
       }
       if(format == 2 || format == 4)
       {
-	snprintf(buf, LGST, "~R[~Y%s~R] ~c%%s %%s", c->local_name);
-	IMCSTRFREE(c->emoteformat);
-	c->emoteformat = IMCSTRALLOC(buf);
+        snprintf(buf, LGST, "~R[~Y%s~R] ~c%%s %%s", c->local_name);
+        IMCSTRFREE(c->emoteformat);
+        c->emoteformat = IMCSTRALLOC(buf);
       }
       if(format == 3 || format == 4)
       {
-	snprintf(buf, LGST, "~R[~Y%s~R] ~c%%s", c->local_name);
-	IMCSTRFREE(c->socformat);
-	c->socformat = IMCSTRALLOC(buf);
+        snprintf(buf, LGST, "~R[~Y%s~R] ~c%%s", c->local_name);
+        IMCSTRFREE(c->socformat);
+        c->socformat = IMCSTRALLOC(buf);
       }
     }
   }
@@ -1245,7 +1245,7 @@ char *imcfread_word(FILE * fp)
     if(cEnd == ' ' ? isspace(*pword) : *pword == cEnd)
     {
       if(cEnd == ' ')
-	ungetc(*pword, fp);
+        ungetc(*pword, fp);
       *pword = '\0';
       return word;
     }
@@ -1574,8 +1574,8 @@ void imc_update_tellhistory(CHAR_DATA * ch, const char *msg)
 
       for(i = 1; i < MAX_IMCTELLHISTORY; i++)
       {
-	IMCSTRFREE(IMCTELLHISTORY(ch, i - 1));
-	IMCTELLHISTORY(ch, i - 1) = IMCSTRALLOC(IMCTELLHISTORY(ch, i));
+        IMCSTRFREE(IMCTELLHISTORY(ch, i - 1));
+        IMCTELLHISTORY(ch, i - 1) = IMCSTRALLOC(IMCTELLHISTORY(ch, i));
       }
       IMCSTRFREE(IMCTELLHISTORY(ch, x));
       IMCTELLHISTORY(ch, x) = IMCSTRALLOC(new_msg);
@@ -1619,8 +1619,8 @@ PFUN(imc_recv_tell)
     {
       if(strcasecmp(imc_nameof(q->from), "*"))
       {
-	snprintf(buf, LGST, "%s is not receiving tells.", q->to);
-	imc_send_tell("*", q->from, buf, 1);
+        snprintf(buf, LGST, "%s is not receiving tells.", q->to);
+        imc_send_tell("*", q->from, buf, 1);
       }
       return;
     }
@@ -1629,8 +1629,8 @@ PFUN(imc_recv_tell)
     {
       if(strcasecmp(imc_nameof(q->from), "*"))
       {
-	snprintf(buf, LGST, "%s is not receiving tells.", q->to);
-	imc_send_tell("*", q->from, buf, 1);
+        snprintf(buf, LGST, "%s is not receiving tells.", q->to);
+        imc_send_tell("*", q->from, buf, 1);
       }
       return;
     }
@@ -1639,8 +1639,8 @@ PFUN(imc_recv_tell)
     {
       if(strcasecmp(imc_nameof(q->from), "*"))
       {
-	snprintf(buf, LGST, "%s is not receiving tells.", q->to);
-	imc_send_tell("*", q->from, buf, 1);
+        snprintf(buf, LGST, "%s is not receiving tells.", q->to);
+        imc_send_tell("*", q->from, buf, 1);
       }
       return;
     }
@@ -1649,8 +1649,8 @@ PFUN(imc_recv_tell)
     {
       if(strcasecmp(imc_nameof(q->from), "*"))
       {
-	snprintf(buf, LGST, "%s is currently AFK. Try back later.", q->to);
-	imc_send_tell("*", q->from, buf, 1);
+        snprintf(buf, LGST, "%s is currently AFK. Try back later.", q->to);
+        imc_send_tell("*", q->from, buf, 1);
       }
       return;
     }
@@ -1692,7 +1692,7 @@ PFUN(imc_recv_emote)
   for(d = first_descriptor; d; d = d->next)
   {
     if(d->connected == CON_PLAYING && (ch = d->original ? d->original : d->character) != NULL
-	&& IMCPERM(ch) >= level)
+        && IMCPERM(ch) >= level)
       imc_printf(ch, "~p[~GIMC~p] %s %s\r\n", imcgetname(q->from), txt);
   }
 }
@@ -1722,23 +1722,23 @@ void update_imchistory(IMC_CHANNEL * channel, char *message)
     {
       local = localtime(&imc_time);
       snprintf(buf, LGST, "~R[%-2.2d/%-2.2d %-2.2d:%-2.2d] ~G%s",
-		local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
+                local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
       channel->history[x] = IMCSTRALLOC(buf);
 
       if(IMCIS_SET(channel->flags, IMCCHAN_LOG))
       {
-	FILE *fp;
-	snprintf(buf, LGST, "%s%s.log", IMC_DIR, channel->local_name);
-	if(!(fp = fopen(buf, "a")))
-	{
-	  perror(buf);
-	  imcbug("Could not open file %s!", buf);
-	}
-	else
-	{
-	  fprintf(fp, "%s\n", imc_strip_colors(channel->history[x]));
-	  IMCFCLOSE(fp);
-	}
+        FILE *fp;
+        snprintf(buf, LGST, "%s%s.log", IMC_DIR, channel->local_name);
+        if(!(fp = fopen(buf, "a")))
+        {
+          perror(buf);
+          imcbug("Could not open file %s!", buf);
+        }
+        else
+        {
+          fprintf(fp, "%s\n", imc_strip_colors(channel->history[x]));
+          IMCFCLOSE(fp);
+        }
       }
       break;
     }
@@ -1749,35 +1749,35 @@ void update_imchistory(IMC_CHANNEL * channel, char *message)
 
       for(y = 1; y < MAX_IMCHISTORY; y++)
       {
-	int z = y - 1;
+        int z = y - 1;
 
-	if(channel->history[z] != NULL)
-	{
-	  IMCSTRFREE(channel->history[z]);
-	  channel->history[z] = IMCSTRALLOC(channel->history[y]);
-	}
+        if(channel->history[z] != NULL)
+        {
+          IMCSTRFREE(channel->history[z]);
+          channel->history[z] = IMCSTRALLOC(channel->history[y]);
+        }
       }
 
       local = localtime(&imc_time);
       snprintf(buf, LGST, "~R[%-2.2d/%-2.2d %-2.2d:%-2.2d] ~G%s",
-		local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
+                local->tm_mon + 1, local->tm_mday, local->tm_hour, local->tm_min, msg);
       IMCSTRFREE(channel->history[x]);
       channel->history[x] = IMCSTRALLOC(buf);
 
       if(IMCIS_SET(channel->flags, IMCCHAN_LOG))
       {
-	FILE *fp;
-	snprintf(buf, LGST, "%s%s.log", IMC_DIR, channel->local_name);
-	if(!(fp = fopen(buf, "a")))
-	{
-	  perror(buf);
-	  imcbug("Could not open file %s!", buf);
-	}
-	else
-	{
-	  fprintf(fp, "%s\n", imc_strip_colors(channel->history[x]));
-	  IMCFCLOSE(fp);
-	}
+        FILE *fp;
+        snprintf(buf, LGST, "%s%s.log", IMC_DIR, channel->local_name);
+        if(!(fp = fopen(buf, "a")))
+        {
+          perror(buf);
+          imcbug("Could not open file %s!", buf);
+        }
+        else
+        {
+          fprintf(fp, "%s\n", imc_strip_colors(channel->history[x]));
+          IMCFCLOSE(fp);
+        }
       }
     }
   }
@@ -1823,7 +1823,7 @@ void imc_display_channel(IMC_CHANNEL * c, const char *from, char *txt, int emote
     {
       snprintf(name, SMST, "%s@%s", CH_IMCNAME(ch), this_imcmud->localname);
       if(!imc_hasname(c->invited, name) && strcasecmp(c->owner, name))
-	continue;
+        continue;
     }
     imc_printf(ch, "%s\r\n", buf);
   }
@@ -1929,7 +1929,7 @@ const char *get_local_chanwho(IMC_CHANNEL * c)
   int count = 0, col = 0;
 
   snprintf(buf, IMC_BUFF_SIZE, "The following people are listening to %s on %s:\r\n\r\n",
-	    c->local_name, this_imcmud->localname);
+            c->local_name, this_imcmud->localname);
 
   for(d = first_descriptor; d; d = d->next)
   {
@@ -2019,7 +2019,7 @@ char *imccenterline(const char *string, int length)
    * Justice, you are the String God! 
    */
   snprintf(outbuf, 400, "%*s%s%*s", (amount / 2), "", string,
-	    ((amount / 2) * 2) == amount ? (amount / 2) : ((amount / 2) + 1), "");
+            ((amount / 2) * 2) == amount ? (amount / 2) : ((amount / 2) + 1), "");
 
   return outbuf;
 }
@@ -2223,25 +2223,25 @@ char *imc_assemble_who(void)
     if(person && d->connected == CON_PLAYING)
     {
       if(IMCPERM(person) <= IMCPERM_NONE || IMCPERM(person) >= IMCPERM_IMM)
-	continue;
+        continue;
 
       if(IMCISINVIS(person))
-	continue;
+        continue;
 
       ++pcount;
 
       if(!plr)
       {
-	imcstrlcpy(plrheader, whot->plrheader, LGST);
-	plr = TRUE;
+        imcstrlcpy(plrheader, whot->plrheader, LGST);
+        plr = TRUE;
       }
 
       imcstrlcpy(rank, imcrankbuffer(person), LGST);
 
       if(IMCAFK(person))
-	imcstrlcpy(flags, "AFK", SMST);
+        imcstrlcpy(flags, "AFK", SMST);
       else
-	imcstrlcpy(flags, "---", SMST);
+        imcstrlcpy(flags, "---", SMST);
 
       imcstrlcpy(name, CH_IMCNAME(person), SMST);
       imcstrlcpy(title, color_mtoi(CH_IMCTITLE(person)), SMST);
@@ -2258,25 +2258,25 @@ char *imc_assemble_who(void)
     if(person && d->connected == CON_PLAYING)
     {
       if(IMCPERM(person) <= IMCPERM_NONE || IMCPERM(person) < IMCPERM_IMM)
-	continue;
+        continue;
 
       if(IMCISINVIS(person))
-	continue;
+        continue;
 
       ++pcount;
 
       if(!imm)
       {
-	imcstrlcpy(immheader, whot->immheader, SMST);
-	imm = TRUE;
+        imcstrlcpy(immheader, whot->immheader, SMST);
+        imm = TRUE;
       }
 
       imcstrlcpy(rank, imcrankbuffer(person), SMST);
 
       if(IMCAFK(person))
-	imcstrlcpy(flags, "AFK", SMST);
+        imcstrlcpy(flags, "AFK", SMST);
       else
-	imcstrlcpy(flags, "---", SMST);
+        imcstrlcpy(flags, "---", SMST);
 
       imcstrlcpy(name, CH_IMCNAME(person), SMST);
       imcstrlcpy(title, color_mtoi(CH_IMCTITLE(person)), SMST);
@@ -2323,32 +2323,32 @@ void imc_process_finger(const char *from, const char *type)
   }
 
   snprintf(buf, IMC_BUFF_SIZE,
-	    "\r\n~cPlayer Profile for ~W%s~c:\r\n"
-	    "~W-------------------------------\r\n"
-	    "~cStatus: ~W%s\r\n"
-	    "~cPermission level: ~W%s\r\n"
-	    "~cListening to channels [Names may not match your mud]: ~W%s\r\n",
-	    CH_IMCNAME(victim), (IMCAFK(victim) ? "AFK" : "Lurking about"),
-	    imcperm_names[IMCPERM(victim)],
-	    (IMC_LISTEN(victim) && IMC_LISTEN(victim)[0] != '\0') ? IMC_LISTEN(victim) : "None");
+            "\r\n~cPlayer Profile for ~W%s~c:\r\n"
+            "~W-------------------------------\r\n"
+            "~cStatus: ~W%s\r\n"
+            "~cPermission level: ~W%s\r\n"
+            "~cListening to channels [Names may not match your mud]: ~W%s\r\n",
+            CH_IMCNAME(victim), (IMCAFK(victim) ? "AFK" : "Lurking about"),
+            imcperm_names[IMCPERM(victim)],
+            (IMC_LISTEN(victim) && IMC_LISTEN(victim)[0] != '\0') ? IMC_LISTEN(victim) : "None");
 
   if(!IMCIS_SET(IMCFLAG(victim), IMC_PRIVACY))
     snprintf(buf + strlen(buf), IMC_BUFF_SIZE - strlen(buf),
-	      "~cEmail   : ~W%s\r\n"
-	      "~cHomepage: ~W%s\r\n"
-	      "~cICQ     : ~W%d\r\n"
-	      "~cAIM     : ~W%s\r\n"
-	      "~cYahoo   : ~W%s\r\n"
-	      "~cMSN     : ~W%s\r\n",
-	      (IMC_EMAIL(victim) && IMC_EMAIL(victim)[0] != '\0') ? IMC_EMAIL(victim) : "None",
-	      (IMC_HOMEPAGE(victim) && IMC_HOMEPAGE(victim)[0] != '\0') ? IMC_HOMEPAGE(victim) : "None",
-	      IMC_ICQ(victim),
-	      (IMC_AIM(victim) && IMC_AIM(victim)[0] != '\0') ? IMC_AIM(victim) : "None",
-	      (IMC_YAHOO(victim) && IMC_YAHOO(victim)[0] != '\0') ? IMC_YAHOO(victim) : "None",
-	      (IMC_MSN(victim) && IMC_MSN(victim)[0] != '\0') ? IMC_MSN(victim) : "None");
+              "~cEmail   : ~W%s\r\n"
+              "~cHomepage: ~W%s\r\n"
+              "~cICQ     : ~W%d\r\n"
+              "~cAIM     : ~W%s\r\n"
+              "~cYahoo   : ~W%s\r\n"
+              "~cMSN     : ~W%s\r\n",
+              (IMC_EMAIL(victim) && IMC_EMAIL(victim)[0] != '\0') ? IMC_EMAIL(victim) : "None",
+              (IMC_HOMEPAGE(victim) && IMC_HOMEPAGE(victim)[0] != '\0') ? IMC_HOMEPAGE(victim) : "None",
+              IMC_ICQ(victim),
+              (IMC_AIM(victim) && IMC_AIM(victim)[0] != '\0') ? IMC_AIM(victim) : "None",
+              (IMC_YAHOO(victim) && IMC_YAHOO(victim)[0] != '\0') ? IMC_YAHOO(victim) : "None",
+              (IMC_MSN(victim) && IMC_MSN(victim)[0] != '\0') ? IMC_MSN(victim) : "None");
 
   snprintf(buf + strlen(buf), IMC_BUFF_SIZE - strlen(buf), "~W%s\r\n",
-	    (IMC_COMMENT(victim) && IMC_COMMENT(victim)[0] != '\0') ? IMC_COMMENT(victim) : "");
+            (IMC_COMMENT(victim) && IMC_COMMENT(victim)[0] != '\0') ? IMC_COMMENT(victim) : "");
 
   imc_send_whoreply(from, buf);
 }
@@ -2939,7 +2939,7 @@ void imc_parse_packet(const char *packet)
     if(imcpacketdebug)
     {
       imclog("PACKET: From %s, Seq %lu, Route %s, Type %s, To %s, EXTRA %s",
-	      p->from, seq, p->route, p->type, p->to, packet);
+              p->from, seq, p->route, p->type, p->to, packet);
       imclog("No packet handler function has been defined for %s", p->type);
     }
     IMCDISPOSE(p);
@@ -3043,23 +3043,23 @@ bool imc_write_socket(void)
     {
       if(nwritten == -1 && errno == EAGAIN)
       {
-	char *p2 = this_imcmud->outbuf;
+        char *p2 = this_imcmud->outbuf;
 
-	ptr += nwritten;
+        ptr += nwritten;
 
-	while(*ptr != '\0')
-	  *p2++ = *ptr++;
+        while(*ptr != '\0')
+          *p2++ = *ptr++;
 
-	*p2 = '\0';
+        *p2 = '\0';
 
-	this_imcmud->outtop = strlen(this_imcmud->outbuf);
-	return TRUE;
+        this_imcmud->outtop = strlen(this_imcmud->outbuf);
+        return TRUE;
       }
 
       if(nwritten < 0)
-	imclog("Write error on socket: %s", strerror(errno));
+        imclog("Write error on socket: %s", strerror(errno));
       else
-	imclog("%s", "Connection close detected on socket write.");
+        imclog("%s", "Connection close detected on socket write.");
 
       imc_shutdown(TRUE);
       return FALSE;
@@ -3189,7 +3189,7 @@ bool imc_read_buffer(void)
     k = 0;
 
   for(i = 0; i < (IMC_BUFF_SIZE -1) && this_imcmud->inbuf[i] != '\0'
-	 && this_imcmud->inbuf[i] != '\n' && this_imcmud->inbuf[i] != '\r'; i++)
+         && this_imcmud->inbuf[i] != '\n' && this_imcmud->inbuf[i] != '\r'; i++)
   {
     this_imcmud->incomm[k++] = this_imcmud->inbuf[i];
   }
@@ -3231,14 +3231,14 @@ bool imc_read_socket(void)
       iStart += nRead;
 
       if(iStart >= sizeof(this_imcmud->inbuf) - 10)
-	break;
+        break;
 
       begin = FALSE;
     }
     else if(nRead == 0 && this_imcmud->state == IMC_ONLINE)
     {
       if(!begin)
-	break;
+        break;
 
       imclog("%s", "Connection close detected on read of IMC2 socket.");
       return FALSE;
@@ -3275,16 +3275,16 @@ void imc_loop(void)
     {
       if(this_imcmud->sha256pass)
       {
-	imclog("%s", "Unable to reconnect using SHA-256, trying standard authentication.");
-	this_imcmud->sha256pass = FALSE;
-	imc_save_config();
-	imcconnect_attempts = 0;
+        imclog("%s", "Unable to reconnect using SHA-256, trying standard authentication.");
+        this_imcmud->sha256pass = FALSE;
+        imc_save_config();
+        imcconnect_attempts = 0;
       }
       else
       {
-	imcwait = -2;
-	imclog("%s", "Unable to reestablish connection to server. Abandoning reconnect.");
-	return;
+        imcwait = -2;
+        imclog("%s", "Unable to reestablish connection to server. Abandoning reconnect.");
+        return;
       }
     }
     imc_startup(TRUE, -1, FALSE);
@@ -3323,17 +3323,17 @@ void imc_loop(void)
     {
       if(this_imcmud->inbuf && this_imcmud->inbuf[0] != '\0')
       {
-	if(imc_read_buffer())
-	{
-	  if(!strcasecmp(this_imcmud->incomm, "SHA-256 authentication is required."))
-	  {
-	    imclog("%s", "Unable to reconnect using standard authentication, trying SHA-256.");
-	    this_imcmud->sha256pass = TRUE;
-	    imc_save_config();
-	  }
-	  else
-	    imclog("Buffer contents: %s", this_imcmud->incomm);
-	}
+        if(imc_read_buffer())
+        {
+          if(!strcasecmp(this_imcmud->incomm, "SHA-256 authentication is required."))
+          {
+            imclog("%s", "Unable to reconnect using standard authentication, trying SHA-256.");
+            this_imcmud->sha256pass = TRUE;
+            imc_save_config();
+          }
+          else
+            imclog("Buffer contents: %s", this_imcmud->incomm);
+        }
       }
       FD_CLR(this_imcmud->desc, &out_set);
       imc_shutdown(TRUE);
@@ -3343,24 +3343,24 @@ void imc_loop(void)
     while(imc_read_buffer())
     {
       if(imcpacketdebug)
-	imclog("Packet received: %s", this_imcmud->incomm);
+        imclog("Packet received: %s", this_imcmud->incomm);
 
       switch (this_imcmud->state)
       {
       default:
       case IMC_OFFLINE:
       case IMC_AUTH1:  /* Auth1 can only be set when still trying to contact the server */
-	break;
+        break;
 
       case IMC_AUTH2:  /* Now you've contacted the server and need to process the authentication response */
-	imc_process_authentication(this_imcmud->incomm);
-	this_imcmud->incomm[0] = '\0';
-	break;
+        imc_process_authentication(this_imcmud->incomm);
+        this_imcmud->incomm[0] = '\0';
+        break;
 
       case IMC_ONLINE: /* You're up, pass the bastard off to the packet parser */
-	imc_parse_packet(this_imcmud->incomm);
-	this_imcmud->incomm[0] = '\0';
-	break;
+        imc_parse_packet(this_imcmud->incomm);
+        this_imcmud->incomm[0] = '\0';
+        break;
       }
     }
   }
@@ -3416,7 +3416,7 @@ void imc_char_login(CHAR_DATA * ch)
   {
     if(IMCPERM(ch) >= IMCPERM_IMM && imcwait == -2)
       imc_to_char("~RThe IMC2 connection is down. Attempts to reconnect were abandoned due to excessive failures.\r\n",
-		   ch);
+                   ch);
     return;
   }
 
@@ -3471,21 +3471,21 @@ bool imc_loadchar(CHAR_DATA * ch, FILE * fp, const char *word)
       IMC_LISTEN(ch) = imcfread_line(fp);
       if(IMC_LISTEN(ch) != NULL && this_imcmud->state == IMC_ONLINE)
       {
-	IMC_CHANNEL *channel = NULL;
-	const char *channels = IMC_LISTEN(ch);
-	char arg[SMST];
+        IMC_CHANNEL *channel = NULL;
+        const char *channels = IMC_LISTEN(ch);
+        char arg[SMST];
 
-	while(1)
-	{
-	  if(channels[0] == '\0')
-	    break;
-	  channels = imcone_argument(channels, arg);
+        while(1)
+        {
+          if(channels[0] == '\0')
+            break;
+          channels = imcone_argument(channels, arg);
 
-	  if(!(channel = imc_findchannel(arg)))
-	    imc_removename(&IMC_LISTEN(ch), arg);
-	  if(channel && IMCPERM(ch) < channel->level)
-	    imc_removename(&IMC_LISTEN(ch), arg);
-	}
+          if(!(channel = imc_findchannel(arg)))
+            imc_removename(&IMC_LISTEN(ch), arg);
+          if(channel && IMCPERM(ch) < channel->level)
+            imc_removename(&IMC_LISTEN(ch), arg);
+        }
       }
       fMatch = TRUE;
       break;
@@ -3496,21 +3496,21 @@ bool imc_loadchar(CHAR_DATA * ch, FILE * fp, const char *word)
       IMC_DENY(ch) = imcfread_line(fp);
       if(IMC_DENY(ch) != NULL && this_imcmud->state == IMC_ONLINE)
       {
-	IMC_CHANNEL *channel = NULL;
-	const char *channels = IMC_DENY(ch);
-	char arg[SMST];
+        IMC_CHANNEL *channel = NULL;
+        const char *channels = IMC_DENY(ch);
+        char arg[SMST];
 
-	while(1)
-	{
-	  if(channels[0] == '\0')
-	    break;
-	  channels = imcone_argument(channels, arg);
+        while(1)
+        {
+          if(channels[0] == '\0')
+            break;
+          channels = imcone_argument(channels, arg);
 
-	  if(!(channel = imc_findchannel(arg)))
-	    imc_removename(&IMC_DENY(ch), arg);
-	  if(channel && IMCPERM(ch) < channel->level)
-	    imc_removename(&IMC_DENY(ch), arg);
-	}
+          if(!(channel = imc_findchannel(arg)))
+            imc_removename(&IMC_DENY(ch), arg);
+          if(channel && IMCPERM(ch) < channel->level)
+            imc_removename(&IMC_DENY(ch), arg);
+        }
       }
       fMatch = TRUE;
       break;
@@ -3597,14 +3597,14 @@ void imc_load_pfile(CHAR_DATA * ch, char *tag, int num, char *line)
 
       while(1)
       {
-	if(channels[0] == '\0')
-	  break;
-	channels = imcone_argument(channels, arg);
+        if(channels[0] == '\0')
+          break;
+        channels = imcone_argument(channels, arg);
 
-	if(!(channel = imc_findlchannel(arg)))
-	  imc_removename(&IMC_LISTEN(ch), arg);
-	if(channel && IMCPERM(ch) < channel->level)
-	  imc_removename(&IMC_LISTEN(ch), arg);
+        if(!(channel = imc_findlchannel(arg)))
+          imc_removename(&IMC_LISTEN(ch), arg);
+        if(channel && IMCPERM(ch) < channel->level)
+          imc_removename(&IMC_LISTEN(ch), arg);
       }
     }
   }
@@ -3620,14 +3620,14 @@ void imc_load_pfile(CHAR_DATA * ch, char *tag, int num, char *line)
 
       while(1)
       {
-	if(channels[0] == '\0')
-	  break;
-	channels = imcone_argument(channels, arg);
+        if(channels[0] == '\0')
+          break;
+        channels = imcone_argument(channels, arg);
 
-	if(!(channel = imc_findlchannel(arg)))
-	  imc_removename(&IMC_DENY(ch), arg);
-	if(channel && IMCPERM(ch) < channel->level)
-	  imc_removename(&IMC_DENY(ch), arg);
+        if(!(channel = imc_findlchannel(arg)))
+          imc_removename(&IMC_DENY(ch), arg);
+        if(channel && IMCPERM(ch) < channel->level)
+          imc_removename(&IMC_DENY(ch), arg);
       }
     }
   }
@@ -3759,9 +3759,9 @@ void imc_loadhistory(void)
     for(x = 0; x < MAX_IMCHISTORY; x++)
     {
       if(feof(tempfile))
-	tempchan->history[x] = NULL;
+        tempchan->history[x] = NULL;
       else
-	tempchan->history[x] = imcfread_line(tempfile);
+        tempchan->history[x] = imcfread_line(tempfile);
     }
     IMCFCLOSE(tempfile);
     unlink(filename);
@@ -3791,7 +3791,7 @@ void imc_savehistory(void)
     for(x = 0; x < MAX_IMCHISTORY; x++)
     {
       if(tempchan->history[x] != NULL)
-	fprintf(tempfile, "%s\n", tempchan->history[x]);
+        fprintf(tempfile, "%s\n", tempchan->history[x]);
     }
     IMCFCLOSE(tempfile);
   }
@@ -3855,25 +3855,25 @@ void imc_readchannel(IMC_CHANNEL * channel, FILE * fp)
     case 'E':
       if(!strcasecmp(word, "End"))
       {
-	/*
-	 * Legacy support to convert channel permissions 
-	 */
-	if(channel->level > IMCPERM_IMP)
-	{
-	  /*
-	   * The IMCPERM_NONE condition should realistically never happen.... 
-	   */
-	  if(channel->level < this_imcmud->minlevel)
-	    channel->level = IMCPERM_NONE;
-	  else if(channel->level >= this_imcmud->minlevel && channel->level < this_imcmud->immlevel)
-	    channel->level = IMCPERM_MORT;
-	  else if(channel->level >= this_imcmud->immlevel && channel->level < this_imcmud->adminlevel)
-	    channel->level = IMCPERM_IMM;
-	  else if(channel->level >= this_imcmud->adminlevel && channel->level < this_imcmud->implevel)
-	    channel->level = IMCPERM_ADMIN;
-	  else if(channel->level >= this_imcmud->implevel)
-	    channel->level = IMCPERM_IMP;
-	}
+        /*
+         * Legacy support to convert channel permissions 
+         */
+        if(channel->level > IMCPERM_IMP)
+        {
+          /*
+           * The IMCPERM_NONE condition should realistically never happen.... 
+           */
+          if(channel->level < this_imcmud->minlevel)
+            channel->level = IMCPERM_NONE;
+          else if(channel->level >= this_imcmud->minlevel && channel->level < this_imcmud->immlevel)
+            channel->level = IMCPERM_MORT;
+          else if(channel->level >= this_imcmud->immlevel && channel->level < this_imcmud->adminlevel)
+            channel->level = IMCPERM_IMM;
+          else if(channel->level >= this_imcmud->adminlevel && channel->level < this_imcmud->implevel)
+            channel->level = IMCPERM_ADMIN;
+          else if(channel->level >= this_imcmud->implevel)
+            channel->level = IMCPERM_IMP;
+        }
       }
       return;
       break;
@@ -3927,7 +3927,7 @@ void imc_loadchannels(void)
       imc_readchannel(channel, fp);
 
       for(x = 0; x < MAX_IMCHISTORY; x++)
-	channel->history[x] = NULL;
+        channel->history[x] = NULL;
 
       channel->refreshed = FALSE;   /* Prevents crash trying to use a bogus channel */
       IMCLINK(channel, first_imc_channel, last_imc_channel, next, prev);
@@ -4052,7 +4052,7 @@ void imc_readcolor(IMC_COLOR * color, FILE * fp)
 
     case 'E':
       if(!strcasecmp(word, "End"))
-	return;
+        return;
       break;
 
     case 'I':
@@ -4168,7 +4168,7 @@ void imc_readhelp(IMC_HELP_DATA * help, FILE * fp)
 
     case 'E':
       if(!strcasecmp(word, "End"))
-	return;
+        return;
       break;
 
     case 'N':
@@ -4178,32 +4178,32 @@ void imc_readhelp(IMC_HELP_DATA * help, FILE * fp)
     case 'P':
       if(!strcasecmp(word, "Perm"))
       {
-	word = imcfread_word(fp);
-	permvalue = get_imcpermvalue(word);
+        word = imcfread_word(fp);
+        permvalue = get_imcpermvalue(word);
 
-	if(permvalue < 0 || permvalue > IMCPERM_IMP)
-	{
-	  imcbug("imc_readhelp: Command %s loaded with invalid permission. Set to Imp.", help->name);
-	  help->level = IMCPERM_IMP;
-	}
-	else
-	  help->level = permvalue;
-	fMatch = TRUE;
-	break;
+        if(permvalue < 0 || permvalue > IMCPERM_IMP)
+        {
+          imcbug("imc_readhelp: Command %s loaded with invalid permission. Set to Imp.", help->name);
+          help->level = IMCPERM_IMP;
+        }
+        else
+          help->level = permvalue;
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'T':
       if(!strcasecmp(word, "Text"))
       {
-	int num = 0;
+        int num = 0;
 
-	while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	  num++;
-	hbuf[num] = '\0';
-	help->text = IMCSTRALLOC(hbuf);
-	fMatch = TRUE;
-	break;
+        while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
+          num++;
+        hbuf[num] = '\0';
+        help->text = IMCSTRALLOC(hbuf);
+        fMatch = TRUE;
+        break;
       }
       break;
     }
@@ -4315,17 +4315,17 @@ void imc_readcommand(IMC_CMD_DATA * cmd, FILE * fp)
 
     case 'E':
       if(!strcasecmp(word, "End"))
-	return;
+        return;
       break;
 
     case 'A':
       if(!strcasecmp(word, "Alias"))
       {
-	IMCCREATE(alias, IMC_ALIAS, 1);
-	alias->name = imcfread_line(fp);
-	IMCLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-	fMatch = TRUE;
-	break;
+        IMCCREATE(alias, IMC_ALIAS, 1);
+        alias->name = imcfread_line(fp);
+        IMCLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -4333,12 +4333,12 @@ void imc_readcommand(IMC_CMD_DATA * cmd, FILE * fp)
       IMCKEY("Connected", cmd->connected, imcfread_number(fp));
       if(!strcasecmp(word, "Code"))
       {
-	word = imcfread_word(fp);
-	cmd->function = imc_function(word);
-	if(cmd->function == NULL)
-	  imcbug("imc_readcommand: Command %s loaded with invalid function. Set to NULL.", cmd->name);
-	fMatch = TRUE;
-	break;
+        word = imcfread_word(fp);
+        cmd->function = imc_function(word);
+        if(cmd->function == NULL)
+          imcbug("imc_readcommand: Command %s loaded with invalid function. Set to NULL.", cmd->name);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -4349,18 +4349,18 @@ void imc_readcommand(IMC_CMD_DATA * cmd, FILE * fp)
     case 'P':
       if(!strcasecmp(word, "Perm"))
       {
-	word = imcfread_word(fp);
-	permvalue = get_imcpermvalue(word);
+        word = imcfread_word(fp);
+        permvalue = get_imcpermvalue(word);
 
-	if(permvalue < 0 || permvalue > IMCPERM_IMP)
-	{
-	  imcbug("imc_readcommand: Command %s loaded with invalid permission. Set to Imp.", cmd->name);
-	  cmd->level = IMCPERM_IMP;
-	}
-	else
-	  cmd->level = permvalue;
-	fMatch = TRUE;
-	break;
+        if(permvalue < 0 || permvalue > IMCPERM_IMP)
+        {
+          imcbug("imc_readcommand: Command %s loaded with invalid permission. Set to Imp.", cmd->name);
+          cmd->level = IMCPERM_IMP;
+        }
+        else
+          cmd->level = permvalue;
+        fMatch = TRUE;
+        break;
       }
       break;
     }
@@ -4453,7 +4453,7 @@ void imc_readucache(IMCUCACHE_DATA * user, FILE * fp)
 
     case 'E':
       if(!strcasecmp(word, "End"))
-	return;
+        return;
       break;
     }
     if(!fMatch)
@@ -4551,7 +4551,7 @@ void imc_save_config(void)
   if(this_imcmud->sha256pass)
   {
     fprintf(fp, "%s",
-	     "#Your server is expecting SHA256 authentication now. Do not remove this line unless told to do so.\n");
+             "#Your server is expecting SHA256 authentication now. Do not remove this line unless told to do so.\n");
     fprintf(fp, "SHA256Pwd      %d\n", this_imcmud->sha256pass);
   }
   fprintf(fp, "%s", "End\n\n");
@@ -4589,17 +4589,17 @@ void imcfread_config_file(FILE * fin)
       if(!strcasecmp(word, "End"))
       {
 #if defined(IMCCHRONICLES)
-	char lbuf1[LGST], lbuf2[LGST];
+        char lbuf1[LGST], lbuf2[LGST];
 
-	snprintf(lbuf1, LGST, "%s %s.%s", CODEBASE_VERSION_TITLE, CODEBASE_VERSION_MAJOR, CODEBASE_VERSION_MINOR);
-	if(this_imcmud->base)
-	  IMCSTRFREE(this_imcmud->base);
-	this_imcmud->base = IMCSTRALLOC(lbuf1);
+        snprintf(lbuf1, LGST, "%s %s.%s", CODEBASE_VERSION_TITLE, CODEBASE_VERSION_MAJOR, CODEBASE_VERSION_MINOR);
+        if(this_imcmud->base)
+          IMCSTRFREE(this_imcmud->base);
+        this_imcmud->base = IMCSTRALLOC(lbuf1);
 
-	snprintf(lbuf2, LGST, "%s%s", IMC_VERSION_STRING, this_imcmud->base);
-	this_imcmud->versionid = IMCSTRALLOC(lbuf2);
+        snprintf(lbuf2, LGST, "%s%s", IMC_VERSION_STRING, this_imcmud->base);
+        this_imcmud->versionid = IMCSTRALLOC(lbuf2);
 #endif
-	return;
+        return;
       }
       break;
 
@@ -4838,49 +4838,49 @@ void imc_load_who_template(void)
     if(!strcasecmp(word, "Head:"))
     {
       while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	++num;
+        ++num;
       hbuf[num] = '\0';
       whot->head = IMCSTRALLOC(parse_who_header(hbuf));
     }
     else if(!strcasecmp(word, "Tail:"))
     {
       while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	++num;
+        ++num;
       hbuf[num] = '\0';
       whot->tail = IMCSTRALLOC(parse_who_tail(hbuf));
     }
     else if(!strcasecmp(word, "Plrline:"))
     {
       while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	++num;
+        ++num;
       hbuf[num] = '\0';
       whot->plrline = IMCSTRALLOC(hbuf);
     }
     else if(!strcasecmp(word, "Immline:"))
     {
       while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	++num;
+        ++num;
       hbuf[num] = '\0';
       whot->immline = IMCSTRALLOC(hbuf);
     }
     else if(!strcasecmp(word, "Immheader:"))
     {
       while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	++num;
+        ++num;
       hbuf[num] = '\0';
       whot->immheader = IMCSTRALLOC(hbuf);
     }
     else if(!strcasecmp(word, "Plrheader:"))
     {
       while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	++num;
+        ++num;
       hbuf[num] = '\0';
       whot->plrheader = IMCSTRALLOC(hbuf);
     }
     else if(!strcasecmp(word, "Master:"))
     {
       while(num < (LGST - 2) && (hbuf[num] = fgetc(fp)) != EOF && hbuf[num] != '¢')
-	++num;
+        ++num;
       hbuf[num] = '\0';
       whot->master = IMCSTRALLOC(hbuf);
     }
@@ -5069,7 +5069,7 @@ bool imc_server_connect(void)
     if(!this_imcmud->sha256pass)
     {
       snprintf(buf, LGST, "PW %s %s version=%d autosetup %s SHA256",
-		this_imcmud->localname, this_imcmud->clientpw, IMC_VERSION, this_imcmud->serverpw);
+                this_imcmud->localname, this_imcmud->clientpw, IMC_VERSION, this_imcmud->serverpw);
     }
     /*
      * You have SHA256 working. Excellent. Lets send the new packet for it.
@@ -5090,7 +5090,7 @@ bool imc_server_connect(void)
    */
   else
     snprintf(buf, LGST, "PW %s %s version=%d autosetup %s",
-	      this_imcmud->localname, this_imcmud->clientpw, IMC_VERSION, this_imcmud->serverpw);
+              this_imcmud->localname, this_imcmud->clientpw, IMC_VERSION, this_imcmud->serverpw);
 
   imc_write_buffer(buf);
   return TRUE;
@@ -5152,11 +5152,11 @@ void free_imcdata(bool complete)
 
       for(alias = cmd->first_alias; alias; alias = alias_next)
       {
-	alias_next = alias->next;
+        alias_next = alias->next;
 
-	IMCSTRFREE(alias->name);
-	IMCUNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-	IMCDISPOSE(alias);
+        IMCSTRFREE(alias->name);
+        IMCUNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+        IMCDISPOSE(alias);
       }
       IMCSTRFREE(cmd->name);
       IMCUNLINK(cmd, first_imc_command, last_imc_command, next, prev);
@@ -5204,7 +5204,7 @@ void imc_hotboot(void)
     else
     {
       fprintf(fp, "%s %s\n", (this_imcmud->network ? this_imcmud->network : "Unknown"),
-	       (this_imcmud->servername ? this_imcmud->servername : "Unknown"));
+               (this_imcmud->servername ? this_imcmud->servername : "Unknown"));
       IMCFCLOSE(fp);
       imc_savehistory();
     }
@@ -5443,9 +5443,9 @@ IMC_CMD(imcsetup)
     for(c = first_imc_channel; c; c = c->next)
     {
       if(c->local_name && c->local_name[0] != '\0')
-	imc_printf(ch, "%s ", c->local_name);
+        imc_printf(ch, "%s ", c->local_name);
       else
-	imc_printf(ch, "%s ", c->name);
+        imc_printf(ch, "%s ", c->name);
     }
     imc_to_char("\r\n", ch);
     return;
@@ -5564,8 +5564,8 @@ IMC_CMD(imcsetup)
     {
       for(c = first_imc_channel; c; c = c->next)
       {
-	IMCSTRFREE(c->regformat);
-	c->regformat = IMCSTRALLOC(arg1);
+        IMCSTRFREE(c->regformat);
+        c->regformat = IMCSTRALLOC(arg1);
       }
       imc_to_char("All channel regular formats have been updated.\r\n", ch);
     }
@@ -5597,8 +5597,8 @@ IMC_CMD(imcsetup)
     {
       for(c = first_imc_channel; c; c = c->next)
       {
-	IMCSTRFREE(c->emoteformat);
-	c->emoteformat = IMCSTRALLOC(arg1);
+        IMCSTRFREE(c->emoteformat);
+        c->emoteformat = IMCSTRALLOC(arg1);
       }
       imc_to_char("All channel emote formats have been updated.\r\n", ch);
     }
@@ -5630,8 +5630,8 @@ IMC_CMD(imcsetup)
     {
       for(c = first_imc_channel; c; c = c->next)
       {
-	IMCSTRFREE(c->socformat);
-	c->socformat = IMCSTRALLOC(arg1);
+        IMCSTRFREE(c->socformat);
+        c->socformat = IMCSTRALLOC(arg1);
       }
       imc_to_char("All channel social formats have been updated.\r\n", ch);
     }
@@ -5736,15 +5736,15 @@ IMC_CMD(imcchanlist)
     if(c->local_name)
     {
       if(!imc_hasname(IMC_LISTEN(ch), c->local_name))
-	col = 'R';
+        col = 'R';
       else
-	col = 'C';  /* Otherwise, keep it Cyan -- X */
+        col = 'C';  /* Otherwise, keep it Cyan -- X */
     }
 
     imc_printf(ch, "~c%-15.15s ~%c%-*.*s ~B%-15.15s ~b%-7s %s\r\n", c->name, col,
-		c->local_name ? 15 : 17, c->local_name ? 15 : 17,
-		c->local_name ? c->local_name : "~Y(not local)  ", c->owner,
-		imcperm_names[c->level], c->refreshed ? (c->open ? "~gOpen" : "~yPrivate") : "~Runknown");
+                c->local_name ? 15 : 17, c->local_name ? 15 : 17,
+                c->local_name ? c->local_name : "~Y(not local)  ", c->owner,
+                imcperm_names[c->level], c->refreshed ? (c->open ? "~gOpen" : "~yPrivate") : "~Runknown");
     count++; /* Keep a count -- Xorith */
   }
   /*
@@ -5774,10 +5774,10 @@ IMC_CMD(imclisten)
     for(c = first_imc_channel; c; c = c->next)
     {
       if(!c->local_name)
-	continue;
+        continue;
 
       if(IMCPERM(ch) >= c->level && !imc_hasname(IMC_LISTEN(ch), c->local_name))
-	imc_addname(&IMC_LISTEN(ch), c->local_name);
+        imc_addname(&IMC_LISTEN(ch), c->local_name);
     }
     imc_to_char("~YYou are now listening to all available IMC2 channels.\r\n", ch);
     return;
@@ -5788,10 +5788,10 @@ IMC_CMD(imclisten)
     for(c = first_imc_channel; c; c = c->next)
     {
       if(!c->local_name)
-	continue;
+        continue;
 
       if(imc_hasname(IMC_LISTEN(ch), c->local_name))
-	imc_removename(&IMC_LISTEN(ch), c->local_name);
+        imc_removename(&IMC_LISTEN(ch), c->local_name);
     }
     imc_to_char("~YYou no longer listen to any available IMC2 channels.\r\n", ch);
     return;
@@ -5844,7 +5844,7 @@ IMC_CMD(imctell)
     for(x = 0; x < MAX_IMCTELLHISTORY; x++)
     {
       if(IMCTELLHISTORY(ch, x) == NULL)
-	break;
+        break;
       imc_to_char(IMCTELLHISTORY(ch, x), ch);
     }
     return;
@@ -6062,13 +6062,13 @@ IMC_CMD(imcfinger)
     imc_to_char("~GYour current information:\r\n\r\n", ch);
     imc_printf(ch, "~GEmail   : ~g%s\r\n", (IMC_EMAIL(ch) && IMC_EMAIL(ch)[0] != '\0') ? IMC_EMAIL(ch) : "None");
     imc_printf(ch, "~GHomepage: ~g%s\r\n",
-		(IMC_HOMEPAGE(ch) && IMC_HOMEPAGE(ch)[0] != '\0') ? IMC_HOMEPAGE(ch) : "None");
+                (IMC_HOMEPAGE(ch) && IMC_HOMEPAGE(ch)[0] != '\0') ? IMC_HOMEPAGE(ch) : "None");
     imc_printf(ch, "~GICQ     : ~g%d\r\n", IMC_ICQ(ch));
     imc_printf(ch, "~GAIM     : ~g%s\r\n", (IMC_AIM(ch) && IMC_AIM(ch)[0] != '\0') ? IMC_AIM(ch) : "None");
     imc_printf(ch, "~GYahoo   : ~g%s\r\n", (IMC_YAHOO(ch) && IMC_YAHOO(ch)[0] != '\0') ? IMC_YAHOO(ch) : "None");
     imc_printf(ch, "~GMSN     : ~g%s\r\n", (IMC_MSN(ch) && IMC_MSN(ch)[0] != '\0') ? IMC_MSN(ch) : "None");
     imc_printf(ch, "~GComment : ~g%s\r\n",
-		(IMC_COMMENT(ch) && IMC_COMMENT(ch)[0] != '\0') ? IMC_COMMENT(ch) : "None");
+                (IMC_COMMENT(ch) && IMC_COMMENT(ch)[0] != '\0') ? IMC_COMMENT(ch) : "None");
     imc_printf(ch, "~GPrivacy : ~g%s\r\n", IMCIS_SET(IMCFLAG(ch), IMC_PRIVACY) ? "Enabled" : "Disabled");
     return;
   }
@@ -6252,7 +6252,7 @@ IMC_CMD(imclist)
    * Put local mud on the list, why was this not done? It's a mud isn't it? 
    */
   imcpager_printf(ch, "\r\n\r\n~c%-15.15s ~B%-40.40s ~g%-15.15s ~G%s",
-		   this_imcmud->localname, this_imcmud->versionid, this_imcmud->network, this_imcmud->servername);
+                   this_imcmud->localname, this_imcmud->versionid, this_imcmud->network, this_imcmud->servername);
 
   for(p = first_rinfo; p; p = p->next, count++)
   {
@@ -6267,21 +6267,21 @@ IMC_CMD(imclist)
     {
       if((start = strchr(p->path, '!')) != NULL)
       {
-	start++;
-	onpath = start;
-	end = 0;
-	for(onpath = start; *onpath != '!' && *onpath != '\0'; onpath++)
-	{
-	  serverpath[end] = *onpath;
-	  end++;
-	}
-	serverpath[end] = '\0';
+        start++;
+        onpath = start;
+        end = 0;
+        for(onpath = start; *onpath != '!' && *onpath != '\0'; onpath++)
+        {
+          serverpath[end] = *onpath;
+          end++;
+        }
+        serverpath[end] = '\0';
       }
       else
-	imcstrlcpy(serverpath, p->path, LGST);
+        imcstrlcpy(serverpath, p->path, LGST);
     }
     imcpager_printf(ch, "\r\n~%c%-15.15s ~B%-40.40s ~g%-15.15s ~G%s",
-		     p->expired ? 'R' : 'c', p->name, p->version, netname, serverpath);
+                     p->expired ? 'R' : 'c', p->name, p->version, netname, serverpath);
   }
   imcpager_printf(ch, "\r\n~WRed mud names indicate connections that are down.");
   imcpager_printf(ch, "\r\n~W%d muds on %s found.\r\n", count, this_imcmud->network);
@@ -6621,11 +6621,11 @@ IMC_CMD(imcignore)
     {
       if(!strcasecmp(ign->name, argument))
       {
-	IMCUNLINK(ign, FIRST_IMCIGNORE(ch), LAST_IMCIGNORE(ch), next, prev);
-	IMCSTRFREE(ign->name);
-	IMCDISPOSE(ign);
-	imc_to_char("Entry deleted.\r\n", ch);
-	return;
+        IMCUNLINK(ign, FIRST_IMCIGNORE(ch), LAST_IMCIGNORE(ch), next, prev);
+        IMCSTRFREE(ign->name);
+        IMCDISPOSE(ign);
+        imc_to_char("Entry deleted.\r\n", ch);
+        return;
       }
     }
     imc_to_char("Entry not found.\r\nPlease check your ignores by typing IMCIGNORE with no arguments.\r\n", ch);
@@ -6813,7 +6813,7 @@ IMC_CMD(imcpermstats)
 
   imc_printf(ch, "~GPermissions for %s: %s\r\n", CH_IMCNAME(victim), imcperm_names[IMCPERM(victim)]);
   imc_printf(ch, "~gThese permissions were obtained %s.\r\n",
-	      IMCIS_SET(IMCFLAG(victim), IMC_PERMOVERRIDE) ? "manually via imcpermset" : "automatically by level");
+              IMCIS_SET(IMCFLAG(victim), IMC_PERMOVERRIDE) ? "manually via imcpermset" : "automatically by level");
 }
 
 IMC_CMD(imcpermset)
@@ -6881,16 +6881,16 @@ IMC_CMD(imcpermset)
     while(1)
     {
       if(channels[0] == '\0')
-	break;
+        break;
       channels = imcone_argument(channels, arg);
 
       if(!(channel = imc_findchannel(arg)))
-	imc_removename(&IMC_LISTEN(victim), arg);
+        imc_removename(&IMC_LISTEN(victim), arg);
       if(channel && IMCPERM(victim) < channel->level)
       {
-	imc_removename(&IMC_LISTEN(victim), arg);
-	imc_printf(ch, "~WRemoving '%s' level channel: '%s', exceeding new permission of '%s'\r\n",
-		    imcperm_names[channel->level], channel->local_name, imcperm_names[IMCPERM(victim)]);
+        imc_removename(&IMC_LISTEN(victim), arg);
+        imc_printf(ch, "~WRemoving '%s' level channel: '%s', exceeding new permission of '%s'\r\n",
+                    imcperm_names[channel->level], channel->local_name, imcperm_names[IMCPERM(victim)]);
       }
     }
   }
@@ -6949,7 +6949,7 @@ IMC_CMD(imcchanwho)
       argument = imcone_argument(argument, mud);
 
       if(!check_mud(ch, mud))
-	continue;
+        continue;
 
       p = imc_newpacket(CH_IMCNAME(ch), "ice-chan-who", mud);
       imc_addtopacket(p, "level=%d", IMCPERM(ch));
@@ -7034,15 +7034,15 @@ IMC_CMD(imchelp)
       snprintf(buf + strlen(buf), LGST - strlen(buf), "\r\n~g%s helps:~G\r\n", imcperm_names[perm]);
       for(help = first_imc_help; help; help = help->next)
       {
-	if(help->level != perm)
-	  continue;
+        if(help->level != perm)
+          continue;
 
-	snprintf(buf + strlen(buf), LGST - strlen(buf), "%-15s", help->name);
-	if(++col % 6 == 0)
-	  imcstrlcat(buf, "\r\n", LGST);
+        snprintf(buf + strlen(buf), LGST - strlen(buf), "%-15s", help->name);
+        if(++col % 6 == 0)
+          imcstrlcat(buf, "\r\n", LGST);
       }
       if(col % 6 != 0)
-	imcstrlcat(buf, "\r\n", LGST);
+        imcstrlcat(buf, "\r\n", LGST);
     }
     imc_to_pager(buf, ch);
     return;
@@ -7053,9 +7053,9 @@ IMC_CMD(imchelp)
     if(!strcasecmp(help->name, argument))
     {
       if(!help->text || help->text[0] == '\0')
-	imc_printf(ch, "~gNo inforation available for topic ~W%s~g.\r\n", help->name);
+        imc_printf(ch, "~gNo inforation available for topic ~W%s~g.\r\n", help->name);
       else
-	imc_printf(ch, "~g%s\r\n", help->text);
+        imc_printf(ch, "~g%s\r\n", help->text);
       return;
     }
   }
@@ -7143,7 +7143,7 @@ IMC_CMD(imccedit)
     for(alias = cmd->first_alias; alias; alias = alias->next)
     {
       if(!strcasecmp(alias->name, name))
-	aliasfound = TRUE;
+        aliasfound = TRUE;
     }
   }
 
@@ -7170,7 +7170,7 @@ IMC_CMD(imccedit)
     {
       cmd->function = imc_function(argument);
       if(cmd->function == NULL)
-	imc_printf(ch, "~gFunction ~W%s ~gdoes not exist - set to NULL.\r\n", argument);
+        imc_printf(ch, "~gFunction ~W%s ~gdoes not exist - set to NULL.\r\n", argument);
     }
     else
     {
@@ -7220,12 +7220,12 @@ IMC_CMD(imccedit)
 
       if(!strcasecmp(alias->name, argument))
       {
-	imc_printf(ch, "~W%s ~ghas been removed as an alias for ~W%s\r\n", argument, cmd->name);
-	IMCUNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
-	IMCSTRFREE(alias->name);
-	IMCDISPOSE(alias);
-	imc_savecommands();
-	return;
+        imc_printf(ch, "~W%s ~ghas been removed as an alias for ~W%s\r\n", argument, cmd->name);
+        IMCUNLINK(alias, cmd->first_alias, cmd->last_alias, next, prev);
+        IMCSTRFREE(alias->name);
+        IMCDISPOSE(alias);
+        imc_savecommands();
+        return;
       }
     }
 
@@ -7233,16 +7233,16 @@ IMC_CMD(imccedit)
     {
       if(!strcasecmp(tmp->name, argument))
       {
-	imc_printf(ch, "~W%s &gis already a command name.\r\n", argument);
-	return;
+        imc_printf(ch, "~W%s &gis already a command name.\r\n", argument);
+        return;
       }
       for(alias = tmp->first_alias; alias; alias = alias->next)
       {
-	if(!strcasecmp(argument, alias->name))
-	{
-	  imc_printf(ch, "~W%s ~gis already an alias for ~W%s\r\n", argument, tmp->name);
-	  return;
-	}
+        if(!strcasecmp(argument, alias->name))
+        {
+          imc_printf(ch, "~W%s ~gis already an alias for ~W%s\r\n", argument, tmp->name);
+          return;
+        }
       }
     }
 
@@ -7280,12 +7280,12 @@ IMC_CMD(imccedit)
       imcstrlcpy(buf, "~gAliases       : ~W", LGST);
       for(alias = cmd->first_alias; alias; alias = alias->next)
       {
-	snprintf(buf + strlen(buf), LGST - strlen(buf), "%s ", alias->name);
-	if(++col % 10 == 0)
-	  imcstrlcat(buf, "\r\n", LGST);
+        snprintf(buf + strlen(buf), LGST - strlen(buf), "%s ", alias->name);
+        if(++col % 10 == 0)
+          imcstrlcat(buf, "\r\n", LGST);
       }
       if(col % 10 != 0)
-	imcstrlcat(buf, "\r\n", LGST);
+        imcstrlcat(buf, "\r\n", LGST);
       imc_to_char(buf, ch);
     }
     return;
@@ -7327,7 +7327,7 @@ IMC_CMD(imccedit)
 
     cmd->level = permvalue;
     imc_printf(ch, "~gCommand ~W%s ~gpermission level has been changed to ~W%s.\r\n", cmd->name,
-		imcperm_names[permvalue]);
+                imcperm_names[permvalue]);
     imc_savecommands();
     return;
   }
@@ -7433,11 +7433,11 @@ IMC_CMD(imc_other)
     for(cmd = first_imc_command; cmd; cmd = cmd->next)
     {
       if(cmd->level != perm)
-	continue;
+        continue;
 
       snprintf(buf + strlen(buf), LGST - strlen(buf), "%-15s", cmd->name);
       if(++col % 6 == 0)
-	imcstrlcat(buf, "\r\n", LGST);
+        imcstrlcat(buf, "\r\n", LGST);
     }
     if(col % 6 != 0)
       imcstrlcat(buf, "\r\n", LGST);
@@ -7484,12 +7484,12 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
   if(person && person[0] != '\0' && mud && mud[0] != '\0')
   {
     if(person && person[0] != '\0' && !strcasecmp(person, CH_IMCNAME(ch))
-	&& mud && mud[0] != '\0' && !strcasecmp(mud, this_imcmud->localname))
+        && mud && mud[0] != '\0' && !strcasecmp(mud, this_imcmud->localname))
     {
       if(!social->others_auto)
       {
-	imc_printf(ch, "~YSocial ~W%s~Y: Missing others_auto.\r\n", sname);
-	return socname;
+        imc_printf(ch, "~YSocial ~W%s~Y: Missing others_auto.\r\n", sname);
+        return socname;
       }
       imcstrlcpy(socname, social->others_auto, LGST);
     }
@@ -7497,30 +7497,30 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
     {
       if(victim == 0)
       {
-	if(!social->others_found)
-	{
-	  imc_printf(ch, "~YSocial ~W%s~Y: Missing others_found.\r\n", sname);
-	  return socname;
-	}
-	imcstrlcpy(socname, social->others_found, LGST);
+        if(!social->others_found)
+        {
+          imc_printf(ch, "~YSocial ~W%s~Y: Missing others_found.\r\n", sname);
+          return socname;
+        }
+        imcstrlcpy(socname, social->others_found, LGST);
       }
       else if(victim == 1)
       {
-	if(!social->vict_found)
-	{
-	  imc_printf(ch, "~YSocial ~W%s~Y: Missing vict_found.\r\n", sname);
-	  return socname;
-	}
-	imcstrlcpy(socname, social->vict_found, LGST);
+        if(!social->vict_found)
+        {
+          imc_printf(ch, "~YSocial ~W%s~Y: Missing vict_found.\r\n", sname);
+          return socname;
+        }
+        imcstrlcpy(socname, social->vict_found, LGST);
       }
       else
       {
-	if(!social->char_found)
-	{
-	  imc_printf(ch, "~YSocial ~W%s~Y: Missing char_found.\r\n", sname);
-	  return socname;
-	}
-	imcstrlcpy(socname, social->char_found, LGST);
+        if(!social->char_found)
+        {
+          imc_printf(ch, "~YSocial ~W%s~Y: Missing char_found.\r\n", sname);
+          return socname;
+        }
+        imcstrlcpy(socname, social->char_found, LGST);
       }
     }
   }
@@ -7530,8 +7530,8 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
     {
       if(!social->others_no_arg)
       {
-	imc_printf(ch, "~YSocial ~W%s~Y: Missing others_no_arg.\r\n", sname);
-	return socname;
+        imc_printf(ch, "~YSocial ~W%s~Y: Missing others_no_arg.\r\n", sname);
+        return socname;
       }
       imcstrlcpy(socname, social->others_no_arg, LGST);
     }
@@ -7539,8 +7539,8 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
     {
       if(!social->char_no_arg)
       {
-	imc_printf(ch, "~YSocial ~W%s~Y: Missing char_no_arg.\r\n", sname);
-	return socname;
+        imc_printf(ch, "~YSocial ~W%s~Y: Missing char_no_arg.\r\n", sname);
+        return socname;
       }
       imcstrlcpy(socname, social->char_no_arg, LGST);
     }
@@ -7565,12 +7565,12 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
   if(person && person[0] != '\0' && mud && mud[0] != '\0')
   {
     if(person && person[0] != '\0' && !strcasecmp(person, CH_IMCNAME(ch))
-	&& mud && mud[0] != '\0' && !strcasecmp(mud, this_imcmud->localname))
+        && mud && mud[0] != '\0' && !strcasecmp(mud, this_imcmud->localname))
     {
       if(!social_table[cmd].others_auto)
       {
-	imc_printf(ch, "~YSocial ~W%s~Y: Missing others_auto.\r\n", sname);
-	return socname;
+        imc_printf(ch, "~YSocial ~W%s~Y: Missing others_auto.\r\n", sname);
+        return socname;
       }
       imcstrlcpy(socname, social_table[cmd].others_auto, LGST);
     }
@@ -7578,30 +7578,30 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
     {
       if(victim == 0)
       {
-	if(!social_table[cmd].others_found)
-	{
-	  imc_printf(ch, "~YSocial ~W%s~Y: Missing others_found.\r\n", sname);
-	  return socname;
-	}
-	imcstrlcpy(socname, social_table[cmd].others_found, LGST);
+        if(!social_table[cmd].others_found)
+        {
+          imc_printf(ch, "~YSocial ~W%s~Y: Missing others_found.\r\n", sname);
+          return socname;
+        }
+        imcstrlcpy(socname, social_table[cmd].others_found, LGST);
       }
       else if(victim == 1)
       {
-	if(!social_table[cmd].vict_found)
-	{
-	  imc_printf(ch, "~YSocial ~W%s~Y: Missing vict_found.\r\n", sname);
-	  return socname;
-	}
-	imcstrlcpy(socname, social_table[cmd].vict_found, LGST);
+        if(!social_table[cmd].vict_found)
+        {
+          imc_printf(ch, "~YSocial ~W%s~Y: Missing vict_found.\r\n", sname);
+          return socname;
+        }
+        imcstrlcpy(socname, social_table[cmd].vict_found, LGST);
       }
       else
       {
-	if(!social_table[cmd].char_found)
-	{
-	  imc_printf(ch, "~YSocial ~W%s~Y: Missing char_found.\r\n", sname);
-	  return socname;
-	}
-	imcstrlcpy(socname, social_table[cmd].char_found, LGST);
+        if(!social_table[cmd].char_found)
+        {
+          imc_printf(ch, "~YSocial ~W%s~Y: Missing char_found.\r\n", sname);
+          return socname;
+        }
+        imcstrlcpy(socname, social_table[cmd].char_found, LGST);
       }
     }
   }
@@ -7611,8 +7611,8 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
     {
       if(!social_table[cmd].others_no_arg)
       {
-	imc_printf(ch, "~YSocial ~W%s~Y: Missing others_no_arg.\r\n", sname);
-	return socname;
+        imc_printf(ch, "~YSocial ~W%s~Y: Missing others_no_arg.\r\n", sname);
+        return socname;
       }
       imcstrlcpy(socname, social_table[cmd].others_no_arg, LGST);
     }
@@ -7620,8 +7620,8 @@ const char *imc_find_social(CHAR_DATA * ch, const char *sname, const char *perso
     {
       if(!social_table[cmd].char_no_arg)
       {
-	imc_printf(ch, "~YSocial ~W%s~Y: Missing char_no_arg.\r\n", sname);
-	return socname;
+        imc_printf(ch, "~YSocial ~W%s~Y: Missing char_no_arg.\r\n", sname);
+        return socname;
       }
       imcstrlcpy(socname, social_table[cmd].char_no_arg, LGST);
     }
@@ -7668,53 +7668,53 @@ char *imc_act_string(const char *format, CHAR_DATA * ch, CHAR_DATA * vic)
       switch (*format)
       {
       default:
-	i = " !!!!! ";
-	break;
+        i = " !!!!! ";
+        break;
       case 'n':
-	i = imc_makename(CH_IMCNAME(ch), this_imcmud->localname);
-	break;
+        i = imc_makename(CH_IMCNAME(ch), this_imcmud->localname);
+        break;
       case 'N':
-	i = CH_IMCNAME(vic);
-	break;
+        i = CH_IMCNAME(vic);
+        break;
 
       case 'e':
-	i = should_upper ?
-	  imccapitalize(he_she[URANGE(0, CH_IMCSEX(ch), 2)]) : he_she[URANGE(0, CH_IMCSEX(ch), 2)];
-	  break;
+        i = should_upper ?
+          imccapitalize(he_she[URANGE(0, CH_IMCSEX(ch), 2)]) : he_she[URANGE(0, CH_IMCSEX(ch), 2)];
+          break;
 
       case 'E':
-	i = should_upper ?
-	  imccapitalize(he_she[URANGE(0, CH_IMCSEX(vic), 2)]) : he_she[URANGE(0, CH_IMCSEX(vic), 2)];
-	  break;
+        i = should_upper ?
+          imccapitalize(he_she[URANGE(0, CH_IMCSEX(vic), 2)]) : he_she[URANGE(0, CH_IMCSEX(vic), 2)];
+          break;
 
       case 'm':
-	i = should_upper ?
-	  imccapitalize(him_her[URANGE(0, CH_IMCSEX(ch), 2)]) : him_her[URANGE(0, CH_IMCSEX(ch), 2)];
-	  break;
+        i = should_upper ?
+          imccapitalize(him_her[URANGE(0, CH_IMCSEX(ch), 2)]) : him_her[URANGE(0, CH_IMCSEX(ch), 2)];
+          break;
 
       case 'M':
-	i = should_upper ?
-	  imccapitalize(him_her[URANGE(0, CH_IMCSEX(vic), 2)]) : him_her[URANGE(0, CH_IMCSEX(vic), 2)];
-	  break;
+        i = should_upper ?
+          imccapitalize(him_her[URANGE(0, CH_IMCSEX(vic), 2)]) : him_her[URANGE(0, CH_IMCSEX(vic), 2)];
+          break;
 
       case 's':
-	i = should_upper ?
-	  imccapitalize(his_her[URANGE(0, CH_IMCSEX(ch), 2)]) : his_her[URANGE(0, CH_IMCSEX(ch), 2)];
-	  break;
+        i = should_upper ?
+          imccapitalize(his_her[URANGE(0, CH_IMCSEX(ch), 2)]) : his_her[URANGE(0, CH_IMCSEX(ch), 2)];
+          break;
 
       case 'S':
-	i = should_upper ?
-	  imccapitalize(his_her[URANGE(0, CH_IMCSEX(vic), 2)]) : his_her[URANGE(0, CH_IMCSEX(vic), 2)];
-	  break;
+        i = should_upper ?
+          imccapitalize(his_her[URANGE(0, CH_IMCSEX(vic), 2)]) : his_her[URANGE(0, CH_IMCSEX(vic), 2)];
+          break;
 
       case 'k':
-	imcone_argument(CH_IMCNAME(ch), tmp_str);
-	i = (char *)tmp_str;
-	break;
+        imcone_argument(CH_IMCNAME(ch), tmp_str);
+        i = (char *)tmp_str;
+        break;
       case 'K':
-	imcone_argument(CH_IMCNAME(vic), tmp_str);
-	i = (char *)tmp_str;
-	break;
+        imcone_argument(CH_IMCNAME(vic), tmp_str);
+        i = (char *)tmp_str;
+        break;
       }
     }
     ++format;
@@ -7793,9 +7793,9 @@ const char *imc_send_social(CHAR_DATA * ch, const char *argument, int telloption
     {
       for(x = 0; x < strlen(argument); x++)
       {
-	person[x] = argument[x];
-	if(person[x] == '@')
-	  break;
+        person[x] = argument[x];
+        if(person[x] == '@')
+          break;
       }
       person[x] = '\0';
 
@@ -8045,8 +8045,8 @@ bool imc_command_hook(CHAR_DATA * ch, const char *command, const char *argument)
     {
       if(!strcasecmp(command, alias->name))
       {
-	command = cmd->name;
-	break;
+        command = cmd->name;
+        break;
       }
     }
 
@@ -8054,15 +8054,15 @@ bool imc_command_hook(CHAR_DATA * ch, const char *command, const char *argument)
     {
       if(cmd->connected == TRUE && this_imcmud->state < IMC_ONLINE)
       {
-	imc_to_char("The mud is not currently connected to IMC2.\r\n", ch);
-	return TRUE;
+        imc_to_char("The mud is not currently connected to IMC2.\r\n", ch);
+        return TRUE;
       }
 
       if(cmd->function == NULL)
       {
-	imc_to_char("That command has no code set. Inform the administration.\r\n", ch);
-	imcbug("imc_command_hook: Command %s has no code set!", cmd->name);
-	return TRUE;
+        imc_to_char("That command has no code set. Inform the administration.\r\n", ch);
+        imcbug("imc_command_hook: Command %s has no code set!", cmd->name);
+        return TRUE;
       }
 
       (*cmd->function) (ch, argument);
@@ -8098,9 +8098,9 @@ bool imc_command_hook(CHAR_DATA * ch, const char *command, const char *argument)
     for(y = 0; y < MAX_IMCHISTORY; y++)
     {
       if(c->history[y] != NULL)
-	imc_printf(ch, "%s\r\n", c->history[y]);
+        imc_printf(ch, "%s\r\n", c->history[y]);
       else
-	break;
+        break;
     }
     return TRUE;
   }
@@ -8111,7 +8111,7 @@ bool imc_command_hook(CHAR_DATA * ch, const char *command, const char *argument)
     {
       IMCSET_BIT(c->flags, IMCCHAN_LOG);
       imc_printf(ch, "~RFile logging enabled for %s, PLEASE don't forget to undo this when it isn't needed!\r\n",
-		  c->local_name);
+                  c->local_name);
     }
     else
     {
@@ -8125,7 +8125,7 @@ bool imc_command_hook(CHAR_DATA * ch, const char *command, const char *argument)
   if(!imc_hasname(IMC_LISTEN(ch), c->local_name))
   {
     imc_printf(ch, "You are not currently listening to %s. Use the imclisten command to listen to this channel.\r\n",
-		c->local_name);
+                c->local_name);
     return TRUE;
   }
 

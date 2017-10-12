@@ -78,11 +78,11 @@ void do_eat(CHAR_DATA* ch, const char* argument)
   if (ch->fighting && number_percent() > (get_curr_dex(ch) * 2 + 47))
   {
     snprintf(buf, MAX_STRING_LENGTH, "%s",
-	      (ch->in_room->sector_type == SECT_UNDERWATER ||
-		ch->in_room->sector_type == SECT_WATER_SWIM ||
-		ch->in_room->sector_type == SECT_WATER_NOSWIM) ? "dissolves in the water" :
-	      (ch->in_room->sector_type == SECT_AIR ||
-		xIS_SET(ch->in_room->room_flags, ROOM_NOFLOOR)) ? "falls far below" : "is trampled underfoot");
+              (ch->in_room->sector_type == SECT_UNDERWATER ||
+                ch->in_room->sector_type == SECT_WATER_SWIM ||
+                ch->in_room->sector_type == SECT_WATER_NOSWIM) ? "dissolves in the water" :
+              (ch->in_room->sector_type == SECT_AIR ||
+                xIS_SET(ch->in_room->room_flags, ROOM_NOFLOOR)) ? "falls far below" : "is trampled underfoot");
     act(AT_MAGIC, "$n drops $p, and it $T.", ch, obj, buf, TO_ROOM);
     if (!hgflag)
       act(AT_MAGIC, "Oops, $p slips from your hand and $T!", ch, obj, buf, TO_CHAR);
@@ -93,12 +93,12 @@ void do_eat(CHAR_DATA* ch, const char* argument)
     {
       if (!obj->action_desc || obj->action_desc[0] == '\0')
       {
-	act(AT_ACTION, "$n eats $p.", ch, obj, NULL, TO_ROOM);
-	if (!hgflag)
-	  act(AT_ACTION, "You eat $p.", ch, obj, NULL, TO_CHAR);
+        act(AT_ACTION, "$n eats $p.", ch, obj, NULL, TO_ROOM);
+        if (!hgflag)
+          act(AT_ACTION, "You eat $p.", ch, obj, NULL, TO_CHAR);
       }
       else
-	actiondesc(ch, obj);
+        actiondesc(ch, obj);
     }
 
     switch (obj->item_type)
@@ -108,78 +108,78 @@ void do_eat(CHAR_DATA* ch, const char* argument)
     case ITEM_FOOD:
       WAIT_STATE(ch, PULSE_PER_SECOND / 3);
       if (obj->timer > 0 && obj->value[1] > 0)
-	foodcond = (obj->timer * 10) / obj->value[1];
+        foodcond = (obj->timer * 10) / obj->value[1];
       else
-	foodcond = 10;
+        foodcond = 10;
 
       if (!IS_NPC(ch))
       {
-	int condition;
+        int condition;
 
-	condition = ch->pcdata->condition[COND_FULL];
-	gain_condition(ch, COND_FULL, (obj->value[0] * foodcond) / 10);
-	if (condition <= 1 && ch->pcdata->condition[COND_FULL] > 1)
-	  send_to_char("You are no longer hungry.\r\n", ch);
-	else if (ch->pcdata->condition[COND_FULL] > 40)
-	  send_to_char("You are full.\r\n", ch);
+        condition = ch->pcdata->condition[COND_FULL];
+        gain_condition(ch, COND_FULL, (obj->value[0] * foodcond) / 10);
+        if (condition <= 1 && ch->pcdata->condition[COND_FULL] > 1)
+          send_to_char("You are no longer hungry.\r\n", ch);
+        else if (ch->pcdata->condition[COND_FULL] > 40)
+          send_to_char("You are full.\r\n", ch);
       }
 
       if (obj->value[3] != 0
-	  || (foodcond < 4 && number_range(0, foodcond + 1) == 0)
-	  || (obj->item_type == ITEM_COOK && obj->value[2] == 0))
+          || (foodcond < 4 && number_range(0, foodcond + 1) == 0)
+          || (obj->item_type == ITEM_COOK && obj->value[2] == 0))
       {
-	/*
-	 * The food was poisoned! 
-	 */
-	AFFECT_DATA af;
+        /*
+         * The food was poisoned! 
+         */
+        AFFECT_DATA af;
 
-	if (obj->value[3] != 0)
-	{
-	  act(AT_POISON, "$n chokes and gags.", ch, NULL, NULL, TO_ROOM);
-	  act(AT_POISON, "You choke and gag.", ch, NULL, NULL, TO_CHAR);
-	  ch->mental_state = URANGE(20, ch->mental_state + 5, 100);
-	}
-	else
-	{
-	  act(AT_POISON, "$n gags on $p.", ch, obj, NULL, TO_ROOM);
-	  act(AT_POISON, "You gag on $p.", ch, obj, NULL, TO_CHAR);
-	  ch->mental_state = URANGE(15, ch->mental_state + 5, 100);
-	}
+        if (obj->value[3] != 0)
+        {
+          act(AT_POISON, "$n chokes and gags.", ch, NULL, NULL, TO_ROOM);
+          act(AT_POISON, "You choke and gag.", ch, NULL, NULL, TO_CHAR);
+          ch->mental_state = URANGE(20, ch->mental_state + 5, 100);
+        }
+        else
+        {
+          act(AT_POISON, "$n gags on $p.", ch, obj, NULL, TO_ROOM);
+          act(AT_POISON, "You gag on $p.", ch, obj, NULL, TO_CHAR);
+          ch->mental_state = URANGE(15, ch->mental_state + 5, 100);
+        }
 
-	af.type = gsn_poison;
-	af.duration = 2 * obj->value[0] * (obj->value[3] > 0 ? obj->value[3] : 1);
-	af.location = APPLY_NONE;
-	af.modifier = 0;
-	af.bitvector = meb(AFF_POISON);
-	affect_join(ch, &af);
+        af.type = gsn_poison;
+        af.duration = 2 * obj->value[0] * (obj->value[3] > 0 ? obj->value[3] : 1);
+        af.location = APPLY_NONE;
+        af.modifier = 0;
+        af.bitvector = meb(AFF_POISON);
+        affect_join(ch, &af);
       }
       break;
 
     case ITEM_PILL:
       sysdata.upill_val += obj->cost / 100;
       if (who_fighting(ch) && IS_PKILL(ch))
-	WAIT_STATE(ch, PULSE_PER_SECOND / 4);
+        WAIT_STATE(ch, PULSE_PER_SECOND / 4);
       else
-	WAIT_STATE(ch, PULSE_PER_SECOND / 3);
+        WAIT_STATE(ch, PULSE_PER_SECOND / 3);
       /*
        * allow pills to fill you, if so desired 
        */
       if (!IS_NPC(ch) && obj->value[4])
       {
-	int condition;
+        int condition;
 
-	condition = ch->pcdata->condition[COND_FULL];
-	gain_condition(ch, COND_FULL, obj->value[4]);
-	if (condition <= 1 && ch->pcdata->condition[COND_FULL] > 1)
-	  send_to_char("You are no longer hungry.\r\n", ch);
-	else if (ch->pcdata->condition[COND_FULL] > 40)
-	  send_to_char("You are full.\r\n", ch);
+        condition = ch->pcdata->condition[COND_FULL];
+        gain_condition(ch, COND_FULL, obj->value[4]);
+        if (condition <= 1 && ch->pcdata->condition[COND_FULL] > 1)
+          send_to_char("You are no longer hungry.\r\n", ch);
+        else if (ch->pcdata->condition[COND_FULL] > 40)
+          send_to_char("You are full.\r\n", ch);
       }
       retcode = obj_cast_spell(obj->value[1], obj->value[0], ch, ch, NULL);
       if (retcode == rNONE)
-	retcode = obj_cast_spell(obj->value[2], obj->value[0], ch, ch, NULL);
+        retcode = obj_cast_spell(obj->value[2], obj->value[0], ch, ch, NULL);
       if (retcode == rNONE)
-	retcode = obj_cast_spell(obj->value[3], obj->value[0], ch, ch, NULL);
+        retcode = obj_cast_spell(obj->value[3], obj->value[0], ch, ch, NULL);
       break;
     }
 
@@ -245,7 +245,7 @@ void do_quaff(CHAR_DATA* ch, const char* argument)
   if (!IS_NPC(ch) && ch->pcdata->nuisance &&
       ch->pcdata->nuisance->flags > 3
       && (ch->pcdata->condition[COND_FULL] >= (48 - (3 * ch->pcdata->nuisance->flags) + ch->pcdata->nuisance->power)
-	   || ch->pcdata->condition[COND_THIRST] >= (48 - (ch->pcdata->nuisance->flags) + ch->pcdata->nuisance->power)))
+           || ch->pcdata->condition[COND_THIRST] >= (48 - (ch->pcdata->nuisance->flags) + ch->pcdata->nuisance->power)))
   {
     send_to_char("Your stomach cannot contain any more.\r\n", ch);
     return;
@@ -279,15 +279,15 @@ void do_quaff(CHAR_DATA* ch, const char* argument)
     {
       if (!CAN_PKILL(ch) || !obj->in_obj)
       {
-	act(AT_ACTION, "$n quaffs $p.", ch, obj, NULL, TO_ROOM);
-	if (!hgflag)
-	  act(AT_ACTION, "You quaff $p.", ch, obj, NULL, TO_CHAR);
+        act(AT_ACTION, "$n quaffs $p.", ch, obj, NULL, TO_ROOM);
+        if (!hgflag)
+          act(AT_ACTION, "You quaff $p.", ch, obj, NULL, TO_CHAR);
       }
       else if (obj->in_obj)
       {
-	act(AT_ACTION, "$n quaffs $p from $P.", ch, obj, obj->in_obj, TO_ROOM);
-	if (!hgflag)
-	  act(AT_ACTION, "You quaff $p from $P.", ch, obj, obj->in_obj, TO_CHAR);
+        act(AT_ACTION, "$n quaffs $p from $P.", ch, obj, obj->in_obj, TO_ROOM);
+        if (!hgflag)
+          act(AT_ACTION, "You quaff $p from $P.", ch, obj, obj->in_obj, TO_CHAR);
       }
     }
 
@@ -579,9 +579,9 @@ void pullorpush(CHAR_DATA * ch, OBJ_DATA * obj, bool pull)
     else
     {
       if (CAN_WEAR(obj, ITEM_TAKE))
-	obj_to_char(tobj, ch);
+        obj_to_char(tobj, ch);
       else
-	obj_to_room(tobj, ch->in_room);
+        obj_to_room(tobj, ch->in_room);
     }
     return;
   }
@@ -634,7 +634,7 @@ void pullorpush(CHAR_DATA * ch, OBJ_DATA * obj, bool pull)
       return;
     }
     obj_cast_spell(obj->value[1], URANGE(1, (obj->value[2] > 0) ? obj->value[2] : ch->level, MAX_LEVEL), ch, ch,
-		    NULL);
+                    NULL);
     return;
   }
 
@@ -657,7 +657,7 @@ void pullorpush(CHAR_DATA * ch, OBJ_DATA * obj, bool pull)
     for (container = ch->in_room->first_content; container; container = container->next_content)
     {
       if (container->pIndexData->vnum == obj->value[2])
-	break;
+        break;
     }
     if (!container)
     {
@@ -741,14 +741,14 @@ void pullorpush(CHAR_DATA * ch, OBJ_DATA * obj, bool pull)
     {
       if (!IS_SET(obj->value[0], TRIG_PASSAGE))
       {
-	bug("PullOrPush: obj points to non-exit %d", obj->value[1]);
-	return;
+        bug("PullOrPush: obj points to non-exit %d", obj->value[1]);
+        return;
       }
       to_room = get_room_index(obj->value[2]);
       if (!to_room)
       {
-	bug("PullOrPush: dest points to invalid room %d", obj->value[2]);
-	return;
+        bug("PullOrPush: dest points to invalid room %d", obj->value[2]);
+        return;
       }
       pexit = make_exit(room, to_room, edir);
       pexit->keyword = STRALLOC("");
@@ -766,7 +766,7 @@ void pullorpush(CHAR_DATA * ch, OBJ_DATA * obj, bool pull)
       act(AT_PLAIN, "You hear a faint click $T.", ch, NULL, txt, TO_CHAR);
       act(AT_PLAIN, "You hear a faint click $T.", ch, NULL, txt, TO_ROOM);
       if ((pexit_rev = pexit->rexit) != NULL && pexit_rev->to_room == ch->in_room)
-	REMOVE_BIT(pexit_rev->exit_info, EX_LOCKED);
+        REMOVE_BIT(pexit_rev->exit_info, EX_LOCKED);
       return;
     }
     if (IS_SET(obj->value[0], TRIG_LOCK) && !IS_SET(pexit->exit_info, EX_LOCKED))
@@ -775,22 +775,22 @@ void pullorpush(CHAR_DATA * ch, OBJ_DATA * obj, bool pull)
       act(AT_PLAIN, "You hear a faint click $T.", ch, NULL, txt, TO_CHAR);
       act(AT_PLAIN, "You hear a faint click $T.", ch, NULL, txt, TO_ROOM);
       if ((pexit_rev = pexit->rexit) != NULL && pexit_rev->to_room == ch->in_room)
-	SET_BIT(pexit_rev->exit_info, EX_LOCKED);
+        SET_BIT(pexit_rev->exit_info, EX_LOCKED);
       return;
     }
     if (IS_SET(obj->value[0], TRIG_OPEN) && IS_SET(pexit->exit_info, EX_CLOSED))
     {
       REMOVE_BIT(pexit->exit_info, EX_CLOSED);
       for (rch = room->first_person; rch; rch = rch->next_in_room)
-	act(AT_ACTION, "The $d opens.", rch, NULL, pexit->keyword, TO_CHAR);
+        act(AT_ACTION, "The $d opens.", rch, NULL, pexit->keyword, TO_CHAR);
       if ((pexit_rev = pexit->rexit) != NULL && pexit_rev->to_room == ch->in_room)
       {
-	REMOVE_BIT(pexit_rev->exit_info, EX_CLOSED);
-	/*
-	 * bug here pointed out by Nick Gammon 
-	 */
-	for (rch = pexit->to_room->first_person; rch; rch = rch->next_in_room)
-	  act(AT_ACTION, "The $d opens.", rch, NULL, pexit_rev->keyword, TO_CHAR);
+        REMOVE_BIT(pexit_rev->exit_info, EX_CLOSED);
+        /*
+         * bug here pointed out by Nick Gammon 
+         */
+        for (rch = pexit->to_room->first_person; rch; rch = rch->next_in_room)
+          act(AT_ACTION, "The $d opens.", rch, NULL, pexit_rev->keyword, TO_CHAR);
       }
       check_room_for_traps(ch, trap_door[edir]);
       return;
@@ -799,15 +799,15 @@ void pullorpush(CHAR_DATA * ch, OBJ_DATA * obj, bool pull)
     {
       SET_BIT(pexit->exit_info, EX_CLOSED);
       for (rch = room->first_person; rch; rch = rch->next_in_room)
-	act(AT_ACTION, "The $d closes.", rch, NULL, pexit->keyword, TO_CHAR);
+        act(AT_ACTION, "The $d closes.", rch, NULL, pexit->keyword, TO_CHAR);
       if ((pexit_rev = pexit->rexit) != NULL && pexit_rev->to_room == ch->in_room)
       {
-	SET_BIT(pexit_rev->exit_info, EX_CLOSED);
-	/*
-	 * bug here pointed out by Nick Gammon 
-	 */
-	for (rch = pexit->to_room->first_person; rch; rch = rch->next_in_room)
-	  act(AT_ACTION, "The $d closes.", rch, NULL, pexit_rev->keyword, TO_CHAR);
+        SET_BIT(pexit_rev->exit_info, EX_CLOSED);
+        /*
+         * bug here pointed out by Nick Gammon 
+         */
+        for (rch = pexit->to_room->first_person; rch; rch = rch->next_in_room)
+          act(AT_ACTION, "The $d closes.", rch, NULL, pexit_rev->keyword, TO_CHAR);
       }
       check_room_for_traps(ch, trap_door[edir]);
       return;
@@ -901,7 +901,7 @@ void do_rap(CHAR_DATA* ch, const char* argument)
       CHAR_DATA *rch;
       for (rch = to_room->first_person; rch; rch = rch->next_in_room)
       {
-	act(AT_ACTION, "Someone raps loudly from the other side of the $d.", rch, NULL, pexit_rev->keyword, TO_CHAR);
+        act(AT_ACTION, "Someone raps loudly from the other side of the $d.", rch, NULL, pexit_rev->keyword, TO_CHAR);
       }
     }
   }
@@ -996,9 +996,9 @@ void do_smoke(CHAR_DATA* ch, const char* argument)
 
       WAIT_STATE(ch, skill->beats);
       if (skill->spell_fun)
-	obj_cast_spell(sn, UMIN(skill->min_level, ch->level), ch, ch, NULL);
+        obj_cast_spell(sn, UMIN(skill->min_level, ch->level), ch, ch, NULL);
       if (obj_extracted(opipe))
-	return;
+        return;
     }
     else
       bug("do_smoke: bad herb type %d", opipe->value[2]);
@@ -1042,8 +1042,8 @@ void do_extinguish(CHAR_DATA *ch, const char *argument)
     if ((obj = get_obj_carry(ch, arg)) == NULL)
       if ((obj = get_obj_list_rev(ch, arg, ch->in_room->last_content)) == NULL)
       {
-	send_to_char("You aren't carrying that.\r\n", ch);
-	return;
+        send_to_char("You aren't carrying that.\r\n", ch);
+        return;
       }
 
   separate_obj(obj);
@@ -1088,8 +1088,8 @@ void do_light(CHAR_DATA *ch, const char *argument)
     if ((obj = get_obj_carry(ch, arg)) == NULL)
       if ((obj = get_obj_list_rev(ch, arg, ch->in_room->last_content)) == NULL)
       {
-	send_to_char("You aren't carrying that.\r\n", ch);
-	return;
+        send_to_char("You aren't carrying that.\r\n", ch);
+        return;
       }
 
   if (!find_tinder(ch))
@@ -1111,9 +1111,9 @@ void do_light(CHAR_DATA *ch, const char *argument)
     {
       if (obj->value[1] < 1)
       {
-	act(AT_ACTION, "You try to light $p, but it's empty.", ch, obj, NULL, TO_CHAR);
-	act(AT_ACTION, "$n tries to light $p, but it's empty.", ch, obj, NULL, TO_ROOM);
-	return;
+        act(AT_ACTION, "You try to light $p, but it's empty.", ch, obj, NULL, TO_CHAR);
+        act(AT_ACTION, "$n tries to light $p, but it's empty.", ch, obj, NULL, TO_ROOM);
+        return;
       }
       act(AT_ACTION, "You carefully light $p.", ch, obj, NULL, TO_CHAR);
       act(AT_ACTION, "$n carefully lights $p.", ch, obj, NULL, TO_ROOM);
@@ -1128,12 +1128,12 @@ void do_light(CHAR_DATA *ch, const char *argument)
     {
       if (!IS_SET(obj->value[3], PIPE_LIT))
       {
-	act(AT_ACTION, "You carefully light $p.", ch, obj, NULL, TO_CHAR);
-	act(AT_ACTION, "$n carefully lights $p.", ch, obj, NULL, TO_ROOM);
-	SET_BIT(obj->value[3], PIPE_LIT);
+        act(AT_ACTION, "You carefully light $p.", ch, obj, NULL, TO_CHAR);
+        act(AT_ACTION, "$n carefully lights $p.", ch, obj, NULL, TO_ROOM);
+        SET_BIT(obj->value[3], PIPE_LIT);
       }
       else
-	send_to_char("It's already lit.\r\n", ch);
+        send_to_char("It's already lit.\r\n", ch);
       return;
     }
     else
@@ -1144,7 +1144,7 @@ void do_light(CHAR_DATA *ch, const char *argument)
 }
 
 /*
- * Apply a salve/ointment					-Thoric
+ * Apply a salve/ointment                                       -Thoric
  * Support for applying to others.  Pkill concerns dealt with elsewhere.
  */
 void do_apply(CHAR_DATA* ch, const char* argument)
@@ -1227,31 +1227,31 @@ void do_apply(CHAR_DATA* ch, const char* argument)
     {
       if (salve->value[1] < 1)
       {
-	if (victim != ch)
-	{
-	  act(AT_ACTION, "$n rubs the last of $p onto $N.", ch, salve, victim, TO_NOTVICT);
-	  act(AT_ACTION, "$n rubs the last of $p onto you.", ch, salve, victim, TO_VICT);
-	  act(AT_ACTION, "You rub the last of $p onto $N.", ch, salve, victim, TO_CHAR);
-	}
-	else
-	{
-	  act(AT_ACTION, "You rub the last of $p onto yourself.", ch, salve, NULL, TO_CHAR);
-	  act(AT_ACTION, "$n rubs the last of $p onto $mself.", ch, salve, NULL, TO_ROOM);
-	}
+        if (victim != ch)
+        {
+          act(AT_ACTION, "$n rubs the last of $p onto $N.", ch, salve, victim, TO_NOTVICT);
+          act(AT_ACTION, "$n rubs the last of $p onto you.", ch, salve, victim, TO_VICT);
+          act(AT_ACTION, "You rub the last of $p onto $N.", ch, salve, victim, TO_CHAR);
+        }
+        else
+        {
+          act(AT_ACTION, "You rub the last of $p onto yourself.", ch, salve, NULL, TO_CHAR);
+          act(AT_ACTION, "$n rubs the last of $p onto $mself.", ch, salve, NULL, TO_ROOM);
+        }
       }
       else
       {
-	if (victim != ch)
-	{
-	  act(AT_ACTION, "$n rubs $p onto $N.", ch, salve, victim, TO_NOTVICT);
-	  act(AT_ACTION, "$n rubs $p onto you.", ch, salve, victim, TO_VICT);
-	  act(AT_ACTION, "You rub $p onto $N.", ch, salve, victim, TO_CHAR);
-	}
-	else
-	{
-	  act(AT_ACTION, "You rub $p onto yourself.", ch, salve, NULL, TO_CHAR);
-	  act(AT_ACTION, "$n rubs $p onto $mself.", ch, salve, NULL, TO_ROOM);
-	}
+        if (victim != ch)
+        {
+          act(AT_ACTION, "$n rubs $p onto $N.", ch, salve, victim, TO_NOTVICT);
+          act(AT_ACTION, "$n rubs $p onto you.", ch, salve, victim, TO_VICT);
+          act(AT_ACTION, "You rub $p onto $N.", ch, salve, victim, TO_CHAR);
+        }
+        else
+        {
+          act(AT_ACTION, "You rub $p onto yourself.", ch, salve, NULL, TO_CHAR);
+          act(AT_ACTION, "$n rubs $p onto $mself.", ch, salve, NULL, TO_ROOM);
+        }
       }
     }
     else
@@ -1293,36 +1293,36 @@ void actiondesc(CHAR_DATA * ch, OBJ_DATA * obj)
       switch (*srcptr)
       {
       case 'e':
-	ichar = "you";
-	iroom = "$e";
-	break;
+        ichar = "you";
+        iroom = "$e";
+        break;
 
       case 'm':
-	ichar = "you";
-	iroom = "$m";
-	break;
+        ichar = "you";
+        iroom = "$m";
+        break;
 
       case 'n':
-	ichar = "you";
-	iroom = "$n";
-	break;
+        ichar = "you";
+        iroom = "$n";
+        break;
 
       case 's':
-	ichar = "your";
-	iroom = "$s";
-	break;
+        ichar = "your";
+        iroom = "$s";
+        break;
 
-	/*
-	 * case 'q':
-	 * iroom = "s";
-	 * break;
-	 */
+        /*
+         * case 'q':
+         * iroom = "s";
+         * break;
+         */
 
       default:
-	srcptr--;
-	*charptr++ = *srcptr;
-	*roomptr++ = *srcptr;
-	break;
+        srcptr--;
+        *charptr++ = *srcptr;
+        *roomptr++ = *srcptr;
+        break;
       }
     }
     else if (*srcptr == '%' && *++srcptr == 's')
@@ -1393,7 +1393,7 @@ void actiondesc(CHAR_DATA * ch, OBJ_DATA * obj)
 }
 
 /*
- * Extended Bitvector Routines					-Thoric
+ * Extended Bitvector Routines                                  -Thoric
  */
 
 /* check to see if the extended bitvector is completely empty */
@@ -1468,7 +1468,7 @@ void ext_toggle_bits(EXT_BV * var, EXT_BV * bits)
 }
 
 /*
- * Read an extended bitvector from a file.			-Thoric
+ * Read an extended bitvector from a file.                      -Thoric
  */
 EXT_BV fread_bitvector(FILE * fp)
 {
@@ -1516,7 +1516,7 @@ char *print_bitvector(EXT_BV * bits)
 }
 
 /*
- * Write an extended bitvector to a file			-Thoric
+ * Write an extended bitvector to a file                        -Thoric
  */
 void fwrite_bitvector(EXT_BV * bits, FILE * fp)
 {

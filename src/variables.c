@@ -130,7 +130,7 @@ int tag_char(CHAR_DATA * ch, VARIABLE_DATA * var, int replace)
     if (vd->vnum == var->vnum && !str_cmp(vd->tag, var->tag))
     {
       if (!replace)
-	return -1;
+        return -1;
       found = TRUE;
       break;
     }
@@ -173,9 +173,9 @@ bool is_valid_tag(const char *tagname)
  *  vnum 0 is used to denote a global tag (local to the victim)
  *  otherwise tags are separated by vnum
  *
- *  mptag	<victim> <tag> [value]
- *  mprmtag	<victim> <tag>
- *  mpflag	<victim> <tag> <flag>
+ *  mptag       <victim> <tag> [value]
+ *  mprmtag     <victim> <tag>
+ *  mpflag      <victim> <tag> <flag>
  *  mprmflag    <victim> <tag> <flag>
  *
  *  if istagged($n,tag) [== value]
@@ -568,29 +568,29 @@ void fread_variable(CHAR_DATA * ch, FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	switch (pvd->type)
-	{
-	default:
-	{
-	  bug("%s: invalid/incomplete variable: %s", __func__, pvd->tag);
-	  DISPOSE(pvd->tag);
-	  DISPOSE(pvd);
-	  break;
-	}
-	case vtSTR:
-	case vtXBIT:
-	  if (!pvd->data)
-	  {
-	    bug("%s: invalid/incomplete variable: %s", __func__, pvd->tag);
-	    DISPOSE(pvd->tag);
-	    DISPOSE(pvd);
-	    break;
-	  }
-	case vtINT:
-	  tag_char(ch, pvd, 1);
-	  break;
-	}
-	return;
+        switch (pvd->type)
+        {
+        default:
+        {
+          bug("%s: invalid/incomplete variable: %s", __func__, pvd->tag);
+          DISPOSE(pvd->tag);
+          DISPOSE(pvd);
+          break;
+        }
+        case vtSTR:
+        case vtXBIT:
+          if (!pvd->data)
+          {
+            bug("%s: invalid/incomplete variable: %s", __func__, pvd->tag);
+            DISPOSE(pvd->tag);
+            DISPOSE(pvd);
+            break;
+          }
+        case vtINT:
+          tag_char(ch, pvd, 1);
+          break;
+        }
+        return;
       }
       break;
 
@@ -601,14 +601,14 @@ void fread_variable(CHAR_DATA * ch, FILE * fp)
     case 'I':
       if (!str_cmp(word, "Int"))
       {
-	if (pvd->type != vtINT)
-	  bug("%s: Type mismatch -- type(%d) != vtInt", __func__, pvd->type);
-	else
-	{
-	  pvd->data = (void *)((long)fread_number(fp));
-	  fMatch = TRUE;
-	}
-	break;
+        if (pvd->type != vtINT)
+          bug("%s: Type mismatch -- type(%d) != vtInt", __func__, pvd->type);
+        else
+        {
+          pvd->data = (void *)((long)fread_number(fp));
+          fMatch = TRUE;
+        }
+        break;
       }
       break;
 
@@ -623,14 +623,14 @@ void fread_variable(CHAR_DATA * ch, FILE * fp)
     case 'S':
       if (!str_cmp(word, "Str"))
       {
-	if (pvd->type != vtSTR)
-	  bug("%s: Type mismatch -- type(%d) != vtSTR", __func__, pvd->type);
-	else
-	{
-	  pvd->data = fread_string_nohash(fp);
-	  fMatch = TRUE;
-	}
-	break;
+        if (pvd->type != vtSTR)
+          bug("%s: Type mismatch -- type(%d) != vtSTR", __func__, pvd->type);
+        else
+        {
+          pvd->data = fread_string_nohash(fp);
+          fMatch = TRUE;
+        }
+        break;
       }
       break;
 
@@ -647,15 +647,15 @@ void fread_variable(CHAR_DATA * ch, FILE * fp)
     case 'X':
       if (!str_cmp(word, "Xbit"))
       {
-	if (pvd->type != vtXBIT)
-	  bug("%s: Type mismatch -- type(%d) != vtXBIT", __func__, pvd->type);
-	else
-	{
-	  CREATE(pvd->data, EXT_BV, 1);
-	  *(EXT_BV *) pvd->data = fread_bitvector(fp);
-	  fMatch = TRUE;
-	}
-	break;
+        if (pvd->type != vtXBIT)
+          bug("%s: Type mismatch -- type(%d) != vtXBIT", __func__, pvd->type);
+        else
+        {
+          CREATE(pvd->data, EXT_BV, 1);
+          *(EXT_BV *) pvd->data = fread_bitvector(fp);
+          fMatch = TRUE;
+        }
+        break;
       }
       break;
     }

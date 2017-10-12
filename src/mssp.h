@@ -41,7 +41,7 @@
          I only really have 2 terms...
  1. Give credit where it is due, keep the above header in your code 
     (you don't have to give me credit in mud) and if someone asks 
-	don't lie and say you did it.
+        don't lie and say you did it.
  2. If you have any comments or questions feel free to email me
     at keberus@gmail.com
 

@@ -176,28 +176,28 @@ bool load_mssp_data(void)
       letter = fread_letter(fp);
       if (letter == '*')
       {
-	fread_to_eol(fp);
-	continue;
+        fread_to_eol(fp);
+        continue;
       }
 
       if (letter != '#')
       {
-	bug("%s: # not found.", __func__);
-	break;
+        bug("%s: # not found.", __func__);
+        break;
       }
 
       word = fread_word(fp);
       if (!str_cmp(word, "MSSP_INFO"))
       {
-	fread_mssp_info(fp);
-	break;
+        fread_mssp_info(fp);
+        break;
       }
       else if (!str_cmp(word, "END"))
-	break;
+        break;
       else
       {
-	bug("%s: bad section.", __func__);
-	break;
+        bug("%s: bad section.", __func__);
+        break;
       }
     }
     fclose(fp);
@@ -236,7 +236,7 @@ void fread_mssp_info(FILE * fp)
     case 'E':
       KEY("EquipmentSystem", mssp_info->equipmentSystem, fread_string_nohash(fp));
       if (!str_cmp(word, "End"))
-	return;
+        return;
       break;
 
     case 'F':

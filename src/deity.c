@@ -108,46 +108,46 @@ void save_deity(DEITY_DATA * deity)
   else
   {
     fprintf(fp, "#DEITY\n");
-    fprintf(fp, "Filename		%s~\n", deity->filename);
-    fprintf(fp, "Name		%s~\n", deity->name);
-    fprintf(fp, "Description	%s~\n", deity->description);
-    fprintf(fp, "Alignment		%d\n", deity->alignment);
-    fprintf(fp, "Worshippers	%d\n", deity->worshippers);
-    fprintf(fp, "Flee		%d\n", deity->flee);
-    fprintf(fp, "Flee_npcrace	%d\n", deity->flee_npcrace);
-    fprintf(fp, "Flee_npcfoe	%d\n", deity->flee_npcfoe);
-    fprintf(fp, "Kill		%d\n", deity->kill);
-    fprintf(fp, "Kill_npcrace	%d\n", deity->kill_npcrace);
-    fprintf(fp, "Kill_npcfoe	%d\n", deity->kill_npcfoe);
-    fprintf(fp, "Kill_magic	%d\n", deity->kill_magic);
-    fprintf(fp, "Sac		%d\n", deity->sac);
-    fprintf(fp, "Bury_corpse	%d\n", deity->bury_corpse);
-    fprintf(fp, "Aid_spell		%d\n", deity->aid_spell);
-    fprintf(fp, "Aid		%d\n", deity->aid);
-    fprintf(fp, "Steal		%d\n", deity->steal);
-    fprintf(fp, "Backstab		%d\n", deity->backstab);
-    fprintf(fp, "Die		%d\n", deity->die);
-    fprintf(fp, "Die_npcrace	%d\n", deity->die_npcrace);
-    fprintf(fp, "Die_npcfoe	%d\n", deity->die_npcfoe);
-    fprintf(fp, "Spell_aid		%d\n", deity->spell_aid);
-    fprintf(fp, "Dig_corpse	%d\n", deity->dig_corpse);
-    fprintf(fp, "Scorpse		%d\n", deity->scorpse);
-    fprintf(fp, "Savatar		%d\n", deity->savatar);
-    fprintf(fp, "Sdeityobj		%d\n", deity->sdeityobj);
-    fprintf(fp, "Srecall		%d\n", deity->srecall);
-    fprintf(fp, "Race		%d\n", deity->race);
-    fprintf(fp, "Class		%d\n", deity->Class);
-    fprintf(fp, "Element		%d\n", deity->element);
-    fprintf(fp, "Sex		%d\n", deity->sex);
-    fprintf(fp, "Affected		%s\n", print_bitvector(&deity->affected));
-    fprintf(fp, "Npcrace		%d\n", deity->npcrace);
-    fprintf(fp, "Npcfoe		%d\n", deity->npcfoe);
-    fprintf(fp, "Suscept		%d\n", deity->suscept);
-    fprintf(fp, "Race2		%d\n", deity->race2);
-    fprintf(fp, "Susceptnum	%d\n", deity->susceptnum);
-    fprintf(fp, "Elementnum	%d\n", deity->elementnum);
-    fprintf(fp, "Affectednum	%d\n", deity->affectednum);
-    fprintf(fp, "Objstat		%d\n", deity->objstat);
+    fprintf(fp, "Filename               %s~\n", deity->filename);
+    fprintf(fp, "Name           %s~\n", deity->name);
+    fprintf(fp, "Description    %s~\n", deity->description);
+    fprintf(fp, "Alignment              %d\n", deity->alignment);
+    fprintf(fp, "Worshippers    %d\n", deity->worshippers);
+    fprintf(fp, "Flee           %d\n", deity->flee);
+    fprintf(fp, "Flee_npcrace   %d\n", deity->flee_npcrace);
+    fprintf(fp, "Flee_npcfoe    %d\n", deity->flee_npcfoe);
+    fprintf(fp, "Kill           %d\n", deity->kill);
+    fprintf(fp, "Kill_npcrace   %d\n", deity->kill_npcrace);
+    fprintf(fp, "Kill_npcfoe    %d\n", deity->kill_npcfoe);
+    fprintf(fp, "Kill_magic     %d\n", deity->kill_magic);
+    fprintf(fp, "Sac            %d\n", deity->sac);
+    fprintf(fp, "Bury_corpse    %d\n", deity->bury_corpse);
+    fprintf(fp, "Aid_spell              %d\n", deity->aid_spell);
+    fprintf(fp, "Aid            %d\n", deity->aid);
+    fprintf(fp, "Steal          %d\n", deity->steal);
+    fprintf(fp, "Backstab               %d\n", deity->backstab);
+    fprintf(fp, "Die            %d\n", deity->die);
+    fprintf(fp, "Die_npcrace    %d\n", deity->die_npcrace);
+    fprintf(fp, "Die_npcfoe     %d\n", deity->die_npcfoe);
+    fprintf(fp, "Spell_aid              %d\n", deity->spell_aid);
+    fprintf(fp, "Dig_corpse     %d\n", deity->dig_corpse);
+    fprintf(fp, "Scorpse                %d\n", deity->scorpse);
+    fprintf(fp, "Savatar                %d\n", deity->savatar);
+    fprintf(fp, "Sdeityobj              %d\n", deity->sdeityobj);
+    fprintf(fp, "Srecall                %d\n", deity->srecall);
+    fprintf(fp, "Race           %d\n", deity->race);
+    fprintf(fp, "Class          %d\n", deity->Class);
+    fprintf(fp, "Element                %d\n", deity->element);
+    fprintf(fp, "Sex            %d\n", deity->sex);
+    fprintf(fp, "Affected               %s\n", print_bitvector(&deity->affected));
+    fprintf(fp, "Npcrace                %d\n", deity->npcrace);
+    fprintf(fp, "Npcfoe         %d\n", deity->npcfoe);
+    fprintf(fp, "Suscept                %d\n", deity->suscept);
+    fprintf(fp, "Race2          %d\n", deity->race2);
+    fprintf(fp, "Susceptnum     %d\n", deity->susceptnum);
+    fprintf(fp, "Elementnum     %d\n", deity->elementnum);
+    fprintf(fp, "Affectednum    %d\n", deity->affectednum);
+    fprintf(fp, "Objstat                %d\n", deity->objstat);
     fprintf(fp, "End\n\n");
     fprintf(fp, "#END\n");
     fclose(fp);
@@ -201,11 +201,11 @@ void fread_deity(DEITY_DATA * deity, FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if (!deity->name)
-	  deity->name = STRALLOC("");
-	if (!deity->description)
-	  deity->description = STRALLOC("");
-	return;
+        if (!deity->name)
+          deity->name = STRALLOC("");
+        if (!deity->description)
+          deity->description = STRALLOC("");
+        return;
       }
       KEY("Element", deity->element, fread_number(fp));
       KEY("Elementnum", deity->elementnum, fread_number(fp));
@@ -288,29 +288,29 @@ bool load_deity_file(const char *deityfile)
       letter = fread_letter(fp);
       if (letter == '*')
       {
-	fread_to_eol(fp);
-	continue;
+        fread_to_eol(fp);
+        continue;
       }
 
       if (letter != '#')
       {
-	bug("%s", "Load_deity_file: # not found.");
-	break;
+        bug("%s", "Load_deity_file: # not found.");
+        break;
       }
 
       word = fread_word(fp);
       if (!str_cmp(word, "DEITY"))
       {
-	CREATE(deity, DEITY_DATA, 1);
-	fread_deity(deity, fp);
-	LINK(deity, first_deity, last_deity, next, prev);
-	found = TRUE;
-	break;
+        CREATE(deity, DEITY_DATA, 1);
+        fread_deity(deity, fp);
+        LINK(deity, first_deity, last_deity, next, prev);
+        found = TRUE;
+        break;
       }
       else
       {
-	bug("Load_deity_file: bad section: %s.", word);
-	break;
+        bug("Load_deity_file: bad section: %s.", word);
+        break;
       }
     }
     fclose(fp);
@@ -431,24 +431,24 @@ void do_setdeity(CHAR_DATA* ch, const char* argument)
 
       if (!IS_NPC(vch))
       {
-	if (vch->pcdata->deity == deity)
-	{
-	  char buf[MAX_STRING_LENGTH];
+        if (vch->pcdata->deity == deity)
+        {
+          char buf[MAX_STRING_LENGTH];
 
-	  snprintf(buf, MAX_STRING_LENGTH, "&R\r\nYour deity, %s, has met its demise!\r\n", vch->pcdata->deity_name);
-	  if (!vch->desc)
-	    add_loginmsg(vch->name, 18, buf);
-	  else
-	    send_to_char_color(buf, vch);
+          snprintf(buf, MAX_STRING_LENGTH, "&R\r\nYour deity, %s, has met its demise!\r\n", vch->pcdata->deity_name);
+          if (!vch->desc)
+            add_loginmsg(vch->name, 18, buf);
+          else
+            send_to_char_color(buf, vch);
 
-	  xREMOVE_BITS(vch->affected_by, vch->pcdata->deity->affected);
-	  REMOVE_BIT(vch->resistant, vch->pcdata->deity->element);
-	  REMOVE_BIT(vch->susceptible, vch->pcdata->deity->suscept);
-	  vch->pcdata->deity = NULL;
-	  STRFREE(vch->pcdata->deity_name);
-	  vch->pcdata->deity_name = STRALLOC("");
-	  save_char_obj(vch);
-	}
+          xREMOVE_BITS(vch->affected_by, vch->pcdata->deity->affected);
+          REMOVE_BIT(vch->resistant, vch->pcdata->deity->element);
+          REMOVE_BIT(vch->susceptible, vch->pcdata->deity->suscept);
+          vch->pcdata->deity = NULL;
+          STRFREE(vch->pcdata->deity_name);
+          vch->pcdata->deity_name = STRALLOC("");
+          save_char_obj(vch);
+        }
       }
     }
 
@@ -818,19 +818,19 @@ void do_setdeity(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       if (!str_cmp(arg3, "none"))
       {
-	fMatch = TRUE;
-	deity->suscept = 0;
+        fMatch = TRUE;
+        deity->suscept = 0;
       }
       else
       {
-	value = get_risflag(arg3);
-	if (value < 0 || value > 31)
-	  ch_printf(ch, "Unknown flag: %s\r\n", arg3);
-	else
-	{
-	  TOGGLE_BIT(deity->suscept, 1 << value);
-	  fMatch = TRUE;
-	}
+        value = get_risflag(arg3);
+        if (value < 0 || value > 31)
+          ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        else
+        {
+          TOGGLE_BIT(deity->suscept, 1 << value);
+          fMatch = TRUE;
+        }
       }
     }
 
@@ -849,19 +849,19 @@ void do_setdeity(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       if (!str_cmp(arg3, "none"))
       {
-	fMatch = TRUE;
-	deity->element = 0;
+        fMatch = TRUE;
+        deity->element = 0;
       }
       else
       {
-	value = get_risflag(arg3);
-	if (value < 0 || value > 31)
-	  ch_printf(ch, "Unknown flag: %s\r\n", arg3);
-	else
-	{
-	  TOGGLE_BIT(deity->element, 1 << value);
-	  fMatch = TRUE;
-	}
+        value = get_risflag(arg3);
+        if (value < 0 || value > 31)
+          ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        else
+        {
+          TOGGLE_BIT(deity->element, 1 << value);
+          fMatch = TRUE;
+        }
       }
     }
 
@@ -888,19 +888,19 @@ void do_setdeity(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       if (!str_cmp(arg3, "none"))
       {
-	fMatch = TRUE;
-	xCLEAR_BITS(deity->affected);
+        fMatch = TRUE;
+        xCLEAR_BITS(deity->affected);
       }
       else
       {
-	value = get_aflag(arg3);
-	if (value < 0 || value >= MAX_BITS)
-	  ch_printf(ch, "Unknown flag: %s\r\n", arg3);
-	else
-	{
-	  xTOGGLE_BIT(deity->affected, value);
-	  fMatch = TRUE;
-	}
+        value = get_aflag(arg3);
+        if (value < 0 || value >= MAX_BITS)
+          ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        else
+        {
+          xTOGGLE_BIT(deity->affected, value);
+          fMatch = TRUE;
+        }
       }
     }
 
@@ -939,32 +939,32 @@ void do_showdeity(CHAR_DATA* ch, const char* argument)
 
   ch_printf(ch, "Deity: %s\r\nFilename: %s\r\nDescription:\r\n%s\r\n", deity->name, deity->filename, deity->description);
   ch_printf(ch, "Alignment: %-7dNpcrace: %-9sNpcfoe: %s\r\n",
-	     deity->alignment,
-	     (deity->npcrace < 0 || deity->npcrace > MAX_NPC_RACE) ? "none" : npc_race[deity->npcrace],
-	     (deity->npcfoe < 0 || deity->npcfoe > MAX_NPC_RACE) ? "none" : npc_race[deity->npcfoe]);
+             deity->alignment,
+             (deity->npcrace < 0 || deity->npcrace > MAX_NPC_RACE) ? "none" : npc_race[deity->npcrace],
+             (deity->npcfoe < 0 || deity->npcfoe > MAX_NPC_RACE) ? "none" : npc_race[deity->npcfoe]);
   ch_printf(ch, "Race: %-12sClass: %-11sSex: %-13sRace2: %s\r\n",
-	     (deity->race < 0 || deity->race > MAX_PC_RACE) ? "none" : race_table[deity->race]->race_name,
-	     (deity->Class < 0 || deity->Class > MAX_PC_CLASS) ? "none" : class_table[deity->Class]->who_name,
-	     deity->sex == -1 ? "none" :
-	     deity->sex == SEX_MALE ? "male" :
-	     deity->sex == SEX_FEMALE ? "female" : "neutral",
-	     (deity->race2 < 0 || deity->race2 > MAX_PC_RACE) ? "none" : npc_race[deity->race2]);
+             (deity->race < 0 || deity->race > MAX_PC_RACE) ? "none" : race_table[deity->race]->race_name,
+             (deity->Class < 0 || deity->Class > MAX_PC_CLASS) ? "none" : class_table[deity->Class]->who_name,
+             deity->sex == -1 ? "none" :
+             deity->sex == SEX_MALE ? "male" :
+             deity->sex == SEX_FEMALE ? "female" : "neutral",
+             (deity->race2 < 0 || deity->race2 > MAX_PC_RACE) ? "none" : npc_race[deity->race2]);
   ch_printf(ch, "Objstat: %-9dWorshippers: %d\r\n", deity->objstat, deity->worshippers);
   ch_printf(ch, "Affectednum: %-5dElementnum: %-6dSusceptnum: %d\r\n", deity->affectednum, deity->elementnum,
-	     deity->susceptnum);
+             deity->susceptnum);
   ch_printf(ch, "\r\nAffected: %s\r\n", affect_bit_name(&deity->affected));
   ch_printf(ch, "Suscept: %s\r\n", flag_string(deity->suscept, ris_flags));
   ch_printf(ch, "Element: %s\r\n", flag_string(deity->element, ris_flags));
   ch_printf(ch, "\r\nFlee: %-12dFlee_npcrace: %-4dKill_npcrace: "
-	     "%-4dKill: %d\r\n", deity->flee, deity->flee_npcrace, deity->kill_npcrace, deity->kill);
+             "%-4dKill: %d\r\n", deity->flee, deity->flee_npcrace, deity->kill_npcrace, deity->kill);
   ch_printf(ch, "Kill_magic: %-6dSac: %-13dBury_corpse: %-5dAid_spell: "
-	     "%d\r\n", deity->kill_magic, deity->sac, deity->bury_corpse, deity->aid_spell);
+             "%d\r\n", deity->kill_magic, deity->sac, deity->bury_corpse, deity->aid_spell);
   ch_printf(ch, "Aid: %-13dSteal: %-11dBackstab: %-8dDie: %d\r\n", deity->aid, deity->steal, deity->backstab, deity->die);
   ch_printf(ch, "Die_npcrace: %-5dDig_corpse: %-6dSpell_aid: %-7dKill_npcfoe: %d\r\n",
-	     deity->die_npcrace, deity->dig_corpse, deity->spell_aid, deity->kill_npcfoe);
+             deity->die_npcrace, deity->dig_corpse, deity->spell_aid, deity->kill_npcfoe);
   ch_printf(ch, "Die_npcfoe: %-6dFlee_npcfoe: %d\r\n", deity->die_npcfoe, deity->flee_npcfoe);
   ch_printf(ch, "\r\nScorpse: %-9dSavatar: %-9dSdeityobj: %-7d"
-	     "Srecall: %d\r\n", deity->scorpse, deity->savatar, deity->sdeityobj, deity->srecall);
+             "Srecall: %d\r\n", deity->scorpse, deity->savatar, deity->sdeityobj, deity->srecall);
   return;
 }
 
@@ -1119,10 +1119,10 @@ void do_deities(CHAR_DATA* ch, const char* argument)
   if (argument[0] == '\0')
   {
     send_to_pager_color("&gFor detailed information on a deity, try 'deities <deity>' or 'help deities'\r\n", ch);
-    send_to_pager_color("Deity			Worshippers\r\n", ch);
+    send_to_pager_color("Deity                  Worshippers\r\n", ch);
     for (deity = first_deity; deity; deity = deity->next)
     {
-      pager_printf_color(ch, "&G%-14s	&g%19d\r\n", deity->name, deity->worshippers);
+      pager_printf_color(ch, "&G%-14s   &g%19d\r\n", deity->name, deity->worshippers);
       count++;
     }
     if (!count)
@@ -1191,28 +1191,28 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
     {
       if (obj->in_room && !str_cmp(buf2, obj->short_descr) && (obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC))
       {
-	found = TRUE;
+        found = TRUE;
 
-	if (IS_PKILL(ch) && obj->timer > 19)
-	{
-	  if (retr)
-	    ch->pcdata->favor -= ch->pcdata->deity->scorpse;
-	  send_to_char("So soon?  Have patience...\n\r", ch);
-	  return;
-	}
+        if (IS_PKILL(ch) && obj->timer > 19)
+        {
+          if (retr)
+            ch->pcdata->favor -= ch->pcdata->deity->scorpse;
+          send_to_char("So soon?  Have patience...\n\r", ch);
+          return;
+        }
 
-	if (xIS_SET(obj->in_room->room_flags, ROOM_NOSUPPLICATE))
-	{
-	  act(AT_MAGIC, "The image of your corpse appears, but suddenly wavers away.", ch, NULL, NULL, TO_CHAR);
-	  return;
-	}
+        if (xIS_SET(obj->in_room->room_flags, ROOM_NOSUPPLICATE))
+        {
+          act(AT_MAGIC, "The image of your corpse appears, but suddenly wavers away.", ch, NULL, NULL, TO_CHAR);
+          return;
+        }
 
-	act(AT_MAGIC, "Your corpse appears suddenly, surrounded by a divine presence...", ch, NULL, NULL, TO_CHAR);
-	act(AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, NULL, NULL, TO_ROOM);
-	obj_from_room(obj);
-	obj = obj_to_room(obj, ch->in_room);
-	xREMOVE_BIT(obj->extra_flags, ITEM_BURIED);
-	retr = TRUE;
+        act(AT_MAGIC, "Your corpse appears suddenly, surrounded by a divine presence...", ch, NULL, NULL, TO_CHAR);
+        act(AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, NULL, NULL, TO_ROOM);
+        obj_from_room(obj);
+        obj = obj_to_room(obj, ch->in_room);
+        xREMOVE_BIT(obj->extra_flags, ITEM_BURIED);
+        retr = TRUE;
       }
     }
 
@@ -1227,10 +1227,10 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
       SET_BIT(ch->susceptible, ch->pcdata->deity->suscept);
 
     if ((oldfavor > ch->pcdata->deity->affectednum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
-	(oldfavor > ch->pcdata->deity->elementnum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
-	(oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
+          ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
+        (oldfavor > ch->pcdata->deity->elementnum &&
+          ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
+        (oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
     {
       update_aris(ch);
     }
@@ -1280,10 +1280,10 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
       SET_BIT(ch->susceptible, ch->pcdata->deity->suscept);
 
     if ((oldfavor > ch->pcdata->deity->affectednum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
-	(oldfavor > ch->pcdata->deity->elementnum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
-	(oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
+          ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
+        (oldfavor > ch->pcdata->deity->elementnum &&
+          ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
+        (oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
     {
       update_aris(ch);
     }
@@ -1331,10 +1331,10 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
       SET_BIT(ch->susceptible, ch->pcdata->deity->suscept);
 
     if ((oldfavor > ch->pcdata->deity->affectednum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
-	(oldfavor > ch->pcdata->deity->elementnum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
-	(oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
+          ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
+        (oldfavor > ch->pcdata->deity->elementnum &&
+          ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
+        (oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
     {
       update_aris(ch);
     }
@@ -1434,10 +1434,10 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
       SET_BIT(ch->susceptible, ch->pcdata->deity->suscept);
 
     if ((oldfavor > ch->pcdata->deity->affectednum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
-	(oldfavor > ch->pcdata->deity->elementnum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
-	(oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
+          ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
+        (oldfavor > ch->pcdata->deity->elementnum &&
+          ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
+        (oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
     {
       update_aris(ch);
     }
@@ -1452,12 +1452,12 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
 /*
   Internal function to adjust favor.
   Fields are:
-  0 = flee		5 = sac			10 = backstab	
-  1 = flee_npcrace	6 = bury_corpse		11 = die
-  2 = kill		7 = aid_spell		12 = die_npcrace
-  3 = kill_npcrace	8 = aid			13 = spell_aid
-  4 = kill_magic		9 = steal		14 = dig_corpse
-  15 = die_npcfoe	       16 = flee_npcfoe         17 = kill_npcfoe
+  0 = flee              5 = sac                 10 = backstab   
+  1 = flee_npcrace      6 = bury_corpse         11 = die
+  2 = kill              7 = aid_spell           12 = die_npcrace
+  3 = kill_npcrace      8 = aid                 13 = spell_aid
+  4 = kill_magic                9 = steal               14 = dig_corpse
+  15 = die_npcfoe              16 = flee_npcfoe         17 = kill_npcfoe
 */
 void adjust_favor(CHAR_DATA * ch, int field, int mod)
 {
@@ -1469,7 +1469,7 @@ void adjust_favor(CHAR_DATA * ch, int field, int mod)
   oldfavor = ch->pcdata->favor;
 
   if ((ch->alignment - ch->pcdata->deity->alignment > 650
-	|| ch->alignment - ch->pcdata->deity->alignment < -650) && ch->pcdata->deity->alignment != 0)
+        || ch->alignment - ch->pcdata->deity->alignment < -650) && ch->pcdata->deity->alignment != 0)
   {
     ch->pcdata->favor -= 2;
     ch->pcdata->favor = URANGE(-2500, ch->pcdata->favor, 2500);
@@ -1485,10 +1485,10 @@ void adjust_favor(CHAR_DATA * ch, int field, int mod)
      * If favor crosses over the line then strip the affect 
      */
     if ((oldfavor > ch->pcdata->deity->affectednum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
-	(oldfavor > ch->pcdata->deity->elementnum &&
-	  ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
-	(oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
+          ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
+        (oldfavor > ch->pcdata->deity->elementnum &&
+          ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
+        (oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
     {
       update_aris(ch);
     }
@@ -1568,9 +1568,9 @@ void adjust_favor(CHAR_DATA * ch, int field, int mod)
    * If favor crosses over line then strip the affect 
    */
   if ((oldfavor > ch->pcdata->deity->affectednum &&
-	ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
+        ch->pcdata->favor <= ch->pcdata->deity->affectednum) ||
       (oldfavor > ch->pcdata->deity->elementnum &&
-	ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
+        ch->pcdata->favor <= ch->pcdata->deity->elementnum) ||
       (oldfavor < ch->pcdata->deity->susceptnum && ch->pcdata->favor >= ch->pcdata->deity->susceptnum))
   {
     update_aris(ch);

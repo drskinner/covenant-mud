@@ -23,22 +23,22 @@ bool validate_spec_fun(const char *name);
 void remove_bexit_flag(EXIT_DATA * pexit, int flag);
 
 const char *const spell_flag[] = { "water", "earth", "air", "astral", "area", "distant", "reverse",
-				   "noself", "_unused2_", "accumulative", "recastable", "noscribe",
-				   "nobrew", "group", "object", "character", "secretskill", "pksensitive",
-				   "stoponfail", "nofight", "nodispel", "randomtarget", "nomob", "r3", "r4",
-				   "r5", "r6", "r7", "r8", "r9", "r10", "r11"
+                                   "noself", "_unused2_", "accumulative", "recastable", "noscribe",
+                                   "nobrew", "group", "object", "character", "secretskill", "pksensitive",
+                                   "stoponfail", "nofight", "nodispel", "randomtarget", "nomob", "r3", "r4",
+                                   "r5", "r6", "r7", "r8", "r9", "r10", "r11"
 };
 
 const char *const spell_saves[] = { "none", "poison_death", "wands", "para_petri", "breath", "spell_staff" };
 
 const char *const spell_save_effect[] = { "none", "negate", "eightdam", "quarterdam", "halfdam", "3qtrdam",
-					  "reflect", "absorb"
+                                          "reflect", "absorb"
 };
 
 const char *const spell_damage[] = { "none", "fire", "cold", "electricity", "energy", "acid", "poison", "drain" };
 
 const char *const spell_action[] = { "none", "create", "destroy", "resist", "suscept", "divinate", "obscure",
-				     "change"
+                                     "change"
 };
 
 const char *const spell_power[] = { "none", "minor", "greater", "major" };
@@ -262,14 +262,14 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
   {
     mana =
       IS_NPC(ch) ? 0 : UMAX(skill_table[sn]->min_mana,
-			       100 / (2 + ch->level - skill_table[sn]->race_level[ch->race]));
+                               100 / (2 + ch->level - skill_table[sn]->race_level[ch->race]));
     blood = (mana / 2);
     if (IS_VAMPIRE(ch))
     {
       if (ch->pcdata->condition[COND_BLOODTHIRST] < blood)
       {
-	send_to_char("You don't have enough blood power.\r\n", ch);
-	return TRUE;
+        send_to_char("You don't have enough blood power.\r\n", ch);
+        return TRUE;
       }
     }
     else if (!IS_NPC(ch) && ch->mana < mana)
@@ -307,24 +307,24 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
       vo = NULL;
       if (!argument || argument[0] == '\0')
       {
-	if ((victim = who_fighting(ch)) != NULL)
-	  target_name = victim->name;
+        if ((victim = who_fighting(ch)) != NULL)
+          target_name = victim->name;
       }
       else
-	target_name = argument;
+        target_name = argument;
       break;
 
     case TAR_CHAR_OFFENSIVE:
     {
       if ((!argument || argument[0] == '\0') && !(victim = who_fighting(ch)))
       {
-	ch_printf(ch, "Confusion overcomes you as your '%s' has no target.\r\n", skill_table[sn]->name);
-	return TRUE;
+        ch_printf(ch, "Confusion overcomes you as your '%s' has no target.\r\n", skill_table[sn]->name);
+        return TRUE;
       }
       else if (argument[0] != '\0' && !(victim = get_char_room(ch, argument)))
       {
-	send_to_char("They aren't here.\r\n", ch);
-	return TRUE;
+        send_to_char("They aren't here.\r\n", ch);
+        return TRUE;
       }
     }
     if (is_safe(ch, victim, TRUE))
@@ -340,35 +340,35 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
     {
       if (!IS_NPC(victim))
       {
-	if (get_timer(ch, TIMER_PKILLED) > 0)
-	{
-	  send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
-	  return TRUE;
-	}
+        if (get_timer(ch, TIMER_PKILLED) > 0)
+        {
+          send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
+          return TRUE;
+        }
 
-	if (get_timer(victim, TIMER_PKILLED) > 0)
-	{
-	  send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
-	  return TRUE;
-	}
+        if (get_timer(victim, TIMER_PKILLED) > 0)
+        {
+          send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
+          return TRUE;
+        }
 
-	/*
-	 * Too many illegal pk attempts with cuffs, swats etc lately. - Luc 
-	 */
-	if (xIS_SET(ch->act, PLR_NICE))
-	{
-	  send_to_char("You feel too nice to do that.\r\n", ch);
-	  return TRUE;
-	}
+        /*
+         * Too many illegal pk attempts with cuffs, swats etc lately. - Luc 
+         */
+        if (xIS_SET(ch->act, PLR_NICE))
+        {
+          send_to_char("You feel too nice to do that.\r\n", ch);
+          return TRUE;
+        }
 
-	if (victim != ch)
-	  send_to_char("You really shouldn't do this to another player...\r\n", ch);
+        if (victim != ch)
+          send_to_char("You really shouldn't do this to another player...\r\n", ch);
       }
 
       if (IS_AFFECTED(ch, AFF_CHARM) && ch->master == victim)
       {
-	send_to_char("You can't do that on your own follower.\r\n", ch);
-	return TRUE;
+        send_to_char("You can't do that on your own follower.\r\n", ch);
+        return TRUE;
       }
     }
 
@@ -384,11 +384,11 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
     {
       if (argument[0] != '\0' && !(victim = get_char_room(ch, argument)))
       {
-	send_to_char("They aren't here.\r\n", ch);
-	return TRUE;
+        send_to_char("They aren't here.\r\n", ch);
+        return TRUE;
       }
       if (!victim)
-	victim = ch;
+        victim = ch;
     }
 
     if (ch == victim && SPELL_FLAG(skill_table[sn], SF_NOSELF))
@@ -408,8 +408,8 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
     {
       if (!(obj = get_obj_carry(ch, argument)))
       {
-	send_to_char("You can't find that.\r\n", ch);
-	return TRUE;
+        send_to_char("You can't find that.\r\n", ch);
+        return TRUE;
       }
     }
     vo = (void *)obj;
@@ -429,19 +429,19 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
       learn_from_failure(ch, sn);
       if (mana)
       {
-	if (IS_VAMPIRE(ch))
-	  gain_condition(ch, COND_BLOODTHIRST, -blood / 2);
-	else
-	  ch->mana -= mana / 2;
+        if (IS_VAMPIRE(ch))
+          gain_condition(ch, COND_BLOODTHIRST, -blood / 2);
+        else
+          ch->mana -= mana / 2;
       }
       return TRUE;
     }
     if (mana)
     {
       if (IS_VAMPIRE(ch))
-	gain_condition(ch, COND_BLOODTHIRST, -blood);
+        gain_condition(ch, COND_BLOODTHIRST, -blood);
       else
-	ch->mana -= mana;
+        ch->mana -= mana;
     }
     start_timer(&time_used);
     retcode = (*skill_table[sn]->spell_fun) (sn, ch->level, ch, vo);
@@ -469,12 +469,12 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
 
       for (vch = ch->in_room->first_person; vch; vch = vch_next)
       {
-	vch_next = vch->next_in_room;
-	if (victim == vch && !victim->fighting && victim->master != ch)
-	{
-	  retcode = multi_hit(victim, ch, TYPE_UNDEFINED);
-	  break;
-	}
+        vch_next = vch->next_in_room;
+        if (victim == vch && !victim->fighting && victim->master != ch)
+        {
+          retcode = multi_hit(victim, ch, TYPE_UNDEFINED);
+          break;
+        }
       }
     }
     return TRUE;
@@ -501,7 +501,7 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
 /*
  * Perform a binary search on a section of the skill table
  * Each different section of the skill table is sorted alphabetically
- * Only match skills player knows				-Thoric
+ * Only match skills player knows                               -Thoric
  */
 bool check_skill(CHAR_DATA * ch, char *command, char *argument)
 {
@@ -538,14 +538,14 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
   if (skill_table[sn]->min_mana)
   {
     mana = IS_NPC(ch) ? 0 : UMAX(skill_table[sn]->min_mana,
-				    100 / (2 + ch->level - skill_table[sn]->skill_level[ch->Class]));
+                                    100 / (2 + ch->level - skill_table[sn]->skill_level[ch->Class]));
     blood = UMAX(1, (mana + 4) / 8);   /* NPCs don't have PCDatas. -- Altrag */
     if (IS_VAMPIRE(ch))
     {
       if (ch->pcdata->condition[COND_BLOODTHIRST] < blood)
       {
-	send_to_char("You don't have enough blood power.\r\n", ch);
-	return TRUE;
+        send_to_char("You don't have enough blood power.\r\n", ch);
+        return TRUE;
       }
     }
     else if (!IS_NPC(ch) && ch->mana < mana)
@@ -583,24 +583,24 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
       vo = NULL;
       if (argument[0] == '\0')
       {
-	if ((victim = who_fighting(ch)) != NULL)
-	  target_name = victim->name;
+        if ((victim = who_fighting(ch)) != NULL)
+          target_name = victim->name;
       }
       else
-	target_name = argument;
+        target_name = argument;
       break;
 
     case TAR_CHAR_OFFENSIVE:
     {
       if (argument[0] == '\0' && (victim = who_fighting(ch)) == NULL)
       {
-	ch_printf(ch, "Confusion overcomes you as your '%s' has no target.\r\n", skill_table[sn]->name);
-	return TRUE;
+        ch_printf(ch, "Confusion overcomes you as your '%s' has no target.\r\n", skill_table[sn]->name);
+        return TRUE;
       }
       else if (argument[0] != '\0' && (victim = get_char_room(ch, argument)) == NULL)
       {
-	send_to_char("They aren't here.\r\n", ch);
-	return TRUE;
+        send_to_char("They aren't here.\r\n", ch);
+        return TRUE;
       }
     }
     if (is_safe(ch, victim, TRUE))
@@ -616,31 +616,31 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
     {
       if (!IS_NPC(victim))
       {
-	/*
-	 * Sheesh! can't do anything
-	 * send_to_char("You can't do that on a player.\r\n", ch);
-	 * return TRUE;
-	 */
-	if (get_timer(ch, TIMER_PKILLED) > 0)
-	{
-	  send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
-	  return TRUE;
-	}
+        /*
+         * Sheesh! can't do anything
+         * send_to_char("You can't do that on a player.\r\n", ch);
+         * return TRUE;
+         */
+        if (get_timer(ch, TIMER_PKILLED) > 0)
+        {
+          send_to_char("You have been killed in the last 5 minutes.\r\n", ch);
+          return TRUE;
+        }
 
-	if (get_timer(victim, TIMER_PKILLED) > 0)
-	{
-	  send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
-	  return TRUE;
-	}
+        if (get_timer(victim, TIMER_PKILLED) > 0)
+        {
+          send_to_char("This player has been killed in the last 5 minutes.\r\n", ch);
+          return TRUE;
+        }
 
-	if (victim != ch)
-	  send_to_char("You really shouldn't do this to another player...\r\n", ch);
+        if (victim != ch)
+          send_to_char("You really shouldn't do this to another player...\r\n", ch);
       }
 
       if (IS_AFFECTED(ch, AFF_CHARM) && ch->master == victim)
       {
-	send_to_char("You can't do that on your own follower.\r\n", ch);
-	return TRUE;
+        send_to_char("You can't do that on your own follower.\r\n", ch);
+        return TRUE;
       }
     }
 
@@ -652,11 +652,11 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
     {
       if (argument[0] != '\0' && (victim = get_char_room(ch, argument)) == NULL)
       {
-	send_to_char("They aren't here.\r\n", ch);
-	return TRUE;
+        send_to_char("They aren't here.\r\n", ch);
+        return TRUE;
       }
       if (!victim)
-	victim = ch;
+        victim = ch;
     }
 
     if (ch == victim && SPELL_FLAG(skill_table[sn], SF_NOSELF))
@@ -676,8 +676,8 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
     {
       if ((obj = get_obj_carry(ch, argument)) == NULL)
       {
-	send_to_char("You can't find that.\r\n", ch);
-	return TRUE;
+        send_to_char("You can't find that.\r\n", ch);
+        return TRUE;
       }
     }
     vo = (void *)obj;
@@ -697,19 +697,19 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
       learn_from_failure(ch, sn);
       if (mana)
       {
-	if (IS_VAMPIRE(ch))
-	  gain_condition(ch, COND_BLOODTHIRST, -blood / 2);
-	else
-	  ch->mana -= mana / 2;
+        if (IS_VAMPIRE(ch))
+          gain_condition(ch, COND_BLOODTHIRST, -blood / 2);
+        else
+          ch->mana -= mana / 2;
       }
       return TRUE;
     }
     if (mana)
     {
       if (IS_VAMPIRE(ch))
-	gain_condition(ch, COND_BLOODTHIRST, -blood);
+        gain_condition(ch, COND_BLOODTHIRST, -blood);
       else
-	ch->mana -= mana;
+        ch->mana -= mana;
     }
     start_timer(&time_used);
     retcode = (*skill_table[sn]->spell_fun) (sn, ch->level, ch, vo);
@@ -737,12 +737,12 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
 
       for (vch = ch->in_room->first_person; vch; vch = vch_next)
       {
-	vch_next = vch->next_in_room;
-	if (victim == vch && !victim->fighting && victim->master != ch)
-	{
-	  retcode = multi_hit(victim, ch, TYPE_UNDEFINED);
-	  break;
-	}
+        vch_next = vch->next_in_room;
+        if (victim == vch && !victim->fighting && victim->master != ch)
+        {
+          retcode = multi_hit(victim, ch, TYPE_UNDEFINED);
+          break;
+        }
       }
     }
     return TRUE;
@@ -818,8 +818,8 @@ void do_skin(CHAR_DATA* ch, const char* argument)
       if (corpse->action_desc && is_name(ch->name, corpse->action_desc));
       else
       {
-	send_to_char("There is nothing you can do with this corpse.\r\n", ch);
-	return;
+        send_to_char("There is nothing you can do with this corpse.\r\n", ch);
+        return;
       }
     }
     else
@@ -880,7 +880,7 @@ void do_slookup(CHAR_DATA* ch, const char* argument)
   {
     for (sn = 0; sn < num_skills && skill_table[sn] && skill_table[sn]->name; ++sn)
       pager_printf(ch, "Sn: %4d Slot: %4d Skill/spell: '%-20s' Damtype: %s\r\n",
-		    sn, skill_table[sn]->slot, skill_table[sn]->name, spell_damage[SPELL_DAMAGE(skill_table[sn])]);
+                    sn, skill_table[sn]->slot, skill_table[sn]->name, spell_damage[SPELL_DAMAGE(skill_table[sn])]);
   }
   else if (!str_cmp(arg, "herbs"))
   {
@@ -897,8 +897,8 @@ void do_slookup(CHAR_DATA* ch, const char* argument)
       sn = atoi(arg + 1);
       if (!IS_VALID_HERB(sn))
       {
-	send_to_char("Invalid herb.\r\n", ch);
-	return;
+        send_to_char("Invalid herb.\r\n", ch);
+        return;
       }
       skill = herb_table[sn];
     }
@@ -907,8 +907,8 @@ void do_slookup(CHAR_DATA* ch, const char* argument)
       sn = atoi(arg);
       if ((skill = get_skilltype(sn)) == NULL)
       {
-	send_to_char("Invalid sn.\r\n", ch);
-	return;
+        send_to_char("Invalid sn.\r\n", ch);
+        return;
       }
       sn %= 1000;
     }
@@ -930,36 +930,36 @@ void do_slookup(CHAR_DATA* ch, const char* argument)
     ch_printf(ch, "Sn: %4d Slot: %4d %s: '%-20s'\r\n", sn, skill->slot, skill_tname[skill->type], skill->name);
     if (skill->info)
       ch_printf(ch, "DamType: %s  ActType: %s   ClassType: %s   PowerType: %s\r\n",
-		 spell_damage[SPELL_DAMAGE(skill)],
-		 spell_action[SPELL_ACTION(skill)],
-		 spell_class[SPELL_CLASS(skill)], spell_power[SPELL_POWER(skill)]);
+                 spell_damage[SPELL_DAMAGE(skill)],
+                 spell_action[SPELL_ACTION(skill)],
+                 spell_class[SPELL_CLASS(skill)], spell_power[SPELL_POWER(skill)]);
     if (skill->flags)
     {
       int x;
 
       mudstrlcpy(buf, "Flags:", MAX_STRING_LENGTH);
       for (x = 0; x < 32; ++x)
-	if (SPELL_FLAG(skill, 1 << x))
-	{
-	  mudstrlcat(buf, " ", MAX_STRING_LENGTH);
-	  mudstrlcat(buf, spell_flag[x], MAX_STRING_LENGTH);
-	}
+        if (SPELL_FLAG(skill, 1 << x))
+        {
+          mudstrlcat(buf, " ", MAX_STRING_LENGTH);
+          mudstrlcat(buf, spell_flag[x], MAX_STRING_LENGTH);
+        }
       mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
       send_to_char(buf, ch);
     }
     ch_printf(ch, "Saves: %s  SaveEffect: %s\r\n",
-	       spell_saves[(int)skill->saves], spell_save_effect[SPELL_SAVE(skill)]);
+               spell_saves[(int)skill->saves], spell_save_effect[SPELL_SAVE(skill)]);
 
     if (skill->difficulty != '\0')
       ch_printf(ch, "Difficulty: %d\r\n", (int)skill->difficulty);
 
     ch_printf(ch, "Type: %s  Target: %s  Minpos: %d  Mana: %d  Beats: %d  Range: %d\r\n",
-	       skill_tname[skill->type],
-	       target_type[URANGE(TAR_IGNORE, skill->target, TAR_OBJ_INV)],
-	       skill->minimum_position, skill->min_mana, skill->beats, skill->range);
+               skill_tname[skill->type],
+               target_type[URANGE(TAR_IGNORE, skill->target, TAR_OBJ_INV)],
+               skill->minimum_position, skill->min_mana, skill->beats, skill->range);
     ch_printf(ch, "Flags: %d  Guild: %d  Value: %d  Info: %d  Code: %s\r\n",
-	       skill->flags,
-	       skill->guild, skill->value, skill->info, skill->skill_fun ? skill->skill_fun_name : skill->spell_fun_name);
+               skill->flags,
+               skill->guild, skill->value, skill->info, skill->skill_fun ? skill->skill_fun_name : skill->spell_fun_name);
     ch_printf(ch, "Sectors Allowed: %s\n", skill->spell_sector ? flag_string(skill->spell_sector, sec_flags) : "All");
     ch_printf(ch, "Dammsg: %s\r\nWearoff: %s\n", skill->noun_damage, skill->msg_off ? skill->msg_off : "(none set)");
     if (skill->dice && skill->dice[0] != '\0')
@@ -975,37 +975,37 @@ void do_slookup(CHAR_DATA* ch, const char* argument)
     for (aff = skill->first_affect; aff; aff = aff->next)
     {
       if (aff == skill->first_affect)
-	send_to_char("\r\n", ch);
+        send_to_char("\r\n", ch);
       snprintf(buf, MAX_STRING_LENGTH, "Affect %d", ++cnt);
       if (aff->location)
       {
-	mudstrlcat(buf, " modifies ", MAX_STRING_LENGTH);
-	mudstrlcat(buf, a_types[aff->location % REVERSE_APPLY], MAX_STRING_LENGTH);
-	mudstrlcat(buf, " by '", MAX_STRING_LENGTH);
-	mudstrlcat(buf, aff->modifier, MAX_STRING_LENGTH);
-	if (aff->bitvector != -1)
-	  mudstrlcat(buf, "' and", MAX_STRING_LENGTH);
-	else
-	  mudstrlcat(buf, "'", MAX_STRING_LENGTH);
+        mudstrlcat(buf, " modifies ", MAX_STRING_LENGTH);
+        mudstrlcat(buf, a_types[aff->location % REVERSE_APPLY], MAX_STRING_LENGTH);
+        mudstrlcat(buf, " by '", MAX_STRING_LENGTH);
+        mudstrlcat(buf, aff->modifier, MAX_STRING_LENGTH);
+        if (aff->bitvector != -1)
+          mudstrlcat(buf, "' and", MAX_STRING_LENGTH);
+        else
+          mudstrlcat(buf, "'", MAX_STRING_LENGTH);
       }
       if (aff->bitvector != -1)
       {
-	mudstrlcat(buf, " applies ", MAX_STRING_LENGTH);
-	mudstrlcat(buf, a_flags[aff->bitvector], MAX_STRING_LENGTH);
+        mudstrlcat(buf, " applies ", MAX_STRING_LENGTH);
+        mudstrlcat(buf, a_flags[aff->bitvector], MAX_STRING_LENGTH);
       }
       if (aff->duration[0] != '\0' && aff->duration[0] != '0')
       {
-	mudstrlcat(buf, " for '", MAX_STRING_LENGTH);
-	mudstrlcat(buf, aff->duration, MAX_STRING_LENGTH);
-	mudstrlcat(buf, "' rounds", MAX_STRING_LENGTH);
+        mudstrlcat(buf, " for '", MAX_STRING_LENGTH);
+        mudstrlcat(buf, aff->duration, MAX_STRING_LENGTH);
+        mudstrlcat(buf, "' rounds", MAX_STRING_LENGTH);
       }
       if (aff->location >= REVERSE_APPLY)
-	mudstrlcat(buf, " (affects caster only)", MAX_STRING_LENGTH);
+        mudstrlcat(buf, " (affects caster only)", MAX_STRING_LENGTH);
       mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
       send_to_char(buf, ch);
 
       if (!aff->next)
-	send_to_char("\r\n", ch);
+        send_to_char("\r\n", ch);
     }
 
     if (skill->hit_char && skill->hit_char[0] != '\0')
@@ -1038,34 +1038,34 @@ void do_slookup(CHAR_DATA* ch, const char* argument)
     {
       if (skill->type != SKILL_RACIAL)
       {
-	send_to_char("--------------------------[CLASS USE]--------------------------\r\n", ch);
-	for (iClass = 0; iClass < MAX_PC_CLASS; iClass++)
-	{
-	  mudstrlcpy(buf, class_table[iClass]->who_name, MAX_STRING_LENGTH);
-	  snprintf(buf + 3, MAX_STRING_LENGTH - 3, ") lvl: %3d max: %2d%%", skill->skill_level[iClass],
-		    skill->skill_adept[iClass]);
-	  if (iClass % 3 == 2)
-	    mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	  else
-	    mudstrlcat(buf, "  ", MAX_STRING_LENGTH);
-	  send_to_char(buf, ch);
-	}
+        send_to_char("--------------------------[CLASS USE]--------------------------\r\n", ch);
+        for (iClass = 0; iClass < MAX_PC_CLASS; iClass++)
+        {
+          mudstrlcpy(buf, class_table[iClass]->who_name, MAX_STRING_LENGTH);
+          snprintf(buf + 3, MAX_STRING_LENGTH - 3, ") lvl: %3d max: %2d%%", skill->skill_level[iClass],
+                    skill->skill_adept[iClass]);
+          if (iClass % 3 == 2)
+            mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
+          else
+            mudstrlcat(buf, "  ", MAX_STRING_LENGTH);
+          send_to_char(buf, ch);
+        }
       }
       else
       {
-	send_to_char("\r\n--------------------------[RACE USE]--------------------------\r\n", ch);
-	for (iRace = 0; iRace < MAX_PC_RACE; iRace++)
-	{
-	  snprintf(buf, MAX_STRING_LENGTH, "%8.8s) lvl: %3d max: %2d%%",
-		    race_table[iRace]->race_name, skill->race_level[iRace], skill->race_adept[iRace]);
-	  if (!strcmp(race_table[iRace]->race_name, "unused"))
-	    snprintf(buf, MAX_STRING_LENGTH, "                           ");
-	  if ((iRace > 0) && (iRace % 2 == 1))
-	    mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	  else
-	    mudstrlcat(buf, "  ", MAX_STRING_LENGTH);
-	  send_to_char(buf, ch);
-	}
+        send_to_char("\r\n--------------------------[RACE USE]--------------------------\r\n", ch);
+        for (iRace = 0; iRace < MAX_PC_RACE; iRace++)
+        {
+          snprintf(buf, MAX_STRING_LENGTH, "%8.8s) lvl: %3d max: %2d%%",
+                    race_table[iRace]->race_name, skill->race_level[iRace], skill->race_adept[iRace]);
+          if (!strcmp(race_table[iRace]->race_name, "unused"))
+            snprintf(buf, MAX_STRING_LENGTH, "                           ");
+          if ((iRace > 0) && (iRace % 2 == 1))
+            mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
+          else
+            mudstrlcat(buf, "  ", MAX_STRING_LENGTH);
+          send_to_char(buf, ch);
+        }
       }
     }
     send_to_char("\r\n", ch);
@@ -1146,17 +1146,17 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       type = SKILL_HERB;
       if (top_herb >= MAX_HERB)
       {
-	ch_printf(ch, "The current top herb is %d, which is the maximum.  "
-		   "To add more herbs,\r\nMAX_HERB will have to be "
-		   "raised in mud.h, and the mud recompiled.\r\n", top_herb);
-	return;
+        ch_printf(ch, "The current top herb is %d, which is the maximum.  "
+                   "To add more herbs,\r\nMAX_HERB will have to be "
+                   "raised in mud.h, and the mud recompiled.\r\n", top_herb);
+        return;
       }
     }
     else if (num_skills >= MAX_SKILL)
     {
       ch_printf(ch, "The current top sn is %d, which is the maximum.  "
-		 "To add more skills,\r\nMAX_SKILL will have to be "
-		 "raised in mud.h, and the mud recompiled.\r\n", num_skills);
+                 "To add more skills,\r\nMAX_SKILL will have to be "
+                 "raised in mud.h, and the mud recompiled.\r\n", num_skills);
       return;
     }
     CREATE(skill, struct skill_type, 1);
@@ -1167,8 +1167,8 @@ void do_sset(CHAR_DATA* ch, const char* argument)
 
       herb_table[top_herb++] = skill;
       for (max = x = 0; x < top_herb - 1; x++)
-	if (herb_table[x] && herb_table[x]->slot > max)
-	  max = herb_table[x]->slot;
+        if (herb_table[x] && herb_table[x]->slot > max)
+          max = herb_table[x]->slot;
       skill->slot = max + 1;
     }
     else  // add the skill. See db.c for why we are adding without sorting.
@@ -1205,7 +1205,7 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     sn = atoi(arg1);
   if (get_trust(ch) > LEVEL_GREATER
       && ((arg1[0] == 'h' && is_number(arg1 + 1) && (sn = atoi(arg1 + 1)) >= 0)
-	   || (is_number(arg1) && (sn = atoi(arg1)) >= 0)))
+           || (is_number(arg1) && (sn = atoi(arg1)) >= 0)))
   {
     struct skill_type *skill;
 
@@ -1213,8 +1213,8 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     {
       if (sn >= top_herb)
       {
-	send_to_char("Herb number out of range.\r\n", ch);
-	return;
+        send_to_char("Herb number out of range.\r\n", ch);
+        return;
       }
       skill = herb_table[sn];
     }
@@ -1222,8 +1222,8 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     {
       if ((skill = get_skilltype(sn)) == NULL)
       {
-	send_to_char("Skill number out of range.\r\n", ch);
-	return;
+        send_to_char("Skill number out of range.\r\n", ch);
+        return;
       }
       sn %= 1000;
     }
@@ -1245,11 +1245,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_sdamage(argument);
 
       if (x == -1)
-	send_to_char("Not a spell damage type.\r\n", ch);
+        send_to_char("Not a spell damage type.\r\n", ch);
       else
       {
-	SET_SDAM(skill, x);
-	send_to_char("Ok.\r\n", ch);
+        SET_SDAM(skill, x);
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1258,11 +1258,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_saction(argument);
 
       if (x == -1)
-	send_to_char("Not a spell action type.\r\n", ch);
+        send_to_char("Not a spell action type.\r\n", ch);
       else
       {
-	SET_SACT(skill, x);
-	send_to_char("Ok.\r\n", ch);
+        SET_SACT(skill, x);
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1271,11 +1271,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_sclass(argument);
 
       if (x == -1)
-	send_to_char("Not a spell class type.\r\n", ch);
+        send_to_char("Not a spell class type.\r\n", ch);
       else
       {
-	SET_SCLA(skill, x);
-	send_to_char("Ok.\r\n", ch);
+        SET_SCLA(skill, x);
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1284,11 +1284,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_spower(argument);
 
       if (x == -1)
-	send_to_char("Not a spell power type.\r\n", ch);
+        send_to_char("Not a spell power type.\r\n", ch);
       else
       {
-	SET_SPOW(skill, x);
-	send_to_char("Ok.\r\n", ch);
+        SET_SPOW(skill, x);
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1297,11 +1297,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_ssave_effect(argument);
 
       if (x == -1)
-	send_to_char("Not a spell save effect type.\r\n", ch);
+        send_to_char("Not a spell save effect type.\r\n", ch);
       else
       {
-	SET_SSAV(skill, x);
-	send_to_char("Ok.\r\n", ch);
+        SET_SSAV(skill, x);
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1310,11 +1310,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_sflag(argument);
 
       if (x == -1)
-	send_to_char("Not a spell flag.\r\n", ch);
+        send_to_char("Not a spell flag.\r\n", ch);
       else
       {
-	TOGGLE_BIT(skill->flags, 1 << x);
-	send_to_char("Ok.\r\n", ch);
+        TOGGLE_BIT(skill->flags, 1 << x);
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1323,11 +1323,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_ssave(argument);
 
       if (x == -1)
-	send_to_char("Not a saving type.\r\n", ch);
+        send_to_char("Not a saving type.\r\n", ch);
       else
       {
-	skill->saves = x;
-	send_to_char("Ok.\r\n", ch);
+        skill->saves = x;
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1339,27 +1339,27 @@ void do_sset(CHAR_DATA* ch, const char* argument)
 
       if (!str_prefix("do_", argument) && (dofun = skill_function(argument)) != skill_notfound)
       {
-	skill->skill_fun = dofun;
-	skill->spell_fun = NULL;
-	DISPOSE(skill->skill_fun_name);
-	skill->skill_fun_name = str_dup(argument);
+        skill->skill_fun = dofun;
+        skill->spell_fun = NULL;
+        DISPOSE(skill->skill_fun_name);
+        skill->skill_fun_name = str_dup(argument);
       }
       else if ((spellfun = spell_function(argument)) != spell_notfound)
       {
-	skill->spell_fun = spellfun;
-	skill->skill_fun = NULL;
-	DISPOSE(skill->skill_fun_name);
-	skill->spell_fun_name = str_dup(argument);
+        skill->spell_fun = spellfun;
+        skill->skill_fun = NULL;
+        DISPOSE(skill->skill_fun_name);
+        skill->spell_fun_name = str_dup(argument);
       }
       else if (validate_spec_fun(argument))
       {
-	send_to_char("Cannot use a spec_fun for skills or spells.\r\n", ch);
-	return;
+        send_to_char("Cannot use a spec_fun for skills or spells.\r\n", ch);
+        return;
       }
       else
       {
-	send_to_char("Not a spell or skill.\r\n", ch);
-	return;
+        send_to_char("Not a spell or skill.\r\n", ch);
+        return;
       }
       send_to_char("Ok.\r\n", ch);
       return;
@@ -1370,11 +1370,11 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       int x = get_starget(argument);
 
       if (x == -1)
-	send_to_char("Not a valid target type.\r\n", ch);
+        send_to_char("Not a valid target type.\r\n", ch);
       else
       {
-	skill->target = x;
-	send_to_char("Ok.\r\n", ch);
+        skill->target = x;
+        send_to_char("Ok.\r\n", ch);
       }
       return;
     }
@@ -1396,12 +1396,12 @@ void do_sset(CHAR_DATA* ch, const char* argument)
 
       while (argument[0] != '\0')
       {
-	argument = one_argument(argument, tmp_arg);
-	value = get_secflag(tmp_arg);
-	if (value < 0 || value > MAX_SECFLAG)
-	  ch_printf(ch, "Unknown flag: %s\r\n", tmp_arg);
-	else
-	  TOGGLE_BIT(skill->spell_sector, (1 << value));
+        argument = one_argument(argument, tmp_arg);
+        value = get_secflag(tmp_arg);
+        if (value < 0 || value > MAX_SECFLAG)
+          ch_printf(ch, "Unknown flag: %s\r\n", tmp_arg);
+        else
+          TOGGLE_BIT(skill->spell_sector, (1 << value));
       }
       send_to_char("Ok.\r\n", ch);
       return;
@@ -1456,22 +1456,22 @@ void do_sset(CHAR_DATA* ch, const char* argument)
 
       if (!skill->first_affect)
       {
-	send_to_char("This spell has no special affects to remove.\r\n", ch);
-	return;
+        send_to_char("This spell has no special affects to remove.\r\n", ch);
+        return;
       }
       for (aff = skill->first_affect; aff; aff = aff_next)
       {
-	aff_next = aff->next;
+        aff_next = aff->next;
 
-	if (++cnt == num)
-	{
-	  UNLINK(aff, skill->first_affect, skill->last_affect, next, prev);
-	  DISPOSE(aff->duration);
-	  DISPOSE(aff->modifier);
-	  DISPOSE(aff);
-	  send_to_char("Removed.\r\n", ch);
-	  return;
-	}
+        if (++cnt == num)
+        {
+          UNLINK(aff, skill->first_affect, skill->last_affect, next, prev);
+          DISPOSE(aff->duration);
+          DISPOSE(aff->modifier);
+          DISPOSE(aff);
+          send_to_char("Removed.\r\n", ch);
+          return;
+        }
       }
       send_to_char("Not found.\r\n", ch);
       return;
@@ -1492,43 +1492,43 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, duration);
 
       if (location[0] == '!')
-	loc = get_atype(location + 1) + REVERSE_APPLY;
+        loc = get_atype(location + 1) + REVERSE_APPLY;
       else
-	loc = get_atype(location);
+        loc = get_atype(location);
       if ((loc % REVERSE_APPLY) < 0 || (loc % REVERSE_APPLY) >= MAX_APPLY_TYPE)
       {
-	send_to_char("Unknown affect location.  See AFFECTTYPES.\r\n", ch);
-	return;
+        send_to_char("Unknown affect location.  See AFFECTTYPES.\r\n", ch);
+        return;
       }
       bit = -1;
       if (argument[0] != '\0')
       {
-	if ((tmpbit = get_aflag(argument)) == -1)
-	  ch_printf(ch, "Unknown bitvector: %s.  See AFFECTED_BY\r\n", argument);
-	else
-	  bit = tmpbit;
+        if ((tmpbit = get_aflag(argument)) == -1)
+          ch_printf(ch, "Unknown bitvector: %s.  See AFFECTED_BY\r\n", argument);
+        else
+          bit = tmpbit;
       }
       CREATE(aff, SMAUG_AFF, 1);
       if (!str_cmp(duration, "0"))
-	duration[0] = '\0';
+        duration[0] = '\0';
       if (!str_cmp(modifier, "0"))
-	modifier[0] = '\0';
+        modifier[0] = '\0';
       aff->duration = str_dup(duration);
       aff->location = loc;
       if (loc == APPLY_AFFECT)
       {
-	int modval = get_aflag(modifier);
+        int modval = get_aflag(modifier);
 
-	if (modval < 0)
-	  modval = 0;
-	snprintf(modifier, MAX_INPUT_LENGTH, "%d", modval);
+        if (modval < 0)
+          modval = 0;
+        snprintf(modifier, MAX_INPUT_LENGTH, "%d", modval);
       }
       else if (loc == APPLY_RESISTANT || loc == APPLY_IMMUNE || loc == APPLY_SUSCEPTIBLE)
       {
-	int modval = get_risflag(modifier);
-	if (modval < 0)
-	  modval = 0;
-	snprintf(modifier, MAX_INPUT_LENGTH, "%d", modval);
+        int modval = get_risflag(modifier);
+        if (modval < 0)
+          modval = 0;
+        snprintf(modifier, MAX_INPUT_LENGTH, "%d", modval);
       }
       aff->modifier = str_dup(modifier);
       aff->bitvector = bit;
@@ -1545,9 +1545,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       Class = atoi(arg3);
       if (Class >= MAX_PC_CLASS || Class < 0)
-	send_to_char("Not a valid class.\r\n", ch);
+        send_to_char("Not a valid class.\r\n", ch);
       else
-	skill->skill_level[Class] = URANGE(0, atoi(argument), MAX_LEVEL);
+        skill->skill_level[Class] = URANGE(0, atoi(argument), MAX_LEVEL);
       return;
     }
 
@@ -1559,9 +1559,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       race = atoi(arg3);
       if (race >= MAX_PC_RACE || race < 0)
-	send_to_char("Not a valid race.\r\n", ch);
+        send_to_char("Not a valid race.\r\n", ch);
       else
-	skill->race_level[race] = URANGE(0, atoi(argument), MAX_LEVEL);
+        skill->race_level[race] = URANGE(0, atoi(argument), MAX_LEVEL);
       return;
     }
 
@@ -1573,9 +1573,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       Class = atoi(arg3);
       if (Class >= MAX_PC_CLASS || Class < 0)
-	send_to_char("Not a valid class.\r\n", ch);
+        send_to_char("Not a valid class.\r\n", ch);
       else
-	skill->skill_adept[Class] = URANGE(0, atoi(argument), 100);
+        skill->skill_adept[Class] = URANGE(0, atoi(argument), 100);
       return;
     }
 
@@ -1587,9 +1587,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       race = atoi(arg3);
       if (race >= MAX_PC_RACE || race < 0)
-	send_to_char("Not a valid race.\r\n", ch);
+        send_to_char("Not a valid race.\r\n", ch);
       else
-	skill->race_adept[race] = URANGE(0, atoi(argument), 100);
+        skill->race_adept[race] = URANGE(0, atoi(argument), 100);
       return;
     }
 
@@ -1605,9 +1605,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     {
       DISPOSE(skill->noun_damage);
       if (!str_cmp(argument, "clear"))
-	skill->noun_damage = str_dup("");
+        skill->noun_damage = str_dup("");
       else
-	skill->noun_damage = str_dup(argument);
+        skill->noun_damage = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1616,7 +1616,7 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     {
       DISPOSE(skill->msg_off);
       if (str_cmp(argument, "clear"))
-	skill->msg_off = str_dup(argument);
+        skill->msg_off = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1624,9 +1624,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "hitchar"))
     {
       if (skill->hit_char)
-	DISPOSE(skill->hit_char);
+        DISPOSE(skill->hit_char);
       if (str_cmp(argument, "clear"))
-	skill->hit_char = str_dup(argument);
+        skill->hit_char = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1634,9 +1634,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "hitvict"))
     {
       if (skill->hit_vict)
-	DISPOSE(skill->hit_vict);
+        DISPOSE(skill->hit_vict);
       if (str_cmp(argument, "clear"))
-	skill->hit_vict = str_dup(argument);
+        skill->hit_vict = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1644,9 +1644,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "hitroom"))
     {
       if (skill->hit_room)
-	DISPOSE(skill->hit_room);
+        DISPOSE(skill->hit_room);
       if (str_cmp(argument, "clear"))
-	skill->hit_room = str_dup(argument);
+        skill->hit_room = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1654,9 +1654,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "hitdest"))
     {
       if (skill->hit_dest)
-	DISPOSE(skill->hit_dest);
+        DISPOSE(skill->hit_dest);
       if (str_cmp(argument, "clear"))
-	skill->hit_dest = str_dup(argument);
+        skill->hit_dest = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1664,9 +1664,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "misschar"))
     {
       if (skill->miss_char)
-	DISPOSE(skill->miss_char);
+        DISPOSE(skill->miss_char);
       if (str_cmp(argument, "clear"))
-	skill->miss_char = str_dup(argument);
+        skill->miss_char = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1674,9 +1674,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "missvict"))
     {
       if (skill->miss_vict)
-	DISPOSE(skill->miss_vict);
+        DISPOSE(skill->miss_vict);
       if (str_cmp(argument, "clear"))
-	skill->miss_vict = str_dup(argument);
+        skill->miss_vict = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1684,9 +1684,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "missroom"))
     {
       if (skill->miss_room)
-	DISPOSE(skill->miss_room);
+        DISPOSE(skill->miss_room);
       if (str_cmp(argument, "clear"))
-	skill->miss_room = str_dup(argument);
+        skill->miss_room = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1694,9 +1694,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "diechar"))
     {
       if (skill->die_char)
-	DISPOSE(skill->die_char);
+        DISPOSE(skill->die_char);
       if (str_cmp(argument, "clear"))
-	skill->die_char = str_dup(argument);
+        skill->die_char = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1704,9 +1704,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "dievict"))
     {
       if (skill->die_vict)
-	DISPOSE(skill->die_vict);
+        DISPOSE(skill->die_vict);
       if (str_cmp(argument, "clear"))
-	skill->die_vict = str_dup(argument);
+        skill->die_vict = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1714,9 +1714,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "dieroom"))
     {
       if (skill->die_room)
-	DISPOSE(skill->die_room);
+        DISPOSE(skill->die_room);
       if (str_cmp(argument, "clear"))
-	skill->die_room = str_dup(argument);
+        skill->die_room = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1724,9 +1724,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "immchar"))
     {
       if (skill->imm_char)
-	DISPOSE(skill->imm_char);
+        DISPOSE(skill->imm_char);
       if (str_cmp(argument, "clear"))
-	skill->imm_char = str_dup(argument);
+        skill->imm_char = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1734,9 +1734,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "immvict"))
     {
       if (skill->imm_vict)
-	DISPOSE(skill->imm_vict);
+        DISPOSE(skill->imm_vict);
       if (str_cmp(argument, "clear"))
-	skill->imm_vict = str_dup(argument);
+        skill->imm_vict = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1744,9 +1744,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "immroom"))
     {
       if (skill->imm_room)
-	DISPOSE(skill->imm_room);
+        DISPOSE(skill->imm_room);
       if (str_cmp(argument, "clear"))
-	skill->imm_room = str_dup(argument);
+        skill->imm_room = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1754,9 +1754,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "dice"))
     {
       if (skill->dice)
-	DISPOSE(skill->dice);
+        DISPOSE(skill->dice);
       if (str_cmp(argument, "clear"))
-	skill->dice = str_dup(argument);
+        skill->dice = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1764,9 +1764,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "components"))
     {
       if (skill->components)
-	DISPOSE(skill->components);
+        DISPOSE(skill->components);
       if (str_cmp(argument, "clear"))
-	skill->components = str_dup(argument);
+        skill->components = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1774,9 +1774,9 @@ void do_sset(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "teachers"))
     {
       if (skill->teachers)
-	DISPOSE(skill->teachers);
+        DISPOSE(skill->teachers);
       if (str_cmp(argument, "clear"))
-	skill->teachers = str_dup(argument);
+        skill->teachers = str_dup(argument);
       send_to_char("Ok.\r\n", ch);
       return;
     }
@@ -1834,15 +1834,15 @@ void do_sset(CHAR_DATA* ch, const char* argument)
        * Fix by Narn to prevent ssetting skills the player shouldn't have. 
        */
       if (victim->level >= skill_table[sn]->skill_level[victim->Class]
-	  || victim->level >= skill_table[sn]->race_level[victim->race])
+          || victim->level >= skill_table[sn]->race_level[victim->race])
       {
-	// Bugfix by Sadiq - Modified slightly by Samson. No need to call GET_ADEPT more than once each time this loop runs.
-	int adept = GET_ADEPT(victim, sn);
+        // Bugfix by Sadiq - Modified slightly by Samson. No need to call GET_ADEPT more than once each time this loop runs.
+        int adept = GET_ADEPT(victim, sn);
 
-	if (value > adept && !IS_IMMORTAL(victim))
-	  victim->pcdata->learned[sn] = adept;
-	else
-	  victim->pcdata->learned[sn] = value;
+        if (value > adept && !IS_IMMORTAL(victim))
+          victim->pcdata->learned[sn] = adept;
+        else
+          victim->pcdata->learned[sn] = value;
       }
     }
   }
@@ -1888,8 +1888,8 @@ void ability_learn_from_success(CHAR_DATA * ch, int sn)
       gain = 20 * sklvl;
       if (!ch->fighting && sn != gsn_hide && sn != gsn_sneak)
       {
-	set_char_color(AT_WHITE, ch);
-	ch_printf(ch, "You gain %d experience points from your success!\r\n", gain);
+        set_char_color(AT_WHITE, ch);
+        ch_printf(ch, "You gain %d experience points from your success!\r\n", gain);
       }
     }
     gain_exp(ch, gain);
@@ -1921,9 +1921,9 @@ void learn_from_success(CHAR_DATA * ch, int sn)
     {
       gain = 1000 * sklvl;
       if (ch->Class == CLASS_MAGE)
-	gain *= 5;  /* h, mage upgrade */
+        gain *= 5;  /* h, mage upgrade */
       if (ch->Class == CLASS_CLERIC)
-	gain *= 2;  /* h, mage upgrade */
+        gain *= 2;  /* h, mage upgrade */
       set_char_color(AT_WHITE, ch);
       ch_printf(ch, "You are now an adept of %s!  You gain %d bonus experience!\r\n", skill_table[sn]->name, gain);
     }
@@ -1931,13 +1931,13 @@ void learn_from_success(CHAR_DATA * ch, int sn)
     {
       gain = 20 * sklvl;
       if (ch->Class == CLASS_MAGE)
-	gain *= 6;  /* h, mage upgrade */
+        gain *= 6;  /* h, mage upgrade */
       if (ch->Class == CLASS_CLERIC)
-	gain *= 3;  /* h, mage upgrade */
+        gain *= 3;  /* h, mage upgrade */
       if (!ch->fighting && sn != gsn_hide && sn != gsn_sneak)
       {
-	set_char_color(AT_WHITE, ch);
-	ch_printf(ch, "You gain %d experience points from your success!\r\n", gain);
+        set_char_color(AT_WHITE, ch);
+        ch_printf(ch, "You gain %d experience points from your success!\r\n", gain);
       }
     }
     gain_exp(ch, gain);
@@ -2110,29 +2110,29 @@ void do_gouge(CHAR_DATA* ch, const char* argument)
     {
       if (!IS_AFFECTED(victim, AFF_BLIND))
       {
-	af.type = gsn_blindness;
-	af.location = APPLY_HITROLL;
-	af.modifier = -6;
-	if (!IS_NPC(victim) && !IS_NPC(ch))
-	  af.duration = (ch->level + 10) / get_curr_con(victim);
-	else
-	  af.duration = 3 + (ch->level / 15);
-	af.bitvector = meb(AFF_BLIND);
-	affect_to_char(victim, &af);
-	act(AT_SKILL, "You can't see a thing!", victim, NULL, NULL, TO_CHAR);
+        af.type = gsn_blindness;
+        af.location = APPLY_HITROLL;
+        af.modifier = -6;
+        if (!IS_NPC(victim) && !IS_NPC(ch))
+          af.duration = (ch->level + 10) / get_curr_con(victim);
+        else
+          af.duration = 3 + (ch->level / 15);
+        af.bitvector = meb(AFF_BLIND);
+        affect_to_char(victim, &af);
+        act(AT_SKILL, "You can't see a thing!", victim, NULL, NULL, TO_CHAR);
       }
       WAIT_STATE(ch, PULSE_VIOLENCE);
       if (!IS_NPC(ch) && !IS_NPC(victim))
       {
-	if (number_bits(1) == 0)
-	{
-	  ch_printf(ch, "%s looks momentarily dazed.\r\n", victim->name);
-	  send_to_char("You are momentarily dazed ...\r\n", victim);
-	  WAIT_STATE(victim, PULSE_VIOLENCE);
-	}
+        if (number_bits(1) == 0)
+        {
+          ch_printf(ch, "%s looks momentarily dazed.\r\n", victim->name);
+          send_to_char("You are momentarily dazed ...\r\n", victim);
+          WAIT_STATE(victim, PULSE_VIOLENCE);
+        }
       }
       else
-	WAIT_STATE(victim, PULSE_VIOLENCE);
+        WAIT_STATE(victim, PULSE_VIOLENCE);
       /*
        * Taken out by request - put back in by Thoric
        * * This is how it was designed.  You'd be a tad stunned
@@ -2208,8 +2208,8 @@ void do_detrap(CHAR_DATA* ch, const char* argument)
     {
       if (can_see_obj(ch, obj) && nifty_is_name(arg, obj->name))
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
     }
 
@@ -2223,7 +2223,7 @@ void do_detrap(CHAR_DATA* ch, const char* argument)
     act(AT_ACTION, "$n carefully attempts to remove a trap from $p...", ch, obj, NULL, TO_ROOM);
     ch->alloc_ptr = str_dup(obj->name);
     add_timer(ch, TIMER_DO_FUN, 3, do_detrap, 1);
-/*	    WAIT_STATE(ch, skill_table[gsn_detrap]->beats); */
+/*          WAIT_STATE(ch, skill_table[gsn_detrap]->beats); */
     return;
 
   case 1:
@@ -2319,17 +2319,17 @@ void do_dig(CHAR_DATA* ch, const char* argument)
     {
       if ((pexit = find_door(ch, arg, TRUE)) == NULL && get_dir(arg) == -1)
       {
-	send_to_char("What direction is that?\r\n", ch);
-	return;
+        send_to_char("What direction is that?\r\n", ch);
+        return;
       }
 
       if (pexit)
       {
-	if (!IS_SET(pexit->exit_info, EX_DIG) && !IS_SET(pexit->exit_info, EX_CLOSED))
-	{
-	  send_to_char("There is no need to dig out that exit.\r\n", ch);
-	  return;
-	}
+        if (!IS_SET(pexit->exit_info, EX_DIG) && !IS_SET(pexit->exit_info, EX_CLOSED))
+        {
+          send_to_char("There is no need to dig out that exit.\r\n", ch);
+          return;
+        }
       }
     }
     else
@@ -2338,18 +2338,18 @@ void do_dig(CHAR_DATA* ch, const char* argument)
       {
       case SECT_CITY:
       case SECT_INSIDE:
-	send_to_char("The floor is too hard to dig through.\r\n", ch);
-	return;
+        send_to_char("The floor is too hard to dig through.\r\n", ch);
+        return;
 
       case SECT_WATER_SWIM:
       case SECT_WATER_NOSWIM:
       case SECT_UNDERWATER:
-	send_to_char("You cannot dig here.\r\n", ch);
-	return;
+        send_to_char("You cannot dig here.\r\n", ch);
+        return;
 
       case SECT_AIR:
-	send_to_char("What?  In the air?!\r\n", ch);
-	return;
+        send_to_char("What?  In the air?!\r\n", ch);
+        return;
       }
     }
 
@@ -2398,27 +2398,27 @@ void do_dig(CHAR_DATA* ch, const char* argument)
   if (arg[0] != '\0')
   {
     if ((pexit = find_door(ch, arg, TRUE)) != NULL
-	&& IS_SET(pexit->exit_info, EX_DIG) && IS_SET(pexit->exit_info, EX_CLOSED))
+        && IS_SET(pexit->exit_info, EX_DIG) && IS_SET(pexit->exit_info, EX_CLOSED))
     {
       /*
        * 4 times harder to dig open a passage without a shovel 
        */
       if (can_use_skill(ch, (number_percent() * (shovel ? 1 : 4)), gsn_dig))
       {
-	if (!IS_SET(pexit->exit_info, EX_ISDOOR))
-	{
-	  remove_bexit_flag(pexit, EX_CLOSED);
-	  send_to_char("You dig open a passageway!\r\n", ch);
-	  act(AT_PLAIN, "$n digs open a passageway!", ch, NULL, NULL, TO_ROOM);
-	}
-	else
-	{
-	  REMOVE_BIT(pexit->exit_info, EX_DIG);
-	  send_to_char("You uncover a doorway!\r\n", ch);
-	  act(AT_PLAIN, "$n uncovers a doorway!", ch, NULL, NULL, TO_ROOM);
-	}
-	learn_from_success(ch, gsn_dig);
-	return;
+        if (!IS_SET(pexit->exit_info, EX_ISDOOR))
+        {
+          remove_bexit_flag(pexit, EX_CLOSED);
+          send_to_char("You dig open a passageway!\r\n", ch);
+          act(AT_PLAIN, "$n digs open a passageway!", ch, NULL, NULL, TO_ROOM);
+        }
+        else
+        {
+          REMOVE_BIT(pexit->exit_info, EX_DIG);
+          send_to_char("You uncover a doorway!\r\n", ch);
+          act(AT_PLAIN, "$n uncovers a doorway!", ch, NULL, NULL, TO_ROOM);
+        }
+        learn_from_success(ch, gsn_dig);
+        return;
       }
     }
     learn_from_failure(ch, gsn_dig);
@@ -2493,18 +2493,18 @@ void do_search(CHAR_DATA* ch, const char* argument)
       container = get_obj_here(ch, arg);
       if (!container)
       {
-	send_to_char("You can't find that here.\r\n", ch);
-	return;
+        send_to_char("You can't find that here.\r\n", ch);
+        return;
       }
       if (container->item_type != ITEM_CONTAINER)
       {
-	send_to_char("You can't search in that!\r\n", ch);
-	return;
+        send_to_char("You can't search in that!\r\n", ch);
+        return;
       }
       if (IS_SET(container->value[1], CONT_CLOSED))
       {
-	send_to_char("It is closed.\r\n", ch);
-	return;
+        send_to_char("It is closed.\r\n", ch);
+        return;
       }
     }
     add_timer(ch, TIMER_DO_FUN, UMIN(skill_table[gsn_search]->beats / 10, 3), do_search, 1);
@@ -2540,8 +2540,8 @@ void do_search(CHAR_DATA* ch, const char* argument)
       container = get_obj_here(ch, arg);
       if (!container)
       {
-	send_to_char("You can't find that here.\r\n", ch);
-	return;
+        send_to_char("You can't find that here.\r\n", ch);
+        return;
       }
       startobj = container->first_content;
     }
@@ -2561,8 +2561,8 @@ void do_search(CHAR_DATA* ch, const char* argument)
     EXIT_DATA *pexit;
 
     if ((pexit = get_exit(ch->in_room, door)) != NULL
-	&& IS_SET(pexit->exit_info, EX_SECRET)
-	&& IS_SET(pexit->exit_info, EX_xSEARCHABLE) && can_use_skill(ch, percent, gsn_search))
+        && IS_SET(pexit->exit_info, EX_SECRET)
+        && IS_SET(pexit->exit_info, EX_xSEARCHABLE) && can_use_skill(ch, percent, gsn_search))
     {
       act(AT_SKILL, "Your search reveals the $d!", ch, NULL, pexit->keyword, TO_CHAR);
       act(AT_SKILL, "$n finds the $d!", ch, NULL, pexit->keyword, TO_ROOM);
@@ -2576,12 +2576,12 @@ void do_search(CHAR_DATA* ch, const char* argument)
     {
       if (IS_OBJ_STAT(obj, ITEM_HIDDEN) && can_use_skill(ch, percent, gsn_search))
       {
-	separate_obj(obj);
-	xREMOVE_BIT(obj->extra_flags, ITEM_HIDDEN);
-	act(AT_SKILL, "Your search reveals $p!", ch, obj, NULL, TO_CHAR);
-	act(AT_SKILL, "$n finds $p!", ch, obj, NULL, TO_ROOM);
-	learn_from_success(ch, gsn_search);
-	return;
+        separate_obj(obj);
+        xREMOVE_BIT(obj->extra_flags, ITEM_HIDDEN);
+        act(AT_SKILL, "Your search reveals $p!", ch, obj, NULL, TO_CHAR);
+        act(AT_SKILL, "$n finds $p!", ch, obj, NULL, TO_ROOM);
+        learn_from_success(ch, gsn_search);
+        return;
       }
     }
 
@@ -2693,33 +2693,33 @@ void do_steal(CHAR_DATA* ch, const char* argument)
     {
       if (legal_loot(ch, victim))
       {
-	global_retcode = multi_hit(victim, ch, TYPE_UNDEFINED);
+        global_retcode = multi_hit(victim, ch, TYPE_UNDEFINED);
       }
       else
       {
-	/*
-	 * log_string(buf); 
-	 */
-	if (IS_NPC(ch))
-	{
-	  if ((mst = ch->master) == NULL)
-	    return;
-	}
-	else
-	  mst = ch;
-	if (IS_NPC(mst))
-	  return;
-	if (!xIS_SET(mst->act, PLR_THIEF))
-	{
-	  xSET_BIT(mst->act, PLR_THIEF);
-	  set_char_color(AT_WHITE, ch);
-	  send_to_char("A strange feeling grows deep inside you, and a tingle goes up your spine...\r\n", ch);
-	  set_char_color(AT_IMMORT, ch);
-	  send_to_char("A deep voice booms inside your head, 'Thou shall now be known as a lowly thief!'\r\n", ch);
-	  set_char_color(AT_WHITE, ch);
-	  send_to_char("You feel as if your soul has been revealed for all to see.\r\n", ch);
-	  save_char_obj(mst);
-	}
+        /*
+         * log_string(buf); 
+         */
+        if (IS_NPC(ch))
+        {
+          if ((mst = ch->master) == NULL)
+            return;
+        }
+        else
+          mst = ch;
+        if (IS_NPC(mst))
+          return;
+        if (!xIS_SET(mst->act, PLR_THIEF))
+        {
+          xSET_BIT(mst->act, PLR_THIEF);
+          set_char_color(AT_WHITE, ch);
+          send_to_char("A strange feeling grows deep inside you, and a tingle goes up your spine...\r\n", ch);
+          set_char_color(AT_IMMORT, ch);
+          send_to_char("A deep voice booms inside your head, 'Thou shall now be known as a lowly thief!'\r\n", ch);
+          set_char_color(AT_WHITE, ch);
+          send_to_char("You feel as if your soul has been revealed for all to see.\r\n", ch);
+          save_char_obj(mst);
+        }
       }
     }
     return;
@@ -2826,8 +2826,8 @@ void do_pounce(CHAR_DATA * ch, const char *argument)
 
   if ((obj = get_eq_char(ch, WEAR_WIELD)) == NULL
       || (obj->value[3] != 1
-	   && obj->value[3] != 2
-	   && obj->value[3] != 3 && obj->value[3] != 5 && obj->value[3] != 10 && obj->value[3] != 11))
+           && obj->value[3] != 2
+           && obj->value[3] != 3 && obj->value[3] != 5 && obj->value[3] != 10 && obj->value[3] != 11))
   {
     send_to_char("You are not wielding an appropriate weapon type to effectively pounce.\r\n", ch);
     return;
@@ -3509,7 +3509,7 @@ void do_bash(CHAR_DATA* ch, const char* argument)
   }
 
   schance = (((get_curr_dex(victim) + get_curr_str(victim))
-		- (get_curr_dex(ch) + get_curr_str(ch))) * 10) + 10;
+                - (get_curr_dex(ch) + get_curr_str(ch))) * 10) + 10;
   if (!IS_NPC(ch) && !IS_NPC(victim))
     schance += sysdata.bash_plr_vs_plr;
   if (victim->fighting && victim->fighting->who != ch)
@@ -3574,7 +3574,7 @@ void do_stun(CHAR_DATA* ch, const char* argument)
     fail = saves_para_petri(schance, victim);
 
   schance = (((get_curr_dex(victim) + get_curr_str(victim))
-		- (get_curr_dex(ch) + get_curr_str(ch))) * 10) + 10;
+                - (get_curr_dex(ch) + get_curr_str(ch))) * 10) + 10;
   /*
    * harder for player to stun another player 
    */
@@ -3701,13 +3701,13 @@ void do_feed(CHAR_DATA* ch, const char* argument)
     dam = number_range(1, ch->level);
     global_retcode = damage(ch, victim, dam, gsn_feed);
     if (global_retcode == rNONE && !IS_NPC(ch) && dam
-	&& ch->fighting && ch->pcdata->condition[COND_BLOODTHIRST] < (10 + ch->level))
+        && ch->fighting && ch->pcdata->condition[COND_BLOODTHIRST] < (10 + ch->level))
     {
       gain_condition(ch, COND_BLOODTHIRST,
-		      UMIN(number_range(1, (ch->level + victim->level / 20) + 3),
-			    (10 + ch->level) - ch->pcdata->condition[COND_BLOODTHIRST]));
+                      UMIN(number_range(1, (ch->level + victim->level / 20) + 3),
+                            (10 + ch->level) - ch->pcdata->condition[COND_BLOODTHIRST]));
       if (ch->pcdata->condition[COND_FULL] <= 37)
-	gain_condition(ch, COND_FULL, 2);
+        gain_condition(ch, COND_FULL, 2);
       gain_condition(ch, COND_THIRST, 2);
       act(AT_BLOOD, "You manage to suck a little life out of $N.", ch, NULL, victim, TO_CHAR);
       act(AT_BLOOD, "$n sucks some of your blood!", ch, NULL, victim, TO_VICT);
@@ -3715,16 +3715,16 @@ void do_feed(CHAR_DATA* ch, const char* argument)
       temphit = ch->hit;
       ch->hit += 1 + ch->level / 5;
       if (ch->hit > ch->max_hit)
-	ch->hit = ch->max_hit;
+        ch->hit = ch->max_hit;
       if (ch->hit < temphit)
-	ch->hit = temphit;
+        ch->hit = temphit;
     }
   }
   else
   {
     global_retcode = damage(ch, victim, 0, gsn_feed);
     if (global_retcode == rNONE && !IS_NPC(ch)
-	&& ch->fighting && ch->pcdata->condition[COND_BLOODTHIRST] < (10 + ch->level))
+        && ch->fighting && ch->pcdata->condition[COND_BLOODTHIRST] < (10 + ch->level))
     {
       act(AT_BLOOD, "The smell of $N's blood is driving you insane!", ch, NULL, victim, TO_CHAR);
       act(AT_BLOOD, "$n is lusting after your blood!", ch, NULL, victim, TO_VICT);
@@ -4054,8 +4054,8 @@ void do_broach(CHAR_DATA* ch, const char* argument)
   {
     EXIT_DATA *pexit_rev;
     if (!IS_SET(pexit->exit_info, EX_CLOSED)
-	|| !IS_SET(pexit->exit_info, EX_LOCKED)
-	|| IS_SET(pexit->exit_info, EX_PICKPROOF) || can_use_skill(ch, number_percent(), gsn_broach))
+        || !IS_SET(pexit->exit_info, EX_LOCKED)
+        || IS_SET(pexit->exit_info, EX_PICKPROOF) || can_use_skill(ch, number_percent(), gsn_broach))
     {
       send_to_char("Your attempt fails.\r\n", ch);
       learn_from_failure(ch, gsn_broach);
@@ -4126,10 +4126,10 @@ void do_pick(CHAR_DATA* ch, const char* argument)
     send_to_char("You failed.\r\n", ch);
     learn_from_failure(ch, gsn_pick_lock);
 /*        for (gch = ch->in_room->first_person; gch; gch = gch->next_in_room)
-	  {
+          {
           if (IS_NPC(gch) && IS_AWAKE(gch) && xIS_SET(gch->act, ACT_GUARDIAN))
-	  multi_hit(gch, ch, TYPE_UNDEFINED);
-	  }
+          multi_hit(gch, ch, TYPE_UNDEFINED);
+          }
 */
     return;
   }
@@ -4142,8 +4142,8 @@ void do_pick(CHAR_DATA* ch, const char* argument)
     /*
      * ROOM_INDEX_DATA *to_room; 
      *//*
-	* Unused 
-	*/
+        * Unused 
+        */
     EXIT_DATA *pexit_rev;
 
     if (!IS_SET(pexit->exit_info, EX_CLOSED))
@@ -4363,7 +4363,7 @@ void do_recall(CHAR_DATA* ch, const char* argument)
       WAIT_STATE(ch, 4);
       lose = (int)((exp_level(ch, ch->level + 1) - exp_level(ch, ch->level)) * 0.1);
       if (ch->desc)
-	lose /= 2;
+        lose /= 2;
       gain_exp(ch, 0 - lose);
       ch_printf(ch, "You failed!  You lose %d exps.\r\n", lose);
       return;
@@ -4881,7 +4881,7 @@ void do_scribe(CHAR_DATA* ch, const char* argument)
   }
 
   mana = IS_NPC(ch) ? 0 : UMAX(skill_table[sn]->min_mana,
-				  100 / (2 + ch->level - skill_table[sn]->skill_level[ch->Class]));
+                                  100 / (2 + ch->level - skill_table[sn]->skill_level[ch->Class]));
 
   mana *= 5;
 
@@ -4994,7 +4994,7 @@ void do_brew(CHAR_DATA* ch, const char* argument)
   }
 
   mana = IS_NPC(ch) ? 0 : UMAX(skill_table[sn]->min_mana,
-				  100 / (2 + ch->level - skill_table[sn]->skill_level[ch->Class]));
+                                  100 / (2 + ch->level - skill_table[sn]->skill_level[ch->Class]));
 
   mana *= 4;
 
@@ -5307,9 +5307,9 @@ bool check_illegal_psteal(CHAR_DATA * ch, CHAR_DATA * victim)
   if (!IS_NPC(victim) && !IS_NPC(ch))
   {
     if ((!IS_SET(victim->pcdata->flags, PCFLAG_DEADLY)
-	  || ch->level - victim->level > 10
-	  || !IS_SET(ch->pcdata->flags, PCFLAG_DEADLY))
-	&& (ch->in_room->vnum < 29 || ch->in_room->vnum > 43) && ch != victim)
+          || ch->level - victim->level > 10
+          || !IS_SET(ch->pcdata->flags, PCFLAG_DEADLY))
+        && (ch->in_room->vnum < 29 || ch->in_room->vnum > 43) && ch != victim)
     {
       /*
        * snprintf(log_buf, MAX_STRING_LENGTH, "%s illegally stealing from %s at %d",
@@ -5336,7 +5336,7 @@ void do_scan(CHAR_DATA* ch, const char* argument)
   set_char_color(AT_ACTION, ch);
 
   if (IS_AFFECTED(ch, AFF_BLIND) && (!IS_AFFECTED(ch, AFF_TRUESIGHT) ||
-					(!IS_NPC(ch) && !xIS_SET(ch->act, PLR_HOLYLIGHT))))
+                                        (!IS_NPC(ch) && !xIS_SET(ch->act, PLR_HOLYLIGHT))))
   {
     send_to_char("Everything looks the same when you're blind...\r\n", ch);
     return;
@@ -5392,9 +5392,9 @@ void do_scan(CHAR_DATA* ch, const char* argument)
     if (IS_SET(pexit->exit_info, EX_CLOSED))
     {
       if (IS_SET(pexit->exit_info, EX_SECRET) || IS_SET(pexit->exit_info, EX_DIG))
-	act(AT_GREY, "Your view $t is blocked by a wall.", ch, dir_name[dir], NULL, TO_CHAR);
+        act(AT_GREY, "Your view $t is blocked by a wall.", ch, dir_name[dir], NULL, TO_CHAR);
       else
-	act(AT_GREY, "Your view $t is blocked by a door.", ch, dir_name[dir], NULL, TO_CHAR);
+        act(AT_GREY, "Your view $t is blocked by a door.", ch, dir_name[dir], NULL, TO_CHAR);
       break;
     }
     if (room_is_private(pexit->to_room) && ch->level < LEVEL_GREATER)
@@ -5417,7 +5417,7 @@ void do_scan(CHAR_DATA* ch, const char* argument)
       break;
     case SECT_AIR:
       if (number_percent() < 80)
-	dist++;
+        dist++;
       break;
     case SECT_INSIDE:
     case SECT_FIELD:
@@ -5463,7 +5463,7 @@ void do_scan(CHAR_DATA* ch, const char* argument)
 
 /*
  * Basically the same guts as do_scan() from above (please keep them in
- * sync) used to find the victim we're firing at.	-Thoric
+ * sync) used to find the victim we're firing at.       -Thoric
  */
 CHAR_DATA *scan_for_victim(CHAR_DATA * ch, EXIT_DATA * pexit, const char *name)
 {
@@ -5511,7 +5511,7 @@ CHAR_DATA *scan_for_victim(CHAR_DATA * ch, EXIT_DATA * pexit, const char *name)
       break;
     case SECT_AIR:
       if (number_percent() < 80)
-	dist++;
+        dist++;
       break;
     case SECT_INSIDE:
     case SECT_FIELD:
@@ -5551,7 +5551,7 @@ CHAR_DATA *scan_for_victim(CHAR_DATA * ch, EXIT_DATA * pexit, const char *name)
 
 /*
  * Search inventory for an appropriate projectile to fire.
- * Also search open quivers.					-Thoric
+ * Also search open quivers.                                    -Thoric
  */
 OBJ_DATA *find_projectile(CHAR_DATA * ch, int type)
 {
@@ -5563,14 +5563,14 @@ OBJ_DATA *find_projectile(CHAR_DATA * ch, int type)
     {
       if (obj->item_type == ITEM_QUIVER && !IS_SET(obj->value[1], CONT_CLOSED))
       {
-	for (obj2 = obj->last_content; obj2; obj2 = obj2->prev_content)
-	{
-	  if (obj2->item_type == ITEM_PROJECTILE && obj2->value[3] == type)
-	    return obj2;
-	}
+        for (obj2 = obj->last_content; obj2; obj2 = obj2->prev_content)
+        {
+          if (obj2->item_type == ITEM_PROJECTILE && obj2->value[3] == type)
+            return obj2;
+        }
       }
       if (obj->item_type == ITEM_PROJECTILE && obj->value[3] == type)
-	return obj;
+        return obj;
     }
   }
 
@@ -5581,7 +5581,7 @@ OBJ_DATA *find_projectile(CHAR_DATA * ch, int type)
 ch_ret spell_attack(int, int, CHAR_DATA *, void *);
 
 /*
- * Perform the actual attack on a victim			-Thoric
+ * Perform the actual attack on a victim                        -Thoric
  */
 ch_ret ranged_got_target(CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * weapon,
                           OBJ_DATA * projectile, short dist, short dt, const char *stxt, short color)
@@ -5622,14 +5622,14 @@ ch_ret ranged_got_target(CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * weapon,
        * 50% chance of projectile getting lost 
        */
       if (number_percent() < 50)
-	extract_obj(projectile);
+        extract_obj(projectile);
       else
       {
-	if (projectile->in_obj)
-	  obj_from_obj(projectile);
-	if (projectile->carried_by)
-	  obj_from_char(projectile);
-	obj_to_room(projectile, victim->in_room);
+        if (projectile->in_obj)
+          obj_from_obj(projectile);
+        if (projectile->carried_by)
+          obj_from_char(projectile);
+        obj_to_room(projectile, victim->in_room);
       }
     }
     return damage(ch, victim, 0, dt);
@@ -5653,14 +5653,14 @@ ch_ret ranged_got_target(CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * weapon,
        * 50% chance of getting lost 
        */
       if (number_percent() < 50)
-	extract_obj(projectile);
+        extract_obj(projectile);
       else
       {
-	if (projectile->in_obj)
-	  obj_from_obj(projectile);
-	if (projectile->carried_by)
-	  obj_from_char(projectile);
-	obj_to_room(projectile, victim->in_room);
+        if (projectile->in_obj)
+          obj_from_obj(projectile);
+        if (projectile->carried_by)
+          obj_from_char(projectile);
+        obj_to_room(projectile, victim->in_room);
       }
     }
   }
@@ -5668,7 +5668,7 @@ ch_ret ranged_got_target(CHAR_DATA * ch, CHAR_DATA * victim, OBJ_DATA * weapon,
 }
 
 /*
- * Generic use ranged attack function			-Thoric & Tricops
+ * Generic use ranged attack function                   -Thoric & Tricops
  */
 ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OBJ_DATA * projectile, short dt, short range)
 {
@@ -5716,8 +5716,8 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
     {
       if (who_fighting(ch) == victim)
       {
-	send_to_char("They are too close to release that type of attack!\r\n", ch);
-	return rNONE;
+        send_to_char("They are too close to release that type of attack!\r\n", ch);
+        return rNONE;
       }
       /*
        * Taken out because of waitstate 
@@ -5746,11 +5746,11 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
     {
       count = 0;
       for (vch = ch->in_room->first_person; vch; vch = vch->next_in_room)
-	++count;
+        ++count;
       if (count >= ch->in_room->tunnel)
       {
-	send_to_char("This room is too cramped to perform such an attack.\r\n", ch);
-	return rNONE;
+        send_to_char("This room is too cramped to perform such an attack.\r\n", ch);
+        return rNONE;
       }
     }
   }
@@ -5838,28 +5838,28 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
     {
       if (weapon)
       {
-	act(AT_GREY, "You fire $p $T.", ch, projectile, dir_name[dir], TO_CHAR);
-	act(AT_GREY, "$n fires $p $T.", ch, projectile, dir_name[dir], TO_ROOM);
+        act(AT_GREY, "You fire $p $T.", ch, projectile, dir_name[dir], TO_CHAR);
+        act(AT_GREY, "$n fires $p $T.", ch, projectile, dir_name[dir], TO_ROOM);
       }
       else
       {
-	act(AT_GREY, "You throw $p $T.", ch, projectile, dir_name[dir], TO_CHAR);
-	act(AT_GREY, "$n throw $p $T.", ch, projectile, dir_name[dir], TO_ROOM);
+        act(AT_GREY, "You throw $p $T.", ch, projectile, dir_name[dir], TO_CHAR);
+        act(AT_GREY, "$n throw $p $T.", ch, projectile, dir_name[dir], TO_ROOM);
       }
     }
     else
     {
       if (weapon)
       {
-	act(AT_GREY, "You fire $p at $N.", ch, projectile, victim, TO_CHAR);
-	act(AT_GREY, "$n fires $p at $N.", ch, projectile, victim, TO_NOTVICT);
-	act(AT_GREY, "$n fires $p at you!", ch, projectile, victim, TO_VICT);
+        act(AT_GREY, "You fire $p at $N.", ch, projectile, victim, TO_CHAR);
+        act(AT_GREY, "$n fires $p at $N.", ch, projectile, victim, TO_NOTVICT);
+        act(AT_GREY, "$n fires $p at you!", ch, projectile, victim, TO_VICT);
       }
       else
       {
-	act(AT_GREY, "You throw $p at $N.", ch, projectile, victim, TO_CHAR);
-	act(AT_GREY, "$n throws $p at $N.", ch, projectile, victim, TO_NOTVICT);
-	act(AT_GREY, "$n throws $p at you!", ch, projectile, victim, TO_VICT);
+        act(AT_GREY, "You throw $p at $N.", ch, projectile, victim, TO_CHAR);
+        act(AT_GREY, "$n throws $p at $N.", ch, projectile, victim, TO_NOTVICT);
+        act(AT_GREY, "$n throws $p at you!", ch, projectile, victim, TO_VICT);
       }
     }
   }
@@ -5879,14 +5879,14 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
       color = AT_MAGIC;
       if (pexit)
       {
-	act(AT_MAGIC, "You release $t $T.", ch, aoran(stxt), dir_name[dir], TO_CHAR);
-	act(AT_MAGIC, "$n releases $s $t $T.", ch, stxt, dir_name[dir], TO_ROOM);
+        act(AT_MAGIC, "You release $t $T.", ch, aoran(stxt), dir_name[dir], TO_CHAR);
+        act(AT_MAGIC, "$n releases $s $t $T.", ch, stxt, dir_name[dir], TO_ROOM);
       }
       else
       {
-	act(AT_MAGIC, "You release $t at $N.", ch, aoran(stxt), victim, TO_CHAR);
-	act(AT_MAGIC, "$n releases $s $t at $N.", ch, stxt, victim, TO_NOTVICT);
-	act(AT_MAGIC, "$n releases $s $t at you!", ch, stxt, victim, TO_VICT);
+        act(AT_MAGIC, "You release $t at $N.", ch, aoran(stxt), victim, TO_CHAR);
+        act(AT_MAGIC, "$n releases $s $t at $N.", ch, stxt, victim, TO_NOTVICT);
+        act(AT_MAGIC, "$n releases $s $t at you!", ch, stxt, victim, TO_VICT);
       }
     }
   }
@@ -5927,23 +5927,23 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
        * whadoyahknow, the door's closed 
        */
       if (projectile)
-	snprintf(buf, MAX_STRING_LENGTH, "You see your %s pierce a door in the distance to the %s.",
-		  myobj(projectile), dir_name[dir]);
+        snprintf(buf, MAX_STRING_LENGTH, "You see your %s pierce a door in the distance to the %s.",
+                  myobj(projectile), dir_name[dir]);
       else
-	snprintf(buf, MAX_STRING_LENGTH, "You see your %s hit a door in the distance to the %s.", stxt, dir_name[dir]);
+        snprintf(buf, MAX_STRING_LENGTH, "You see your %s hit a door in the distance to the %s.", stxt, dir_name[dir]);
       act(color, buf, ch, NULL, NULL, TO_CHAR);
       if (projectile)
       {
-	snprintf(buf, MAX_STRING_LENGTH, "$p flies in from %s and implants itself solidly in the %sern door.", dtxt,
-		  dir_name[dir]);
-	act(color, buf, ch, projectile, NULL, TO_ROOM);
+        snprintf(buf, MAX_STRING_LENGTH, "$p flies in from %s and implants itself solidly in the %sern door.", dtxt,
+                  dir_name[dir]);
+        act(color, buf, ch, projectile, NULL, TO_ROOM);
       }
       else
       {
-	snprintf(buf, MAX_STRING_LENGTH, "%s flies in from %s and implants itself solidly in the %sern door.",
-		  aoran(stxt), dtxt, dir_name[dir]);
-	buf[0] = UPPER(buf[0]);
-	act(color, buf, ch, NULL, NULL, TO_ROOM);
+        snprintf(buf, MAX_STRING_LENGTH, "%s flies in from %s and implants itself solidly in the %sern door.",
+                  aoran(stxt), dtxt, dir_name[dir]);
+        buf[0] = UPPER(buf[0]);
+        act(color, buf, ch, NULL, NULL, TO_ROOM);
       }
       break;
     }
@@ -5955,17 +5955,17 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
     {
       for (vch = ch->in_room->first_person; vch; vch = vch->next_in_room)
       {
-	if (((IS_NPC(ch) && !IS_NPC(vch)) || (!IS_NPC(ch) && IS_NPC(vch))) && number_bits(1) == 0)
-	{
-	  victim = vch;
-	  break;
-	}
+        if (((IS_NPC(ch) && !IS_NPC(vch)) || (!IS_NPC(ch) && IS_NPC(vch))) && number_bits(1) == 0)
+        {
+          victim = vch;
+          break;
+        }
       }
       if (victim && is_safe(ch, victim, TRUE))
       {
-	char_from_room(ch);
-	char_to_room(ch, was_in_room);
-	return rNONE;
+        char_from_room(ch);
+        char_to_room(ch, was_in_room);
+        return rNONE;
       }
     }
 
@@ -5975,9 +5975,9 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
     if (victim && ch->in_room == victim->in_room)
     {
       if (projectile)
-	act(color, "$p flies in from $T.", ch, projectile, dtxt, TO_ROOM);
+        act(color, "$p flies in from $T.", ch, projectile, dtxt, TO_ROOM);
       else
-	act(color, "$t flies in from $T.", ch, aoran(stxt), dtxt, TO_ROOM);
+        act(color, "$t flies in from $T.", ch, aoran(stxt), dtxt, TO_ROOM);
 
       /*
        * get back before the action starts 
@@ -5994,21 +5994,21 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
     {
       if (projectile)
       {
-	if (dir == 4 || dir == 5 || dir == 10)
-	  act(color, "Your $t falls harmlessly to the ground.", ch, myobj(projectile), NULL, TO_CHAR);
-	else
-	  act(color, "Your $t falls harmlessly to the $T.", ch, myobj(projectile), dir_name[dir], TO_CHAR);
-	act(color, "$p flies in from $T and falls harmlessly to the ground.", ch, projectile, dtxt, TO_ROOM);
-	if (projectile->in_obj)
-	  obj_from_obj(projectile);
-	if (projectile->carried_by)
-	  obj_from_char(projectile);
-	obj_to_room(projectile, ch->in_room);
+        if (dir == 4 || dir == 5 || dir == 10)
+          act(color, "Your $t falls harmlessly to the ground.", ch, myobj(projectile), NULL, TO_CHAR);
+        else
+          act(color, "Your $t falls harmlessly to the $T.", ch, myobj(projectile), dir_name[dir], TO_CHAR);
+        act(color, "$p flies in from $T and falls harmlessly to the ground.", ch, projectile, dtxt, TO_ROOM);
+        if (projectile->in_obj)
+          obj_from_obj(projectile);
+        if (projectile->carried_by)
+          obj_from_char(projectile);
+        obj_to_room(projectile, ch->in_room);
       }
       else
       {
-	act(color, "Your $t fizzles out harmlessly to the $T.", ch, stxt, dir_name[dir], TO_CHAR);
-	act(color, "$t flies in from $T and fizzles out harmlessly.", ch, aoran(stxt), dtxt, TO_ROOM);
+        act(color, "Your $t fizzles out harmlessly to the $T.", ch, stxt, dir_name[dir], TO_CHAR);
+        act(color, "$t flies in from $T and fizzles out harmlessly.", ch, aoran(stxt), dtxt, TO_ROOM);
       }
       break;
     }
@@ -6017,18 +6017,18 @@ ch_ret ranged_attack(CHAR_DATA * ch, const char *argument, OBJ_DATA * weapon, OB
     {
       if (projectile)
       {
-	act(color, "Your $t hits a wall and bounces harmlessly to the $T.", ch, myobj(projectile), dir_name[dir], TO_CHAR);
-	act(color, "$p falls harmlessly to the ground.", ch, projectile, dir_name[dir], TO_ROOM);
-	if (projectile->in_obj)
-	  obj_from_obj(projectile);
-	if (projectile->carried_by)
-	  obj_from_char(projectile);
-	obj_to_room(projectile, ch->in_room);
+        act(color, "Your $t hits a wall and bounces harmlessly to the $T.", ch, myobj(projectile), dir_name[dir], TO_CHAR);
+        act(color, "$p falls harmlessly to the ground.", ch, projectile, dir_name[dir], TO_ROOM);
+        if (projectile->in_obj)
+          obj_from_obj(projectile);
+        if (projectile->carried_by)
+          obj_from_char(projectile);
+        obj_to_room(projectile, ch->in_room);
       }
       else
       {
-	act(color, "Your $t harmlessly hits a wall to the $T.", ch, stxt, dir_name[dir], TO_CHAR);
-	act(color, "$t strikes the $Tern wall and falls harmlessly to the ground.", ch, aoran(stxt), dir_name[dir], TO_ROOM);
+        act(color, "Your $t harmlessly hits a wall to the $T.", ch, stxt, dir_name[dir], TO_CHAR);
+        act(color, "$t strikes the $Tern wall and falls harmlessly to the ground.", ch, aoran(stxt), dir_name[dir], TO_ROOM);
       }
       break;
     }
@@ -6166,9 +6166,9 @@ bool mob_fire(CHAR_DATA * ch, const char *name)
 
 /* -- working on -- 
  * Syntaxes: throw object  (assumed already fighting)
- *	     throw object direction target  (all needed args for distance 
- *	          throwing)
- *	     throw object  (assumed same room throw)
+ *           throw object direction target  (all needed args for distance 
+ *                throwing)
+ *           throw object  (assumed same room throw)
 
  void do_throw(CHAR_DATA* ch, const char* argument)
  {
@@ -6342,10 +6342,10 @@ void do_slice(CHAR_DATA* ch, const char* argument)
   if (arg[0] == '\0')
   {
     ch_printf_color(ch, "&wAdopt which fighting style?  (current:  %s&w)\r\n",
-		     ch->style == STYLE_BERSERK ? "&Rberserk" :
-		     ch->style == STYLE_AGGRESSIVE ? "&Raggressive" :
-		     ch->style == STYLE_DEFENSIVE ? "&Ydefensive" :
-		     ch->style == STYLE_EVASIVE ? "&Yevasive" : "standard");
+                     ch->style == STYLE_BERSERK ? "&Rberserk" :
+                     ch->style == STYLE_AGGRESSIVE ? "&Raggressive" :
+                     ch->style == STYLE_DEFENSIVE ? "&Ydefensive" :
+                     ch->style == STYLE_EVASIVE ? "&Yevasive" : "standard");
     return;
   }
 
@@ -6364,10 +6364,10 @@ void do_slice(CHAR_DATA* ch, const char* argument)
        */
       if (ch->fighting)
       {
-	ch->position = POS_EVASIVE;
-	learn_from_success(ch, gsn_style_evasive);
-	if (IS_PKILL(ch))
-	  act(AT_ACTION, "$n falls back into an evasive stance.", ch, NULL, NULL, TO_ROOM);
+        ch->position = POS_EVASIVE;
+        learn_from_success(ch, gsn_style_evasive);
+        if (IS_PKILL(ch))
+          act(AT_ACTION, "$n falls back into an evasive stance.", ch, NULL, NULL, TO_ROOM);
       }
       ch->style = STYLE_EVASIVE;
       send_to_char("You adopt an evasive fighting style.\r\n", ch);
@@ -6397,10 +6397,10 @@ void do_slice(CHAR_DATA* ch, const char* argument)
        */
       if (ch->fighting)
       {
-	ch->position = POS_DEFENSIVE;
-	learn_from_success(ch, gsn_style_defensive);
-	if (IS_PKILL(ch))
-	  act(AT_ACTION, "$n moves into a defensive posture.", ch, NULL, NULL, TO_ROOM);
+        ch->position = POS_DEFENSIVE;
+        learn_from_success(ch, gsn_style_defensive);
+        if (IS_PKILL(ch))
+          act(AT_ACTION, "$n moves into a defensive posture.", ch, NULL, NULL, TO_ROOM);
       }
       ch->style = STYLE_DEFENSIVE;
       send_to_char("You adopt a defensive fighting style.\r\n", ch);
@@ -6430,10 +6430,10 @@ void do_slice(CHAR_DATA* ch, const char* argument)
        */
       if (ch->fighting)
       {
-	ch->position = POS_FIGHTING;
-	learn_from_success(ch, gsn_style_standard);
-	if (IS_PKILL(ch))
-	  act(AT_ACTION, "$n switches to a standard fighting style.", ch, NULL, NULL, TO_ROOM);
+        ch->position = POS_FIGHTING;
+        learn_from_success(ch, gsn_style_standard);
+        if (IS_PKILL(ch))
+          act(AT_ACTION, "$n switches to a standard fighting style.", ch, NULL, NULL, TO_ROOM);
       }
       ch->style = STYLE_FIGHTING;
       send_to_char("You adopt a standard fighting style.\r\n", ch);
@@ -6463,10 +6463,10 @@ void do_slice(CHAR_DATA* ch, const char* argument)
        */
       if (ch->fighting)
       {
-	ch->position = POS_AGGRESSIVE;
-	learn_from_success(ch, gsn_style_aggressive);
-	if (IS_PKILL(ch))
-	  act(AT_ACTION, "$n assumes an aggressive stance.", ch, NULL, NULL, TO_ROOM);
+        ch->position = POS_AGGRESSIVE;
+        learn_from_success(ch, gsn_style_aggressive);
+        if (IS_PKILL(ch))
+          act(AT_ACTION, "$n assumes an aggressive stance.", ch, NULL, NULL, TO_ROOM);
       }
       ch->style = STYLE_AGGRESSIVE;
       send_to_char("You adopt an aggressive fighting style.\r\n", ch);
@@ -6496,10 +6496,10 @@ void do_slice(CHAR_DATA* ch, const char* argument)
        */
       if (ch->fighting)
       {
-	ch->position = POS_BERSERK;
-	learn_from_success(ch, gsn_style_berserk);
-	if (IS_PKILL(ch))
-	  act(AT_ACTION, "$n enters a wildly aggressive style.", ch, NULL, NULL, TO_ROOM);
+        ch->position = POS_BERSERK;
+        learn_from_success(ch, gsn_style_berserk);
+        if (IS_PKILL(ch))
+          act(AT_ACTION, "$n enters a wildly aggressive style.", ch, NULL, NULL, TO_ROOM);
       }
       ch->style = STYLE_BERSERK;
       send_to_char("You adopt a berserk fighting style.\r\n", ch);
@@ -6529,8 +6529,8 @@ bool can_use_skill(CHAR_DATA * ch, int percent, int gsn)
   else if (!IS_NPC(ch) && percent < LEARNED(ch, gsn))
     check = TRUE;
   else if (ch->morph && ch->morph->morph && ch->morph->morph->skills &&
-	   ch->morph->morph->skills[0] != '\0' &&
-	   is_name(skill_table[gsn]->name, ch->morph->morph->skills) && percent < 85)
+           ch->morph->morph->skills[0] != '\0' &&
+           is_name(skill_table[gsn]->name, ch->morph->morph->skills) && percent < 85)
     check = TRUE;
   if (ch->morph && ch->morph->morph && ch->morph->morph->no_skills &&
       ch->morph->morph->no_skills[0] != '\0' && is_name(skill_table[gsn]->name, ch->morph->morph->no_skills))

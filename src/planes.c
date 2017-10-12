@@ -172,15 +172,15 @@ void read_plane(FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if (plane_lookup(p->name))
-	{
-	  bug("read_plane: duplicate plane name!");
-	  STRFREE(p->name);
-	  DISPOSE(p);
-	}
-	else
-	  LINK(p, first_plane, last_plane, next, prev);
-	return;
+        if (plane_lookup(p->name))
+        {
+          bug("read_plane: duplicate plane name!");
+          STRFREE(p->name);
+          DISPOSE(p);
+        }
+        else
+          LINK(p, first_plane, last_plane, next, prev);
+        return;
       }
       break;
 
@@ -254,7 +254,7 @@ void check_planes(PLANE_DATA * p)
   for (vnum = 0; vnum < MAX_KEY_HASH; ++vnum)
     for (r = room_index_hash[vnum]; r; r = r->next)
       if (!r->plane || r->plane == p)
-	r->plane = first_plane;
+        r->plane = first_plane;
   return;
 }
 

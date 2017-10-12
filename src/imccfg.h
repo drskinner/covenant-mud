@@ -91,7 +91,7 @@ const char *title_male( int chclass, int level );
 #define CH_IMCNAME(ch)           GET_NAME(ch)
 #define CH_IMCTITLE(ch)          GET_TITLE(ch)
 #define CH_IMCRANK(ch)           (GET_SEX(ch) == SEX_FEMALE ? title_female(GET_CLASS(ch), GET_LEVEL(ch)) \
-				  : title_male(GET_CLASS(ch), GET_LEVEL(ch)))
+                                  : title_male(GET_CLASS(ch), GET_LEVEL(ch)))
 #define CH_IMCSEX(ch)            GET_SEX(ch)
 #endif
 
@@ -122,7 +122,7 @@ typedef enum
 } genders;
 
 #define CON_PLAYING 1
-#define LOWER(c)		((c) >= 'A' && (c) <= 'Z' ? (c)+'a'-'A' : (c))
+#define LOWER(c)                ((c) >= 'A' && (c) <= 'Z' ? (c)+'a'-'A' : (c))
 
 typedef struct user_data CHAR_DATA;
 typedef struct conn_data DESCRIPTOR_DATA;

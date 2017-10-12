@@ -78,14 +78,14 @@ bool process_compressed(DESCRIPTOR_DATA * d)
       nBlock = UMIN(len - iStart, 4096);
       if ((nWrite = write(d->descriptor, d->mccp->out_compress_buf + iStart, nBlock)) < 0)
       {
-	if (errno == EAGAIN || errno == ENOSR)
-	  break;
+        if (errno == EAGAIN || errno == ENOSR)
+          break;
 
-	return FALSE;
+        return FALSE;
       }
 
       if (!nWrite)
-	break;
+        break;
     }
 
     if (iStart)
@@ -94,7 +94,7 @@ bool process_compressed(DESCRIPTOR_DATA * d)
        * We wrote "iStart" bytes 
        */
       if (iStart < len)
-	memmove(d->mccp->out_compress_buf, d->mccp->out_compress_buf + iStart, len - iStart);
+        memmove(d->mccp->out_compress_buf, d->mccp->out_compress_buf + iStart, len - iStart);
 
       d->mccp->out_compress->next_out = d->mccp->out_compress_buf + len - iStart;
     }

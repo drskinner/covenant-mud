@@ -50,19 +50,19 @@ int load_imm_host()
     case '#':
       if (!str_cmp(word, "#END"))
       {
-	fclose(fp);
-	fMatch = TRUE;
-	my_continue = FALSE;
+        fclose(fp);
+        fMatch = TRUE;
+        my_continue = FALSE;
       }
       break;
 
     case 'S':
       if (!str_cmp(word, "Start"))
       {
-	CREATE(host, IMMORTAL_HOST, 1);
-	LINK(host, immortal_host_start, immortal_host_end, next, prev);
-	fread_imm_host(fp, host);
-	fMatch = TRUE;
+        CREATE(host, IMMORTAL_HOST, 1);
+        LINK(host, immortal_host_start, immortal_host_end, next, prev);
+        fread_imm_host(fp, host);
+        fMatch = TRUE;
       }
       break;
     }
@@ -96,7 +96,7 @@ int fread_imm_host(FILE * fp, IMMORTAL_HOST * data)
     {
     case 'E':
       if (!str_cmp(word, "End"))
-	return rNONE;
+        return rNONE;
 
     case 'H':
       KEY("Host", data->host, fread_string_nohash(fp));
@@ -109,24 +109,24 @@ int fread_imm_host(FILE * fp, IMMORTAL_HOST * data)
     case 'P':
       if (!str_cmp(word, "Prefix"))
       {
-	temp = fread_number(fp);
-	if (temp)
-	  data->prefix = TRUE;
-	else
-	  data->prefix = FALSE;
-	fMatch = TRUE;
+        temp = fread_number(fp);
+        if (temp)
+          data->prefix = TRUE;
+        else
+          data->prefix = FALSE;
+        fMatch = TRUE;
       }
       break;
 
     case 'S':
       if (!str_cmp(word, "Suffix"))
       {
-	temp = fread_number(fp);
-	if (temp)
-	  data->suffix = TRUE;
-	else
-	  data->suffix = FALSE;
-	fMatch = TRUE;
+        temp = fread_number(fp);
+        if (temp)
+          data->suffix = TRUE;
+        else
+          data->suffix = FALSE;
+        fMatch = TRUE;
       }
       break;
     }
@@ -160,14 +160,14 @@ bool check_immortal_domain(CHAR_DATA * ch, const char *host)
     {
       found = TRUE;
       if (temp->prefix && temp->suffix && strstr(my_host, temp->host))
-	return TRUE;
+        return TRUE;
       else if (temp->prefix && !str_suffix(temp->host, my_host))
-	return TRUE;
+        return TRUE;
       else if (temp->suffix && !str_prefix(temp->host, my_host))
-	return TRUE;
+        return TRUE;
       else if (!str_cmp(temp->host, my_host))
       {
-	return TRUE;
+        return TRUE;
       }
     }
   }
@@ -204,7 +204,7 @@ void do_add_imm_host(CHAR_DATA* ch, const char* argument)
     set_char_color(AT_PLAIN, ch);
     for (temp = immortal_host_start; temp; temp = temp->next)
       ch_printf(ch, "%-8s  %c%s%c\r\n",
-		 temp->name, (temp->prefix ? '*' : ' '), temp->host, (temp->suffix ? '*' : ' '));
+                 temp->name, (temp->prefix ? '*' : ' '), temp->host, (temp->suffix ? '*' : ' '));
     return;
   }
 
@@ -240,8 +240,8 @@ void do_add_imm_host(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(arg1, temp->name) && !str_cmp(arg3, temp->host))
       {
-	it = temp;
-	break;
+        it = temp;
+        break;
       }
     }
     if (it == NULL)
@@ -282,8 +282,8 @@ void do_add_imm_host(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(temp->name, arg1) && !str_cmp(temp->host, name))
       {
-	send_to_char("Entry already exists.\r\n", ch);
-	return;
+        send_to_char("Entry already exists.\r\n", ch);
+        return;
       }
     }
     CREATE(host, IMMORTAL_HOST, 1);

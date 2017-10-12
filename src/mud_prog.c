@@ -50,11 +50,11 @@ void uphold_supermob(int *curr_serial, int serial, ROOM_INDEX_DATA ** supermob_r
     else
     {
       if (!true_supermob_obj)
-	supermob_obj = NULL;
+        supermob_obj = NULL;
       if (supermob->short_descr)
-	STRFREE(supermob->short_descr);
+        STRFREE(supermob->short_descr);
       if (supermob->description)
-	STRFREE(supermob->description);
+        STRFREE(supermob->description);
       supermob->short_descr = QUICKLINK((*supermob_room)->name);
       snprintf(buf, 128, "Room #%d", (*supermob_room)->vnum);
       supermob->description = STRALLOC(buf);
@@ -90,7 +90,7 @@ static bool carryingvnum_visit(CHAR_DATA * ch, OBJ_DATA * obj, int vnum)
       return TRUE;
     if (obj->next_content) /* node has a sibling? */
       if (carryingvnum_visit(ch, obj->next_content, vnum))
-	return TRUE;
+        return TRUE;
   }
   else if (obj->next_content)  /* node has a sibling? */
     if (carryingvnum_visit(ch, obj->next_content, vnum))
@@ -323,22 +323,22 @@ int mprog_do_ifcheck(const char *ifcheck, CHAR_DATA * mob, CHAR_DATA * actor, OB
     case ',':
       *p++ = '\0';
       while (isspace(*p))
-	*p++ = '\0';
+        *p++ = '\0';
       if (argc >= MAX_IF_ARGS)
       {
-	while (*p && *p != ')')
-	  ++p;
-	if (*p)
-	  *p++ = '\0';
-	while (isspace(*p))
-	  *p++ = '\0';
-	goto doneargs;
+        while (*p && *p != ')')
+          ++p;
+        if (*p)
+          *p++ = '\0';
+        while (isspace(*p))
+          *p++ = '\0';
+        goto doneargs;
       }
       break;
     case ')':
       *p++ = '\0';
       while (isspace(*p))
-	*p++ = '\0';
+        *p++ = '\0';
       goto doneargs;
     default:
       progbug("Ifcheck Syntax warning (missing right bracket)", mob);
@@ -412,8 +412,8 @@ doneargs:
     {
       if (!mob->in_room)
       {
-	progbug("'economy' ifcheck: mob in NULL room with no room vnum " "argument", mob);
-	return BERR;
+        progbug("'economy' ifcheck: mob in NULL room with no room vnum " "argument", mob);
+        return BERR;
       }
       room = mob->in_room;
     }
@@ -425,7 +425,7 @@ doneargs:
       return BERR;
     }
     return mprog_veval(((room->area->high_economy > 0) ? 1000000000 : 0)
-			+ room->area->low_economy, opr, atoi(rval), mob);
+                        + room->area->low_economy, opr, atoi(rval), mob);
   }
   if (!str_cmp(chck, "mobinarea"))
   {
@@ -455,10 +455,10 @@ doneargs:
     {
       if (IS_NPC(tmob) && tmob->pIndexData->vnum == vnum)
       {
-	found_count++;
+        found_count++;
 
-	if (tmob->in_room->area == mob->in_room->area)
-	  lhsvl++;
+        if (tmob->in_room->area == mob->in_room->area)
+          lhsvl++;
       }
     }
     rhsvl = atoi(rval);
@@ -487,7 +487,7 @@ doneargs:
     lhsvl = 0;
     for (oMob = mob->in_room->first_person; oMob; oMob = oMob->next_in_room)
       if (IS_NPC(oMob) && oMob->pIndexData->vnum == vnum)
-	lhsvl++;
+        lhsvl++;
     rhsvl = atoi(rval);
     /*
      * Changed below from 1 to 0 
@@ -586,10 +586,10 @@ doneargs:
 
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->pIndexData->vnum == vnum)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     for (pObj = mob->in_room->first_content; pObj; pObj = pObj->next_content)
       if (pObj->pIndexData->vnum == vnum)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed from 1 to 0 
@@ -619,10 +619,10 @@ doneargs:
 
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->item_type == type)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     for (pObj = mob->in_room->first_content; pObj; pObj = pObj->next_content)
       if (pObj->item_type == type)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Change below from 1 to 0 
@@ -647,7 +647,7 @@ doneargs:
     lhsvl = 0;
     for (pObj = mob->in_room->first_content; pObj; pObj = pObj->next_content)
       if (pObj->pIndexData->vnum == vnum)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed below from 1 to 0 so can check for == no items Shaddai 
@@ -677,7 +677,7 @@ doneargs:
 
     for (pObj = mob->in_room->first_content; pObj; pObj = pObj->next_content)
       if (pObj->item_type == type)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed below from 1 to 0 
@@ -703,7 +703,7 @@ doneargs:
 
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->pIndexData->vnum == vnum)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
 
     if (rhsvl < 0)
@@ -730,7 +730,7 @@ doneargs:
     lhsvl = 0;
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->item_type == type)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed below from 1 to 0 Shaddai 
@@ -755,7 +755,7 @@ doneargs:
     lhsvl = 0;
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->wear_loc != WEAR_NONE && pObj->pIndexData->vnum == vnum)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed below from 1 to 0 
@@ -784,7 +784,7 @@ doneargs:
     lhsvl = 0;
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->wear_loc != WEAR_NONE && pObj->item_type == type)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed below from 1 to 0 so can have == 0 Shaddai 
@@ -810,7 +810,7 @@ doneargs:
 
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->wear_loc == WEAR_NONE && pObj->pIndexData->vnum == vnum)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed 1 to 0 so can have == 0 
@@ -839,7 +839,7 @@ doneargs:
     lhsvl = 0;
     for (pObj = mob->first_carrying; pObj; pObj = pObj->next_content)
       if (pObj->wear_loc == WEAR_NONE && pObj->item_type == type)
-	lhsvl += pObj->count;
+        lhsvl += pObj->count;
     rhsvl = is_number(rval) ? atoi(rval) : -1;
     /*
      * Changed below from 1 to 0 for == 0 Shaddai 
@@ -890,16 +890,16 @@ doneargs:
     if (!str_cmp(chck, "isriding"))
     {
       if (chkchar->mount == mob)
-	return true;
+        return true;
       return false;
     }
 
     if (!str_cmp(chck, "ispassage"))
     {
       if (find_door(chkchar, rval, TRUE) == NULL)
-	return FALSE;
+        return FALSE;
       else
-	return TRUE;
+        return TRUE;
     }
 
     if (!str_cmp(chck, "isopen"))
@@ -907,9 +907,9 @@ doneargs:
       EXIT_DATA *pexit;
 
       if ((pexit = find_door(chkchar, rval, TRUE)) == NULL)
-	return FALSE;
+        return FALSE;
       if (!IS_SET(pexit->exit_info, EX_CLOSED))
-	return TRUE;
+        return TRUE;
       return FALSE;
     }
 
@@ -918,9 +918,9 @@ doneargs:
       EXIT_DATA *pexit;
 
       if ((pexit = find_door(chkchar, rval, TRUE)) == NULL)
-	return FALSE;
+        return FALSE;
       if (IS_SET(pexit->exit_info, EX_LOCKED))
-	return TRUE;
+        return TRUE;
       return FALSE;
     }
 
@@ -975,9 +975,9 @@ doneargs:
     if (!str_cmp(chck, "ischarmed"))
     {
       if (IS_AFFECTED(chkchar, AFF_CHARM) || IS_AFFECTED(chkchar, AFF_POSSESS))
-	return TRUE;
+        return TRUE;
       else
-	return FALSE;
+        return FALSE;
     }
     if (!str_cmp(chck, "ispossesed"))
     {
@@ -1009,8 +1009,8 @@ doneargs:
 
       if (value < 0 || value >= MAX_BITS)
       {
-	progbug("Unknown affect being checked", mob);
-	return BERR;
+        progbug("Unknown affect being checked", mob);
+        return BERR;
       }
       return IS_AFFECTED(chkchar, value) ? TRUE : FALSE;
     }
@@ -1029,7 +1029,7 @@ doneargs:
     if (!str_cmp(chck, "wasinroom"))
     {
       if (!chkchar->was_in_room)
-	return FALSE;
+        return FALSE;
       return mprog_veval(chkchar->was_in_room->vnum, opr, atoi(rval), mob);
     }
     if (!str_cmp(chck, "indoors"))
@@ -1088,7 +1088,7 @@ doneargs:
     if (!str_cmp(chck, "class"))
     {
       if (IS_NPC(chkchar))
-	return mprog_seval(npc_class[chkchar->Class], opr, rval, mob);
+        return mprog_seval(npc_class[chkchar->Class], opr, rval, mob);
       return mprog_seval((char *)class_table[chkchar->Class]->who_name, opr, rval, mob);
     }
     if (!str_cmp(chck, "weight"))
@@ -1098,7 +1098,7 @@ doneargs:
     if (!str_cmp(chck, "hostdesc"))
     {
       if (IS_NPC(chkchar) || !chkchar->desc->host)
-	return FALSE;
+        return FALSE;
       return mprog_seval(chkchar->desc->host, opr, rval, mob);
     }
     if (!str_cmp(chck, "areamulti"))
@@ -1107,17 +1107,17 @@ doneargs:
       int clhsvl = 0;
 
       for (ch = first_char; ch; ch = ch->next)
-	if (!IS_NPC(chkchar) && !IS_NPC(ch)
-	    && ch->in_room
-	    && chkchar->in_room
-	    && ch->in_room->area == chkchar->in_room->area
-	    && ch->desc && chkchar->desc && !str_cmp(ch->desc->host, chkchar->desc->host))
-	  clhsvl++;
+        if (!IS_NPC(chkchar) && !IS_NPC(ch)
+            && ch->in_room
+            && chkchar->in_room
+            && ch->in_room->area == chkchar->in_room->area
+            && ch->desc && chkchar->desc && !str_cmp(ch->desc->host, chkchar->desc->host))
+          clhsvl++;
       rhsvl = atoi(rval);
       if (rhsvl < 0)
-	rhsvl = 0;
+        rhsvl = 0;
       if (!*opr)
-	strcpy(opr, "==");
+        strcpy(opr, "==");
       return mprog_veval(clhsvl, opr, rhsvl, mob);
     }
     if (!str_cmp(chck, "multi"))
@@ -1127,40 +1127,40 @@ doneargs:
       lhsvl = 0;
 
       for (ch = first_char; ch; ch = ch->next)
-	if (!IS_NPC(chkchar) && !IS_NPC(ch)
-	    && ch->desc && chkchar->desc && !str_cmp(ch->desc->host, chkchar->desc->host))
-	  lhsvl++;
+        if (!IS_NPC(chkchar) && !IS_NPC(ch)
+            && ch->desc && chkchar->desc && !str_cmp(ch->desc->host, chkchar->desc->host))
+          lhsvl++;
       rhsvl = atoi(rval);
       if (rhsvl < 0)
-	rhsvl = 0;
+        rhsvl = 0;
       if (!*opr)
-	strcpy(opr, "==");
+        strcpy(opr, "==");
       return mprog_veval(lhsvl, opr, rhsvl, mob);
     }
     if (!str_cmp(chck, "race"))
     {
       if (IS_NPC(chkchar))
-	return mprog_seval(npc_race[chkchar->race], opr, rval, mob);
+        return mprog_seval(npc_race[chkchar->race], opr, rval, mob);
       return mprog_seval((char *)race_table[chkchar->race]->race_name, opr, rval, mob);
     }
     if (!str_cmp(chck, "morph"))
     {
       if (chkchar->morph == NULL)
-	return FALSE;
+        return FALSE;
       if (chkchar->morph->morph == NULL)
-	return FALSE;
+        return FALSE;
       return mprog_veval(chkchar->morph->morph->vnum, opr, rhsvl, mob);
     }
     if (!str_cmp(chck, "nuisance"))
     {
       if (IS_NPC(chkchar) || !chkchar->pcdata->nuisance)
-	return FALSE;
+        return FALSE;
       return mprog_veval(chkchar->pcdata->nuisance->flags, opr, rhsvl, mob);
     }
     if (!str_cmp(chck, "clan"))
     {
       if (IS_NPC(chkchar) || !chkchar->pcdata->clan)
-	return FALSE;
+        return FALSE;
       return mprog_seval(chkchar->pcdata->clan->name, opr, rval, mob);
     }
     /*
@@ -1170,15 +1170,15 @@ doneargs:
     {
       CLAN_DATA *temp;
       if (IS_NPC(chkchar))
-	return FALSE;
+        return FALSE;
       if ((temp = get_clan(rval)) == NULL)
-	return FALSE;
+        return FALSE;
       if (mprog_seval(chkchar->name, opr, temp->leader, mob)
-	  || mprog_seval(chkchar->name, opr, temp->number1, mob)
-	  || mprog_seval(chkchar->name, opr, temp->number2, mob))
-	return TRUE;
+          || mprog_seval(chkchar->name, opr, temp->number1, mob)
+          || mprog_seval(chkchar->name, opr, temp->number2, mob))
+        return TRUE;
       else
-	return FALSE;
+        return FALSE;
     }
 
     /*
@@ -1190,9 +1190,9 @@ doneargs:
       int i = 0;
       for (tobj = chkchar->first_carrying; tobj; tobj = tobj->next_content)
       {
-	i++;
-	if (chkchar == tobj->carried_by && tobj->wear_loc > -1 && !str_cmp(rval, item_w_flags[tobj->wear_loc]))
-	  return TRUE;
+        i++;
+        if (chkchar == tobj->carried_by && tobj->wear_loc > -1 && !str_cmp(rval, item_w_flags[tobj->wear_loc]))
+          return TRUE;
       }
       return FALSE;
     }
@@ -1205,11 +1205,11 @@ doneargs:
       OBJ_DATA *tobj;
 
       if (!is_number(rval))
-	return FALSE;
+        return FALSE;
       for (tobj = chkchar->first_carrying; tobj; tobj = tobj->next_content)
       {
-	if (chkchar == tobj->carried_by && tobj->wear_loc > -1 && tobj->pIndexData->vnum == atoi(rval))
-	  return TRUE;
+        if (chkchar == tobj->carried_by && tobj->wear_loc > -1 && tobj->pIndexData->vnum == atoi(rval))
+          return TRUE;
       }
       return FALSE;
     }
@@ -1222,10 +1222,10 @@ doneargs:
       int vnum;
 
       if (!is_number(rval))
-	return FALSE;
+        return FALSE;
       vnum = atoi(rval);
       if (!chkchar->first_carrying)
-	return FALSE;
+        return FALSE;
       return (carryingvnum_visit(chkchar, chkchar->first_carrying, vnum));
     }
 
@@ -1236,60 +1236,60 @@ doneargs:
     {
       CLAN_DATA *temp;
       if (IS_NPC(chkchar))
-	return FALSE;
+        return FALSE;
       if ((temp = get_clan(rval)) == NULL)
-	return FALSE;
+        return FALSE;
       if (mprog_seval(chkchar->name, opr, temp->leader, mob))
-	return TRUE;
+        return TRUE;
       else
-	return FALSE;
+        return FALSE;
     }
     if (!str_cmp(chck, "isclan1"))
     {
       CLAN_DATA *temp;
       if (IS_NPC(chkchar))
-	return FALSE;
+        return FALSE;
       if ((temp = get_clan(rval)) == NULL)
-	return FALSE;
+        return FALSE;
       if (mprog_seval(chkchar->name, opr, temp->number1, mob))
-	return TRUE;
+        return TRUE;
       else
-	return FALSE;
+        return FALSE;
     }
     if (!str_cmp(chck, "isclan2"))
     {
       CLAN_DATA *temp;
       if (IS_NPC(chkchar))
-	return FALSE;
+        return FALSE;
       if ((temp = get_clan(rval)) == NULL)
-	return FALSE;
+        return FALSE;
       if (mprog_seval(chkchar->name, opr, temp->number2, mob))
-	return TRUE;
+        return TRUE;
       else
-	return FALSE;
+        return FALSE;
     }
     if (!str_cmp(chck, "council"))
     {
       if (IS_NPC(chkchar) || !chkchar->pcdata->council)
-	return FALSE;
+        return FALSE;
       return mprog_seval(chkchar->pcdata->council->name, opr, rval, mob);
     }
     if (!str_cmp(chck, "deity"))
     {
       if (IS_NPC(chkchar) || !chkchar->pcdata->deity)
-	return FALSE;
+        return FALSE;
       return mprog_seval(chkchar->pcdata->deity->name, opr, rval, mob);
     }
     if (!str_cmp(chck, "guild"))
     {
       if (IS_NPC(chkchar) || !IS_GUILDED(chkchar))
-	return FALSE;
+        return FALSE;
       return mprog_seval(chkchar->pcdata->clan->name, opr, rval, mob);
     }
     if (!str_cmp(chck, "clantype"))
     {
       if (IS_NPC(chkchar) || !chkchar->pcdata->clan)
-	return FALSE;
+        return FALSE;
       return mprog_veval(chkchar->pcdata->clan->clan_type, opr, atoi(rval), mob);
     }
 
@@ -1300,27 +1300,27 @@ doneargs:
       int flag = 0;
 
       if (argc < 3)
-	return BERR;
+        return BERR;
 
       if (argc > 3)
-	flag = atoi(argv[3]);
+        flag = atoi(argv[3]);
 
       if ((p = strchr(argv[2], ':')) != NULL)
       {
-	*p++ = '\0';
-	vnum = atoi(p);
+        *p++ = '\0';
+        vnum = atoi(p);
       }
       if ((vd = get_tag(chkchar, argv[2], vnum)) == NULL)
-	return FALSE;
+        return FALSE;
 
       flag = abs(flag) % MAX_BITS;
       switch (vd->type)
       {
       case vtSTR:
       case vtINT:
-	return FALSE;
+        return FALSE;
       case vtXBIT:
-	return xIS_SET(*(EXT_BV *) vd->data, flag) ? TRUE : FALSE;
+        return xIS_SET(*(EXT_BV *) vd->data, flag) ? TRUE : FALSE;
       }
       return FALSE;
     }
@@ -1331,31 +1331,31 @@ doneargs:
       int vnum = mob->pIndexData->vnum;
 
       if (argc < 3)
-	return BERR;
+        return BERR;
 
       if (argc > 3)
-	vnum = atoi(argv[3]);
+        vnum = atoi(argv[3]);
       if ((p = strchr(argv[2], ':')) != NULL)
       {
-	*p++ = '\0';
-	vnum = atoi(p);
+        *p++ = '\0';
+        vnum = atoi(p);
       }
       if ((vd = get_tag(chkchar, argv[2], vnum)) == NULL)
-	return FALSE;
+        return FALSE;
 
       if (!*opr && !*rval)
-	return TRUE;
+        return TRUE;
 
       switch (vd->type)
       {
       case vtSTR:
-	return mprog_seval((char *)vd->data, opr, rval, mob);
+        return mprog_seval((char *)vd->data, opr, rval, mob);
 
       case vtINT:
-	return mprog_veval((long)vd->data, opr, atoi(rval), mob);
+        return mprog_veval((long)vd->data, opr, atoi(rval), mob);
 
       case vtXBIT:
-	return FALSE;  /* for now */
+        return FALSE;  /* for now */
       }
       return FALSE;
     }
@@ -1363,7 +1363,7 @@ doneargs:
     if (!str_cmp(chck, "waitstate"))
     {
       if (IS_NPC(chkchar) || !chkchar->wait)
-	return FALSE;
+        return FALSE;
       return mprog_veval(chkchar->wait, opr, atoi(rval), mob);
     }
     if (!str_cmp(chck, "pkadrenalized"))
@@ -1378,7 +1378,7 @@ doneargs:
     if (!str_cmp(chck, "favor"))
     {
       if (IS_NPC(chkchar) || !chkchar->pcdata->favor)
-	return FALSE;
+        return FALSE;
       return mprog_veval(chkchar->pcdata->favor, opr, atoi(rval), mob);
     }
     if (!str_cmp(chck, "hps"))
@@ -1429,13 +1429,13 @@ doneargs:
       int isup = FALSE, wantsup = FALSE;
 
       if (chkobj->item_type != ITEM_SWITCH && chkobj->item_type != ITEM_LEVER && chkobj->item_type != ITEM_PULLCHAIN
-	  && chkobj->item_type != ITEM_BUTTON)
-	return FALSE;
+          && chkobj->item_type != ITEM_BUTTON)
+        return FALSE;
 
       if (IS_SET(obj->value[0], TRIG_UP))
-	isup = TRUE;
+        isup = TRUE;
       if (!str_cmp(rval, "up"))
-	wantsup = TRUE;
+        wantsup = TRUE;
 
       return mprog_veval(wantsup, opr, isup, mob);
     }
@@ -1473,7 +1473,7 @@ doneargs:
     if (chkchar)
     {
       if (!IS_NPC(chkchar))
-	return FALSE;
+        return FALSE;
       lhsvl = (chkchar == mob) ? chkchar->gold : chkchar->pIndexData->vnum;
       return mprog_veval(lhsvl, opr, atoi(rval), mob);
     }
@@ -1502,8 +1502,8 @@ doneargs:
     DESCRIPTOR_DATA *d;
     for (d = first_descriptor; d; d = d->next)
       if (d->connected == CON_PLAYING
-	  && d->character && get_trust(d->character) < LEVEL_IMMORTAL && nifty_is_name(d->character->name, cvar))
-	return TRUE;
+          && d->character && get_trust(d->character) < LEVEL_IMMORTAL && nifty_is_name(d->character->name, cvar))
+        return TRUE;
     return FALSE;
   }
 
@@ -1512,7 +1512,7 @@ doneargs:
     CHAR_DATA *ch;
     for (ch = mob->in_room->first_person; ch; ch = ch->next_in_room)
       if ((!IS_NPC(ch)) && get_trust(ch) < LEVEL_IMMORTAL && nifty_is_name(ch->name, cvar))
-	return TRUE;
+        return TRUE;
     return FALSE;
   }
 
@@ -1528,9 +1528,9 @@ doneargs:
     CHAR_DATA *ch;
     for (ch = first_char; ch; ch = ch->next)
       if ((!IS_NPC(ch))
-	  && ch->in_room->area == mob->in_room->area
-	  && get_trust(ch) < LEVEL_IMMORTAL && nifty_is_name(ch->name, cvar))
-	return TRUE;
+          && ch->in_room->area == mob->in_room->area
+          && get_trust(ch) < LEVEL_IMMORTAL && nifty_is_name(ch->name, cvar))
+        return TRUE;
     return FALSE;
   }
 
@@ -1545,7 +1545,7 @@ doneargs:
 
     for (tch = room ? room->first_person : NULL; tch; tch = tch->next_in_room)
       if ((!IS_NPC(tch)) && get_trust(tch) < LEVEL_IMMORTAL)
-	count++;
+        count++;
     return mprog_veval(count, opr, atoi(rval), mob);
   }
 
@@ -1561,7 +1561,7 @@ doneargs:
 
     for (tch = room ? room->first_person : NULL; tch; tch = tch->next_in_room)
       if ((IS_NPC(tch)))
-	count++;
+        count++;
     return mprog_veval(count, opr, atoi(rval), mob);
   }
 
@@ -1578,7 +1578,7 @@ doneargs:
     for (tch = room ? room->first_person : NULL; tch; tch = tch->next_in_room)
 
       if (((!IS_NPC(tch)) && get_trust(tch) < LEVEL_IMMORTAL) || IS_NPC(tch))  /* mortal or mob */
-	count++;
+        count++;
     return mprog_veval(count, opr, atoi(rval), mob);
   }
 
@@ -1612,7 +1612,7 @@ doneargs:
  *  fubared.  I added some ifs.  I'm willing to trade some 
  *  performance for stability. -Haus
  *
- *  Added char_died and obj_extracted checks	-Thoric
+ *  Added char_died and obj_extracted checks    -Thoric
  */
 void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, CHAR_DATA * vict, OBJ_DATA * v_obj, CHAR_DATA * rndm)
 {
@@ -1627,7 +1627,7 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     if (mob && !char_died(mob))
     {
       if (mob->name)
-	one_argument(mob->name, t);
+        one_argument(mob->name, t);
     }
     else
       strcpy(t, "someone");
@@ -1638,11 +1638,11 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     {
       if (mob->short_descr)
       {
-	strcpy(t, mob->short_descr);
+        strcpy(t, mob->short_descr);
       }
       else
       {
-	strcpy(t, "someone");
+        strcpy(t, "someone");
       }
     }
     else
@@ -1653,9 +1653,9 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     if (actor && !char_died(actor))
     {
       if (can_see(mob, actor))
-	one_argument(actor->name, t);
+        one_argument(actor->name, t);
       if (!IS_NPC(actor))
-	*t = UPPER(*t);
+        *t = UPPER(*t);
     }
     else
       strcpy(t, "someone");
@@ -1665,15 +1665,15 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     if (actor && !char_died(actor))
     {
       if (can_see(mob, actor))
-	if (IS_NPC(actor))
-	  strcpy(t, actor->short_descr);
-	else
-	{
-	  strcpy(t, actor->name);
-	  strcat(t, actor->pcdata->title);
-	}
+        if (IS_NPC(actor))
+          strcpy(t, actor->short_descr);
+        else
+        {
+          strcpy(t, actor->name);
+          strcat(t, actor->pcdata->title);
+        }
       else
-	strcpy(t, "someone");
+        strcpy(t, "someone");
     }
     else
       strcpy(t, "someone");
@@ -1683,9 +1683,9 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     if (vict && !char_died(vict))
     {
       if (can_see(mob, vict))
-	one_argument(vict->name, t);
+        one_argument(vict->name, t);
       if (!IS_NPC(vict))
-	*t = UPPER(*t);
+        *t = UPPER(*t);
     }
     else
       strcpy(t, "someone");
@@ -1696,15 +1696,15 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     if (vict && !char_died(vict))
     {
       if (can_see(mob, vict))
-	if (IS_NPC(vict))
-	  strcpy(t, vict->short_descr);
-	else
-	{
-	  strcpy(t, vict->name);
-	  strcat(t, vict->pcdata->title);
-	}
+        if (IS_NPC(vict))
+          strcpy(t, vict->short_descr);
+        else
+        {
+          strcpy(t, vict->name);
+          strcat(t, vict->pcdata->title);
+        }
       else
-	strcpy(t, "someone");
+        strcpy(t, "someone");
     }
     else
       strcpy(t, "someone");
@@ -1715,11 +1715,11 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     {
       if (can_see(mob, rndm))
       {
-	one_argument(rndm->name, t);
+        one_argument(rndm->name, t);
       }
       if (!IS_NPC(rndm))
       {
-	*t = UPPER(*t);
+        *t = UPPER(*t);
       }
     }
     else
@@ -1730,15 +1730,15 @@ void mprog_translate(char ch, char *t, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_D
     if (rndm && !char_died(rndm))
     {
       if (can_see(mob, rndm))
-	if (IS_NPC(rndm))
-	  strcpy(t, rndm->short_descr);
-	else
-	{
-	  strcpy(t, rndm->name);
-	  strcat(t, rndm->pcdata->title);
-	}
+        if (IS_NPC(rndm))
+          strcpy(t, rndm->short_descr);
+        else
+        {
+          strcpy(t, rndm->name);
+          strcat(t, rndm->pcdata->title);
+        }
       else
-	strcpy(t, "someone");
+        strcpy(t, "someone");
     }
     else
       strcpy(t, "someone");
@@ -2035,12 +2035,12 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
     {
       if (!IS_NPC(vch) && can_see(mob, vch))
       {
-	++count;
-	if (count == rand_pick)
-	{
-	  rndm = vch;
-	  break;
-	}
+        ++count;
+        if (count == rand_pick)
+        {
+          rndm = vch;
+          break;
+        }
       }
     }
   }
@@ -2062,7 +2062,7 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
     for (count = 0; count < MAX_IFS; ++count)
     {
       for (count2 = 0; count2 <= DO_ELSE; ++count2)
-	ifstate[count][count2] = current_mpsleep->ifstate[count][count2];
+        ifstate[count][count2] = current_mpsleep->ifstate[count][count2];
     }
     current_mpsleep = NULL;
   }
@@ -2105,7 +2105,7 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
     {
       if (ifstate[iflevel][IN_IF] || ifstate[iflevel][IN_ELSE])
       {
-	progbug("Missing endif", mob);
+        progbug("Missing endif", mob);
       }
       --prog_nest;
       MPSilent = oldMPSilent;
@@ -2127,10 +2127,10 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
 
       for (count = 0; count < MAX_IFS; count++)
       {
-	for (count2 = 0; count2 < DO_ELSE; count2++)
-	{
-	  mpsleep->ifstate[count][count2] = ifstate[count][count2];
-	}
+        for (count2 = 0; count2 < DO_ELSE; count2++)
+        {
+          mpsleep->ifstate[count][count2] = ifstate[count][count2];
+        }
       }
 
       /*
@@ -2150,29 +2150,29 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
       cmnd = one_argument(cmnd, arg);
       cmnd = one_argument(cmnd, arg);
       if (arg[0] == '\0')
-	mpsleep->timer = 4;
+        mpsleep->timer = 4;
       else
-	mpsleep->timer = atoi(arg);
+        mpsleep->timer = atoi(arg);
 
       if (mpsleep->timer < 1)
       {
-	progbug("mpsleep - bad arg, using default", mob);
-	mpsleep->timer = 4;
+        progbug("mpsleep - bad arg, using default", mob);
+        mpsleep->timer = 4;
       }
 
       /* Save type of prog, room, object or mob */
       if (mpsleep->mob->pIndexData->vnum == 3)
       {
-	if (!str_prefix("Room", mpsleep->mob->description))
-	{
-	  mpsleep->type = MP_ROOM;
-	  mpsleep->room = mpsleep->mob->in_room;
-	}
-	else if (!str_prefix("Object", mpsleep->mob->description))
-	  mpsleep->type = MP_OBJ;
+        if (!str_prefix("Room", mpsleep->mob->description))
+        {
+          mpsleep->type = MP_ROOM;
+          mpsleep->room = mpsleep->mob->in_room;
+        }
+        else if (!str_prefix("Object", mpsleep->mob->description))
+          mpsleep->type = MP_OBJ;
       }
       else
-	mpsleep->type = MP_MOB;
+        mpsleep->type = MP_MOB;
 
       LINK(mpsleep, first_mpsleep, last_mpsleep, next, prev);
       --prog_nest;
@@ -2184,8 +2184,8 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
      * Evaluate/execute the command, check what happened. 
      */
     result = mprog_do_command(cmnd, mob, actor, obj, victim, target, rndm,
-			       (ifstate[iflevel][IN_IF] && !ifstate[iflevel][DO_IF])
-			       || (ifstate[iflevel][IN_ELSE] && !ifstate[iflevel][DO_ELSE]), (ignorelevel > 0));
+                               (ifstate[iflevel][IN_IF] && !ifstate[iflevel][DO_IF])
+                               || (ifstate[iflevel][IN_ELSE] && !ifstate[iflevel][DO_ELSE]), (ignorelevel > 0));
 
     if (rprog_oprog)
       uphold_supermob(&curr_serial, serial, &supermob_room, true_supermob_obj);
@@ -2221,10 +2221,10 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
       iflevel++;
       if (iflevel == MAX_IFS)
       {
-	progbug("Maximum nested ifs exceeded", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Maximum nested ifs exceeded", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
 
       ifstate[iflevel][IN_IF] = TRUE;
@@ -2240,10 +2240,10 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
       iflevel++;
       if (iflevel == MAX_IFS)
       {
-	progbug("Maximum nested ifs exceeded", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Maximum nested ifs exceeded", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
       ifstate[iflevel][IN_IF] = TRUE;
       ifstate[iflevel][DO_IF] = FALSE;
@@ -2256,10 +2256,10 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
        */
       if (!ifstate[iflevel][IN_IF])
       {
-	progbug("Unmatched or", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Unmatched or", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
       ifstate[iflevel][DO_IF] = TRUE;
       break;
@@ -2273,10 +2273,10 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
        */
       if (!ifstate[iflevel][IN_IF])
       {
-	progbug("Unmatched or", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Unmatched or", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
       continue;
 
@@ -2289,21 +2289,21 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
        * bien. 
        */
       if (ignorelevel > 0)
-	continue;
+        continue;
 
       if (ifstate[iflevel][IN_ELSE])
       {
-	progbug("Found else in an else section", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Found else in an else section", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
       if (!ifstate[iflevel][IN_IF])
       {
-	progbug("Unmatched else", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Unmatched else", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
 
       ifstate[iflevel][IN_ELSE] = TRUE;
@@ -2323,16 +2323,16 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
        */
       if (!(ifstate[iflevel][IN_IF] || ifstate[iflevel][IN_ELSE]))
       {
-	progbug("Unmatched endif", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Unmatched endif", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
 
       if (ignorelevel > 0)
       {
-	ignorelevel--;
-	continue;
+        ignorelevel--;
+        continue;
       }
 
       ifstate[iflevel][IN_IF] = FALSE;
@@ -2346,10 +2346,10 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
     case IFIGNORED:
       if (!(ifstate[iflevel][IN_IF] || ifstate[iflevel][IN_ELSE]))
       {
-	progbug("Parse error, ignoring if while not in if or else", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Parse error, ignoring if while not in if or else", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
       ignorelevel++;
       break;
@@ -2357,17 +2357,17 @@ void mprog_driver(const char *com_list, CHAR_DATA * mob, CHAR_DATA * actor, OBJ_
     case ORIGNORED:
       if (!(ifstate[iflevel][IN_IF] || ifstate[iflevel][IN_ELSE]))
       {
-	progbug("Unmatched or", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Unmatched or", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
       if (ignorelevel == 0)
       {
-	progbug("Parse error, mistakenly ignoring or", mob);
-	--prog_nest;
-	MPSilent = oldMPSilent;
-	return;
+        progbug("Parse error, mistakenly ignoring or", mob);
+        --prog_nest;
+        MPSilent = oldMPSilent;
+        return;
       }
       break;
 
@@ -2569,12 +2569,12 @@ void mpsleep_update()
       current_mpsleep = mpsleep;
 
       if (mpsleep->type == MP_ROOM)
-	rset_supermob(mpsleep->room);
+        rset_supermob(mpsleep->room);
       else if (mpsleep->type == MP_OBJ)
-	set_supermob(mpsleep->obj);
+        set_supermob(mpsleep->obj);
 
       mprog_driver(mpsleep->com_list, mpsleep->mob, mpsleep->actor,
-		    mpsleep->obj, mpsleep->victim, mpsleep->target, mpsleep->single_step);
+                    mpsleep->obj, mpsleep->victim, mpsleep->target, mpsleep->single_step);
 
       release_supermob();
 
@@ -2614,21 +2614,21 @@ bool mprog_keyword_check(const char *argu, const char *argl)
     arglist += 2;
     while ((start = strstr(arg, arglist)))
       if ((start == arg || *(start - 1) == ' ')
-	  && (*(end = start + strlen(arglist)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	return TRUE;
+          && (*(end = start + strlen(arglist)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+        return TRUE;
       else
-	arg = start + 1;
+        arg = start + 1;
   }
   else
   {
     arglist = one_argument(arglist, word);
     for (; word[0] != '\0'; arglist = one_argument(arglist, word))
       while ((start = strstr(arg, word)))
-	if ((start == arg || *(start - 1) == ' ')
-	    && (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	  return TRUE;
-	else
-	  arg = start + 1;
+        if ((start == arg || *(start - 1) == ' ')
+            && (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+          return TRUE;
+        else
+          arg = start + 1;
   }
   return FALSE;
 }
@@ -2654,39 +2654,39 @@ bool mprog_wordlist_check(const char *arg, CHAR_DATA * mob, CHAR_DATA * actor, O
       strcpy(temp1, mprg->arglist);
       list = temp1;
       for (i = 0; i < strlen(list); i++)
-	list[i] = LOWER(list[i]);
+        list[i] = LOWER(list[i]);
       strcpy(temp2, arg);
       dupl = temp2;
       for (i = 0; i < strlen(dupl); i++)
-	dupl[i] = LOWER(dupl[i]);
+        dupl[i] = LOWER(dupl[i]);
       if ((list[0] == 'p') && (list[1] == ' '))
       {
-	list += 2;
-	while ((start = strstr(dupl, list)))
-	  if ((start == dupl || *(start - 1) == ' ')
-	      && (*(end = start + strlen(list)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	  {
-	    mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
-	    executed = TRUE;
-	    break;
-	  }
-	  else
-	    dupl = start + 1;
+        list += 2;
+        while ((start = strstr(dupl, list)))
+          if ((start == dupl || *(start - 1) == ' ')
+              && (*(end = start + strlen(list)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+          {
+            mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
+            executed = TRUE;
+            break;
+          }
+          else
+            dupl = start + 1;
       }
       else
       {
-	list = one_argument(list, word);
-	for (; word[0] != '\0'; list = one_argument(list, word))
-	  while ((start = strstr(dupl, word)))
-	    if ((start == dupl || *(start - 1) == ' ')
-		&& (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	    {
-	      mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
-	      executed = TRUE;
-	      break;
-	    }
-	    else
-	      dupl = start + 1;
+        list = one_argument(list, word);
+        for (; word[0] != '\0'; list = one_argument(list, word))
+          while ((start = strstr(dupl, word)))
+            if ((start == dupl || *(start - 1) == ' ')
+                && (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+            {
+              mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
+              executed = TRUE;
+              break;
+            }
+            else
+              dupl = start + 1;
       }
     }
   }
@@ -2703,7 +2703,7 @@ void mprog_percent_check(CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, CHA
     {
       mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
       if (type != GREET_PROG && type != ALL_GREET_PROG && type != LOGIN_PROG && type != VOID_PROG && type != GREET_IN_FIGHT_PROG)
-	break;
+        break;
     }
   }
 }
@@ -2720,7 +2720,7 @@ void mprog_time_check(CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, CHAR_D
     if (!trigger_time)
     {
       if (mprg->triggered)
-	mprg->triggered = FALSE;
+        mprg->triggered = FALSE;
       continue;
     }
 
@@ -2794,8 +2794,8 @@ void mprog_act_trigger(const char *buf, CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DAT
     for (mprg = mob->pIndexData->mudprogs; mprg; mprg = mprg->next)
       if (mprg->type == ACT_PROG && mprog_keyword_check(buf, mprg->arglist))
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
     if (!found)
       return;
@@ -2809,7 +2809,7 @@ void mprog_act_trigger(const char *buf, CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DAT
       tmp_mal = mob->mpact;
 
       while (tmp_mal->next != NULL)
-	tmp_mal = tmp_mal->next;
+        tmp_mal = tmp_mal->next;
 
       /*
        * Put at the end 
@@ -2858,13 +2858,13 @@ void mprog_bribe_trigger(CHAR_DATA * mob, CHAR_DATA * ch, int amount)
     {
       if ((mprg->type == BRIBE_PROG) && (amount >= atoi(mprg->arglist)))
       {
-	if (tprg)
-	{
-	  if (atoi(tprg->arglist) < atoi(mprg->arglist))
-	    tprg = mprg;
-	}
-	else
-	  tprg = mprg;
+        if (tprg)
+        {
+          if (atoi(tprg->arglist) < atoi(mprg->arglist))
+            tprg = mprg;
+        }
+        else
+          tprg = mprg;
       }
     }
 
@@ -2963,8 +2963,8 @@ void mprog_give_trigger(CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj)
 
       if (mprg->type == GIVE_PROG && (!str_cmp(obj->name, mprg->arglist) || !str_cmp("all", buf)))
       {
-	mprog_driver(mprg->comlist, mob, ch, obj, NULL, NULL, FALSE);
-	break;
+        mprog_driver(mprg->comlist, mob, ch, obj, NULL, NULL, FALSE);
+        break;
       }
     }
   }
@@ -2987,14 +2987,14 @@ void mprog_sell_trigger(CHAR_DATA * mob, CHAR_DATA * ch, OBJ_DATA * obj)
       one_argument(mprg->arglist, buf);
 
       if (!is_number(buf))
-	continue;
+        continue;
 
       s_vnum = atoi(buf);
 
       if (mprg->type == SELL_PROG && ((s_vnum == obj->pIndexData->vnum) || (s_vnum == 0)))
       {
-	mprog_driver(mprg->comlist, mob, ch, obj, NULL, NULL, FALSE);
-	break;
+        mprog_driver(mprg->comlist, mob, ch, obj, NULL, NULL, FALSE);
+        break;
       }
     }
   }
@@ -3013,8 +3013,8 @@ void mprog_greet_trigger(CHAR_DATA * ch)
   for (vmob = ch->in_room->first_person; vmob; vmob = trvch_next(loop_ctrl))
   {
     if (!IS_NPC(vmob) || !can_see(vmob, ch)
-	|| (vmob->fighting && !HAS_PROG(vmob->pIndexData, GREET_IN_FIGHT_PROG))
-	|| !IS_AWAKE(vmob))
+        || (vmob->fighting && !HAS_PROG(vmob->pIndexData, GREET_IN_FIGHT_PROG))
+        || !IS_AWAKE(vmob))
       continue;
 
     /*
@@ -3025,8 +3025,8 @@ void mprog_greet_trigger(CHAR_DATA * ch)
       continue;
 
     if (HAS_PROG(vmob->pIndexData, GREET_PROG)
-	|| HAS_PROG(vmob->pIndexData, ALL_GREET_PROG) 
-	|| HAS_PROG(vmob->pIndexData, GREET_IN_FIGHT_PROG))
+        || HAS_PROG(vmob->pIndexData, ALL_GREET_PROG) 
+        || HAS_PROG(vmob->pIndexData, GREET_IN_FIGHT_PROG))
       script[mnum++] = vmob;
   }
 
@@ -3040,14 +3040,14 @@ void mprog_greet_trigger(CHAR_DATA * ch)
 
     for (epnt = extracted_char_queue; epnt != deadmark; epnt = epnt->next)
       if (epnt->ch == vmob)
-	break;
+        break;
 
     if (epnt == deadmark)
     {
       if (vmob->fighting)
-	mprog_percent_check(vmob, ch, NULL, NULL, NULL, GREET_IN_FIGHT_PROG);
+        mprog_percent_check(vmob, ch, NULL, NULL, NULL, GREET_IN_FIGHT_PROG);
       else
-	mprog_percent_check(vmob, ch, NULL, NULL, NULL, HAS_PROG(vmob->pIndexData, GREET_PROG) ? GREET_PROG : ALL_GREET_PROG);
+        mprog_percent_check(vmob, ch, NULL, NULL, NULL, HAS_PROG(vmob->pIndexData, GREET_PROG) ? GREET_PROG : ALL_GREET_PROG);
     }
   }
   trv_dispose(&loop_ctrl);
@@ -3062,8 +3062,8 @@ void mprog_hitprcnt_trigger(CHAR_DATA * mob, CHAR_DATA * ch)
     for (mprg = mob->pIndexData->mudprogs; mprg; mprg = mprg->next)
       if (mprg->type == HITPRCNT_PROG && (100 * mob->hit / mob->max_hit) < atoi(mprg->arglist))
       {
-	mprog_driver(mprg->comlist, mob, ch, NULL, NULL, NULL, FALSE);
-	break;
+        mprog_driver(mprg->comlist, mob, ch, NULL, NULL, NULL, FALSE);
+        break;
       }
   }
   return;
@@ -3096,7 +3096,7 @@ void mprog_speech_trigger(const char *txt, CHAR_DATA * actor)
     if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, SPEECH_PROG))
     {
       if (IS_NPC(actor) && actor->pIndexData == vmob->pIndexData)
-	continue;
+        continue;
       mprog_wordlist_check(txt, vmob, actor, NULL, NULL, NULL, SPEECH_PROG);
     }
   }
@@ -3111,7 +3111,7 @@ void mprog_tell_trigger(const char *txt, CHAR_DATA * actor)
     if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, TELL_PROG))
     {
       if (IS_NPC(actor) && actor->pIndexData == vmob->pIndexData)
-	continue;
+        continue;
       mprog_wordlist_check(txt, vmob, actor, NULL, NULL, NULL, TELL_PROG);
     }
   }
@@ -3126,9 +3126,9 @@ bool mprog_command_trigger(CHAR_DATA * actor, char *txt)
     if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, CMD_PROG))
     {
       if (IS_NPC(actor) && actor->pIndexData == vmob->pIndexData)
-	continue;
+        continue;
       if (mprog_wordlist_check(txt, vmob, actor, NULL, NULL, NULL, CMD_PROG))
-	return TRUE;
+        return TRUE;
     }
   }
   return FALSE;
@@ -3141,8 +3141,8 @@ void mprog_script_trigger(CHAR_DATA * mob)
   if (HAS_PROG(mob->pIndexData, SCRIPT_PROG))
     for (mprg = mob->pIndexData->mudprogs; mprg; mprg = mprg->next)
       if (mprg->type == SCRIPT_PROG
-	  && (mprg->arglist[0] == '\0' || mob->mpscriptpos != 0 || atoi(mprg->arglist) == time_info.hour))
-	mprog_driver(mprg->comlist, mob, NULL, NULL, NULL, NULL, TRUE);
+          && (mprg->arglist[0] == '\0' || mob->mpscriptpos != 0 || atoi(mprg->arglist) == time_info.hour))
+        mprog_driver(mprg->comlist, mob, NULL, NULL, NULL, NULL, TRUE);
 }
 
 void oprog_script_trigger(OBJ_DATA * obj)
@@ -3153,13 +3153,13 @@ void oprog_script_trigger(OBJ_DATA * obj)
     for (mprg = obj->pIndexData->mudprogs; mprg; mprg = mprg->next)
       if (mprg->type == SCRIPT_PROG)
       {
-	if (mprg->arglist[0] == '\0' || obj->mpscriptpos != 0 || atoi(mprg->arglist) == time_info.hour)
-	{
-	  set_supermob(obj);
-	  mprog_driver(mprg->comlist, supermob, NULL, NULL, NULL, NULL, TRUE);
-	  obj->mpscriptpos = supermob->mpscriptpos;
-	  release_supermob();
-	}
+        if (mprg->arglist[0] == '\0' || obj->mpscriptpos != 0 || atoi(mprg->arglist) == time_info.hour)
+        {
+          set_supermob(obj);
+          mprog_driver(mprg->comlist, supermob, NULL, NULL, NULL, NULL, TRUE);
+          obj->mpscriptpos = supermob->mpscriptpos;
+          release_supermob();
+        }
       }
   return;
 }
@@ -3172,13 +3172,13 @@ void rprog_script_trigger(ROOM_INDEX_DATA * room)
     for (mprg = room->mudprogs; mprg; mprg = mprg->next)
       if (mprg->type == SCRIPT_PROG)
       {
-	if (mprg->arglist[0] == '\0' || room->mpscriptpos != 0 || atoi(mprg->arglist) == time_info.hour)
-	{
-	  rset_supermob(room);
-	  mprog_driver(mprg->comlist, supermob, NULL, NULL, NULL, NULL, TRUE);
-	  room->mpscriptpos = supermob->mpscriptpos;
-	  release_supermob();
-	}
+        if (mprg->arglist[0] == '\0' || room->mpscriptpos != 0 || atoi(mprg->arglist) == time_info.hour)
+        {
+          rset_supermob(room);
+          mprog_driver(mprg->comlist, supermob, NULL, NULL, NULL, NULL, TRUE);
+          room->mpscriptpos = supermob->mpscriptpos;
+          release_supermob();
+        }
       }
   return;
 }
@@ -3254,7 +3254,7 @@ bool oprog_percent_check(CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, CHA
       executed = TRUE;
       mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
       if (type != GREET_PROG)
-	break;
+        break;
     }
 
   return executed;
@@ -3300,7 +3300,7 @@ bool oprog_command_trigger(CHAR_DATA * ch, char *txt)
   for (vobj = ch->in_room->first_content; vobj; vobj = vobj->next_content)
     if (HAS_PROG(vobj->pIndexData, CMD_PROG))
       if (oprog_wordlist_check(txt, supermob, ch, vobj, NULL, NULL, CMD_PROG, vobj))
-	return TRUE;
+        return TRUE;
 
   return FALSE;
 }
@@ -3504,7 +3504,7 @@ void oprog_act_trigger(const char *buf, OBJ_DATA * mobj, CHAR_DATA * ch, OBJ_DAT
       tmp_mal = mobj->mpact;
 
       while (tmp_mal->next != NULL)
-	tmp_mal = tmp_mal->next;
+        tmp_mal = tmp_mal->next;
 
       /*
        * Put at the end 
@@ -3542,43 +3542,43 @@ bool oprog_wordlist_check(const char *arg, CHAR_DATA * mob, CHAR_DATA * actor, O
       strcpy(temp1, mprg->arglist);
       list = temp1;
       for (i = 0; i < strlen(list); i++)
-	list[i] = LOWER(list[i]);
+        list[i] = LOWER(list[i]);
       strcpy(temp2, arg);
       dupl = temp2;
       for (i = 0; i < strlen(dupl); i++)
-	dupl[i] = LOWER(dupl[i]);
+        dupl[i] = LOWER(dupl[i]);
       if ((list[0] == 'p') && (list[1] == ' '))
       {
-	list += 2;
-	while ((start = strstr(dupl, list)))
-	  if ((start == dupl || *(start - 1) == ' ')
-	      && (*(end = start + strlen(list)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	  {
-	    set_supermob(iobj);
-	    mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
-	    executed = TRUE;
-	    release_supermob();
-	    break;
-	  }
-	  else
-	    dupl = start + 1;
+        list += 2;
+        while ((start = strstr(dupl, list)))
+          if ((start == dupl || *(start - 1) == ' ')
+              && (*(end = start + strlen(list)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+          {
+            set_supermob(iobj);
+            mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
+            executed = TRUE;
+            release_supermob();
+            break;
+          }
+          else
+            dupl = start + 1;
       }
       else
       {
-	list = one_argument(list, word);
-	for (; word[0] != '\0'; list = one_argument(list, word))
-	  while ((start = strstr(dupl, word)))
-	    if ((start == dupl || *(start - 1) == ' ')
-		&& (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	    {
-	      set_supermob(iobj);
-	      mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
-	      executed = TRUE;
-	      release_supermob();
-	      break;
-	    }
-	    else
-	      dupl = start + 1;
+        list = one_argument(list, word);
+        for (; word[0] != '\0'; list = one_argument(list, word))
+          while ((start = strstr(dupl, word)))
+            if ((start == dupl || *(start - 1) == ' ')
+                && (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+            {
+              set_supermob(iobj);
+              mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
+              executed = TRUE;
+              release_supermob();
+              break;
+            }
+            else
+              dupl = start + 1;
       }
     }
   }
@@ -3625,7 +3625,7 @@ void rprog_percent_check(CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, CHA
     {
       mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
       if (type != ENTER_PROG)
-	break;
+        break;
     }
 }
 
@@ -3648,7 +3648,7 @@ void rprog_act_trigger(const char *buf, ROOM_INDEX_DATA * room, CHAR_DATA * ch, 
       tmp_mal = room->mpact;
 
       while (tmp_mal->next != NULL)
-	tmp_mal = tmp_mal->next;
+        tmp_mal = tmp_mal->next;
 
       /*
        * Put at the end 
@@ -3814,43 +3814,43 @@ bool rprog_wordlist_check(const char *arg, CHAR_DATA * mob, CHAR_DATA * actor, O
       strcpy(temp1, mprg->arglist);
       list = temp1;
       for (i = 0; i < strlen(list); ++i)
-	list[i] = LOWER(list[i]);
+        list[i] = LOWER(list[i]);
       strcpy(temp2, arg);
       dupl = temp2;
       for (i = 0; i < strlen(dupl); ++i)
-	dupl[i] = LOWER(dupl[i]);
+        dupl[i] = LOWER(dupl[i]);
       if ((list[0] == 'p') && (list[1] == ' '))
       {
-	list += 2;
-	while ((start = strstr(dupl, list)))
-	  if ((start == dupl || *(start - 1) == ' ')
-	      && (*(end = start + strlen(list)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	  {
-	    rset_supermob(room);
-	    mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
-	    executed = TRUE;
-	    release_supermob();
-	    break;
-	  }
-	  else
-	    dupl = start + 1;
+        list += 2;
+        while ((start = strstr(dupl, list)))
+          if ((start == dupl || *(start - 1) == ' ')
+              && (*(end = start + strlen(list)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+          {
+            rset_supermob(room);
+            mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
+            executed = TRUE;
+            release_supermob();
+            break;
+          }
+          else
+            dupl = start + 1;
       }
       else
       {
-	list = one_argument(list, word);
-	for (; word[0] != '\0'; list = one_argument(list, word))
-	  while ((start = strstr(dupl, word)))
-	    if ((start == dupl || *(start - 1) == ' ')
-		&& (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
-	    {
-	      rset_supermob(room);
-	      mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
-	      executed = TRUE;
-	      release_supermob();
-	      break;
-	    }
-	    else
-	      dupl = start + 1;
+        list = one_argument(list, word);
+        for (; word[0] != '\0'; list = one_argument(list, word))
+          while ((start = strstr(dupl, word)))
+            if ((start == dupl || *(start - 1) == ' ')
+                && (*(end = start + strlen(word)) == ' ' || *end == '\n' || *end == '\r' || *end == '\0'))
+            {
+              rset_supermob(room);
+              mprog_driver(mprg->comlist, mob, actor, obj, victim, target, FALSE);
+              executed = TRUE;
+              release_supermob();
+              break;
+            }
+            else
+              dupl = start + 1;
       }
     }
   }
@@ -3869,7 +3869,7 @@ void rprog_time_check(CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, ROOM_I
     if (!trigger_time)
     {
       if (mprg->triggered)
-	mprg->triggered = FALSE;
+        mprg->triggered = FALSE;
       continue;
     }
 
@@ -3972,7 +3972,7 @@ void room_act_update(void)
     while ((mpact = room->mpact) != NULL)
     {
       if (mpact->ch->in_room == room)
-	rprog_wordlist_check(mpact->buf, supermob, mpact->ch, mpact->obj, mpact->victim, mpact->target, ACT_PROG, room);
+        rprog_wordlist_check(mpact->buf, supermob, mpact->ch, mpact->obj, mpact->victim, mpact->target, ACT_PROG, room);
       room->mpact = mpact->next;
       DISPOSE(mpact->buf);
       DISPOSE(mpact);

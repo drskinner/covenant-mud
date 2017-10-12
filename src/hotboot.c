@@ -37,7 +37,7 @@
 #include "mud.h"
 #include "mccp.h"
 
-#define MAX_NEST	100
+#define MAX_NEST        100
 static OBJ_DATA *rgObjNest[MAX_NEST];
 
 bool write_to_descriptor(DESCRIPTOR_DATA * d, const char *txt, int length);
@@ -57,9 +57,9 @@ void save_mobile(FILE * fp, CHAR_DATA * mob)
   if (!IS_NPC(mob) || !fp)
     return;
   fprintf(fp, "%s", "#MOBILE\n");
-  fprintf(fp, "Vnum	%d\n", mob->pIndexData->vnum);
+  fprintf(fp, "Vnum     %d\n", mob->pIndexData->vnum);
   fprintf(fp, "Level   %d\n", mob->level);
-  fprintf(fp, "Gold	%d\n", mob->gold);
+  fprintf(fp, "Gold     %d\n", mob->gold);
   fprintf(fp, "Resetvnum %d\n", mob->resetvnum);
   fprintf(fp, "Resetnum  %d\n", mob->resetnum);
   if (mob->in_room)
@@ -72,26 +72,26 @@ void save_mobile(FILE * fp, CHAR_DATA * mob)
        * of where they are right now, so they will go to their home room when they
        * enter the game from a reboot or copyover -- Scion 
        */
-      fprintf(fp, "Room	%d\n", mob->home_vnum);
+      fprintf(fp, "Room %d\n", mob->home_vnum);
     }
     else
-      fprintf(fp, "Room	%d\n", mob->in_room->vnum);
+      fprintf(fp, "Room %d\n", mob->in_room->vnum);
   }
   else
-    fprintf(fp, "Room	%d\n", ROOM_VNUM_LIMBO);
+    fprintf(fp, "Room   %d\n", ROOM_VNUM_LIMBO);
 #ifdef OVERLANDCODE
   fprintf(fp, "Coordinates  %d %d %d\n", mob->x, mob->y, mob->map);
 #endif
   if (mob->name && mob->pIndexData->player_name && str_cmp(mob->name, mob->pIndexData->player_name))
     fprintf(fp, "Name     %s~\n", mob->name);
   if (mob->short_descr && mob->pIndexData->short_descr && str_cmp(mob->short_descr, mob->pIndexData->short_descr))
-    fprintf(fp, "Short	%s~\n", mob->short_descr);
+    fprintf(fp, "Short  %s~\n", mob->short_descr);
   if (mob->long_descr && mob->pIndexData->long_descr && str_cmp(mob->long_descr, mob->pIndexData->long_descr))
-    fprintf(fp, "Long	%s~\n", mob->long_descr);
+    fprintf(fp, "Long   %s~\n", mob->long_descr);
   if (mob->description && mob->pIndexData->description && str_cmp(mob->description, mob->pIndexData->description))
     fprintf(fp, "Description %s~\n", mob->description);
   fprintf(fp, "HpManaMove   %d %d %d %d %d %d\n",
-	   mob->hit, mob->max_hit, mob->mana, mob->max_mana, mob->move, mob->max_move);
+           mob->hit, mob->max_hit, mob->mana, mob->max_mana, mob->move, mob->max_move);
   fprintf(fp, "Position %d\n", mob->position);
   fprintf(fp, "Flags %s\n", print_bitvector(&mob->act));
   if (!xIS_EMPTY(mob->affected_by))
@@ -104,10 +104,10 @@ void save_mobile(FILE * fp, CHAR_DATA * mob)
 
     if (paf->type >= 0 && paf->type < TYPE_PERSONAL)
       fprintf(fp, "AffectData   '%s' %3d %3d %3d %s\n",
-	       skill->name, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
+               skill->name, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
     else
       fprintf(fp, "Affect       %3d %3d %3d %3d %s\n",
-	       paf->type, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
+               paf->type, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
   }
 
   de_equip_char(mob);
@@ -147,22 +147,22 @@ void save_world(void)
     {
       if (pRoomIndex)
       {
-	if (!pRoomIndex->first_content   /* Skip room if nothing in it */
-	    || xIS_SET(pRoomIndex->room_flags, ROOM_CLANSTOREROOM)   /* These rooms save on their own */
-	 )
-	  continue;
+        if (!pRoomIndex->first_content   /* Skip room if nothing in it */
+            || xIS_SET(pRoomIndex->room_flags, ROOM_CLANSTOREROOM)   /* These rooms save on their own */
+         )
+          continue;
 
-	snprintf(filename, 256, "%s%d", HOTBOOT_DIR, pRoomIndex->vnum);
-	if ((objfp = fopen(filename, "w")) == NULL)
-	{
-	  bug("save_world: fopen %d", pRoomIndex->vnum);
-	  perror(filename);
-	  continue;
-	}
-	fwrite_obj(NULL, pRoomIndex->last_content, objfp, 0, OS_CARRY, TRUE);
-	fprintf(objfp, "%s", "#END\n");
-	fclose(objfp);
-	objfp = NULL;
+        snprintf(filename, 256, "%s%d", HOTBOOT_DIR, pRoomIndex->vnum);
+        if ((objfp = fopen(filename, "w")) == NULL)
+        {
+          bug("save_world: fopen %d", pRoomIndex->vnum);
+          perror(filename);
+          continue;
+        }
+        fwrite_obj(NULL, pRoomIndex->last_content, objfp, 0, OS_CARRY, TRUE);
+        fprintf(objfp, "%s", "#END\n");
+        fclose(objfp);
+        objfp = NULL;
       }
     }
   }
@@ -172,9 +172,9 @@ void save_world(void)
     for (rch = first_char; rch; rch = rch->next)
     {
       if (!IS_NPC(rch) || rch == supermob || xIS_SET(rch->act, ACT_PROTOTYPE) || xIS_SET(rch->act, ACT_PET))
-	continue;
+        continue;
       else
-	save_mobile(mobfp, rch);
+        save_mobile(mobfp, rch);
     }
     fprintf(mobfp, "%s", "#END\n");
     fclose(mobfp);
@@ -207,13 +207,13 @@ CHAR_DATA *load_mobile(FILE * fp)
     {
       for (;;)
       {
-	word = feof(fp) ? "EndMobile" : fread_word(fp);
-	/*
-	 * So we don't get so many bug messages when something messes up
-	 * * --Shaddai 
-	 */
-	if (!str_cmp(word, "EndMobile"))
-	  break;
+        word = feof(fp) ? "EndMobile" : fread_word(fp);
+        /*
+         * So we don't get so many bug messages when something messes up
+         * * --Shaddai 
+         */
+        if (!str_cmp(word, "EndMobile"))
+          break;
       }
       bug("%s: Unable to create mobile for vnum %d", __func__, vnum);
       return NULL;
@@ -229,7 +229,7 @@ CHAR_DATA *load_mobile(FILE * fp)
        * * --Shaddai 
        */
       if (!str_cmp(word, "EndMobile"))
-	break;
+        break;
     }
     extract_char(mob, TRUE);
     bug("%s: Vnum not found", __func__);
@@ -250,48 +250,48 @@ CHAR_DATA *load_mobile(FILE * fp)
     case '#':
       if (!str_cmp(word, "#OBJECT"))
       {
-	mob->tempnum = -9999;   /* Hackish, yes. Works though doesn't it? */
-	fread_obj(mob, fp, OS_CARRY);
+        mob->tempnum = -9999;   /* Hackish, yes. Works though doesn't it? */
+        fread_obj(mob, fp, OS_CARRY);
       }
       break;
 
     case 'A':
       if (!str_cmp(word, "Affect") || !str_cmp(word, "AffectData"))
       {
-	AFFECT_DATA *paf;
+        AFFECT_DATA *paf;
 
-	CREATE(paf, AFFECT_DATA, 1);
-	if (!str_cmp(word, "Affect"))
-	{
-	  paf->type = fread_number(fp);
-	}
-	else
-	{
-	  int sn;
-	  char *sname = fread_word(fp);
+        CREATE(paf, AFFECT_DATA, 1);
+        if (!str_cmp(word, "Affect"))
+        {
+          paf->type = fread_number(fp);
+        }
+        else
+        {
+          int sn;
+          char *sname = fread_word(fp);
 
-	  if ((sn = skill_lookup(sname)) < 0)
-	  {
-	    if ((sn = herb_lookup(sname)) < 0)
-	      bug("%s: unknown skill.", __func__);
-	    else
-	      sn += TYPE_HERB;
-	  }
-	  paf->type = sn;
-	}
+          if ((sn = skill_lookup(sname)) < 0)
+          {
+            if ((sn = herb_lookup(sname)) < 0)
+              bug("%s: unknown skill.", __func__);
+            else
+              sn += TYPE_HERB;
+          }
+          paf->type = sn;
+        }
 
-	paf->duration = fread_number(fp);
-	paf->modifier = fread_number(fp);
-	paf->location = fread_number(fp);
-	if (paf->location == APPLY_WEAPONSPELL
-	    || paf->location == APPLY_WEARSPELL
-	    || paf->location == APPLY_REMOVESPELL
-	    || paf->location == APPLY_STRIPSN || paf->location == APPLY_RECURRINGSPELL)
-	  paf->modifier = slot_lookup(paf->modifier);
-	paf->bitvector = fread_bitvector(fp);
-	LINK(paf, mob->first_affect, mob->last_affect, next, prev);
-	fMatch = TRUE;
-	break;
+        paf->duration = fread_number(fp);
+        paf->modifier = fread_number(fp);
+        paf->location = fread_number(fp);
+        if (paf->location == APPLY_WEAPONSPELL
+            || paf->location == APPLY_WEARSPELL
+            || paf->location == APPLY_REMOVESPELL
+            || paf->location == APPLY_STRIPSN || paf->location == APPLY_RECURRINGSPELL)
+          paf->modifier = slot_lookup(paf->modifier);
+        paf->bitvector = fread_bitvector(fp);
+        LINK(paf, mob->first_affect, mob->last_affect, next, prev);
+        fMatch = TRUE;
+        break;
       }
       KEY("AffectedBy", mob->affected_by, fread_bitvector(fp));
       break;
@@ -300,12 +300,12 @@ CHAR_DATA *load_mobile(FILE * fp)
     case 'C':
       if (!str_cmp(word, "Coordinates"))
       {
-	mob->x = fread_number(fp);
-	mob->y = fread_number(fp);
-	mob->map = fread_number(fp);
+        mob->x = fread_number(fp);
+        mob->y = fread_number(fp);
+        mob->map = fread_number(fp);
 
-	fMatch = TRUE;
-	break;
+        fMatch = TRUE;
+        break;
       }
       break;
 #endif
@@ -313,28 +313,28 @@ CHAR_DATA *load_mobile(FILE * fp)
     case 'D':
       if (!str_cmp(word, "Description"))
       {
-	STRFREE(mob->description);
-	mob->description = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        STRFREE(mob->description);
+        mob->description = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'E':
       if (!str_cmp(word, "EndMobile"))
       {
-	if (inroom == 0)
-	  inroom = ROOM_VNUM_LIMBO;
-	pRoomIndex = get_room_index(inroom);
-	if (!pRoomIndex)
-	  pRoomIndex = get_room_index(ROOM_VNUM_LIMBO);
-	char_to_room(mob, pRoomIndex);
-	mob->tempnum = -9998;   /* Yet another hackish fix! */
-	update_room_reset(mob, false);
-	return mob;
+        if (inroom == 0)
+          inroom = ROOM_VNUM_LIMBO;
+        pRoomIndex = get_room_index(inroom);
+        if (!pRoomIndex)
+          pRoomIndex = get_room_index(ROOM_VNUM_LIMBO);
+        char_to_room(mob, pRoomIndex);
+        mob->tempnum = -9998;   /* Yet another hackish fix! */
+        update_room_reset(mob, false);
+        return mob;
       }
       if (!str_cmp(word, "End")) /* End of object, need to ignore this. sometimes they creep in there somehow -- Scion */
-	fMatch = TRUE; /* Trick the system into thinking it matched something */
+        fMatch = TRUE; /* Trick the system into thinking it matched something */
       break;
 
     case 'F':
@@ -348,28 +348,28 @@ CHAR_DATA *load_mobile(FILE * fp)
     case 'H':
       if (!str_cmp(word, "HpManaMove"))
       {
-	mob->hit = fread_number(fp);
-	mob->max_hit = fread_number(fp);
-	mob->mana = fread_number(fp);
-	mob->max_mana = fread_number(fp);
-	mob->move = fread_number(fp);
-	mob->max_move = fread_number(fp);
+        mob->hit = fread_number(fp);
+        mob->max_hit = fread_number(fp);
+        mob->mana = fread_number(fp);
+        mob->max_mana = fread_number(fp);
+        mob->move = fread_number(fp);
+        mob->max_move = fread_number(fp);
 
-	if (mob->max_move <= 0)
-	  mob->max_move = 150;
+        if (mob->max_move <= 0)
+          mob->max_move = 150;
 
-	fMatch = TRUE;
-	break;
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'L':
       if (!str_cmp(word, "Long"))
       {
-	STRFREE(mob->long_descr);
-	mob->long_descr = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        STRFREE(mob->long_descr);
+        mob->long_descr = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       KEY("Level", mob->level, fread_number(fp));
       break;
@@ -377,10 +377,10 @@ CHAR_DATA *load_mobile(FILE * fp)
     case 'N':
       if (!str_cmp(word, "Name"))
       {
-	STRFREE(mob->name);
-	mob->name = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        STRFREE(mob->name);
+        mob->name = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -397,10 +397,10 @@ CHAR_DATA *load_mobile(FILE * fp)
     case 'S':
       if (!str_cmp(word, "Short"))
       {
-	STRFREE(mob->short_descr);
-	mob->short_descr = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        STRFREE(mob->short_descr);
+        mob->short_descr = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
     }
@@ -447,25 +447,25 @@ void read_obj_file(char *dirname, char *filename)
       letter = fread_letter(fp);
       if (letter == '*')
       {
-	fread_to_eol(fp);
-	continue;
+        fread_to_eol(fp);
+        continue;
       }
 
       if (letter != '#')
       {
-	bug("%s: # not found.", __func__);
-	break;
+        bug("%s: # not found.", __func__);
+        break;
       }
 
       word = fread_word(fp);
       if (!str_cmp(word, "OBJECT")) /* Objects  */
-	fread_obj(supermob, fp, OS_CARRY);
+        fread_obj(supermob, fp, OS_CARRY);
       else if (!str_cmp(word, "END"))  /* Done     */
-	break;
+        break;
       else
       {
-	bug("%s: bad section: %s", __func__, word);
-	break;
+        bug("%s: bad section: %s", __func__, word);
+        break;
       }
     }
     fclose(fp);
@@ -477,10 +477,10 @@ void read_obj_file(char *dirname, char *filename)
 #ifdef OVERLANDCODE
       if (IS_OBJ_STAT(tobj, ITEM_ONMAP))
       {
-	SET_ACT_FLAG(supermob, ACT_ONMAP);
-	supermob->map = tobj->map;
-	supermob->x = tobj->x;
-	supermob->y = tobj->y;
+        SET_ACT_FLAG(supermob, ACT_ONMAP);
+        supermob->map = tobj->map;
+        supermob->x = tobj->x;
+        supermob->y = tobj->y;
       }
 #endif
       obj_from_char(tobj);
@@ -553,14 +553,14 @@ void load_world(void)
     while (done == 0)
     {
       if (feof(mobfp))
-	done++;
+        done++;
       else
       {
-	word = fread_word(mobfp);
-	if (str_cmp(word, "#END"))
-	  load_mobile(mobfp);
-	else
-	  done++;
+        word = fread_word(mobfp);
+        if (str_cmp(word, "#END"))
+          load_mobile(mobfp);
+        else
+          done++;
       }
     }
   }
@@ -592,8 +592,8 @@ void do_hotboot(CHAR_DATA* ch, const char* argument)
   for (d = first_descriptor; d; d = d->next)
   {
     if ((d->connected == CON_PLAYING || d->connected == CON_EDITING)
-	&& (victim = d->character) != NULL && !IS_NPC(victim) && victim->in_room
-	&& victim->fighting && victim->level >= 1 && victim->level <= MAX_LEVEL)
+        && (victim = d->character) != NULL && !IS_NPC(victim) && victim->in_room
+        && victim->fighting && victim->level >= 1 && victim->level <= MAX_LEVEL)
     {
       found = TRUE;
       count++;
@@ -660,7 +660,7 @@ void do_hotboot(CHAR_DATA* ch, const char* argument)
     else
     {
       fprintf(fp, "%d %d %d %d %d %s %s\n", d->descriptor,
-	       d->can_compress, och->in_room->vnum, d->port, d->idle, och->name, d->host);
+               d->can_compress, och->in_room->vnum, d->port, d->idle, och->name, d->host);
       /*
        * One of two places this gets changed 
        */
@@ -810,7 +810,7 @@ void hotboot_recover(void)
       write_to_descriptor(d, "\r\nTime resumes its normal flow.\r\n", 0);
       d->character->in_room = get_room_index(room);
       if (!d->character->in_room)
-	d->character->in_room = get_room_index(ROOM_VNUM_TEMPLE);
+        d->character->in_room = get_room_index(ROOM_VNUM_TEMPLE);
 
       /*
        * Insert in the char_list 
@@ -822,7 +822,7 @@ void hotboot_recover(void)
       act(AT_MAGIC, "$n appears in a puff of ethereal smoke!", d->character, NULL, NULL, TO_ROOM);
       d->connected = CON_PLAYING;
       if (++num_descriptors > sysdata.maxplayers)
-	sysdata.maxplayers = num_descriptors;
+        sysdata.maxplayers = num_descriptors;
 #ifdef AUTO_AUTH
       check_auth_state(d->character);   /* new auth */
 #endif

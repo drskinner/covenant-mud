@@ -106,7 +106,7 @@ void save_liquids(void)
     fprintf(fp, "Type      %d\n", liq->type);
     fprintf(fp, "Vnum      %d\n", liq->vnum);
     fprintf(fp, "Mod       %d %d %d %d\n", liq->mod[COND_DRUNK], liq->mod[COND_FULL], liq->mod[COND_THIRST],
-	     liq->mod[COND_BLOODTHIRST]);
+             liq->mod[COND_BLOODTHIRST]);
     fprintf(fp, "%s", "End\n\n");
   }
   fprintf(fp, "%s", "#END\n");
@@ -145,9 +145,9 @@ LIQ_TABLE *fread_liquid(FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if (liq->vnum <= -1)
-	  return NULL;
-	return liq;
+        if (liq->vnum <= -1)
+          return NULL;
+        return liq;
       }
       break;
 
@@ -158,10 +158,10 @@ LIQ_TABLE *fread_liquid(FILE * fp)
     case 'M':
       if (!str_cmp(word, "Mod"))
       {
-	liq->mod[COND_DRUNK] = fread_number(fp);
-	liq->mod[COND_FULL] = fread_number(fp);
-	liq->mod[COND_THIRST] = fread_number(fp);
-	liq->mod[COND_BLOODTHIRST] = fread_number(fp);
+        liq->mod[COND_DRUNK] = fread_number(fp);
+        liq->mod[COND_FULL] = fread_number(fp);
+        liq->mod[COND_THIRST] = fread_number(fp);
+        liq->mod[COND_BLOODTHIRST] = fread_number(fp);
       }
       break;
 
@@ -224,13 +224,13 @@ void load_liquids(void)
       LIQ_TABLE *liq = fread_liquid(fp);
 
       if (!liq)
-	bug("%s: returned NULL liquid", __func__);
+        bug("%s: returned NULL liquid", __func__);
       else
       {
-	liquid_table[liq->vnum] = liq;
-	if (liq->vnum > top_liquid)
-	  top_liquid = liq->vnum;
-	liq_count++;
+        liquid_table[liq->vnum] = liq;
+        if (liq->vnum > top_liquid)
+          top_liquid = liq->vnum;
+        liq_count++;
       }
       continue;
     }
@@ -300,16 +300,16 @@ MIX_TABLE *fread_mixture(FILE * fp)
     case 'D':
       if (!str_cmp(word, "Data"))
       {
-	mix->data[0] = fread_number(fp);
-	mix->data[1] = fread_number(fp);
-	mix->data[2] = fread_number(fp);
+        mix->data[0] = fread_number(fp);
+        mix->data[1] = fread_number(fp);
+        mix->data[2] = fread_number(fp);
       }
       break;
 
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	return mix;
+        return mix;
       }
       break;
 
@@ -328,8 +328,8 @@ MIX_TABLE *fread_mixture(FILE * fp)
     case 'W':
       if (!str_cmp(word, "With"))
       {
-	mix->data[0] = fread_number(fp);
-	mix->data[1] = fread_number(fp);
+        mix->data[0] = fread_number(fp);
+        mix->data[1] = fread_number(fp);
       }
       break;
     }
@@ -378,9 +378,9 @@ void load_mixtures(void)
 
       mix = fread_mixture(fp);
       if (!mix)
-	bug("%s: mixture returned NULL", __func__);
+        bug("%s: mixture returned NULL", __func__);
       else
-	LINK(mix, first_mixture, last_mixture, next, prev);
+        LINK(mix, first_mixture, last_mixture, next, prev);
     }
     else if (!str_cmp(word, "END"))
       break;
@@ -429,7 +429,7 @@ LIQ_TABLE *get_liq(const char *str)
   {
     for (i = 0; i < top_liquid; i++)
       if (!str_cmp(liquid_table[i]->name, str))
-	return liquid_table[i];
+        return liquid_table[i];
   }
   return NULL;
 }
@@ -513,7 +513,7 @@ void do_showliquid(CHAR_DATA* ch, const char* argument)
     send_to_pager("&GLiquid Modifiers\r\n", ch);
     for (i = 0; i < MAX_CONDS; i++)
       if (liquid_table[i])
-	pager_printf(ch, "&G%s:&g\t %d\r\n", mod_types[i], liq->mod[i]);
+        pager_printf(ch, "&G%s:&g\t %d\r\n", mod_types[i], liq->mod[i]);
     return;
   }
   else if (!NULLSTR(argument) && ((liq = get_liq(argument)) == NULL))
@@ -552,7 +552,7 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
   if (EMPTYSTR(arg))
   {
     send_to_char("Syntax: setliquid <vnum> <field> <value>\r\n"
-		  "        setliquid create <name>\r\n" "        setliquid delete <vnum>\r\n", ch);
+                  "        setliquid create <name>\r\n" "        setliquid delete <vnum>\r\n", ch);
     send_to_char(" Fields being one of the following:\r\n" " name color type shortdesc drunk thrist blood full\r\n", ch);
     return;
   }
@@ -565,7 +565,7 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
     if (liq_count >= MAX_LIQUIDS)
     {
       send_to_char("Liquid count is at the hard-coded max. Remove some liquids or raise\r\n"
-		    "the hard-coded max number of liquids.\r\n", ch);
+                    "the hard-coded max number of liquids.\r\n", ch);
       return;
     }
 
@@ -602,8 +602,8 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
     {
       if (!(liq = get_liq(argument)))
       {
-	send_to_char("No such liquid type. Use 'showliquid' to get a valid list.\r\n", ch);
-	return;
+        send_to_char("No such liquid type. Use 'showliquid' to get a valid list.\r\n", ch);
+        return;
       }
     }
     else
@@ -612,8 +612,8 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
 
       if (!(liq = get_liq_vnum(i)))
       {
-	send_to_char("No such vnum. Use 'showliquid' to get the vnum.\r\n", ch);
-	return;
+        send_to_char("No such vnum. Use 'showliquid' to get the vnum.\r\n", ch);
+        return;
       }
     }
 
@@ -625,8 +625,8 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
       int j;
 
       for (j = 0; j != liq->vnum; j++)
-	if (j > top_liquid)
-	  top_liquid = j;
+        if (j > top_liquid)
+          top_liquid = j;
     }
     liquid_table[liq->vnum] = NULL;
     liq_count--;
@@ -658,8 +658,8 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
     {
       if (NULLSTR(argument))
       {
-	send_to_char("Syntax: setliquid <vnum> name <name>\r\n", ch);
-	return;
+        send_to_char("Syntax: setliquid <vnum> name <name>\r\n", ch);
+        return;
       }
       STRFREE(liq->name);
       liq->name = STRALLOC(argument);
@@ -668,8 +668,8 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
     {
       if (NULLSTR(argument))
       {
-	send_to_char("Syntax: setliquid <vnum> color <color>\r\n", ch);
-	return;
+        send_to_char("Syntax: setliquid <vnum> color <color>\r\n", ch);
+        return;
       }
       STRFREE(liq->color);
       liq->color = STRALLOC(argument);
@@ -678,8 +678,8 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
     {
       if (NULLSTR(argument))
       {
-	send_to_char("Syntax: setliquid <vnum> shortdesc <shortdesc>\r\n", ch);
-	return;
+        send_to_char("Syntax: setliquid <vnum> shortdesc <shortdesc>\r\n", ch);
+        return;
       }
       STRFREE(liq->shortdesc);
       liq->shortdesc = STRALLOC(argument);
@@ -696,15 +696,15 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
        * bah; forgot to add this shit -- 
        */
       for (i = 0; i < LIQTYPE_TOP; i++)
-	if (!str_cmp(arg3, liquid_types[i]))
-	{
-	  found = TRUE;
-	  liq->type = i;
-	}
+        if (!str_cmp(arg3, liquid_types[i]))
+        {
+          found = TRUE;
+          liq->type = i;
+        }
       if (!found)
       {
-	send_to_char("Syntax: setliquid <vnum> type <liquidtype>\r\n", ch);
-	return;
+        send_to_char("Syntax: setliquid <vnum> type <liquidtype>\r\n", ch);
+        return;
       }
     }
     else
@@ -715,25 +715,25 @@ void do_setliquid(CHAR_DATA* ch, const char* argument)
 
       if (NULLSTR(argument))
       {
-	send_to_char("Syntax: setliquid <vnum> <field> <value>\r\n", ch);
-	send_to_char(" Fields being one of the following:\r\n"
-		      " name color shortdesc drunk thrist blood full\r\n", ch);
-	return;
+        send_to_char("Syntax: setliquid <vnum> <field> <value>\r\n", ch);
+        send_to_char(" Fields being one of the following:\r\n"
+                      " name color shortdesc drunk thrist blood full\r\n", ch);
+        return;
       }
 
       for (i = 0; i < MAX_CONDS; i++)
       {
-	if (!str_cmp(arg2, arg_names[i]))
-	{
-	  found = TRUE;
-	  liq->mod[i] = atoi(argument);
-	}
+        if (!str_cmp(arg2, arg_names[i]))
+        {
+          found = TRUE;
+          liq->mod[i] = atoi(argument);
+        }
       }
 
       if (!found)
       {
-	do_setliquid(ch, "");
-	return;
+        do_setliquid(ch, "");
+        return;
       }
     }
     send_to_char("Done.\r\n", ch);
@@ -856,9 +856,9 @@ void do_setmixture(CHAR_DATA* ch, const char* argument)
   if (EMPTYSTR(arg))
   {
     send_to_char("Syntax: setmixture create <name>\r\n"
-		  "        setmixture delete <name>\r\n"
-		  "        setmixture list [name]\r\n"
-		  "        setmixture save - (saves table)\r\n" "        setmixture <name> <field> <value>\r\n", ch);
+                  "        setmixture delete <name>\r\n"
+                  "        setmixture list [name]\r\n"
+                  "        setmixture save - (saves table)\r\n" "        setmixture <name> <field> <value>\r\n", ch);
     send_to_char(" Fields being one of the following:\r\n" " name vnum1 vnum2 into object\r\n", ch);
     return;
   }
@@ -961,8 +961,8 @@ void do_setmixture(CHAR_DATA* ch, const char* argument)
     {
       if (NULLSTR(argument))
       {
-	send_to_char("Syntax: setmixture <mixname> name <name>\r\n", ch);
-	return;
+        send_to_char("Syntax: setmixture <mixname> name <name>\r\n", ch);
+        return;
       }
       STRFREE(mix->name);
       mix->name = STRALLOC(argument);
@@ -973,43 +973,43 @@ void do_setmixture(CHAR_DATA* ch, const char* argument)
 
       if (is_number(argument))
       {
-	i = atoi(argument);
+        i = atoi(argument);
       }
       else
       {
-	send_to_char("Invalid liquid vnum.\r\n", ch);
-	send_to_char("Syntax: setmixture <mixname> vnum1 <liqvnum or objvnum>\r\n", ch);
-	return;
+        send_to_char("Invalid liquid vnum.\r\n", ch);
+        send_to_char("Syntax: setmixture <mixname> vnum1 <liqvnum or objvnum>\r\n", ch);
+        return;
       }
 
       if (mix->object == TRUE)
       {
-	OBJ_INDEX_DATA *obj = get_obj_index(i);
-	if (!obj)
-	{
-	  ch_printf(ch, "Invalid object vnum %d\r\n", i);
-	  return;
-	}
-	else
-	{
-	  mix->data[0] = i;
-	  ch_printf(ch, "Mixture object set to %d - %s\r\n", i, obj->name);
-	}
+        OBJ_INDEX_DATA *obj = get_obj_index(i);
+        if (!obj)
+        {
+          ch_printf(ch, "Invalid object vnum %d\r\n", i);
+          return;
+        }
+        else
+        {
+          mix->data[0] = i;
+          ch_printf(ch, "Mixture object set to %d - %s\r\n", i, obj->name);
+        }
       }
       else
       {
-	liq = get_liq_vnum(i);
-	if (!liq)
-	{
-	  ch_printf(ch, "Liquid vnum %d does not exist\r\n", i);
-	  return;
-	}
-	else
-	{
-	  mix->data[0] = i;
-	  ch_printf(ch, "Mixture Vnum1 set to %s \r\n", liq->name);
+        liq = get_liq_vnum(i);
+        if (!liq)
+        {
+          ch_printf(ch, "Liquid vnum %d does not exist\r\n", i);
+          return;
+        }
+        else
+        {
+          mix->data[0] = i;
+          ch_printf(ch, "Mixture Vnum1 set to %s \r\n", liq->name);
 
-	}
+        }
       }
     }
     else if (!str_cmp(arg2, "vnum2"))
@@ -1018,39 +1018,39 @@ void do_setmixture(CHAR_DATA* ch, const char* argument)
 
       if (is_number(argument))
       {
-	i = atoi(argument);
+        i = atoi(argument);
       }
       else
       {
-	send_to_char("Invalid liquid vnum.\r\n", ch);
-	send_to_char("Syntax: setmixture <mixname> vnum2 <liqvnum>\r\n", ch);
-	return;
+        send_to_char("Invalid liquid vnum.\r\n", ch);
+        send_to_char("Syntax: setmixture <mixname> vnum2 <liqvnum>\r\n", ch);
+        return;
       }
 
       //Verify liq exists
       liq = get_liq_vnum(i);
       if (!liq)
       {
-	ch_printf(ch, "Liquid vnum %d does not exist\r\n", i);
-	return;
+        ch_printf(ch, "Liquid vnum %d does not exist\r\n", i);
+        return;
       }
       else
       {
-	mix->data[1] = i;
-	ch_printf(ch, "Mixture Vnum2 set to %s \r\n", liq->name);
+        mix->data[1] = i;
+        ch_printf(ch, "Mixture Vnum2 set to %s \r\n", liq->name);
       }
     }
     else if (!str_cmp(arg2, "object"))
     {
       if (mix->object == FALSE)
       {
-	mix->object = TRUE;
-	send_to_char("Mixture -vnum1- is now an object-vnum.\r\n", ch);
+        mix->object = TRUE;
+        send_to_char("Mixture -vnum1- is now an object-vnum.\r\n", ch);
       }
       else
       {
-	mix->object = FALSE;
-	send_to_char("Both mixture vnums are now liquids.\r\n", ch);
+        mix->object = FALSE;
+        send_to_char("Both mixture vnums are now liquids.\r\n", ch);
       }
     }
     else if (!str_cmp(arg2, "into"))
@@ -1059,25 +1059,25 @@ void do_setmixture(CHAR_DATA* ch, const char* argument)
 
       if (is_number(argument))
       {
-	i = atoi(argument);
+        i = atoi(argument);
       }
       else
       {
-	send_to_char("Invalid liquid vnum.\r\n", ch);
-	send_to_char("Syntax: setmixture <mixname> into <liqvnum>\r\n", ch);
-	return;
+        send_to_char("Invalid liquid vnum.\r\n", ch);
+        send_to_char("Syntax: setmixture <mixname> into <liqvnum>\r\n", ch);
+        return;
       }
 
       liq = get_liq_vnum(i);
       if (!liq)
       {
-	ch_printf(ch, "Liquid vnum %d does not exist\r\n", i);
-	return;
+        ch_printf(ch, "Liquid vnum %d does not exist\r\n", i);
+        return;
       }
       else
       {
-	mix->data[2] = i;
-	ch_printf(ch, "Mixture will now turn into %s \r\n", liq->name);
+        mix->data[2] = i;
+        ch_printf(ch, "Mixture will now turn into %s \r\n", liq->name);
       }
     }
 
@@ -1131,8 +1131,8 @@ LIQ_TABLE *liqobj_can_mix(OBJ_DATA * iObj, OBJ_DATA * oLiq)
     if (mix->object && (mix->data[0] == iObj->value[2] || mix->data[1] == iObj->value[2]))
       if (mix->data[0] == oLiq->value[2] || mix->data[1] == oLiq->value[2])
       {
-	mix_found = TRUE;
-	break;
+        mix_found = TRUE;
+        break;
       }
 
   if (!mix_found)
@@ -1259,7 +1259,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
   {
     for (obj = ch->in_room->first_content; obj; obj = obj->next_content)
       if ((obj->item_type == ITEM_FOUNTAIN) || (obj->item_type == ITEM_PUDDLE))
-	break;
+        break;
 
     if (!obj)
     {
@@ -1331,7 +1331,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
       gain_condition(ch, COND_FULL, liq->mod[COND_FULL]);
       gain_condition(ch, COND_DRUNK, liq->mod[COND_DRUNK]);
       if (IS_VAMPIRE(ch))
-	gain_condition(ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST]);
+        gain_condition(ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST]);
     }
     else if (!IS_NPC(ch) && obj->value[2] == 0)
       ch->pcdata->condition[COND_THIRST] = MAX_COND_VALUE;
@@ -1358,7 +1358,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
      * allow water to be drank; but nothing else on a full stomach     -Nopey 
      */
     if (!IS_NPC(ch) && (ch->pcdata->condition[COND_THIRST] == MAX_COND_VALUE
-			   || ch->pcdata->condition[COND_FULL] == MAX_COND_VALUE))
+                           || ch->pcdata->condition[COND_FULL] == MAX_COND_VALUE))
     {
       send_to_char("Your stomach is too full to drink anymore!\r\n", ch);
       return;
@@ -1404,56 +1404,56 @@ void do_drink(CHAR_DATA* ch, const char* argument)
     if (!IS_NPC(ch))
     {
       if (ch->pcdata->condition[COND_DRUNK] > (MAX_COND_VALUE / 2)
-	  && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .4))
-	send_to_char("You feel quite sloshed.\r\n", ch);
+          && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .4))
+        send_to_char("You feel quite sloshed.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] >= (MAX_COND_VALUE * .4)
-	       && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .6))
-	send_to_char("You start to feel a little drunk.\r\n", ch);
+               && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .6))
+        send_to_char("You start to feel a little drunk.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] >= (MAX_COND_VALUE * .6)
-	       && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .9))
-	send_to_char("Your vision starts to get blurry.\r\n", ch);
+               && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .9))
+        send_to_char("Your vision starts to get blurry.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] >= (MAX_COND_VALUE * .9)
-	       && ch->pcdata->condition[COND_DRUNK] < MAX_COND_VALUE)
-	send_to_char("You feel very drunk.\r\n", ch);
+               && ch->pcdata->condition[COND_DRUNK] < MAX_COND_VALUE)
+        send_to_char("You feel very drunk.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] == MAX_COND_VALUE)
-	send_to_char("You feel like your going to pass out.\r\n", ch);
+        send_to_char("You feel like your going to pass out.\r\n", ch);
 
       if (ch->pcdata->condition[COND_THIRST] > (MAX_COND_VALUE / 2)
-	  && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .4))
-	send_to_char("Your stomach begins to slosh around.\r\n", ch);
+          && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .4))
+        send_to_char("Your stomach begins to slosh around.\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] >= (MAX_COND_VALUE * .4)
-	       && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .6))
-	send_to_char("You start to feel bloated.\r\n", ch);
+               && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .6))
+        send_to_char("You start to feel bloated.\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] >= (MAX_COND_VALUE * .6)
-	       && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .9))
-	send_to_char("You feel bloated.\r\n", ch);
+               && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .9))
+        send_to_char("You feel bloated.\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] >= (MAX_COND_VALUE * .9)
-	       && ch->pcdata->condition[COND_THIRST] < MAX_COND_VALUE)
-	send_to_char("You stomach is almost filled to it's brim!\r\n", ch);
+               && ch->pcdata->condition[COND_THIRST] < MAX_COND_VALUE)
+        send_to_char("You stomach is almost filled to it's brim!\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] == MAX_COND_VALUE)
-	send_to_char("Your stomach is full, you can't manage to get anymore down.\r\n", ch);
+        send_to_char("Your stomach is full, you can't manage to get anymore down.\r\n", ch);
 
       /*
        * Hopefully this is the reason why that crap was happening. =0P 
        */
       if (IS_VAMPIRE(ch))
       {
-	if (ch->pcdata->condition[COND_BLOODTHIRST] > (MAX_COND_VALUE / 2)
-	    && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .4))
-	  send_to_char("&rYou replenish your body with the vidal fluid.\r\n", ch);
-	else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .4)
-		 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .6))
-	  send_to_char("&rYour thirst for blood begins to decrease.\r\n", ch);
-	else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .6)
-		 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .9))
-	  send_to_char("&rThe thirst for blood begins to leave you...\r\n", ch);
-	else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .9)
-		 && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE)
-	  send_to_char("&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch);
+        if (ch->pcdata->condition[COND_BLOODTHIRST] > (MAX_COND_VALUE / 2)
+            && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .4))
+          send_to_char("&rYou replenish your body with the vidal fluid.\r\n", ch);
+        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .4)
+                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .6))
+          send_to_char("&rYour thirst for blood begins to decrease.\r\n", ch);
+        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .6)
+                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .9))
+          send_to_char("&rThe thirst for blood begins to leave you...\r\n", ch);
+        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .9)
+                 && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE)
+          send_to_char("&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch);
       }
       else if (!IS_VAMPIRE(ch) && ch->pcdata->condition[COND_BLOODTHIRST] >= MAX_COND_VALUE)
       {
-	ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
+        ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
       }
     }
 
@@ -1513,56 +1513,56 @@ void do_drink(CHAR_DATA* ch, const char* argument)
     if (!IS_NPC(ch))
     {
       if (ch->pcdata->condition[COND_DRUNK] > (MAX_COND_VALUE / 2)
-	  && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .4))
-	send_to_char("You feel quite sloshed.\r\n", ch);
+          && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .4))
+        send_to_char("You feel quite sloshed.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] >= (MAX_COND_VALUE * .4)
-	       && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .6))
-	send_to_char("You start to feel a little drunk.\r\n", ch);
+               && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .6))
+        send_to_char("You start to feel a little drunk.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] >= (MAX_COND_VALUE * .6)
-	       && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .9))
-	send_to_char("Your vision starts to get blurry.\r\n", ch);
+               && ch->pcdata->condition[COND_DRUNK] < (MAX_COND_VALUE * .9))
+        send_to_char("Your vision starts to get blurry.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] >= (MAX_COND_VALUE * .9)
-	       && ch->pcdata->condition[COND_DRUNK] < MAX_COND_VALUE)
-	send_to_char("You feel very drunk.\r\n", ch);
+               && ch->pcdata->condition[COND_DRUNK] < MAX_COND_VALUE)
+        send_to_char("You feel very drunk.\r\n", ch);
       else if (ch->pcdata->condition[COND_DRUNK] == MAX_COND_VALUE)
-	send_to_char("You feel like your going to pass out.\r\n", ch);
+        send_to_char("You feel like your going to pass out.\r\n", ch);
 
       if (ch->pcdata->condition[COND_THIRST] > (MAX_COND_VALUE / 2)
-	  && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .4))
-	send_to_char("Your stomach begins to slosh around.\r\n", ch);
+          && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .4))
+        send_to_char("Your stomach begins to slosh around.\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] >= (MAX_COND_VALUE * .4)
-	       && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .6))
-	send_to_char("You start to feel bloated.\r\n", ch);
+               && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .6))
+        send_to_char("You start to feel bloated.\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] >= (MAX_COND_VALUE * .6)
-	       && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .9))
-	send_to_char("You feel bloated.\r\n", ch);
+               && ch->pcdata->condition[COND_THIRST] < (MAX_COND_VALUE * .9))
+        send_to_char("You feel bloated.\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] >= (MAX_COND_VALUE * .9)
-	       && ch->pcdata->condition[COND_THIRST] < MAX_COND_VALUE)
-	send_to_char("You stomach is almost filled to it's brim!\r\n", ch);
+               && ch->pcdata->condition[COND_THIRST] < MAX_COND_VALUE)
+        send_to_char("You stomach is almost filled to it's brim!\r\n", ch);
       else if (ch->pcdata->condition[COND_THIRST] == MAX_COND_VALUE)
-	send_to_char("Your stomach is full, you can't manage to get anymore down.\r\n", ch);
+        send_to_char("Your stomach is full, you can't manage to get anymore down.\r\n", ch);
 
       /*
        * Hopefully this is the reason why that crap was happening. =0P 
        */
       if (IS_VAMPIRE(ch))
       {
-	if (ch->pcdata->condition[COND_BLOODTHIRST] > (MAX_COND_VALUE / 2)
-	    && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .4))
-	  send_to_char("&rYou replenish your body with the vidal fluid.\r\n", ch);
-	else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .4)
-		 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .6))
-	  send_to_char("&rYour thirst for blood begins to decrease.\r\n", ch);
-	else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .6)
-		 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .9))
-	  send_to_char("&rThe thirst for blood begins to leave you...\r\n", ch);
-	else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .9)
-		 && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE)
-	  send_to_char("&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch);
+        if (ch->pcdata->condition[COND_BLOODTHIRST] > (MAX_COND_VALUE / 2)
+            && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .4))
+          send_to_char("&rYou replenish your body with the vidal fluid.\r\n", ch);
+        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .4)
+                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .6))
+          send_to_char("&rYour thirst for blood begins to decrease.\r\n", ch);
+        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .6)
+                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .9))
+          send_to_char("&rThe thirst for blood begins to leave you...\r\n", ch);
+        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .9)
+                 && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE)
+          send_to_char("&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch);
       }
       else if (!IS_VAMPIRE(ch) && ch->pcdata->condition[COND_BLOODTHIRST] >= MAX_COND_VALUE)
       {
-	ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
+        ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
       }
     }
 
@@ -1571,7 +1571,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
     {
       send_to_char("The remainder of the puddle seeps into the ground.\r\n", ch);
       if (cur_obj == obj->serial)
-	global_objcode = rOBJ_DRUNK;
+        global_objcode = rOBJ_DRUNK;
       extract_obj(obj);
     }
     break;
@@ -1696,21 +1696,21 @@ void do_fill(CHAR_DATA* ch, const char* argument)
     {
       if ((source = get_obj_carry(ch, arg2)) == NULL)
       {
-	send_to_char("You don't have that item.\r\n", ch);
-	return;
+        send_to_char("You don't have that item.\r\n", ch);
+        return;
       }
       if (source->item_type != src_item1 && source->item_type != src_item2 && source->item_type != src_item3)
       {
-	act(AT_PLAIN, "You cannot fill $p with $P!", ch, obj, source, TO_CHAR);
-	return;
+        act(AT_PLAIN, "You cannot fill $p with $P!", ch, obj, source, TO_CHAR);
+        return;
       }
     }
     else
     {
       if ((source = get_obj_here(ch, arg2)) == NULL)
       {
-	send_to_char("You cannot find that item.\r\n", ch);
-	return;
+        send_to_char("You cannot find that item.\r\n", ch);
+        return;
       }
     }
   }
@@ -1734,32 +1734,32 @@ void do_fill(CHAR_DATA* ch, const char* argument)
       src_next = source->next_content;
       if (dest_item == ITEM_CONTAINER)
       {
-	if (!CAN_WEAR(source, ITEM_TAKE)
-	    || IS_OBJ_STAT(source, ITEM_NOFILL)
-	    || IS_SET(source->magic_flags, ITEM_PKDISARMED)
-	    || IS_OBJ_STAT(source, ITEM_BURIED)
-	    || (IS_OBJ_STAT(source, ITEM_PROTOTYPE) && !can_take_proto(ch))
-	    || ch->carry_weight + get_obj_weight(source) > can_carry_w(ch)
-	    || (get_real_obj_weight(source) + get_real_obj_weight(obj) / obj->count) > obj->value[0])
-	  continue;
+        if (!CAN_WEAR(source, ITEM_TAKE)
+            || IS_OBJ_STAT(source, ITEM_NOFILL)
+            || IS_SET(source->magic_flags, ITEM_PKDISARMED)
+            || IS_OBJ_STAT(source, ITEM_BURIED)
+            || (IS_OBJ_STAT(source, ITEM_PROTOTYPE) && !can_take_proto(ch))
+            || ch->carry_weight + get_obj_weight(source) > can_carry_w(ch)
+            || (get_real_obj_weight(source) + get_real_obj_weight(obj) / obj->count) > obj->value[0])
+          continue;
 
-	if (all && arg2[3] == '.' && !nifty_is_name(&arg2[4], source->name))
-	  continue;
+        if (all && arg2[3] == '.' && !nifty_is_name(&arg2[4], source->name))
+          continue;
 
-	obj_from_room(source);
-	if (source->item_type == ITEM_MONEY)
-	{
-	  ch->gold += source->value[0];
-	  extract_obj(source);
-	}
-	else
-	  obj_to_obj(source, obj);
-	found = TRUE;
+        obj_from_room(source);
+        if (source->item_type == ITEM_MONEY)
+        {
+          ch->gold += source->value[0];
+          extract_obj(source);
+        }
+        else
+          obj_to_obj(source, obj);
+        found = TRUE;
       }
       else if (source->item_type == src_item1 || source->item_type == src_item2 || source->item_type == src_item3)
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
     }
 
@@ -1768,17 +1768,17 @@ void do_fill(CHAR_DATA* ch, const char* argument)
       switch (src_item1)
       {
       default:
-	send_to_char("There is nothing appropriate here!\r\n", ch);
-	return;
+        send_to_char("There is nothing appropriate here!\r\n", ch);
+        return;
       case ITEM_FOUNTAIN:
-	send_to_char("There is no fountain, pool, or puddle here!\r\n", ch);
-	return;
+        send_to_char("There is no fountain, pool, or puddle here!\r\n", ch);
+        return;
       case ITEM_HERB_CON:
-	send_to_char("There are no herbs here!\r\n", ch);
-	return;
+        send_to_char("There are no herbs here!\r\n", ch);
+        return;
       case ITEM_HERB:
-	send_to_char("You cannot find any smoking herbs.\r\n", ch);
-	return;
+        send_to_char("You cannot find any smoking herbs.\r\n", ch);
+        return;
       }
     }
 
@@ -1788,7 +1788,7 @@ void do_fill(CHAR_DATA* ch, const char* argument)
       act(AT_ACTION, "$n fills $p.", ch, obj, NULL, TO_ROOM);
 
       if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
-	save_house_by_vnum(ch->in_room->vnum);
+        save_house_by_vnum(ch->in_room->vnum);
       return;
     }
   }
@@ -1811,15 +1811,15 @@ void do_fill(CHAR_DATA* ch, const char* argument)
     {
     default:   /* put something in container */
       if (!source->in_room /* disallow inventory items */
-	  || !CAN_WEAR(source, ITEM_TAKE)
-	  || IS_OBJ_STAT(source, ITEM_NOFILL)
-	  || IS_SET(source->magic_flags, ITEM_PKDISARMED)
-	  || (IS_OBJ_STAT(source, ITEM_PROTOTYPE) && !can_take_proto(ch))
-	  || ch->carry_weight + get_obj_weight(source) > can_carry_w(ch)
-	  || (get_real_obj_weight(source) + get_real_obj_weight(obj) / obj->count) > obj->value[0])
+          || !CAN_WEAR(source, ITEM_TAKE)
+          || IS_OBJ_STAT(source, ITEM_NOFILL)
+          || IS_SET(source->magic_flags, ITEM_PKDISARMED)
+          || (IS_OBJ_STAT(source, ITEM_PROTOTYPE) && !can_take_proto(ch))
+          || ch->carry_weight + get_obj_weight(source) > can_carry_w(ch)
+          || (get_real_obj_weight(source) + get_real_obj_weight(obj) / obj->count) > obj->value[0])
       {
-	send_to_char("You can't do that.\r\n", ch);
-	return;
+        send_to_char("You can't do that.\r\n", ch);
+        return;
       }
       separate_obj(obj);
       act(AT_ACTION, "You take $P and put it inside $p.", ch, obj, source, TO_CHAR);
@@ -1835,82 +1835,82 @@ void do_fill(CHAR_DATA* ch, const char* argument)
     case ITEM_CORPSE_PC:
       if (IS_NPC(ch))
       {
-	send_to_char("You can't do that.\r\n", ch);
-	return;
+        send_to_char("You can't do that.\r\n", ch);
+        return;
       }
       if (IS_OBJ_STAT(source, ITEM_CLANCORPSE) && !IS_IMMORTAL(ch))
       {
-	send_to_char("Your hands fumble.  Maybe you better loot a different way.\r\n", ch);
-	return;
+        send_to_char("Your hands fumble.  Maybe you better loot a different way.\r\n", ch);
+        return;
       }
       if (!IS_OBJ_STAT(source, ITEM_CLANCORPSE) || !IS_SET(ch->pcdata->flags, PCFLAG_DEADLY))
       {
-	pd = source->short_descr;
-	pd = one_argument(pd, name);
-	pd = one_argument(pd, name);
-	pd = one_argument(pd, name);
-	pd = one_argument(pd, name);
+        pd = source->short_descr;
+        pd = one_argument(pd, name);
+        pd = one_argument(pd, name);
+        pd = one_argument(pd, name);
+        pd = one_argument(pd, name);
 
-	if (str_cmp(name, ch->name) && !IS_IMMORTAL(ch))
-	{
-	  bool fGroup;
+        if (str_cmp(name, ch->name) && !IS_IMMORTAL(ch))
+        {
+          bool fGroup;
 
-	  fGroup = FALSE;
-	  for (gch = first_char; gch; gch = gch->next)
-	  {
-	    if (!IS_NPC(gch) && is_same_group(ch, gch) && !str_cmp(name, gch->name))
-	    {
-	      fGroup = TRUE;
-	      break;
-	    }
-	  }
-	  if (!fGroup)
-	  {
-	    send_to_char("That's someone else's corpse.\r\n", ch);
-	    return;
-	  }
-	}
+          fGroup = FALSE;
+          for (gch = first_char; gch; gch = gch->next)
+          {
+            if (!IS_NPC(gch) && is_same_group(ch, gch) && !str_cmp(name, gch->name))
+            {
+              fGroup = TRUE;
+              break;
+            }
+          }
+          if (!fGroup)
+          {
+            send_to_char("That's someone else's corpse.\r\n", ch);
+            return;
+          }
+        }
       }
 
     case ITEM_CONTAINER:
       if (source->item_type == ITEM_CONTAINER /* don't remove */  && IS_SET(source->value[1], CONT_CLOSED))
       {
-	act(AT_PLAIN, "The $d is closed.", ch, NULL, source->name, TO_CHAR);
-	return;
+        act(AT_PLAIN, "The $d is closed.", ch, NULL, source->name, TO_CHAR);
+        return;
       }
 
     case ITEM_CORPSE_NPC:
       if ((otmp = source->first_content) == NULL)
       {
-	send_to_char("It's empty.\r\n", ch);
-	return;
+        send_to_char("It's empty.\r\n", ch);
+        return;
       }
       separate_obj(obj);
       for (; otmp; otmp = otmp_next)
       {
-	otmp_next = otmp->next_content;
+        otmp_next = otmp->next_content;
 
-	if (!CAN_WEAR(otmp, ITEM_TAKE)
-	    || IS_OBJ_STAT(otmp, ITEM_NOFILL)
-	    || (IS_OBJ_STAT(otmp, ITEM_PROTOTYPE) && !can_take_proto(ch))
-	    || ch->carry_number + otmp->count > can_carry_n(ch)
-	    || ch->carry_weight + get_obj_weight(otmp) > can_carry_w(ch)
-	    || (get_real_obj_weight(source) + get_real_obj_weight(obj) / obj->count) > obj->value[0])
-	  continue;
+        if (!CAN_WEAR(otmp, ITEM_TAKE)
+            || IS_OBJ_STAT(otmp, ITEM_NOFILL)
+            || (IS_OBJ_STAT(otmp, ITEM_PROTOTYPE) && !can_take_proto(ch))
+            || ch->carry_number + otmp->count > can_carry_n(ch)
+            || ch->carry_weight + get_obj_weight(otmp) > can_carry_w(ch)
+            || (get_real_obj_weight(source) + get_real_obj_weight(obj) / obj->count) > obj->value[0])
+          continue;
 
-	obj_from_obj(otmp);
-	obj_to_obj(otmp, obj);
-	found = TRUE;
+        obj_from_obj(otmp);
+        obj_to_obj(otmp, obj);
+        found = TRUE;
       }
       if (found)
       {
-	if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
-	  save_house_by_vnum(ch->in_room->vnum);
-	act(AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR);
-	act(AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM);
+        if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
+          save_house_by_vnum(ch->in_room->vnum);
+        act(AT_ACTION, "You fill $p from $P.", ch, obj, source, TO_CHAR);
+        act(AT_ACTION, "$n fills $p from $P.", ch, obj, source, TO_ROOM);
       }
       else
-	send_to_char("There is nothing appropriate in there.\r\n", ch);
+        send_to_char("There is nothing appropriate in there.\r\n", ch);
       break;
     }
     return;
@@ -2011,13 +2011,13 @@ void do_fill(CHAR_DATA* ch, const char* argument)
       LIQ_TABLE *liq = get_liq_vnum(source->value[2]);
 
       if (source->value[1] > 15)
-	mudstrlcpy(buf, "large", 20);
+        mudstrlcpy(buf, "large", 20);
       else if (source->value[1] > 10)
-	mudstrlcpy(buf, "rather large", 20);
+        mudstrlcpy(buf, "rather large", 20);
       else if (source->value[1] > 5)
-	mudstrlcpy(buf, "rather small", 20);
+        mudstrlcpy(buf, "rather small", 20);
       else
-	mudstrlcpy(buf, "small", 20);
+        mudstrlcpy(buf, "small", 20);
       snprintf(buf2, 70, "There is a %s puddle of %s.", buf, (liq == NULL ? "water" : liq->name));
       source->description = STRALLOC(buf2);
     }
@@ -2106,25 +2106,25 @@ void do_empty(CHAR_DATA* ch, const char* argument)
     {
       if (xIS_SET(ch->in_room->room_flags, ROOM_NODROP) || xIS_SET(ch->act, PLR_LITTERBUG))
       {
-	send_to_char("&[magic]A magical force stops you!\r\n", ch);
-	send_to_char("&[tell]Someone tells you, 'No littering here!'\r\n", ch);
-	return;
+        send_to_char("&[magic]A magical force stops you!\r\n", ch);
+        send_to_char("&[tell]Someone tells you, 'No littering here!'\r\n", ch);
+        return;
       }
       if (xIS_SET(ch->in_room->room_flags, ROOM_NODROPALL)
-	  || xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM))
+          || xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM))
       {
-	send_to_char("You can't seem to do that here...\r\n", ch);
-	return;
+        send_to_char("You can't seem to do that here...\r\n", ch);
+        return;
       }
       if (empty_obj(obj, NULL, ch->in_room))
       {
-	act(AT_ACTION, "You empty $p.", ch, obj, NULL, TO_CHAR);
-	act(AT_ACTION, "$n empties $p.", ch, obj, NULL, TO_ROOM);
-	if (IS_SET(sysdata.save_flags, SV_EMPTY))
-	  save_char_obj(ch);
+        act(AT_ACTION, "You empty $p.", ch, obj, NULL, TO_CHAR);
+        act(AT_ACTION, "$n empties $p.", ch, obj, NULL, TO_ROOM);
+        if (IS_SET(sysdata.save_flags, SV_EMPTY))
+          save_char_obj(ch);
       }
       else
-	send_to_char("Hmmm... didn't work.\r\n", ch);
+        send_to_char("Hmmm... didn't work.\r\n", ch);
     }
     else
     {
@@ -2132,34 +2132,34 @@ void do_empty(CHAR_DATA* ch, const char* argument)
 
       if (!dest)
       {
-	send_to_char("You can't find it.\r\n", ch);
-	return;
+        send_to_char("You can't find it.\r\n", ch);
+        return;
       }
       if (dest == obj)
       {
-	send_to_char("You can't empty something into itself!\r\n", ch);
-	return;
+        send_to_char("You can't empty something into itself!\r\n", ch);
+        return;
       }
       if (dest->item_type != ITEM_CONTAINER && dest->item_type != ITEM_KEYRING && dest->item_type != ITEM_QUIVER)
       {
-	send_to_char("That's not a container!\r\n", ch);
-	return;
+        send_to_char("That's not a container!\r\n", ch);
+        return;
       }
       if (IS_SET(dest->value[1], CONT_CLOSED))
       {
-	act(AT_PLAIN, "The $d is closed.", ch, NULL, dest->name, TO_CHAR);
-	return;
+        act(AT_PLAIN, "The $d is closed.", ch, NULL, dest->name, TO_CHAR);
+        return;
       }
       separate_obj(dest);
       if (empty_obj(obj, dest, NULL))
       {
-	act(AT_ACTION, "You empty $p into $P.", ch, obj, dest, TO_CHAR);
-	act(AT_ACTION, "$n empties $p into $P.", ch, obj, dest, TO_ROOM);
-	if (!dest->carried_by && IS_SET(sysdata.save_flags, SV_EMPTY))
-	  save_char_obj(ch);
+        act(AT_ACTION, "You empty $p into $P.", ch, obj, dest, TO_CHAR);
+        act(AT_ACTION, "$n empties $p into $P.", ch, obj, dest, TO_ROOM);
+        if (!dest->carried_by && IS_SET(sysdata.save_flags, SV_EMPTY))
+          save_char_obj(ch);
       }
       else
-	act(AT_ACTION, "$P is too full.", ch, obj, dest, TO_CHAR);
+        act(AT_ACTION, "$P is too full.", ch, obj, dest, TO_CHAR);
     }
     if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
       save_house_by_vnum(ch->in_room->vnum);
@@ -2169,8 +2169,8 @@ void do_empty(CHAR_DATA* ch, const char* argument)
       VAULT_DATA *vault;
 
       for (vault = first_vault; vault; vault = vault->next)
-	if (vault->vnum == ch->in_room->vnum)
-	  save_storeroom(ch, vault->vnum);
+        if (vault->vnum == ch->in_room->vnum)
+          save_storeroom(ch, vault->vnum);
     }
     return;
   }

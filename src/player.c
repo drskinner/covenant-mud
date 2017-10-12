@@ -125,13 +125,13 @@ void do_worth(CHAR_DATA* ch, const char* argument)
     break;
   }
   pager_printf(ch, "|Glory: %-4d |Weight: %-9d |Style: %-13s |Gold: %-14s |\r\n",
-		ch->pcdata->quest_curr, ch->carry_weight, buf, num_punct(ch->gold));
+                ch->pcdata->quest_curr, ch->carry_weight, buf, num_punct(ch->gold));
   send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
   if (ch->level < 15 && !IS_PKILL(ch))
     pager_printf(ch, "|            |Hitroll: -------- |Damroll: ----------- |                     |\r\n");
   else
     pager_printf(ch, "|            |Hitroll: %-8d |Damroll: %-11d |                     |\r\n", GET_HITROLL(ch),
-		  GET_DAMROLL(ch));
+                  GET_DAMROLL(ch));
   send_to_pager(" ----------------------------------------------------------------------------\r\n", ch);
   return;
 }
@@ -180,27 +180,27 @@ void do_score(CHAR_DATA* ch, const char* argument)
     */
 
   pager_printf(ch, "LEVEL: %-3d         Race : %-10.10s        Played: %ld hours\r\n",
-		ch->level, capitalize(get_race(ch)), (long int)GET_TIME_PLAYED(ch));
+                ch->level, capitalize(get_race(ch)), (long int)GET_TIME_PLAYED(ch));
 
   pager_printf(ch, "YEARS: %-6d      Class: %-11.11s       Log In: %s\r",
-		calculate_age(ch), capitalize(get_class(ch)), ctime(&(ch->logon)));
+                calculate_age(ch), capitalize(get_class(ch)), ctime(&(ch->logon)));
 
   if (ch->level >= 15 || IS_PKILL(ch))
   {
     pager_printf(ch, "STR  : %2.2d(%2.2d)    HitRoll: %-4d              Saved:  %s\r",
-		  get_curr_str(ch), ch->perm_str, GET_HITROLL(ch),
-		  ch->save_time ? ctime(&(ch->save_time)) : "no save this session\n");
+                  get_curr_str(ch), ch->perm_str, GET_HITROLL(ch),
+                  ch->save_time ? ctime(&(ch->save_time)) : "no save this session\n");
 
     pager_printf(ch, "INT  : %2.2d(%2.2d)    DamRoll: %-4d              Time:   %s\r",
-		  get_curr_int(ch), ch->perm_int, GET_DAMROLL(ch), ctime(&current_time));
+                  get_curr_int(ch), ch->perm_int, GET_DAMROLL(ch), ctime(&current_time));
   }
   else
   {
     pager_printf(ch, "STR  : %2.2d(%2.2d)                               Saved:  %s\r",
-		  get_curr_str(ch), ch->perm_str, ch->save_time ? ctime(&(ch->save_time)) : "no\n");
+                  get_curr_str(ch), ch->perm_str, ch->save_time ? ctime(&(ch->save_time)) : "no\n");
 
     pager_printf(ch, "INT  : %2.2d(%2.2d)                               Time:   %s\r",
-		  get_curr_int(ch), ch->perm_int, ctime(&current_time));
+                  get_curr_int(ch), ch->perm_int, ctime(&current_time));
   }
 
   if (GET_AC(ch) >= 101)
@@ -235,7 +235,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s", "that of an avatar");
   if (ch->level > 24)
     pager_printf(ch, "WIS  : %2.2d(%2.2d)      Armor: %4.4d, %s\r\n",
-		  get_curr_wis(ch), ch->perm_wis, GET_AC(ch), buf);
+                  get_curr_wis(ch), ch->perm_wis, GET_AC(ch), buf);
   else
     pager_printf(ch, "WIS  : %2.2d(%2.2d)      Armor: %s \r\n", get_curr_wis(ch), ch->perm_wis, buf);
 
@@ -259,10 +259,10 @@ void do_score(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s", "fiendish");
   if (ch->level < 10)
     pager_printf(ch, "DEX  : %2.2d(%2.2d)      Align: %-20.20s    Items: %5.5d   (max %5.5d)\r\n",
-		  get_curr_dex(ch), ch->perm_dex, buf, ch->carry_number, can_carry_n(ch));
+                  get_curr_dex(ch), ch->perm_dex, buf, ch->carry_number, can_carry_n(ch));
   else
     pager_printf(ch, "DEX  : %2.2d(%2.2d)      Align: %+4.4d, %-14.14s   Items: %5.5d   (max %5.5d)\r\n",
-		  get_curr_dex(ch), ch->perm_dex, ch->alignment, buf, ch->carry_number, can_carry_n(ch));
+                  get_curr_dex(ch), ch->perm_dex, ch->alignment, buf, ch->carry_number, can_carry_n(ch));
 
   switch (ch->position)
   {
@@ -310,7 +310,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
     break;
   }
   pager_printf(ch, "CON  : %2.2d(%2.2d)      Pos'n: %-21.21s  Weight: %5.5d (max %7.7d)\r\n",
-		get_curr_con(ch), ch->perm_con, buf, ch->carry_weight, can_carry_w(ch));
+                get_curr_con(ch), ch->perm_con, buf, ch->carry_weight, can_carry_w(ch));
 
 
   /*
@@ -343,24 +343,24 @@ void do_score(CHAR_DATA* ch, const char* argument)
   pager_printf(ch, "Glory: %4.4d(%4.4d) \r\n", ch->pcdata->quest_curr, ch->pcdata->quest_accum);
 
   pager_printf(ch, "PRACT: %3.3d         Hitpoints: %-5d of %5d   Pager: (%c) %3d    AutoExit(%c)\r\n",
-		ch->practice, ch->hit, ch->max_hit,
-		IS_SET(ch->pcdata->flags, PCFLAG_PAGERON) ? 'X' : ' ',
-		ch->pcdata->pagerlen, xIS_SET(ch->act, PLR_AUTOEXIT) ? 'X' : ' ');
+                ch->practice, ch->hit, ch->max_hit,
+                IS_SET(ch->pcdata->flags, PCFLAG_PAGERON) ? 'X' : ' ',
+                ch->pcdata->pagerlen, xIS_SET(ch->act, PLR_AUTOEXIT) ? 'X' : ' ');
 
   if (IS_VAMPIRE(ch))
     pager_printf(ch, "XP   : %-9d       Blood: %-5d of %5d   MKills:  %-5.5d    AutoLoot(%c)\r\n",
-		  ch->exp, ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->pcdata->mkills,
-		  xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
+                  ch->exp, ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->pcdata->mkills,
+                  xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
   else if (ch->Class == CLASS_WARRIOR)
     pager_printf(ch, "XP   : %-9d                               MKills:  %-5.5d    AutoLoot(%c)\r\n",
-		  ch->exp, ch->pcdata->mkills, xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
+                  ch->exp, ch->pcdata->mkills, xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
   else
     pager_printf(ch, "XP   : %-9d        Mana: %-5d of %5d   MKills:  %-5.5d    AutoLoot(%c)\r\n",
-		  ch->exp, ch->mana, ch->max_mana, ch->pcdata->mkills, xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
+                  ch->exp, ch->mana, ch->max_mana, ch->pcdata->mkills, xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
 
   pager_printf(ch, "GOLD : %-13s    Move: %-5d of %5d   Mdeaths: %-5.5d    AutoSac (%c)\r\n",
-		num_punct(ch->gold), ch->move, ch->max_move, ch->pcdata->mdeaths, xIS_SET(ch->act,
-											     PLR_AUTOSAC) ? 'X' : ' ');
+                num_punct(ch->gold), ch->move, ch->max_move, ch->pcdata->mdeaths, xIS_SET(ch->act,
+                                                                                             PLR_AUTOSAC) ? 'X' : ' ');
 
   if (!IS_NPC(ch) && ch->pcdata->condition[COND_DRUNK] > 10)
     send_to_pager("You are drunk.\r\n", ch);
@@ -451,7 +451,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
     if (knows_language(ch, lang_array[iLang], ch) || (IS_NPC(ch) && ch->speaks == 0))
     {
       if (lang_array[iLang] & ch->speaking || (IS_NPC(ch) && !ch->speaking))
-	set_pager_color(AT_RED, ch);
+        set_pager_color(AT_RED, ch);
       send_to_pager(lang_names[iLang], ch);
       send_to_pager(" ", ch);
       set_pager_color(AT_SCORE, ch);
@@ -466,7 +466,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
     send_to_pager("----------------------------------------------------------------------------\r\n", ch);
     if (IS_IMMORTAL(ch))
       pager_printf(ch, "Morphed as (%d) %s with a timer of %d.\r\n",
-		    ch->morph->morph->vnum, ch->morph->morph->short_desc, ch->morph->timer);
+                    ch->morph->morph->vnum, ch->morph->morph->short_desc, ch->morph->timer);
     else
       pager_printf(ch, "You are morphed into a %s.\r\n", ch->morph->morph->short_desc);
     send_to_pager("----------------------------------------------------------------------------\r\n", ch);
@@ -475,19 +475,19 @@ void do_score(CHAR_DATA* ch, const char* argument)
   {
     send_to_pager("----------------------------------------------------------------------------\r\n", ch);
     pager_printf(ch, "PKILL DATA:  Pkills (%3.3d)     Illegal Pkills (%3.3d)     Pdeaths (%3.3d)\r\n",
-		  ch->pcdata->pkills, ch->pcdata->illegal_pk, ch->pcdata->pdeaths);
+                  ch->pcdata->pkills, ch->pcdata->illegal_pk, ch->pcdata->pdeaths);
   }
   if (ch->pcdata->clan && ch->pcdata->clan->clan_type != CLAN_ORDER && ch->pcdata->clan->clan_type != CLAN_GUILD)
   {
     send_to_pager("----------------------------------------------------------------------------\r\n", ch);
     pager_printf(ch, "CLAN STATS:  %-14.14s  Clan AvPkills : %-5d  Clan NonAvpkills : %-5d\r\n",
-		  ch->pcdata->clan->name, ch->pcdata->clan->pkills[6],
-		  (ch->pcdata->clan->pkills[1] + ch->pcdata->clan->pkills[2] +
-		    ch->pcdata->clan->pkills[3] + ch->pcdata->clan->pkills[4] + ch->pcdata->clan->pkills[5]));
+                  ch->pcdata->clan->name, ch->pcdata->clan->pkills[6],
+                  (ch->pcdata->clan->pkills[1] + ch->pcdata->clan->pkills[2] +
+                    ch->pcdata->clan->pkills[3] + ch->pcdata->clan->pkills[4] + ch->pcdata->clan->pkills[5]));
     pager_printf(ch, "                             Clan AvPdeaths: %-5d  Clan NonAvpdeaths: %-5d\r\n",
-		  ch->pcdata->clan->pdeaths[6],
-		  (ch->pcdata->clan->pdeaths[1] + ch->pcdata->clan->pdeaths[2] +
-		    ch->pcdata->clan->pdeaths[3] + ch->pcdata->clan->pdeaths[4] + ch->pcdata->clan->pdeaths[5]));
+                  ch->pcdata->clan->pdeaths[6],
+                  (ch->pcdata->clan->pdeaths[1] + ch->pcdata->clan->pdeaths[2] +
+                    ch->pcdata->clan->pdeaths[3] + ch->pcdata->clan->pdeaths[4] + ch->pcdata->clan->pdeaths[5]));
   }
   if (ch->pcdata->deity)
   {
@@ -532,25 +532,25 @@ void do_score(CHAR_DATA* ch, const char* argument)
   {
     send_to_pager("----------------------------------------------------------------------------\r\n", ch);
     pager_printf(ch, "Order:  %-20s  Order Mkills:  %-6d   Order MDeaths:  %-6d\r\n",
-		  ch->pcdata->clan->name, ch->pcdata->clan->mkills, ch->pcdata->clan->mdeaths);
+                  ch->pcdata->clan->name, ch->pcdata->clan->mkills, ch->pcdata->clan->mdeaths);
   }
   if (ch->pcdata->clan && ch->pcdata->clan->clan_type == CLAN_GUILD)
   {
     send_to_pager("----------------------------------------------------------------------------\r\n", ch);
     pager_printf(ch, "Guild:  %-20s  Guild Mkills:  %-6d   Guild MDeaths:  %-6d\r\n",
-		  ch->pcdata->clan->name, ch->pcdata->clan->mkills, ch->pcdata->clan->mdeaths);
+                  ch->pcdata->clan->name, ch->pcdata->clan->mkills, ch->pcdata->clan->mdeaths);
   }
   if (IS_IMMORTAL(ch))
   {
     send_to_pager("----------------------------------------------------------------------------\r\n", ch);
 
     pager_printf(ch, "IMMORTAL DATA:  Wizinvis [%s]  Wizlevel (%d)\r\n",
-		  xIS_SET(ch->act, PLR_WIZINVIS) ? "X" : " ", ch->pcdata->wizinvis);
+                  xIS_SET(ch->act, PLR_WIZINVIS) ? "X" : " ", ch->pcdata->wizinvis);
 
     pager_printf(ch, "Bamfin:  %s %s\r\n", ch->name, (ch->pcdata->bamfin[0] != '\0')
-		  ? ch->pcdata->bamfin : "appears in a swirling mist.");
+                  ? ch->pcdata->bamfin : "appears in a swirling mist.");
     pager_printf(ch, "Bamfout: %s %s\r\n", ch->name, (ch->pcdata->bamfout[0] != '\0')
-		  ? ch->pcdata->bamfout : "leaves in a swirling mist.");
+                  ? ch->pcdata->bamfout : "leaves in a swirling mist.");
 
 
     /*
@@ -559,9 +559,9 @@ void do_score(CHAR_DATA* ch, const char* argument)
     if (ch->pcdata->area)
     {
       pager_printf(ch, "Vnums:   Room (%-5.5d - %-5.5d)   Object (%-5.5d - %-5.5d)   Mob (%-5.5d - %-5.5d)\r\n",
-		    ch->pcdata->area->low_r_vnum, ch->pcdata->area->hi_r_vnum,
-		    ch->pcdata->area->low_o_vnum, ch->pcdata->area->hi_o_vnum,
-		    ch->pcdata->area->low_m_vnum, ch->pcdata->area->hi_m_vnum);
+                    ch->pcdata->area->low_r_vnum, ch->pcdata->area->hi_r_vnum,
+                    ch->pcdata->area->low_o_vnum, ch->pcdata->area->hi_o_vnum,
+                    ch->pcdata->area->low_m_vnum, ch->pcdata->area->hi_m_vnum);
       pager_printf(ch, "Area Loaded [%s]\r\n", (IS_SET(ch->pcdata->area->status, AREA_LOADED)) ? "yes" : "no");
     }
   }
@@ -576,29 +576,29 @@ void do_score(CHAR_DATA* ch, const char* argument)
     for (paf = ch->first_affect; paf; paf = paf->next)
     {
       if ((sktmp = get_skilltype(paf->type)) == NULL)
-	continue;
+        continue;
       if (ch->level < 20)
       {
-	pager_printf(ch, "[%-34.34s]    ", sktmp->name);
-	if (i == 0)
-	  i = 2;
-	if ((++i % 3) == 0)
-	  send_to_pager("\r\n", ch);
+        pager_printf(ch, "[%-34.34s]    ", sktmp->name);
+        if (i == 0)
+          i = 2;
+        if ((++i % 3) == 0)
+          send_to_pager("\r\n", ch);
       }
       if (ch->level >= 20)
       {
-	if (paf->modifier == 0)
-	  pager_printf(ch, "[%-24.24s;%5d rds]    ", sktmp->name, paf->duration);
-	else if (paf->modifier > 999)
-	  pager_printf(ch, "[%-15.15s; %7.7s;%5d rds]    ",
-			sktmp->name, tiny_affect_loc_name(paf->location), paf->duration);
-	else
-	  pager_printf(ch, "[%-11.11s;%+-3.3d %7.7s;%5d rds]    ",
-			sktmp->name, paf->modifier, tiny_affect_loc_name(paf->location), paf->duration);
-	if (i == 0)
-	  i = 1;
-	if ((++i % 2) == 0)
-	  send_to_pager("\r\n", ch);
+        if (paf->modifier == 0)
+          pager_printf(ch, "[%-24.24s;%5d rds]    ", sktmp->name, paf->duration);
+        else if (paf->modifier > 999)
+          pager_printf(ch, "[%-15.15s; %7.7s;%5d rds]    ",
+                        sktmp->name, tiny_affect_loc_name(paf->location), paf->duration);
+        else
+          pager_printf(ch, "[%-11.11s;%+-3.3d %7.7s;%5d rds]    ",
+                        sktmp->name, paf->modifier, tiny_affect_loc_name(paf->location), paf->duration);
+        if (i == 0)
+          i = 1;
+        if ((++i % 2) == 0)
+          send_to_pager("\r\n", ch);
       }
     }
   }
@@ -790,7 +790,7 @@ const char *get_race(CHAR_DATA * ch)
   return ("Unknown");
 }
 
-/*								-Thoric
+/*                                                              -Thoric
  * Display your current exp, level, and surrounding level exp requirements
  */
 void do_level(CHAR_DATA* ch, const char* argument)
@@ -806,12 +806,12 @@ void do_level(CHAR_DATA* ch, const char* argument)
   hilvl = URANGE(ch->level, ch->level + 5, MAX_LEVEL);
   set_char_color(AT_SCORE, ch);
   ch_printf(ch, "\r\nExperience required, levels %d to %d:\r\n______________________________________________\r\n\r\n",
-	     lowlvl, hilvl);
+             lowlvl, hilvl);
   snprintf(buf, MAX_STRING_LENGTH, " exp  (Current: %12s)", num_punct(ch->exp));
   snprintf(buf2, MAX_STRING_LENGTH, " exp  (Needed:  %12s)", num_punct(exp_level(ch, ch->level + 1) - ch->exp));
   for (x = lowlvl; x <= hilvl; x++)
     ch_printf(ch, " (%2d) %12s%s\r\n", x, num_punct(exp_level(ch, x)),
-	       (x == ch->level) ? buf : (x == ch->level + 1) ? buf2 : " exp");
+               (x == ch->level) ? buf : (x == ch->level + 1) ? buf2 : " exp");
   send_to_char("______________________________________________\r\n", ch);
 }
 
@@ -880,18 +880,18 @@ void do_affected(CHAR_DATA* ch, const char* argument)
       send_to_char("\r\n", ch);
       if (ch->resistant > 0)
       {
-	send_to_char_color("&BResistances:  ", ch);
-	ch_printf_color(ch, "&C%s\r\n", flag_string(ch->resistant, ris_flags));
+        send_to_char_color("&BResistances:  ", ch);
+        ch_printf_color(ch, "&C%s\r\n", flag_string(ch->resistant, ris_flags));
       }
       if (ch->immune > 0)
       {
-	send_to_char_color("&BImmunities:   ", ch);
-	ch_printf_color(ch, "&C%s\r\n", flag_string(ch->immune, ris_flags));
+        send_to_char_color("&BImmunities:   ", ch);
+        ch_printf_color(ch, "&C%s\r\n", flag_string(ch->immune, ris_flags));
       }
       if (ch->susceptible > 0)
       {
-	send_to_char_color("&BSuscepts:     ", ch);
-	ch_printf_color(ch, "&C%s\r\n", flag_string(ch->susceptible, ris_flags));
+        send_to_char_color("&BSuscepts:     ", ch);
+        ch_printf_color(ch, "&C%s\r\n", flag_string(ch->susceptible, ris_flags));
       }
     }
     return;
@@ -907,18 +907,18 @@ void do_affected(CHAR_DATA* ch, const char* argument)
     for (paf = ch->first_affect; paf; paf = paf->next)
       if ((skill = get_skilltype(paf->type)) != NULL)
       {
-	set_char_color(AT_BLUE, ch);
-	send_to_char("Affected:  ", ch);
-	set_char_color(AT_SCORE, ch);
-	if (ch->level >= 20 || IS_PKILL(ch))
-	{
-	  if (paf->duration < 25)
-	    set_char_color(AT_WHITE, ch);
-	  if (paf->duration < 6)
-	    set_char_color(AT_WHITE + AT_BLINK, ch);
-	  ch_printf(ch, "(%5d)   ", paf->duration);
-	}
-	ch_printf(ch, "%-18s\r\n", skill->name);
+        set_char_color(AT_BLUE, ch);
+        send_to_char("Affected:  ", ch);
+        set_char_color(AT_SCORE, ch);
+        if (ch->level >= 20 || IS_PKILL(ch))
+        {
+          if (paf->duration < 25)
+            set_char_color(AT_WHITE, ch);
+          if (paf->duration < 6)
+            set_char_color(AT_WHITE + AT_BLINK, ch);
+          ch_printf(ch, "(%5d)   ", paf->duration);
+        }
+        ch_printf(ch, "%-18s\r\n", skill->name);
       }
   }
   return;
@@ -979,19 +979,19 @@ void do_equipment(CHAR_DATA* ch, const char* argument)
     {
       if (obj->wear_loc == iWear)
       {
-	if ((!IS_NPC(victim)) && (victim->race > 0) && (victim->race < MAX_PC_RACE))
-	  send_to_char(race_table[victim->race]->where_name[iWear], ch);
-	else
-	  send_to_char(where_name[iWear], ch);
+        if ((!IS_NPC(victim)) && (victim->race > 0) && (victim->race < MAX_PC_RACE))
+          send_to_char(race_table[victim->race]->where_name[iWear], ch);
+        else
+          send_to_char(where_name[iWear], ch);
 
-	if (can_see_obj(ch, obj))
-	{
-	  send_to_char(format_obj_to_char(obj, ch, TRUE), ch);
-	  send_to_char("\r\n", ch);
-	}
-	else
-	  send_to_char("something.\r\n", ch);
-	found = TRUE;
+        if (can_see_obj(ch, obj))
+        {
+          send_to_char(format_obj_to_char(obj, ch, TRUE), ch);
+          send_to_char("\r\n", ch);
+        }
+        else
+          send_to_char("something.\r\n", ch);
+        found = TRUE;
       }
     }
   }
@@ -1095,7 +1095,7 @@ void do_homepage(CHAR_DATA* ch, const char* argument)
 }
 
 /*
- * Set your personal description				-Thoric
+ * Set your personal description                                -Thoric
  */
 void do_description(CHAR_DATA* ch, const char* argument)
 {
@@ -1204,34 +1204,34 @@ void do_statreport(CHAR_DATA* ch, const char* argument)
   if (IS_VAMPIRE(ch))
   {
     ch_printf(ch, "You report: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-	       ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
-	       10 + ch->level, ch->move, ch->max_move, ch->exp);
+               ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
+               10 + ch->level, ch->move, ch->max_move, ch->exp);
     snprintf(buf, MAX_STRING_LENGTH, "$n reports: %d/%d hp %d/%d blood %d/%d mv %d xp.",
-	      ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
-	      10 + ch->level, ch->move, ch->max_move, ch->exp);
+              ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
+              10 + ch->level, ch->move, ch->max_move, ch->exp);
     act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
   }
   else
   {
     ch_printf(ch, "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
-	       ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+               ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
     snprintf(buf, MAX_STRING_LENGTH, "$n reports: %d/%d hp %d/%d mana %d/%d mv %d xp.",
-	      ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+              ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
     act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
   }
 
   ch_printf(ch, "Your base stats:    %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.\r\n",
-	     ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
+             ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
   snprintf(buf, MAX_STRING_LENGTH, "$n's base stats:    %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.",
-	    ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
+            ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
   act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
 
   ch_printf(ch, "Your current stats: %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.\r\n",
-	     get_curr_str(ch), get_curr_wis(ch), get_curr_int(ch),
-	     get_curr_dex(ch), get_curr_con(ch), get_curr_cha(ch), get_curr_lck(ch));
+             get_curr_str(ch), get_curr_wis(ch), get_curr_int(ch),
+             get_curr_dex(ch), get_curr_con(ch), get_curr_cha(ch), get_curr_lck(ch));
   snprintf(buf, MAX_STRING_LENGTH, "$n's current stats: %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.",
-	    get_curr_str(ch), get_curr_wis(ch), get_curr_int(ch),
-	    get_curr_dex(ch), get_curr_con(ch), get_curr_cha(ch), get_curr_lck(ch));
+            get_curr_str(ch), get_curr_wis(ch), get_curr_int(ch),
+            get_curr_dex(ch), get_curr_con(ch), get_curr_cha(ch), get_curr_lck(ch));
   act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
   return;
 }
@@ -1246,18 +1246,18 @@ void do_stat(CHAR_DATA* ch, const char* argument)
 
   if (IS_VAMPIRE(ch))
     ch_printf(ch, "You report: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-	       ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
-	       10 + ch->level, ch->move, ch->max_move, ch->exp);
+               ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
+               10 + ch->level, ch->move, ch->max_move, ch->exp);
   else
     ch_printf(ch, "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
-	       ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+               ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
 
   ch_printf(ch, "Your base stats:    %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.\r\n",
-	     ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
+             ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
 
   ch_printf(ch, "Your current stats: %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.\r\n",
-	     get_curr_str(ch), get_curr_wis(ch), get_curr_int(ch),
-	     get_curr_dex(ch), get_curr_con(ch), get_curr_cha(ch), get_curr_lck(ch));
+             get_curr_str(ch), get_curr_wis(ch), get_curr_int(ch),
+             get_curr_dex(ch), get_curr_con(ch), get_curr_cha(ch), get_curr_lck(ch));
   return;
 }
 
@@ -1277,21 +1277,21 @@ void do_report(CHAR_DATA* ch, const char* argument)
 
   if (IS_VAMPIRE(ch))
     ch_printf(ch,
-	       "You report: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-	       ch->hit, ch->max_hit,
-	       ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->move, ch->max_move, ch->exp);
+               "You report: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
+               ch->hit, ch->max_hit,
+               ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->move, ch->max_move, ch->exp);
   else
     ch_printf(ch,
-	       "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
-	       ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+               "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
+               ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
 
   if (IS_VAMPIRE(ch))
     snprintf(buf, MAX_INPUT_LENGTH, "$n reports: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-	      ch->hit, ch->max_hit,
-	      ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->move, ch->max_move, ch->exp);
+              ch->hit, ch->max_hit,
+              ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->move, ch->max_move, ch->exp);
   else
     snprintf(buf, MAX_INPUT_LENGTH, "$n reports: %d/%d hp %d/%d mana %d/%d mv %d xp.",
-	      ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+              ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
 
   act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
 

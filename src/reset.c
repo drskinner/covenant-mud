@@ -67,7 +67,7 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
   {
   default:
     snprintf(buf, MAX_STRING_LENGTH, "%2d) *** BAD RESET: %c %d %d %d %d ***\r\n",
-	      *num, pReset->command, pReset->extra, pReset->arg1, pReset->arg2, pReset->arg3);
+              *num, pReset->command, pReset->extra, pReset->arg1, pReset->arg2, pReset->arg3);
     break;
 
   case 'M':
@@ -82,7 +82,7 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
     else
       strncpy(roomname, "Room: *BAD VNUM*", MAX_STRING_LENGTH);
     snprintf(buf, MAX_STRING_LENGTH, "%2d) %s (%d) -> %s Room: %d [%d] %s\r\n", *num, mobname, pReset->arg1,
-	      roomname, pReset->arg3, pReset->arg2, pReset->sreset ? "[Not Reset]" : "[Reset]");
+              roomname, pReset->arg3, pReset->arg2, pReset->sreset ? "[Not Reset]" : "[Reset]");
 
     for (tReset = pReset->first_reset; tReset; tReset = tReset->next_reset)
     {
@@ -90,52 +90,52 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
       switch (tReset->command)
       {
       case 'E':
-	if (!mob)
-	  strncpy(mobname, "* ERROR: NO MOBILE! *", MAX_STRING_LENGTH);
-	if (!(obj = get_obj_index(tReset->arg1)))
-	  strncpy(objname, "Object: *BAD VNUM*", MAX_STRING_LENGTH);
-	else
-	  strncpy(objname, obj->name, MAX_STRING_LENGTH);
-	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
-		  "%2d) (equip) %s (%d) -> %s (%s) [%d]\r\n", *num, objname, tReset->arg1, mobname,
-		  wear_locs[tReset->arg3], tReset->arg2);
-	break;
+        if (!mob)
+          strncpy(mobname, "* ERROR: NO MOBILE! *", MAX_STRING_LENGTH);
+        if (!(obj = get_obj_index(tReset->arg1)))
+          strncpy(objname, "Object: *BAD VNUM*", MAX_STRING_LENGTH);
+        else
+          strncpy(objname, obj->name, MAX_STRING_LENGTH);
+        snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
+                  "%2d) (equip) %s (%d) -> %s (%s) [%d]\r\n", *num, objname, tReset->arg1, mobname,
+                  wear_locs[tReset->arg3], tReset->arg2);
+        break;
 
       case 'G':
-	if (!mob)
-	  strncpy(mobname, "* ERROR: NO MOBILE! *", MAX_STRING_LENGTH);
-	if (!(obj = get_obj_index(tReset->arg1)))
-	  strncpy(objname, "Object: *BAD VNUM*", MAX_STRING_LENGTH);
-	else
-	  strncpy(objname, obj->name, MAX_STRING_LENGTH);
-	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%2d) (carry) %s (%d) -> %s [%d]\r\n",
-		  *num, objname, tReset->arg1, mobname, tReset->arg2);
-	break;
+        if (!mob)
+          strncpy(mobname, "* ERROR: NO MOBILE! *", MAX_STRING_LENGTH);
+        if (!(obj = get_obj_index(tReset->arg1)))
+          strncpy(objname, "Object: *BAD VNUM*", MAX_STRING_LENGTH);
+        else
+          strncpy(objname, obj->name, MAX_STRING_LENGTH);
+        snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%2d) (carry) %s (%d) -> %s [%d]\r\n",
+                  *num, objname, tReset->arg1, mobname, tReset->arg2);
+        break;
       }
       if (tReset->first_reset)
       {
-	for (gReset = tReset->first_reset; gReset; gReset = gReset->next_reset)
-	{
-	  (*num)++;
-	  switch (gReset->command)
-	  {
-	  case 'P':
-	    if (!(obj2 = get_obj_index(gReset->arg1)))
-	      strncpy(objname, "Object1: *BAD VNUM*", MAX_STRING_LENGTH);
-	    else
-	      strncpy(objname, obj2->name, MAX_STRING_LENGTH);
-	    if (gReset->arg3 > 0 && (obj = get_obj_index(gReset->arg3)) == NULL)
-	      strncpy(roomname, "Object2: *BAD VNUM*", MAX_STRING_LENGTH);
-	    else if (!obj)
-	      strncpy(roomname, "Object2: *NULL obj*", MAX_STRING_LENGTH);
-	    else
-	      strncpy(roomname, obj->name, MAX_STRING_LENGTH);
-	    snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
-		      "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n", *num, objname, gReset->arg1, roomname,
-		      obj ? obj->vnum : gReset->arg3, gReset->arg2);
-	    break;
-	  }
-	}
+        for (gReset = tReset->first_reset; gReset; gReset = gReset->next_reset)
+        {
+          (*num)++;
+          switch (gReset->command)
+          {
+          case 'P':
+            if (!(obj2 = get_obj_index(gReset->arg1)))
+              strncpy(objname, "Object1: *BAD VNUM*", MAX_STRING_LENGTH);
+            else
+              strncpy(objname, obj2->name, MAX_STRING_LENGTH);
+            if (gReset->arg3 > 0 && (obj = get_obj_index(gReset->arg3)) == NULL)
+              strncpy(roomname, "Object2: *BAD VNUM*", MAX_STRING_LENGTH);
+            else if (!obj)
+              strncpy(roomname, "Object2: *NULL obj*", MAX_STRING_LENGTH);
+            else
+              strncpy(roomname, obj->name, MAX_STRING_LENGTH);
+            snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
+                      "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n", *num, objname, gReset->arg1, roomname,
+                      obj ? obj->vnum : gReset->arg3, gReset->arg2);
+            break;
+          }
+        }
       }
     }
     break;
@@ -151,7 +151,7 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
     else
       strncpy(roomname, room->name, MAX_STRING_LENGTH);
     snprintf(buf, MAX_STRING_LENGTH, "%2d) (object) %s (%d) -> %s Room: %d [%d]\r\n",
-	      *num, objname, pReset->arg1, roomname, pReset->arg3, pReset->arg2);
+              *num, objname, pReset->arg1, roomname, pReset->arg3, pReset->arg2);
 
     for (tReset = pReset->first_reset; tReset; tReset = tReset->next_reset)
     {
@@ -159,29 +159,29 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
       switch (tReset->command)
       {
       case 'P':
-	if (!(obj2 = get_obj_index(tReset->arg1)))
-	  strncpy(objname, "Object1: *BAD VNUM*", MAX_STRING_LENGTH);
-	else
-	  strncpy(objname, obj2->name, MAX_STRING_LENGTH);
-	if (tReset->arg3 > 0 && (obj = get_obj_index(tReset->arg3)) == NULL)
-	  strncpy(roomname, "Object2: *BAD VNUM*", MAX_STRING_LENGTH);
-	else if (!obj)
-	  strncpy(roomname, "Object2: *NULL obj*", MAX_STRING_LENGTH);
-	else
-	  strncpy(roomname, obj->name, MAX_STRING_LENGTH);
-	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n",
-		  *num, objname, tReset->arg1, roomname, obj ? obj->vnum : tReset->arg3, tReset->arg2);
-	break;
+        if (!(obj2 = get_obj_index(tReset->arg1)))
+          strncpy(objname, "Object1: *BAD VNUM*", MAX_STRING_LENGTH);
+        else
+          strncpy(objname, obj2->name, MAX_STRING_LENGTH);
+        if (tReset->arg3 > 0 && (obj = get_obj_index(tReset->arg3)) == NULL)
+          strncpy(roomname, "Object2: *BAD VNUM*", MAX_STRING_LENGTH);
+        else if (!obj)
+          strncpy(roomname, "Object2: *NULL obj*", MAX_STRING_LENGTH);
+        else
+          strncpy(roomname, obj->name, MAX_STRING_LENGTH);
+        snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%2d) (put) %s (%d) -> %s (%d) [%d]\r\n",
+                  *num, objname, tReset->arg1, roomname, obj ? obj->vnum : tReset->arg3, tReset->arg2);
+        break;
 
       case 'T':
-	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
-		  "%2d) (trap) %d %d %d %d (%s) -> %s (%d)\r\n", *num, tReset->extra, tReset->arg1, tReset->arg2,
-		  tReset->arg3, flag_string(tReset->extra, trap_flags), objname, obj ? obj->vnum : 0);
-	break;
+        snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf),
+                  "%2d) (trap) %d %d %d %d (%s) -> %s (%d)\r\n", *num, tReset->extra, tReset->arg1, tReset->arg2,
+                  tReset->arg3, flag_string(tReset->extra, trap_flags), objname, obj ? obj->vnum : 0);
+        break;
 
       case 'H':
-	snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%2d) (hide) -> %s\r\n", *num, objname);
-	break;
+        snprintf(buf + strlen(buf), MAX_STRING_LENGTH - strlen(buf), "%2d) (hide) -> %s\r\n", *num, objname);
+        break;
       }
     }
     break;
@@ -198,7 +198,7 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
     {
       strncpy(roomname, room->name, MAX_STRING_LENGTH);
       snprintf(objname, MAX_STRING_LENGTH, "%s%s", dir_name[pReset->arg2],
-		get_exit(room, pReset->arg2) ? "" : " (NO EXIT!)");
+                get_exit(room, pReset->arg2) ? "" : " (NO EXIT!)");
     }
     switch (pReset->arg3)
     {
@@ -216,7 +216,7 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
       break;
     }
     snprintf(buf, MAX_STRING_LENGTH, "%2d) %s [%d] the %s [%d] door %s (%d)\r\n",
-	      *num, mobname, pReset->arg3, objname, pReset->arg2, roomname, pReset->arg1);
+              *num, mobname, pReset->arg3, objname, pReset->arg2, roomname, pReset->arg1);
     break;
 
   case 'R':
@@ -225,7 +225,7 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
     else
       strncpy(roomname, room->name, MAX_STRING_LENGTH);
     snprintf(buf, MAX_STRING_LENGTH, "%2d) Randomize exits 0 to %d -> %s (%d)\r\n", *num, pReset->arg2, roomname,
-	      pReset->arg1);
+              pReset->arg1);
     break;
 
   case 'T':
@@ -234,8 +234,8 @@ char *sprint_reset(RESET_DATA * pReset, short *num)
     else
       strncpy(roomname, room->name, MAX_STRING_LENGTH);
     snprintf(buf, MAX_STRING_LENGTH, "%2d) Trap: %d %d %d %d (%s) -> %s (%d)\r\n",
-	      *num, pReset->extra, pReset->arg1, pReset->arg2, pReset->arg3, flag_string(pReset->extra, trap_flags),
-	      roomname, room ? room->vnum : 0);
+              *num, pReset->extra, pReset->arg1, pReset->arg2, pReset->arg3, flag_string(pReset->extra, trap_flags),
+              roomname, room ? room->vnum : 0);
     break;
   }
   return buf;
@@ -317,9 +317,9 @@ void instaroom(ROOM_INDEX_DATA * pRoom, bool dodoors)
     for (obj = rch->first_carrying; obj; obj = obj->next_content)
     {
       if (obj->wear_loc == WEAR_NONE)
-	add_obj_reset(pRoom, 'G', obj, 1, 0);
+        add_obj_reset(pRoom, 'G', obj, 1, 0);
       else
-	add_obj_reset(pRoom, 'E', obj, 1, obj->wear_loc);
+        add_obj_reset(pRoom, 'E', obj, 1, obj->wear_loc);
     }
   }
   for (obj = pRoom->first_content; obj; obj = obj->next_content)
@@ -333,14 +333,14 @@ void instaroom(ROOM_INDEX_DATA * pRoom, bool dodoors)
       int state = 0;
 
       if (!IS_SET(pexit->exit_info, EX_ISDOOR))
-	continue;
+        continue;
 
       if (IS_SET(pexit->exit_info, EX_CLOSED))
       {
-	if (IS_SET(pexit->exit_info, EX_LOCKED))
-	  state = 2;
-	else
-	  state = 1;
+        if (IS_SET(pexit->exit_info, EX_LOCKED))
+          state = 2;
+        else
+          state = 1;
       }
       add_reset(pRoom, 'D', 0, pRoom->vnum, pexit->vdir, state);
     }
@@ -518,32 +518,32 @@ void reset_room(ROOM_INDEX_DATA * room)
     case 'M':
       if (!(pMobIndex = get_mob_index(pReset->arg1)))
       {
-	bug("%s: %s: 'M': bad mob vnum %d.", __func__, filename, pReset->arg1);
-	continue;
+        bug("%s: %s: 'M': bad mob vnum %d.", __func__, filename, pReset->arg1);
+        continue;
       }
 
       if (!(pRoomIndex = get_room_index(pReset->arg3)))
       {
-	bug("%s: %s: 'M': bad room vnum %d.", __func__, filename, pReset->arg3);
-	continue;
+        bug("%s: %s: 'M': bad room vnum %d.", __func__, filename, pReset->arg3);
+        continue;
       }
 
       if (!pReset->sreset)
       {
-	mob = NULL;
-	break;
+        mob = NULL;
+        break;
       }
 
       mob = create_mobile(pMobIndex);
       {
-	ROOM_INDEX_DATA *pRoomPrev = get_room_index(pReset->arg3 - 1);
+        ROOM_INDEX_DATA *pRoomPrev = get_room_index(pReset->arg3 - 1);
 
-	if (pRoomPrev && xIS_SET(pRoomPrev->room_flags, ROOM_PET_SHOP))
-	  xSET_BIT(mob->act, ACT_PET);
+        if (pRoomPrev && xIS_SET(pRoomPrev->room_flags, ROOM_PET_SHOP))
+          xSET_BIT(mob->act, ACT_PET);
       }
 
       if (room_is_dark(pRoomIndex))
-	xSET_BIT(mob->affected_by, AFF_INFRARED);
+        xSET_BIT(mob->affected_by, AFF_INFRARED);
       mob->resetvnum = pRoomIndex->vnum;
       mob->resetnum = onreset;
       pReset->sreset = false;
@@ -552,342 +552,342 @@ void reset_room(ROOM_INDEX_DATA * room)
 
       if (pReset->first_reset)
       {
-	for (tReset = pReset->first_reset; tReset; tReset = tReset->next_reset)
-	{
-	  ++onreset;
-	  switch (tReset->command)
-	  {
-	  case 'G':
-	  case 'E':
-	    if (!(pObjIndex = get_obj_index(tReset->arg1)))
-	    {
-	      bug("%s: %s: 'E' or 'G': bad obj vnum %d.", __func__, filename, tReset->arg1);
-	      continue;
-	    }
+        for (tReset = pReset->first_reset; tReset; tReset = tReset->next_reset)
+        {
+          ++onreset;
+          switch (tReset->command)
+          {
+          case 'G':
+          case 'E':
+            if (!(pObjIndex = get_obj_index(tReset->arg1)))
+            {
+              bug("%s: %s: 'E' or 'G': bad obj vnum %d.", __func__, filename, tReset->arg1);
+              continue;
+            }
 
-	    if (!mob)
-	    {
-	      lastobj = NULL;
-	      break;
-	    }
+            if (!mob)
+            {
+              lastobj = NULL;
+              break;
+            }
 
-	    if (mob->pIndexData->pShop)
-	    {
-	      int olevel = generate_itemlevel(room->area, pObjIndex);
-	      obj = create_object(pObjIndex, olevel);
-	      xSET_BIT(obj->extra_flags, ITEM_INVENTORY);
-	    }
-	    else
-	      obj = create_object(pObjIndex, number_fuzzy(level));
-	    obj->level = URANGE(0, obj->level, LEVEL_AVATAR);
-	    obj = obj_to_char(obj, mob);
-	    if (tReset->command == 'E')
-	    {
-	      if (obj->carried_by != mob)
-	      {
-		bug("'E' reset: can't give object %d to mob %d.", obj->pIndexData->vnum,
-		     mob->pIndexData->vnum);
-		break;
-	      }
-	      equip_char(mob, obj, tReset->arg3);
-	    }
-	    for (n = 0; n < MAX_NEST; n++)
-	      nestmap[n] = NULL;
-	    nestmap[0] = obj;
-	    lastobj = nestmap[0];
-	    lastnest = 0;
+            if (mob->pIndexData->pShop)
+            {
+              int olevel = generate_itemlevel(room->area, pObjIndex);
+              obj = create_object(pObjIndex, olevel);
+              xSET_BIT(obj->extra_flags, ITEM_INVENTORY);
+            }
+            else
+              obj = create_object(pObjIndex, number_fuzzy(level));
+            obj->level = URANGE(0, obj->level, LEVEL_AVATAR);
+            obj = obj_to_char(obj, mob);
+            if (tReset->command == 'E')
+            {
+              if (obj->carried_by != mob)
+              {
+                bug("'E' reset: can't give object %d to mob %d.", obj->pIndexData->vnum,
+                     mob->pIndexData->vnum);
+                break;
+              }
+              equip_char(mob, obj, tReset->arg3);
+            }
+            for (n = 0; n < MAX_NEST; n++)
+              nestmap[n] = NULL;
+            nestmap[0] = obj;
+            lastobj = nestmap[0];
+            lastnest = 0;
 
-	    if (tReset->first_reset)
-	    {
-	      for (gReset = tReset->first_reset; gReset; gReset = gReset->next_reset)
-	      {
-		int iNest;
-		to_obj = lastobj;
+            if (tReset->first_reset)
+            {
+              for (gReset = tReset->first_reset; gReset; gReset = gReset->next_reset)
+              {
+                int iNest;
+                to_obj = lastobj;
 
-		++onreset;
-		switch (gReset->command)
-		{
-		case 'H':
-		  if (!lastobj)
-		    break;
-		  xSET_BIT(lastobj->extra_flags, ITEM_HIDDEN);
-		  break;
+                ++onreset;
+                switch (gReset->command)
+                {
+                case 'H':
+                  if (!lastobj)
+                    break;
+                  xSET_BIT(lastobj->extra_flags, ITEM_HIDDEN);
+                  break;
 
-		case 'P':
-		  if (!(pObjIndex = get_obj_index(gReset->arg1)))
-		  {
-		    bug("%s: %s: 'P': bad obj vnum %d.", __func__, filename, gReset->arg1);
-		    continue;
-		  }
-		  iNest = gReset->extra;
+                case 'P':
+                  if (!(pObjIndex = get_obj_index(gReset->arg1)))
+                  {
+                    bug("%s: %s: 'P': bad obj vnum %d.", __func__, filename, gReset->arg1);
+                    continue;
+                  }
+                  iNest = gReset->extra;
 
-		  if (!(pObjToIndex = get_obj_index(gReset->arg3)))
-		  {
-		    bug("%s: %s: 'P': bad objto vnum %d.", __func__, filename, gReset->arg3);
-		    continue;
-		  }
+                  if (!(pObjToIndex = get_obj_index(gReset->arg3)))
+                  {
+                    bug("%s: %s: 'P': bad objto vnum %d.", __func__, filename, gReset->arg3);
+                    continue;
+                  }
 
-		  if (iNest >= MAX_NEST)
-		  {
-		    bug("%s: %s: 'P': Exceeded nesting limit of %d", __func__, filename, MAX_NEST);
-		    obj = NULL;
-		    break;
-		  }
+                  if (iNest >= MAX_NEST)
+                  {
+                    bug("%s: %s: 'P': Exceeded nesting limit of %d", __func__, filename, MAX_NEST);
+                    obj = NULL;
+                    break;
+                  }
 
-		  if (count_obj_list(pObjIndex, to_obj->first_content) > 0)
-		  {
-		    obj = NULL;
-		    break;
-		  }
+                  if (count_obj_list(pObjIndex, to_obj->first_content) > 0)
+                  {
+                    obj = NULL;
+                    break;
+                  }
 
-		  if (iNest < lastnest)
-		    to_obj = nestmap[iNest];
-		  else if (iNest == lastnest)
-		    to_obj = nestmap[lastnest];
-		  else
-		    to_obj = lastobj;
+                  if (iNest < lastnest)
+                    to_obj = nestmap[iNest];
+                  else if (iNest == lastnest)
+                    to_obj = nestmap[lastnest];
+                  else
+                    to_obj = lastobj;
 
-		  obj =
-		    create_object(pObjIndex,
-				   number_fuzzy(UMAX
-						 (generate_itemlevel(room->area, pObjIndex),
-						   to_obj->level)));
-		  if (num > 1)
-		    pObjIndex->count += (num - 1);
-		  obj->count = gReset->arg2;
-		  obj->level = UMIN(obj->level, LEVEL_AVATAR);
-		  obj->count = gReset->arg2;
-		  obj_to_obj(obj, to_obj);
-		  if (iNest > lastnest)
-		  {
-		    nestmap[iNest] = to_obj;
-		    lastnest = iNest;
-		  }
-		  lastobj = obj;
-		  /*
-		   * Hackish fix for nested puts 
-		   */
-		  if (gReset->arg3 == OBJ_VNUM_MONEY_ONE)
-		    gReset->arg3 = to_obj->pIndexData->vnum;
-		  break;
-		}
-	      }
-	    }
-	    break;
-	  }
-	}
+                  obj =
+                    create_object(pObjIndex,
+                                   number_fuzzy(UMAX
+                                                 (generate_itemlevel(room->area, pObjIndex),
+                                                   to_obj->level)));
+                  if (num > 1)
+                    pObjIndex->count += (num - 1);
+                  obj->count = gReset->arg2;
+                  obj->level = UMIN(obj->level, LEVEL_AVATAR);
+                  obj->count = gReset->arg2;
+                  obj_to_obj(obj, to_obj);
+                  if (iNest > lastnest)
+                  {
+                    nestmap[iNest] = to_obj;
+                    lastnest = iNest;
+                  }
+                  lastobj = obj;
+                  /*
+                   * Hackish fix for nested puts 
+                   */
+                  if (gReset->arg3 == OBJ_VNUM_MONEY_ONE)
+                    gReset->arg3 = to_obj->pIndexData->vnum;
+                  break;
+                }
+              }
+            }
+            break;
+          }
+        }
       }
       break;
 
     case 'O':
       if (!(pObjIndex = get_obj_index(pReset->arg1)))
       {
-	bug("%s: %s: 'O': bad obj vnum %d.", __func__, filename, pReset->arg1);
-	continue;
+        bug("%s: %s: 'O': bad obj vnum %d.", __func__, filename, pReset->arg1);
+        continue;
       }
       if (!(pRoomIndex = get_room_index(pReset->arg3)))
       {
-	bug("%s: %s: 'O': bad room vnum %d.", __func__, filename, pReset->arg3);
-	continue;
+        bug("%s: %s: 'O': bad room vnum %d.", __func__, filename, pReset->arg3);
+        continue;
       }
 
       if (count_obj_list(pObjIndex, pRoomIndex->first_content) < 1)
       {
-	obj = create_object(pObjIndex, number_fuzzy(generate_itemlevel(room->area, pObjIndex)));
-	if (num > 1)
-	  pObjIndex->count += (num - 1);
-	obj->count = pReset->arg2;
-	obj->level = UMIN(obj->level, LEVEL_AVATAR);
-	obj->cost = 0;
-	obj_to_room(obj, pRoomIndex);
+        obj = create_object(pObjIndex, number_fuzzy(generate_itemlevel(room->area, pObjIndex)));
+        if (num > 1)
+          pObjIndex->count += (num - 1);
+        obj->count = pReset->arg2;
+        obj->level = UMIN(obj->level, LEVEL_AVATAR);
+        obj->cost = 0;
+        obj_to_room(obj, pRoomIndex);
       }
       else
       {
-	int x;
+        int x;
 
-	if (!(obj = get_obj_room(pObjIndex, pRoomIndex)))
-	{
-	  obj = NULL;
-	  lastobj = NULL;
-	  break;
-	}
-	obj->extra_flags = pObjIndex->extra_flags;
-	for (x = 0; x < 6; ++x)
-	  obj->value[x] = pObjIndex->value[x];
+        if (!(obj = get_obj_room(pObjIndex, pRoomIndex)))
+        {
+          obj = NULL;
+          lastobj = NULL;
+          break;
+        }
+        obj->extra_flags = pObjIndex->extra_flags;
+        for (x = 0; x < 6; ++x)
+          obj->value[x] = pObjIndex->value[x];
       }
       for (n = 0; n < MAX_NEST; n++)
-	nestmap[n] = NULL;
+        nestmap[n] = NULL;
       nestmap[0] = obj;
       lastobj = nestmap[0];
       lastnest = 0;
       if (pReset->first_reset)
       {
-	for (tReset = pReset->first_reset; tReset; tReset = tReset->next_reset)
-	{
-	  int iNest;
+        for (tReset = pReset->first_reset; tReset; tReset = tReset->next_reset)
+        {
+          int iNest;
 
-	  to_obj = lastobj;
-	  ++onreset;
+          to_obj = lastobj;
+          ++onreset;
 
-	  switch (tReset->command)
-	  {
-	  case 'H':
-	    if (!lastobj)
-	      break;
-	    xSET_BIT(lastobj->extra_flags, ITEM_HIDDEN);
-	    break;
+          switch (tReset->command)
+          {
+          case 'H':
+            if (!lastobj)
+              break;
+            xSET_BIT(lastobj->extra_flags, ITEM_HIDDEN);
+            break;
 
-	  case 'T':
-	    if (!IS_SET(tReset->extra, TRAP_OBJ))
-	    {
-	      bug("%s: Room reset found on object reset list", __func__);
-	      break;
-	    }
-	    else
-	    {
-	      /*
-	       * We need to preserve obj for future 'T' checks 
-	       */
-	      OBJ_DATA *pobj;
+          case 'T':
+            if (!IS_SET(tReset->extra, TRAP_OBJ))
+            {
+              bug("%s: Room reset found on object reset list", __func__);
+              break;
+            }
+            else
+            {
+              /*
+               * We need to preserve obj for future 'T' checks 
+               */
+              OBJ_DATA *pobj;
 
-	      if (tReset->arg3 > 0)
-	      {
-		if (!(pObjToIndex = get_obj_index(tReset->arg3)))
-		{
-		  bug("%s: %s: 'T': bad objto vnum %d.", __func__, filename, tReset->arg3);
-		  continue;
-		}
-		if (room->area->nplayer > 0 || !(to_obj = get_obj_type(pObjToIndex)) ||
-		    (to_obj->carried_by && !IS_NPC(to_obj->carried_by)) || is_trapped(to_obj))
-		  break;
-	      }
-	      else
-	      {
-		if (!lastobj || !obj)
-		  break;
-		to_obj = obj;
-	      }
-	      pobj = make_trap(tReset->arg2, tReset->arg1, number_fuzzy(to_obj->level), tReset->extra);
-	      obj_to_obj(pobj, to_obj);
-	    }
-	    break;
+              if (tReset->arg3 > 0)
+              {
+                if (!(pObjToIndex = get_obj_index(tReset->arg3)))
+                {
+                  bug("%s: %s: 'T': bad objto vnum %d.", __func__, filename, tReset->arg3);
+                  continue;
+                }
+                if (room->area->nplayer > 0 || !(to_obj = get_obj_type(pObjToIndex)) ||
+                    (to_obj->carried_by && !IS_NPC(to_obj->carried_by)) || is_trapped(to_obj))
+                  break;
+              }
+              else
+              {
+                if (!lastobj || !obj)
+                  break;
+                to_obj = obj;
+              }
+              pobj = make_trap(tReset->arg2, tReset->arg1, number_fuzzy(to_obj->level), tReset->extra);
+              obj_to_obj(pobj, to_obj);
+            }
+            break;
 
-	  case 'P':
-	    if (!(pObjIndex = get_obj_index(tReset->arg1)))
-	    {
-	      bug("%s: %s: 'P': bad obj vnum %d.", __func__, filename, tReset->arg1);
-	      continue;
-	    }
-	    iNest = tReset->extra;
+          case 'P':
+            if (!(pObjIndex = get_obj_index(tReset->arg1)))
+            {
+              bug("%s: %s: 'P': bad obj vnum %d.", __func__, filename, tReset->arg1);
+              continue;
+            }
+            iNest = tReset->extra;
 
-	    if (!(pObjToIndex = get_obj_index(tReset->arg3)))
-	    {
-	      bug("%s: %s: 'P': bad objto vnum %d.", __func__, filename, tReset->arg3);
-	      continue;
-	    }
+            if (!(pObjToIndex = get_obj_index(tReset->arg3)))
+            {
+              bug("%s: %s: 'P': bad objto vnum %d.", __func__, filename, tReset->arg3);
+              continue;
+            }
 
-	    if (iNest >= MAX_NEST)
-	    {
-	      bug("%s: %s: 'P': Exceeded nesting limit of %d. Room %d.", __func__, filename, MAX_NEST,
-		   room->vnum);
-	      obj = NULL;
-	      break;
-	    }
+            if (iNest >= MAX_NEST)
+            {
+              bug("%s: %s: 'P': Exceeded nesting limit of %d. Room %d.", __func__, filename, MAX_NEST,
+                   room->vnum);
+              obj = NULL;
+              break;
+            }
 
-	    if (count_obj_list(pObjIndex, to_obj->first_content) > 0)
-	    {
-	      obj = NULL;
-	      break;
-	    }
-	    if (iNest < lastnest)
-	      to_obj = nestmap[iNest];
-	    else if (iNest == lastnest)
-	      to_obj = nestmap[lastnest];
-	    else
-	      to_obj = lastobj;
+            if (count_obj_list(pObjIndex, to_obj->first_content) > 0)
+            {
+              obj = NULL;
+              break;
+            }
+            if (iNest < lastnest)
+              to_obj = nestmap[iNest];
+            else if (iNest == lastnest)
+              to_obj = nestmap[lastnest];
+            else
+              to_obj = lastobj;
 
-	    obj =
-	      create_object(pObjIndex,
-			     number_fuzzy(UMAX
-					   (generate_itemlevel(room->area, pObjIndex), to_obj->level)));
-	    if (num > 1)
-	      pObjIndex->count += (num - 1);
-	    obj->count = tReset->arg2;
-	    obj->level = UMIN(obj->level, LEVEL_AVATAR);
-	    obj->count = tReset->arg2;
-	    obj_to_obj(obj, to_obj);
-	    if (iNest > lastnest)
-	    {
-	      nestmap[iNest] = to_obj;
-	      lastnest = iNest;
-	    }
-	    lastobj = obj;
-	    /*
-	     * Hackish fix for nested puts 
-	     */
-	    if (tReset->arg3 == OBJ_VNUM_MONEY_ONE)
-	      tReset->arg3 = to_obj->pIndexData->vnum;
-	    break;
-	  }
-	}
+            obj =
+              create_object(pObjIndex,
+                             number_fuzzy(UMAX
+                                           (generate_itemlevel(room->area, pObjIndex), to_obj->level)));
+            if (num > 1)
+              pObjIndex->count += (num - 1);
+            obj->count = tReset->arg2;
+            obj->level = UMIN(obj->level, LEVEL_AVATAR);
+            obj->count = tReset->arg2;
+            obj_to_obj(obj, to_obj);
+            if (iNest > lastnest)
+            {
+              nestmap[iNest] = to_obj;
+              lastnest = iNest;
+            }
+            lastobj = obj;
+            /*
+             * Hackish fix for nested puts 
+             */
+            if (tReset->arg3 == OBJ_VNUM_MONEY_ONE)
+              tReset->arg3 = to_obj->pIndexData->vnum;
+            break;
+          }
+        }
       }
       break;
 
     case 'T':
       if (IS_SET(pReset->extra, TRAP_OBJ))
       {
-	bug("%s: Object trap found in room %d reset list", __func__, room->vnum);
-	break;
+        bug("%s: Object trap found in room %d reset list", __func__, room->vnum);
+        break;
       }
       else
       {
-	if (!(pRoomIndex = get_room_index(pReset->arg3)))
-	{
-	  bug("%s: %s: 'T': bad room %d.", __func__, filename, pReset->arg3);
-	  continue;
-	}
-	if (room->area->nplayer > 0
-	    || count_obj_list(get_obj_index(OBJ_VNUM_TRAP), pRoomIndex->first_content) > 0)
-	  break;
-	to_obj = make_trap(pReset->arg1, pReset->arg1, 10, pReset->extra);
-	obj_to_room(to_obj, pRoomIndex);
+        if (!(pRoomIndex = get_room_index(pReset->arg3)))
+        {
+          bug("%s: %s: 'T': bad room %d.", __func__, filename, pReset->arg3);
+          continue;
+        }
+        if (room->area->nplayer > 0
+            || count_obj_list(get_obj_index(OBJ_VNUM_TRAP), pRoomIndex->first_content) > 0)
+          break;
+        to_obj = make_trap(pReset->arg1, pReset->arg1, 10, pReset->extra);
+        obj_to_room(to_obj, pRoomIndex);
       }
       break;
 
     case 'D':
       if (!(pRoomIndex = get_room_index(pReset->arg1)))
       {
-	bug("%s: %s: 'D': bad room vnum %d.", __func__, filename, pReset->arg1);
-	continue;
+        bug("%s: %s: 'D': bad room vnum %d.", __func__, filename, pReset->arg1);
+        continue;
       }
       if (!(pexit = get_exit(pRoomIndex, pReset->arg2)))
-	break;
+        break;
       switch (pReset->arg3)
       {
       case 0:
-	REMOVE_BIT(pexit->exit_info, EX_CLOSED);
-	REMOVE_BIT(pexit->exit_info, EX_LOCKED);
-	break;
+        REMOVE_BIT(pexit->exit_info, EX_CLOSED);
+        REMOVE_BIT(pexit->exit_info, EX_LOCKED);
+        break;
       case 1:
-	SET_BIT(pexit->exit_info, EX_CLOSED);
-	REMOVE_BIT(pexit->exit_info, EX_LOCKED);
-	if (IS_SET(pexit->exit_info, EX_xSEARCHABLE))
-	  SET_BIT(pexit->exit_info, EX_SECRET);
-	break;
+        SET_BIT(pexit->exit_info, EX_CLOSED);
+        REMOVE_BIT(pexit->exit_info, EX_LOCKED);
+        if (IS_SET(pexit->exit_info, EX_xSEARCHABLE))
+          SET_BIT(pexit->exit_info, EX_SECRET);
+        break;
       case 2:
-	SET_BIT(pexit->exit_info, EX_CLOSED);
-	SET_BIT(pexit->exit_info, EX_LOCKED);
-	if (IS_SET(pexit->exit_info, EX_xSEARCHABLE))
-	  SET_BIT(pexit->exit_info, EX_SECRET);
-	break;
+        SET_BIT(pexit->exit_info, EX_CLOSED);
+        SET_BIT(pexit->exit_info, EX_LOCKED);
+        if (IS_SET(pexit->exit_info, EX_xSEARCHABLE))
+          SET_BIT(pexit->exit_info, EX_SECRET);
+        break;
       }
       break;
 
     case 'R':
       if (!(pRoomIndex = get_room_index(pReset->arg1)))
       {
-	bug("%s: %s: 'R': bad room vnum %d.", __func__, filename, pReset->arg1);
-	continue;
+        bug("%s: %s: 'R': bad room vnum %d.", __func__, filename, pReset->arg1);
+        continue;
       }
       randomize_exits(pRoomIndex, pReset->arg2 - 1);
       break;
@@ -923,21 +923,21 @@ void renumber_put_resets(ROOM_INDEX_DATA * room)
       lastobj = pReset;
       for (tReset = pReset->first_reset; tReset; tReset = tReset->next_reset)
       {
-	switch (tReset->command)
-	{
-	case 'P':
-	  if (tReset->arg3 == 0)
-	  {
-	    if (!lastobj)
-	      tReset->extra = 1000000;
-	    else if (lastobj->command != 'P' || lastobj->arg3 > 0)
-	      tReset->extra = 0;
-	    else
-	      tReset->extra = lastobj->extra + 1;
-	    lastobj = tReset;
-	  }
-	  break;
-	}
+        switch (tReset->command)
+        {
+        case 'P':
+          if (tReset->arg3 == 0)
+          {
+            if (!lastobj)
+              tReset->extra = 1000000;
+            else if (lastobj->command != 'P' || lastobj->arg3 > 0)
+              tReset->extra = 0;
+            else
+              tReset->extra = lastobj->extra + 1;
+            lastobj = tReset;
+          }
+          break;
+        }
       }
       break;
     }
@@ -997,10 +997,10 @@ RESET_DATA *add_reset(ROOM_INDEX_DATA * room, char letter, int extra, int arg1, 
       pReset->prev_reset = NULL;
       pReset->next_reset = room->last_obj_reset->first_reset;
       if (room->last_obj_reset->first_reset)
-	room->last_obj_reset->first_reset->prev_reset = pReset;
+        room->last_obj_reset->first_reset->prev_reset = pReset;
       room->last_obj_reset->first_reset = pReset;
       if (!room->last_obj_reset->last_reset)
-	room->last_obj_reset->last_reset = pReset;
+        room->last_obj_reset->last_reset = pReset;
       return pReset;
     }
     break;
@@ -1079,17 +1079,17 @@ void do_reset(CHAR_DATA* ch, const char* argument)
     {
       num = 0;
       if (!room->first_reset)
-	continue;
+        continue;
 
       for (pReset = room->first_reset; pReset; pReset = pReset->next)
       {
-	num++;
-	found = TRUE;
-	if (num == 1)
-	  ch_printf(ch, "Room:[%d]\r\n", room->vnum);
-	if (!(rbuf = sprint_reset(pReset, &num)))
-	  continue;
-	send_to_char(rbuf, ch);
+        num++;
+        found = TRUE;
+        if (num == 1)
+          ch_printf(ch, "Room:[%d]\r\n", room->vnum);
+        if (!(rbuf = sprint_reset(pReset, &num)))
+          continue;
+        send_to_char(rbuf, ch);
       }
     }
     if (!found)
@@ -1125,38 +1125,38 @@ void do_reset(CHAR_DATA* ch, const char* argument)
       nfind++;
       if (nfind == num)
       {
-	UNLINK(pReset, ch->in_room->first_reset, ch->in_room->last_reset, next, prev);
-	delete_reset(pReset);
-	send_to_char("Reset deleted.\r\n", ch);
-	return;
+        UNLINK(pReset, ch->in_room->first_reset, ch->in_room->last_reset, next, prev);
+        delete_reset(pReset);
+        send_to_char("Reset deleted.\r\n", ch);
+        return;
       }
 
       for (tReset = pReset->first_reset; tReset; tReset = tReset_next)
       {
-	tReset_next = tReset->next_reset;
+        tReset_next = tReset->next_reset;
 
-	nfind++;
-	if (nfind == num)
-	{
-	  UNLINK(tReset, pReset->first_reset, pReset->last_reset, next_reset, prev_reset);
-	  delete_reset(tReset);
-	  send_to_char("Reset deleted.\r\n", ch);
-	  return;
-	}
+        nfind++;
+        if (nfind == num)
+        {
+          UNLINK(tReset, pReset->first_reset, pReset->last_reset, next_reset, prev_reset);
+          delete_reset(tReset);
+          send_to_char("Reset deleted.\r\n", ch);
+          return;
+        }
 
-	for (gReset = tReset->first_reset; gReset; gReset = gReset_next)
-	{
-	  gReset_next = gReset->next_reset;
+        for (gReset = tReset->first_reset; gReset; gReset = gReset_next)
+        {
+          gReset_next = gReset->next_reset;
 
-	  nfind++;
-	  if (nfind == num)
-	  {
-	    UNLINK(gReset, tReset->first_reset, tReset->last_reset, next_reset, prev_reset);
-	    delete_reset(gReset);
-	    send_to_char("Reset deleted.\r\n", ch);
-	    return;
-	  }
-	}
+          nfind++;
+          if (nfind == num)
+          {
+            UNLINK(gReset, tReset->first_reset, tReset->last_reset, next_reset, prev_reset);
+            delete_reset(gReset);
+            send_to_char("Reset deleted.\r\n", ch);
+            return;
+          }
+        }
       }
     }
     send_to_char("No reset matching that number was found in this room.\r\n", ch);
@@ -1222,8 +1222,8 @@ void do_reset(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, oname);
       if (!(pReset = find_oreset(ch->in_room, oname)))
       {
-	send_to_char("No matching reset found to set a trap on.\r\n", ch);
-	return;
+        send_to_char("No matching reset found to set a trap on.\r\n", ch);
+        return;
       }
       vnum = 0;
       extra = TRAP_OBJ;
@@ -1257,8 +1257,8 @@ void do_reset(CHAR_DATA* ch, const char* argument)
       value = get_trapflag(arg);
       if (value < 0 || value > 31)
       {
-	ch_printf(ch, "Bad trap flag: %s\r\n", arg);
-	continue;
+        ch_printf(ch, "Bad trap flag: %s\r\n", arg);
+        continue;
       }
       SET_BIT(extra, 1 << value);
     }
@@ -1268,20 +1268,20 @@ void do_reset(CHAR_DATA* ch, const char* argument)
       tReset->prev_reset = NULL;
       tReset->next_reset = pReset->first_reset;
       if (pReset->first_reset)
-	pReset->first_reset->prev_reset = tReset;
+        pReset->first_reset->prev_reset = tReset;
       pReset->first_reset = tReset;
       if (!pReset->last_reset)
-	pReset->last_reset = tReset;
+        pReset->last_reset = tReset;
     }
     else
     {
       tReset->prev = NULL;
       tReset->next = ch->in_room->first_reset;
       if (ch->in_room->first_reset)
-	ch->in_room->first_reset->prev = tReset;
+        ch->in_room->first_reset->prev = tReset;
       ch->in_room->first_reset = tReset;
       if (!ch->in_room->last_reset)
-	ch->in_room->last_reset = tReset;
+        ch->in_room->last_reset = tReset;
     }
     send_to_char("Trap created.\r\n", ch);
     return;
@@ -1303,20 +1303,20 @@ void do_reset(CHAR_DATA* ch, const char* argument)
       tReset->prev_reset = NULL;
       tReset->next_reset = pReset->first_reset;
       if (pReset->first_reset)
-	pReset->first_reset->prev_reset = tReset;
+        pReset->first_reset->prev_reset = tReset;
       pReset->first_reset = tReset;
       if (!pReset->last_reset)
-	pReset->last_reset = tReset;
+        pReset->last_reset = tReset;
     }
     else
     {
       tReset->prev = NULL;
       tReset->next = ch->in_room->first_reset;
       if (ch->in_room->first_reset)
-	ch->in_room->first_reset->prev = tReset;
+        ch->in_room->first_reset->prev = tReset;
       ch->in_room->first_reset = tReset;
       if (!ch->in_room->last_reset)
-	ch->in_room->last_reset = tReset;
+        ch->in_room->last_reset = tReset;
     }
     send_to_char("Hide reset created.\r\n", ch);
     return;
@@ -1357,19 +1357,19 @@ void update_room_reset(CHAR_DATA *ch, bool setting)
 
       if (++nfind == ch->resetnum)
       {
-	tReset->sreset = setting;
-	return;
+        tReset->sreset = setting;
+        return;
       }
 
       for (gReset = tReset->first_reset; gReset; gReset = gReset_next)
       {
-	gReset_next = gReset->next_reset;
+        gReset_next = gReset->next_reset;
 
-	if (++nfind == ch->resetnum)
-	{
-	  gReset->sreset = setting;
-	  return;
-	}
+        if (++nfind == ch->resetnum)
+        {
+          gReset->sreset = setting;
+          return;
+        }
       }
     }
   }

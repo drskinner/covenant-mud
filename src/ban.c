@@ -39,7 +39,7 @@ BAN_DATA *last_ban_race;
 
 /*
  * Load all those nasty bans up :)
- * 	Shaddai
+ *      Shaddai
  */
 void load_banlist(void)
 {
@@ -62,29 +62,29 @@ void load_banlist(void)
     case 'C':
       if (!str_cmp(word, "CLASS"))
       {
-	fread_ban(fp, BAN_CLASS);
-	fMatch = TRUE;
+        fread_ban(fp, BAN_CLASS);
+        fMatch = TRUE;
       }
       break;
     case 'E':
       if (!str_cmp(word, "END")) /*File should always contain END */
       {
-	fclose(fp);
-	log_string("Done.");
-	return;
+        fclose(fp);
+        log_string("Done.");
+        return;
       }
     case 'R':
       if (!str_cmp(word, "RACE"))
       {
-	fread_ban(fp, BAN_RACE);
-	fMatch = TRUE;
+        fread_ban(fp, BAN_RACE);
+        fMatch = TRUE;
       }
       break;
     case 'S':
       if (!str_cmp(word, "SITE"))
       {
-	fread_ban(fp, BAN_SITE);
-	fMatch = TRUE;
+        fread_ban(fp, BAN_SITE);
+        fMatch = TRUE;
       }
       break;
     }
@@ -131,8 +131,8 @@ void fread_ban(FILE * fp, int type)
     {
       if (!str_cmp(class_table[i]->who_name, pban->name))
       {
-	fMatch = TRUE;
-	break;
+        fMatch = TRUE;
+        break;
       }
     }
   else if (type == BAN_RACE)
@@ -140,8 +140,8 @@ void fread_ban(FILE * fp, int type)
     {
       if (!str_cmp(race_table[i]->race_name, pban->name))
       {
-	fMatch = TRUE;
-	break;
+        fMatch = TRUE;
+        break;
       }
     }
   else if (type == BAN_SITE)
@@ -149,16 +149,16 @@ void fread_ban(FILE * fp, int type)
     {
       if (pban->name[i] == '@')
       {
-	char *temp;
-	const char *temp2;
+        char *temp;
+        const char *temp2;
 
-	temp = str_dup(pban->name);
-	temp[i] = '\0';
-	temp2 = &pban->name[i + 1];
-	DISPOSE(pban->name);
-	pban->name = str_dup(temp2);
-	DISPOSE(temp);
-	break;
+        temp = str_dup(pban->name);
+        temp[i] = '\0';
+        temp2 = &pban->name[i + 1];
+        DISPOSE(pban->name);
+        pban->name = str_dup(temp2);
+        DISPOSE(temp);
+        break;
       }
     }
 
@@ -189,7 +189,7 @@ void fread_ban(FILE * fp, int type)
 
 /*
  * Saves all bans, for sites, classes and races.
- * 	Shaddai
+ *      Shaddai
  */
 
 void save_banlist(void)
@@ -213,7 +213,7 @@ void save_banlist(void)
     fprintf(fp, "SITE\n");
     fprintf(fp, "%s~\n", pban->name);
     fprintf(fp, "%d %d %d %d %d %d\n", pban->level, pban->duration,
-	     pban->unban_date, pban->prefix, pban->suffix, pban->warn);
+             pban->unban_date, pban->prefix, pban->suffix, pban->warn);
     fprintf(fp, "%s~\n%s~\n%s~\n", pban->ban_by, pban->ban_time, pban->note);
   }
 
@@ -247,7 +247,7 @@ void save_banlist(void)
 
 /*
  * The main command for ban, lots of arguments so be carefull what you
- * change here.		Shaddai
+ * change here.         Shaddai
  */
 
 void do_ban(CHAR_DATA* ch, const char* argument)
@@ -414,23 +414,23 @@ void do_ban(CHAR_DATA* ch, const char* argument)
       temp++;
       if (!is_number(temp))
       {
-	send_to_char("Which ban # to show?\r\n", ch);
-	return;
+        send_to_char("Which ban # to show?\r\n", ch);
+        return;
       }
       value = atoi(temp);
       if (value < 1)
       {
-	send_to_char("You must specify a number greater than 0.\r\n", ch);
-	return;
+        send_to_char("You must specify a number greater than 0.\r\n", ch);
+        return;
       }
     }
     if (!str_cmp(arg2, "site"))
     {
       pban = first_ban;
       if (temp[0] == '*')
-	temp++;
+        temp++;
       if (temp[strlen(temp) - 1] == '*')
-	temp[strlen(temp) - 1] = '\0';
+        temp[strlen(temp) - 1] = '\0';
     }
     else if (!str_cmp(arg2, "class"))
       pban = first_ban_class;
@@ -440,9 +440,9 @@ void do_ban(CHAR_DATA* ch, const char* argument)
       goto syntax_message;
     for (; pban; pban = pban->next)
       if (value == 1 || !str_cmp(pban->name, temp))
-	break;
+        break;
       else if (value > 1)
-	value--;
+        value--;
 
     if (!pban)
     {
@@ -525,16 +525,16 @@ void do_allow(CHAR_DATA* ch, const char* argument)
     {
       if (strlen(arg2) < 2)
       {
-	send_to_char("You have to have at least 2 chars for a ban\r\n", ch);
-	send_to_char("If you are trying to allow by number use #\r\n", ch);
-	return;
+        send_to_char("You have to have at least 2 chars for a ban\r\n", ch);
+        send_to_char("If you are trying to allow by number use #\r\n", ch);
+        return;
       }
 
       temp = arg2;
       if (arg2[0] == '*')
-	temp++;
+        temp++;
       if (temp[strlen(temp) - 1] == '*')
-	temp[strlen(temp) - 1] = '\0';
+        temp[strlen(temp) - 1] = '\0';
     }
 
     for (pban = first_ban; pban; pban = pban->next)
@@ -547,12 +547,12 @@ void do_allow(CHAR_DATA* ch, const char* argument)
 
       if (value == 1 || !str_cmp(pban->name, temp))
       {
-	fMatch = TRUE;
-	dispose_ban(pban, BAN_SITE);
-	break;
+        fMatch = TRUE;
+        dispose_ban(pban, BAN_SITE);
+        break;
       }
       if (value > 1)
-	value--;
+        value--;
     }
   }
   else if (!str_cmp(arg1, "race"))
@@ -569,12 +569,12 @@ void do_allow(CHAR_DATA* ch, const char* argument)
 
       if (value == 1 || !str_cmp(pban->name, arg2))
       {
-	fMatch = TRUE;
-	dispose_ban(pban, BAN_RACE);
-	break;
+        fMatch = TRUE;
+        dispose_ban(pban, BAN_RACE);
+        break;
       }
       if (value > 1)
-	value--;
+        value--;
     }
   }
   else if (!str_cmp(arg1, "class"))
@@ -591,12 +591,12 @@ void do_allow(CHAR_DATA* ch, const char* argument)
 
       if (value == 1 || !str_cmp(pban->name, arg2))
       {
-	fMatch = TRUE;
-	dispose_ban(pban, BAN_CLASS);
-	break;
+        fMatch = TRUE;
+        dispose_ban(pban, BAN_CLASS);
+        break;
       }
       if (value > 1)
-	value--;
+        value--;
     }
   }
   else
@@ -711,13 +711,13 @@ void do_warn(CHAR_DATA* ch, const char* argument)
     {
       if (pban->level == BAN_WARN)
       {
-	dispose_ban(pban, type);
-	send_to_char("Warn has been deleted.\r\n", ch);
+        dispose_ban(pban, type);
+        send_to_char("Warn has been deleted.\r\n", ch);
       }
       else
       {
-	pban->warn = FALSE;
-	send_to_char("Warn turned off.\r\n", ch);
+        pban->warn = FALSE;
+        send_to_char("Warn turned off.\r\n", ch);
       }
     }
     else
@@ -787,8 +787,8 @@ int add_ban(CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int t
       level = atoi(arg2);
       if (level < 0 || level > LEVEL_SUPREME)
       {
-	ch_printf(ch, "Level range is from 0 to %d.\r\n", LEVEL_SUPREME);
-	return 0;
+        ch_printf(ch, "Level range is from 0 to %d.\r\n", LEVEL_SUPREME);
+        return 0;
       }
     }
     else if (!str_cmp(arg2, "all"))
@@ -809,56 +809,56 @@ int add_ban(CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int t
     {
     case BAN_CLASS:
       if (arg[0] == '\0')
-	return 0;
+        return 0;
       if (is_number(arg))
-	value = atoi(arg);
+        value = atoi(arg);
       else
       {
-	for (i = 0; i < MAX_CLASS; i++)
-	  if (!str_cmp(class_table[i]->who_name, arg))
-	    break;
-	value = i;
+        for (i = 0; i < MAX_CLASS; i++)
+          if (!str_cmp(class_table[i]->who_name, arg))
+            break;
+        value = i;
       }
       if (value < 0 || value >= MAX_CLASS)
       {
-	send_to_char("Unknown class.\r\n", ch);
-	return 0;
+        send_to_char("Unknown class.\r\n", ch);
+        return 0;
       }
       for (temp = first_ban_class; temp; temp = temp->next)
       {
-	if (temp->flag == value)
-	{
-	  if (temp->level == level)
-	  {
-	    send_to_char("That entry already exists.\r\n", ch);
-	    return 0;
-	  }
-	  else
-	  {
-	    temp->level = level;
-	    if (temp->level == BAN_WARN)
-	      temp->warn = TRUE;
-	    snprintf(buf, MAX_STRING_LENGTH, "%24.24s", ctime(&current_time));
-	    temp->ban_time = str_dup(buf);
-	    if (btime > 0)
-	    {
-	      temp->duration = btime;
-	      tms = localtime(&current_time);
-	      tms->tm_mday += btime;
-	      temp->unban_date = mktime(tms);
-	    }
-	    else
-	    {
-	      temp->duration = -1;
-	      temp->unban_date = -1;
-	    }
-	    if (temp->ban_by)
-	      DISPOSE(temp->ban_by);
-	    temp->ban_by = str_dup(ch->name);
-	    send_to_char("Updated entry.\r\n", ch);
-	    return 1;
-	  }
-	}
+        if (temp->flag == value)
+        {
+          if (temp->level == level)
+          {
+            send_to_char("That entry already exists.\r\n", ch);
+            return 0;
+          }
+          else
+          {
+            temp->level = level;
+            if (temp->level == BAN_WARN)
+              temp->warn = TRUE;
+            snprintf(buf, MAX_STRING_LENGTH, "%24.24s", ctime(&current_time));
+            temp->ban_time = str_dup(buf);
+            if (btime > 0)
+            {
+              temp->duration = btime;
+              tms = localtime(&current_time);
+              tms->tm_mday += btime;
+              temp->unban_date = mktime(tms);
+            }
+            else
+            {
+              temp->duration = -1;
+              temp->unban_date = -1;
+            }
+            if (temp->ban_by)
+              DISPOSE(temp->ban_by);
+            temp->ban_by = str_dup(ch->name);
+            send_to_char("Updated entry.\r\n", ch);
+            return 1;
+          }
+        }
       }
       CREATE(pban, BAN_DATA, 1);
       pban->name = str_dup(class_table[value]->who_name);
@@ -870,54 +870,54 @@ int add_ban(CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int t
 
     case BAN_RACE:
       if (is_number(arg))
-	value = atoi(arg);
+        value = atoi(arg);
       else
       {
-	for (i = 0; i < MAX_RACE; i++)
-	  if (!str_cmp(race_table[i]->race_name, arg))
-	    break;
-	value = i;
+        for (i = 0; i < MAX_RACE; i++)
+          if (!str_cmp(race_table[i]->race_name, arg))
+            break;
+        value = i;
       }
       if (value < 0 || value >= MAX_RACE)
       {
-	send_to_char("Unknown race.\r\n", ch);
-	return 0;
+        send_to_char("Unknown race.\r\n", ch);
+        return 0;
       }
       for (temp = first_ban_race; temp; temp = temp->next)
       {
-	if (temp->flag == value)
-	{
-	  if (temp->level == level)
-	  {
-	    send_to_char("That entry already exists.\r\n", ch);
-	    return 0;
-	  }
-	  else
-	  {
-	    temp->level = level;
-	    if (temp->level == BAN_WARN)
-	      temp->warn = TRUE;
-	    snprintf(buf, MAX_STRING_LENGTH, "%24.24s", ctime(&current_time));
-	    temp->ban_time = str_dup(buf);
-	    if (btime > 0)
-	    {
-	      temp->duration = btime;
-	      tms = localtime(&current_time);
-	      tms->tm_mday += btime;
-	      temp->unban_date = mktime(tms);
-	    }
-	    else
-	    {
-	      temp->duration = -1;
-	      temp->unban_date = -1;
-	    }
-	    if (temp->ban_by)
-	      DISPOSE(temp->ban_by);
-	    temp->ban_by = str_dup(ch->name);
-	    send_to_char("Updated entry.\r\n", ch);
-	    return 1;
-	  }
-	}
+        if (temp->flag == value)
+        {
+          if (temp->level == level)
+          {
+            send_to_char("That entry already exists.\r\n", ch);
+            return 0;
+          }
+          else
+          {
+            temp->level = level;
+            if (temp->level == BAN_WARN)
+              temp->warn = TRUE;
+            snprintf(buf, MAX_STRING_LENGTH, "%24.24s", ctime(&current_time));
+            temp->ban_time = str_dup(buf);
+            if (btime > 0)
+            {
+              temp->duration = btime;
+              tms = localtime(&current_time);
+              tms->tm_mday += btime;
+              temp->unban_date = mktime(tms);
+            }
+            else
+            {
+              temp->duration = -1;
+              temp->unban_date = -1;
+            }
+            if (temp->ban_by)
+              DISPOSE(temp->ban_by);
+            temp->ban_by = str_dup(ch->name);
+            send_to_char("Updated entry.\r\n", ch);
+            return 1;
+          }
+        }
       }
       CREATE(pban, BAN_DATA, 1);
       pban->name = str_dup(race_table[value]->race_name);
@@ -935,95 +935,95 @@ int add_ban(CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int t
 
       for (x = 0; x < strlen(arg); x++)
       {
-	if (arg[x] == '@')
-	{
-	  user_name = TRUE;
-	  temp_host = str_dup(&arg[x + 1]);
-	  arg[x] = '\0';
-	  temp_user = str_dup(arg);
-	  break;
-	}
+        if (arg[x] == '@')
+        {
+          user_name = TRUE;
+          temp_host = str_dup(&arg[x + 1]);
+          arg[x] = '\0';
+          temp_user = str_dup(arg);
+          break;
+        }
       }
       if (!user_name)
-	name = arg;
+        name = arg;
       else
-	name = temp_host;
+        name = temp_host;
 
       if (!name) /* Double check to make sure name isnt null */
       {
-	/*
-	 * Free this stuff if its there 
-	 */
-	if (user_name)
-	{
-	  DISPOSE(temp_host);
-	  DISPOSE(temp_user);
-	}
-	send_to_char("Name was null.\r\n", ch);
-	return 0;
+        /*
+         * Free this stuff if its there 
+         */
+        if (user_name)
+        {
+          DISPOSE(temp_host);
+          DISPOSE(temp_user);
+        }
+        send_to_char("Name was null.\r\n", ch);
+        return 0;
       }
 
       if (name[0] == '*')
       {
-	prefix = TRUE;
-	name++;
+        prefix = TRUE;
+        name++;
       }
 
       if (name[strlen(name) - 1] == '*')
       {
-	suffix = TRUE;
-	name[strlen(name) - 1] = '\0';
+        suffix = TRUE;
+        name[strlen(name) - 1] = '\0';
       }
       for (temp = first_ban; temp; temp = temp->next)
       {
-	if (!str_cmp(temp->name, name))
-	{
-	  if (temp->level == level && (prefix && temp->prefix) && (suffix && temp->suffix))
-	  {
-	    /*
-	     * Free this stuff if its there 
-	     */
-	    if (user_name)
-	    {
-	      DISPOSE(temp_host);
-	      DISPOSE(temp_user);
-	    }
-	    send_to_char("That entry already exists.\r\n", ch);
-	    return 0;
-	  }
-	  else
-	  {
-	    temp->suffix = suffix;
-	    temp->prefix = prefix;
-	    if (temp->level == BAN_WARN)
-	      temp->warn = TRUE;
-	    temp->level = level;
-	    snprintf(buf, MAX_STRING_LENGTH, "%24.24s", ctime(&current_time));
-	    temp->ban_time = str_dup(buf);
-	    if (btime > 0)
-	    {
-	      temp->duration = btime;
-	      tms = localtime(&current_time);
-	      tms->tm_mday += btime;
-	      temp->unban_date = mktime(tms);
-	    }
-	    else
-	    {
-	      temp->duration = -1;
-	      temp->unban_date = -1;
-	    }
-	    if (temp->ban_by)
-	      DISPOSE(temp->ban_by);
-	    if (user_name)
-	    {
-	      DISPOSE(temp_host);
-	      DISPOSE(temp_user);
-	    }
-	    temp->ban_by = str_dup(ch->name);
-	    send_to_char("Updated entry.\r\n", ch);
-	    return 1;
-	  }
-	}
+        if (!str_cmp(temp->name, name))
+        {
+          if (temp->level == level && (prefix && temp->prefix) && (suffix && temp->suffix))
+          {
+            /*
+             * Free this stuff if its there 
+             */
+            if (user_name)
+            {
+              DISPOSE(temp_host);
+              DISPOSE(temp_user);
+            }
+            send_to_char("That entry already exists.\r\n", ch);
+            return 0;
+          }
+          else
+          {
+            temp->suffix = suffix;
+            temp->prefix = prefix;
+            if (temp->level == BAN_WARN)
+              temp->warn = TRUE;
+            temp->level = level;
+            snprintf(buf, MAX_STRING_LENGTH, "%24.24s", ctime(&current_time));
+            temp->ban_time = str_dup(buf);
+            if (btime > 0)
+            {
+              temp->duration = btime;
+              tms = localtime(&current_time);
+              tms->tm_mday += btime;
+              temp->unban_date = mktime(tms);
+            }
+            else
+            {
+              temp->duration = -1;
+              temp->unban_date = -1;
+            }
+            if (temp->ban_by)
+              DISPOSE(temp->ban_by);
+            if (user_name)
+            {
+              DISPOSE(temp_host);
+              DISPOSE(temp_user);
+            }
+            temp->ban_by = str_dup(ch->name);
+            send_to_char("Updated entry.\r\n", ch);
+            return 1;
+          }
+        }
       }
       CREATE(pban, BAN_DATA, 1);
       pban->ban_by = str_dup(ch->name);
@@ -1034,8 +1034,8 @@ int add_ban(CHAR_DATA * ch, const char *arg1, const char *arg2, int btime, int t
       LINK(pban, first_ban, last_ban, next, prev);
       if (user_name)
       {
-	DISPOSE(temp_host);
-	DISPOSE(temp_user);
+        DISPOSE(temp_host);
+        DISPOSE(temp_user);
       }
       break;
     }
@@ -1113,9 +1113,9 @@ void show_bans(CHAR_DATA * ch, int type)
     for (bnum = 1; pban; pban = pban->next, bnum++)
     {
       pager_printf(ch, "[%2d] %-4s (%2d) %-24s %-15s %4d  %c%s%c\r\n",
-		    bnum, (pban->warn) ? "YES" : "no", pban->level,
-		    pban->ban_time, pban->ban_by, pban->duration,
-		    (pban->prefix) ? '*' : ' ', pban->name, (pban->suffix) ? '*' : ' ');
+                    bnum, (pban->warn) ? "YES" : "no", pban->level,
+                    pban->ban_time, pban->ban_by, pban->duration,
+                    (pban->prefix) ? '*' : ' ', pban->name, (pban->suffix) ? '*' : ' ');
     }
     return;
   case BAN_RACE:
@@ -1136,7 +1136,7 @@ void show_bans(CHAR_DATA * ch, int type)
   set_pager_color(AT_PLAIN, ch);
   for (bnum = 1; pban; pban = pban->next, bnum++)
     pager_printf(ch, "[%2d] %-4s (%2d) %-24s %-15s %4d  %s\r\n", bnum,
-		  (pban->warn) ? "YES" : "no", pban->level, pban->ban_time, pban->ban_by, pban->duration, pban->name);
+                  (pban->warn) ? "YES" : "no", pban->level, pban->ban_time, pban->ban_by, pban->duration, pban->name);
   return;
 }
 
@@ -1163,12 +1163,12 @@ bool check_total_bans(DESCRIPTOR_DATA * d)
     {
       if (check_expire(pban))
       {
-	dispose_ban(pban, BAN_SITE);
-	save_banlist();
-	return FALSE;
+        dispose_ban(pban, BAN_SITE);
+        save_banlist();
+        return FALSE;
       }
       else
-	return TRUE;
+        return TRUE;
     }
     /*
      *   Bug of switched checks noticed by Cronel
@@ -1177,34 +1177,34 @@ bool check_total_bans(DESCRIPTOR_DATA * d)
     {
       if (check_expire(pban))
       {
-	dispose_ban(pban, BAN_SITE);
-	save_banlist();
-	return FALSE;
+        dispose_ban(pban, BAN_SITE);
+        save_banlist();
+        return FALSE;
       }
       else
-	return TRUE;
+        return TRUE;
     }
     if (pban->prefix && !str_suffix(pban->name, new_host))
     {
       if (check_expire(pban))
       {
-	dispose_ban(pban, BAN_SITE);
-	save_banlist();
-	return FALSE;
+        dispose_ban(pban, BAN_SITE);
+        save_banlist();
+        return FALSE;
       }
       else
-	return TRUE;
+        return TRUE;
     }
     if (!str_cmp(pban->name, new_host))
     {
       if (check_expire(pban))
       {
-	dispose_ban(pban, BAN_SITE);
-	save_banlist();
-	return FALSE;
+        dispose_ban(pban, BAN_SITE);
+        save_banlist();
+        return FALSE;
       }
       else
-	return TRUE;
+        return TRUE;
     }
   }
   return FALSE;
@@ -1245,68 +1245,68 @@ bool check_bans(CHAR_DATA * ch, int type)
     {
       if (check_expire(pban))
       {
-	dispose_ban(pban, BAN_CLASS);
-	save_banlist();
-	return FALSE;
+        dispose_ban(pban, BAN_CLASS);
+        save_banlist();
+        return FALSE;
       }
       if (ch->level > pban->level)
       {
-	if (pban->warn)
-	{
-	  log_printf_plus(LOG_WARN, sysdata.log_level, "%s class logging in from %s.", pban->name, ch->desc->host);
-	}
-	return FALSE;
+        if (pban->warn)
+        {
+          log_printf_plus(LOG_WARN, sysdata.log_level, "%s class logging in from %s.", pban->name, ch->desc->host);
+        }
+        return FALSE;
       }
       else
-	return TRUE;
+        return TRUE;
     }
     if (type == BAN_RACE && pban->flag == ch->race)
     {
       if (check_expire(pban))
       {
-	dispose_ban(pban, BAN_RACE);
-	save_banlist();
-	return FALSE;
+        dispose_ban(pban, BAN_RACE);
+        save_banlist();
+        return FALSE;
       }
       if (ch->level > pban->level)
       {
-	if (pban->warn)
-	{
-	  log_printf_plus(LOG_WARN, sysdata.log_level, "%s race logging in from %s.", pban->name, ch->desc->host);
-	}
-	return FALSE;
+        if (pban->warn)
+        {
+          log_printf_plus(LOG_WARN, sysdata.log_level, "%s race logging in from %s.", pban->name, ch->desc->host);
+        }
+        return FALSE;
       }
       else
-	return TRUE;
+        return TRUE;
     }
     if (type == BAN_SITE)
     {
       if (pban->prefix && pban->suffix && strstr(new_host, pban->name))
-	fMatch = TRUE;
+        fMatch = TRUE;
       else if (pban->prefix && !str_suffix(pban->name, new_host))
-	fMatch = TRUE;
+        fMatch = TRUE;
       else if (pban->suffix && !str_prefix(pban->name, new_host))
-	fMatch = TRUE;
+        fMatch = TRUE;
       else if (!str_cmp(pban->name, new_host))
-	fMatch = TRUE;
+        fMatch = TRUE;
       if (fMatch)
       {
-	if (check_expire(pban))
-	{
-	  dispose_ban(pban, BAN_SITE);
-	  save_banlist();
-	  return FALSE;
-	}
-	if (ch->level > pban->level)
-	{
-	  if (pban->warn)
-	  {
-	    log_printf_plus(LOG_WARN, sysdata.log_level, "%s logging in from site %s.", ch->name, ch->desc->host);
-	  }
-	  return FALSE;
-	}
-	else
-	  return TRUE;
+        if (check_expire(pban))
+        {
+          dispose_ban(pban, BAN_SITE);
+          save_banlist();
+          return FALSE;
+        }
+        if (ch->level > pban->level)
+        {
+          if (pban->warn)
+          {
+            log_printf_plus(LOG_WARN, sysdata.log_level, "%s logging in from site %s.", ch->name, ch->desc->host);
+          }
+          return FALSE;
+        }
+        else
+          return TRUE;
       }
     }
   }

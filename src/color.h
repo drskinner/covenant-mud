@@ -41,9 +41,9 @@ DECLARE_DO_FUN(do_color);
 /*
  * Color Alignment Parameters
  */
-#define ALIGN_LEFT	1
-#define ALIGN_CENTER	2
-#define ALIGN_RIGHT	3
+#define ALIGN_LEFT      1
+#define ALIGN_CENTER    2
+#define ALIGN_RIGHT     3
 
 /* These are the ANSI codes for foreground text colors */
 #define ANSI_BLACK   "\033[0;30m"
