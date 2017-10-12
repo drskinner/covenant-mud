@@ -4177,6 +4177,7 @@ void clean_obj(OBJ_INDEX_DATA * obj)
   STRFREE(obj->name);
   STRFREE(obj->short_descr);
   STRFREE(obj->description);
+  STRFREE(obj->full_desc);
   STRFREE(obj->action_desc);
   obj->item_type = 0;
   xCLEAR_BITS(obj->extra_flags);
@@ -4593,6 +4594,7 @@ void free_obj(OBJ_DATA * obj)
   STRFREE(obj->name);
   STRFREE(obj->description);
   STRFREE(obj->short_descr);
+  STRFREE(obj->full_desc);
   STRFREE(obj->action_desc);
   STRFREE(obj->owner);
   DISPOSE(obj);

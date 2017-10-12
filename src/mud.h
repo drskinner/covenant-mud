@@ -760,10 +760,10 @@ typedef enum
 typedef enum
 {
   SUB_NONE, SUB_PAUSE, SUB_PERSONAL_DESC, SUB_BAN_DESC, SUB_OBJ_SHORT,
-  SUB_OBJ_LONG, SUB_OBJ_EXTRA, SUB_MOB_LONG, SUB_MOB_DESC, SUB_ROOM_DESC,
-  SUB_ROOM_EXTRA, SUB_ROOM_EXIT_DESC, SUB_WRITING_NOTE, SUB_MPROG_EDIT,
-  SUB_HELP_EDIT, SUB_WRITING_MAP, SUB_PERSONAL_BIO, SUB_REPEATCMD,
-  SUB_RESTRICTED, SUB_DEITYDESC, SUB_MORPH_DESC, SUB_MORPH_HELP,
+  SUB_OBJ_LONG, SUB_OBJ_FULL, SUB_OBJ_EXTRA, SUB_MOB_LONG, SUB_MOB_DESC, 
+  SUB_ROOM_DESC, SUB_ROOM_EXTRA, SUB_ROOM_EXIT_DESC, SUB_WRITING_NOTE, 
+  SUB_MPROG_EDIT, SUB_HELP_EDIT, SUB_WRITING_MAP, SUB_PERSONAL_BIO, 
+  SUB_REPEATCMD, SUB_RESTRICTED, SUB_DEITYDESC, SUB_MORPH_DESC, SUB_MORPH_HELP,
   SUB_PROJ_DESC, SUB_NEWS_POST, SUB_NEWS_EDIT, SUB_JOURNAL_WRITE,
   /*
    * timer types ONLY below this point 
@@ -2473,6 +2473,7 @@ struct obj_index_data
   const char *name;
   const char *short_descr;
   const char *description;
+  const char *full_desc;
   const char *action_desc;
   int value[6];
   int vnum;
@@ -2510,6 +2511,7 @@ struct obj_data
   const char *name;
   const char *short_descr;
   const char *description;
+  const char *full_desc;
   const char *action_desc;
   const char *owner;
   short item_type;

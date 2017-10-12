@@ -3200,6 +3200,37 @@ void do_oset(CHAR_DATA* ch, const char* argument)
     ch->substate = ch->tempnum;
     ch->dest_buf = tmpobj;
     return;
+
+  case SUB_OBJ_FULL:
+    if (!ch->dest_buf)
+    {
+      send_to_char("Fatal error: report to www.smaugmuds.org\r\n", ch);
+      bug("%s: sub_obj_full: NULL ch->dest_buf", __FUNCTION__);
+      ch->substate = SUB_NONE;
+      return;
+    }
+    obj = (OBJ_DATA *) ch->dest_buf;
+    if (obj && obj_extracted(obj))
+    {
+      send_to_char("Your object was extracted!\r\n", ch);
+      stop_editing(ch);
+      return;
+    }
+    STRFREE(obj->full_desc);
+    obj->full_desc = copy_buffer(ch);
+    if (IS_OBJ_STAT(obj, ITEM_PROTOTYPE))
+    {
+      if (can_omodify(ch, obj))
+      {
+        STRFREE(obj->pIndexData->full_desc);
+        obj->pIndexData->full_desc = QUICKLINK(obj->full_desc);
+      }
+    }
+    tmpobj = (OBJ_DATA *) ch->spare_ptr;
+    stop_editing(ch);
+    ch->substate = ch->tempnum;
+    ch->dest_buf = tmpobj;
+    return;
   }
 
   obj = NULL;
@@ -3405,6 +3436,42 @@ void do_oset(CHAR_DATA* ch, const char* argument)
     ch->substate = SUB_OBJ_LONG;
     ch->dest_buf = obj;
     start_editing(ch, obj->description);
+    return;
+  }
+
+  if (!str_cmp(arg2, "full"))
+  {
+    if (arg3[0])
+    {
+      if (IS_OBJ_STAT(obj, ITEM_PROTOTYPE))
+      {
+        if (!can_omodify(ch, obj))
+          return;
+        STRFREE(obj->full_desc);
+        obj->full_desc = STRALLOC(arg3);
+        STRFREE(obj->pIndexData->full_desc);
+        obj->pIndexData->full_desc = QUICKLINK(obj->full_desc);
+        return;
+      }
+      STRFREE(obj->full_desc);
+      obj->full_desc = STRALLOC(arg3);
+      return;
+    }
+    if (!obj->full_desc) {
+      obj->full_desc = STRALLOC("");
+    }
+    CHECK_SUBRESTRICTED(ch);
+    if (ch->substate == SUB_REPEATCMD)
+      ch->tempnum = SUB_REPEATCMD;
+    else
+      ch->tempnum = SUB_NONE;
+    if (lockobj)
+      ch->spare_ptr = obj;
+    else
+      ch->spare_ptr = NULL;
+    ch->substate = SUB_OBJ_FULL;
+    ch->dest_buf = obj;
+    start_editing(ch, obj->full_desc);
     return;
   }
 
@@ -6464,6 +6531,8 @@ void fwrite_fuss_object(FILE * fpout, OBJ_INDEX_DATA * pObjIndex, bool install)
   fprintf(fpout, "Short    %s~\n", pObjIndex->short_descr);
   if (pObjIndex->description && pObjIndex->description[0] != '\0')
     fprintf(fpout, "Long     %s~\n", pObjIndex->description);
+  if (pObjIndex->full_desc && pObjIndex->full_desc[0] != '\0')
+    fprintf(fpout, "Full     %s~\n", strip_cr(pObjIndex->full_desc));
   if (pObjIndex->action_desc && pObjIndex->action_desc[0] != '\0')
     fprintf(fpout, "Action   %s~\n", pObjIndex->action_desc);
   if (!xIS_EMPTY(pObjIndex->extra_flags))
