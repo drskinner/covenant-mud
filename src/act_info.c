@@ -2257,24 +2257,27 @@ void do_help(CHAR_DATA* ch, const char* argument)
     }
     return;
   }
-  /*
-   * Make newbies do a help start. --Shaddai
-   */
+
+  /* Make newbies do a help start. --Shaddai */
+
   if (!IS_NPC(ch) && !str_cmp(argument, "start"))
     SET_BIT(ch->pcdata->flags, PCFLAG_HELPSTART);
 
-  if (IS_IMMORTAL(ch))
-    pager_printf(ch, "Help level: %d\r\n", pHelp->level);
+  if (pHelp->level >= 0 && str_cmp(argument, "imotd")) {
+    set_pager_color (AT_WHITE, ch);
+    send_to_pager(pHelp->keyword, ch);
+    send_to_pager("\n\r", ch);
+  }
 
-  set_pager_color(AT_NOTE, ch);
+  /* Strip leading '.' to allow initial blanks. */
 
-  /*
-   * Strip leading '.' to allow initial blanks.
-   */
-  if (pHelp->text[0] == '.')
+  set_pager_color(AT_PLAIN, ch);
+  if (pHelp->text[0] == '.') {
     send_to_pager(pHelp->text + 1, ch);
-  else
+  } else {
     send_to_pager(pHelp->text, ch);
+  }
+
   return;
 }
 
