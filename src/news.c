@@ -102,12 +102,12 @@ void do_editnews(CHAR_DATA* ch, const char* argument)
   if (arg[0] == '\0')
   {
     send_to_char("Syntax: editnews addtype <name>\r\n"
-		  "        editnews addnews <type> <subject>\r\n"
-		  "        editnews removetype <number>\r\n"
-		  "        editnews removenews <type> <number>\r\n"
-		  "        editnews edittype <field> <value>\r\n"
-		  "        editnews editnews <type> <number> <new subject [optional]>\r\n"
-		  " Fields being one of the following:\r\n" " name header cmd_name level\r\n", ch);
+                  "        editnews addnews <type> <subject>\r\n"
+                  "        editnews removetype <number>\r\n"
+                  "        editnews removenews <type> <number>\r\n"
+                  "        editnews edittype <field> <value>\r\n"
+                  "        editnews editnews <type> <number> <new subject [optional]>\r\n"
+                  " Fields being one of the following:\r\n" " name header cmd_name level\r\n", ch);
     return;
   }
 
@@ -232,11 +232,11 @@ void do_editnews(CHAR_DATA* ch, const char* argument)
     {
       if (argument[0] == '\0')
       {
-	ch_printf(ch, "%d\r\n", type->level);
-	return;
+        ch_printf(ch, "%d\r\n", type->level);
+        return;
       }
       else
-	type->level = atoi(argument);
+        type->level = atoi(argument);
       send_to_char("Level set.\r\n", ch);
       save_news();
       return;
@@ -317,7 +317,7 @@ void do_editnews(CHAR_DATA* ch, const char* argument)
     if ((news = grab_news(type, arg3)) == NULL)
     {
       pager_printf_color(ch, "That's not a valid news number.\r\nUse '%s' to view the valid numbers.\r\n",
-			  type->cmd_name);
+                          type->cmd_name);
       return;
     }
 
@@ -400,7 +400,7 @@ NEWS_TYPE *figure_type(const char *str)
      */
     for (type = first_news_type; type; type = type->next)
       if (type->vnum == number)
-	return type;
+        return type;
   }
   else  /* a cmd name */
   {
@@ -413,9 +413,9 @@ NEWS_TYPE *figure_type(const char *str)
     for (x = 0; x < top_news_type; ++x)
       if (!str_cmp(str, news_command_table[x]))
       {
-	for (type = first_news_type; type; type = type->next)
-	  if (type->vnum == x)
-	    return type;
+        for (type = first_news_type; type; type = type->next)
+          if (type->vnum == x)
+            return type;
       }
   }
   return NULL;
@@ -506,7 +506,7 @@ void save_news(void)
     fprintf(fp, "Cmd_Name      %s~\n", type->cmd_name);
     fprintf(fp, "Header        %s~\n", type->header);
     fprintf(fp, "Vnum          %d\n", type->vnum);
-    fprintf(fp, "Level	       %d\n", type->level);
+    fprintf(fp, "Level         %d\n", type->level);
     fprintf(fp, "End\n");
     for (news = type->first_news; news; news = news->next)
     {
@@ -637,20 +637,20 @@ void fread_news(NEWS * news, FILE * fp)
     case 'E':
       if (!str_cmp(word, "END"))
       {
-	if (!news->name)
-	  news->name = STRALLOC("Unknown");
+        if (!news->name)
+          news->name = STRALLOC("Unknown");
 
-	if (!news->date)
-	{
-	  news->date = STRALLOC(stamp_time());
-	}
+        if (!news->date)
+        {
+          news->date = STRALLOC(stamp_time());
+        }
 
-	if (!news->title)
-	  news->title = STRALLOC("News Post");
+        if (!news->title)
+          news->title = STRALLOC("News Post");
 
-	if (news->type <= -1)
-	  news->type = 0;
-	return;
+        if (news->type <= -1)
+          news->type = 0;
+        return;
       }
       break;
 
@@ -661,9 +661,9 @@ void fread_news(NEWS * news, FILE * fp)
     case 'P':
       if (!str_cmp(word, "POST"))
       {
-	fMatch = TRUE;
-	news->post = fread_string(fp);
-	break;
+        fMatch = TRUE;
+        news->post = fread_string(fp);
+        break;
       }
       break;
 
@@ -702,10 +702,10 @@ void fread_news_type(NEWS_TYPE * type, FILE * fp)
     case 'E':
       if (!str_cmp(word, "END"))
       {
-	if (!type->name)
-	  type->name = STRALLOC("Unknown");
+        if (!type->name)
+          type->name = STRALLOC("Unknown");
 
-	return;
+        return;
       }
       break;
 
@@ -778,15 +778,15 @@ void snarf_news(FILE * fp)
     fprintf(fp, "<div align='center'>");
     fprintf(fp, "\n<table width='399' border='1' height='56' bgcolor='#990000'>");
     sprintf(buf,
-	     "\n<tr><td><font face='Arial, Helvetica, sans-serif' size='2'>%s</font></tr></td><tr><td><font size='1' face='Arial, Helvetica, sans-serif' color='#FFFFFF'>[</font><font color='#FFFFFF' size='2'>%s</font><font size='1' color='#FFFFFF'>]</font>",
-	     news->title, news->name);
+             "\n<tr><td><font face='Arial, Helvetica, sans-serif' size='2'>%s</font></tr></td><tr><td><font size='1' face='Arial, Helvetica, sans-serif' color='#FFFFFF'>[</font><font color='#FFFFFF' size='2'>%s</font><font size='1' color='#FFFFFF'>]</font>",
+             news->title, news->name);
     fprintf(fp, buf);
     fprintf(fp, "\n<font size='1'><font face='Arial, Helvetica, sans-serif'>[<b><font size='2' color='#FFFFFF'>");
     sprintf(buf, "\n%s\r\n</font></b>]</font></font></td></tr><tr><td height='2' bgcolor='#000000'>", news->date);
     fprintf(fp, buf);
     sprintf(buf,
-	     "\n<p><font face='Arial, Helvetica, sans-serif' size='2' color='#FFFFFF'>%s</font><p></td></tr></table></div>",
-	     news->post);
+             "\n<p><font face='Arial, Helvetica, sans-serif' size='2' color='#FFFFFF'>%s</font><p></td></tr></table></div>",
+             news->post);
     fprintf(fp, buf);
     fprintf(fp, "</div>");
   }
@@ -794,7 +794,7 @@ void snarf_news(FILE * fp)
    * this must stay here -- line below 
    */
   fprintf(fp,
-	   "\n<center><font size='2' face='Arial, Helvetica, sans-serif' color='#FFFFFF'>Extended News v2.5 written by: <a href='mailto:noplex@crimsonblade.org'>Noplex</a>; <a href='http://www.crimsonblade.org/snippets/' target='new'>Get your copy here!</a></font></center>\r\n");
+           "\n<center><font size='2' face='Arial, Helvetica, sans-serif' color='#FFFFFF'>Extended News v2.5 written by: <a href='mailto:noplex@crimsonblade.org'>Noplex</a>; <a href='http://www.crimsonblade.org/snippets/' target='new'>Get your copy here!</a></font></center>\r\n");
   fprintf(fp, "<pre><center>Page last written: %s</center></pre>", ctime(&current_time));
   return;
 }
@@ -813,11 +813,11 @@ bool news_cmd_hook(CHAR_DATA * ch, char *cmd, char *argument)
       sprintf(local_buf, "%d", x);
       if ((type = figure_type(local_buf)) == NULL)
       {
-	bug("news_cmd_hook(): cannot find type for cmd %s", cmd);
-	return FALSE;
+        bug("news_cmd_hook(): cannot find type for cmd %s", cmd);
+        return FALSE;
       }
       if (get_trust(ch) < type->level)
-	return FALSE;
+        return FALSE;
 
       display_news_type(ch, type, argument);
       return TRUE;
@@ -856,26 +856,26 @@ void display_news_type(CHAR_DATA * ch, NEWS_TYPE * type, char *argument)
     {
       if (!all_news)
       {
-	if (skipper > -1)
-	{
-	  skipper--;
-	  continue;
-	}
+        if (skipper > -1)
+        {
+          skipper--;
+          continue;
+        }
       }
       pager_printf_color(ch, "&g(&W%2d&g)  &W%-12s &%-11s  &W%s&g\r\n", news->number, news->name, news->date,
-			  news->title);
+                          news->title);
     }
 
     if (!all_news)
     {
       if (type->last_news->number == 1)
-	pager_printf_color(ch, "&g\r\nThere is one news item.\r\n");
+        pager_printf_color(ch, "&g\r\nThere is one news item.\r\n");
       else if (type->last_news->number > NEWS_VIEW - 1)
-	pager_printf_color(ch,
-			    "\r\n&gThere are &w%d&g total items, the oldest of which are not listed here.\r\nUse '&w%s all&g' to list them all.&g\r\n",
-			    type->last_news->number, type->cmd_name);
+        pager_printf_color(ch,
+                            "\r\n&gThere are &w%d&g total items, the oldest of which are not listed here.\r\nUse '&w%s all&g' to list them all.&g\r\n",
+                            type->last_news->number, type->cmd_name);
       else
-	pager_printf_color(ch, "\r\n&gThere are &w%d&g total items.\r\n", type->last_news->number);
+        pager_printf_color(ch, "\r\n&gThere are &w%d&g total items.\r\n", type->last_news->number);
       pager_printf_color(ch, "\r\n&gTo read individual items type '&w%s <number>&g'.\r\n", type->cmd_name);
       return;
     }
@@ -888,7 +888,7 @@ void display_news_type(CHAR_DATA * ch, NEWS_TYPE * type, char *argument)
     if ((news = grab_news(type, argument)) == NULL)
     {
       if (str_cmp(argument, "all"))
-	send_to_char_color("&g\r\nThat's not a news post number.\r\nUse '&wnews&g' to view them.\r\n", ch);
+        send_to_char_color("&g\r\nThat's not a news post number.\r\nUse '&wnews&g' to view them.\r\n", ch);
       return;
     }
     display_news(ch, news, type);

@@ -92,14 +92,14 @@ void load_specfuns(void)
     {
       if (feof(fp))
       {
-	bug("%s: Premature end of file!", __func__);
-	fclose(fp);
-	fp = NULL;
-	return;
+        bug("%s: Premature end of file!", __func__);
+        fclose(fp);
+        fp = NULL;
+        return;
       }
       word = fread_word(fp);
       if (!str_cmp(word, "$"))
-	break;
+        break;
 
       CREATE(specfun, SPEC_LIST, 1);
       specfun->name = str_dup(word);
@@ -763,8 +763,8 @@ bool spec_janitor(CHAR_DATA * ch)
     if (IS_OBJ_STAT(trash, ITEM_PROTOTYPE) && !xIS_SET(ch->act, ACT_PROTOTYPE))
       continue;
     if (trash->item_type == ITEM_DRINK_CON
-	|| trash->item_type == ITEM_TRASH
-	|| trash->cost < 10 || (trash->pIndexData->vnum == OBJ_VNUM_SHOPPING_BAG && !trash->first_content))
+        || trash->item_type == ITEM_TRASH
+        || trash->cost < 10 || (trash->pIndexData->vnum == OBJ_VNUM_SHOPPING_BAG && !trash->first_content))
     {
       act(AT_ACTION, "$n picks up some trash.", ch, NULL, NULL, TO_ROOM);
       obj_from_room(trash);
@@ -918,8 +918,8 @@ bool spec_thief(CHAR_DATA * ch)
       victim->gold -= gold;
       if (ch->gold > maxgold)
       {
-	boost_economy(ch->in_room->area, ch->gold - maxgold / 2);
-	ch->gold = maxgold / 2;
+        boost_economy(ch->in_room->area, ch->gold - maxgold / 2);
+        ch->gold = maxgold / 2;
       }
       return TRUE;
     }
@@ -966,104 +966,104 @@ bool spec_wanderer(CHAR_DATA * ch)
     {
       trash_next = trash->next_content;
       if (!IS_SET(trash->wear_flags, ITEM_TAKE) || IS_OBJ_STAT(trash, ITEM_BURIED))
-	continue;
+        continue;
 
       if (trash->item_type == ITEM_WEAPON || trash->item_type == ITEM_ARMOR || trash->item_type == ITEM_LIGHT)
       {
-	separate_obj(trash);  /* So there is no 'sword <6>' gets only one object off ground */
-	act(AT_ACTION, "$n leans over and gets $p.", ch, trash, NULL, TO_ROOM);
-	obj_from_room(trash);
-	trash = obj_to_char(trash, ch);
+        separate_obj(trash);  /* So there is no 'sword <6>' gets only one object off ground */
+        act(AT_ACTION, "$n leans over and gets $p.", ch, trash, NULL, TO_ROOM);
+        obj_from_room(trash);
+        trash = obj_to_char(trash, ch);
 
-	/*****
-	 * If object is too high a level throw it away.
-	 *****/
-	if (ch->level < trash->level)
-	{
-	  act(AT_ACTION, "$n tries to use $p, but is too inexperienced.", ch, trash, NULL, TO_ROOM);
-	  thrown = TRUE;
-	}
+        /*****
+         * If object is too high a level throw it away.
+         *****/
+        if (ch->level < trash->level)
+        {
+          act(AT_ACTION, "$n tries to use $p, but is too inexperienced.", ch, trash, NULL, TO_ROOM);
+          thrown = TRUE;
+        }
 
-	/*****
-	 * Wear the object if it is not to be thrown. The FALSE is passed
-	 * so that the mob wont remove a piece of armor already there
-	 * if it is not worn it is assumed that they can't use it or 
-	 * they already are wearing something.
-	 *****/
+        /*****
+         * Wear the object if it is not to be thrown. The FALSE is passed
+         * so that the mob wont remove a piece of armor already there
+         * if it is not worn it is assumed that they can't use it or 
+         * they already are wearing something.
+         *****/
 
-	if (!thrown)
-	  wear_obj(ch, trash, FALSE, -1);
+        if (!thrown)
+          wear_obj(ch, trash, FALSE, -1);
 
-	/*****
-	 * Look for an object in the inventory that is not being worn
-	 * then throw it away...
-	 *****/
-	found = FALSE;
-	if (!thrown)
-	{
-	  for (obj2 = ch->first_carrying; obj2; obj2 = obj2->next_content)
-	  {
-	    if (obj2->wear_loc == WEAR_NONE)
-	    {
-	      do_say(ch, "Hmm, I can't use this.");
-	      trash = obj2;
-	      thrown = TRUE;
-	    }
-	  }
-	}
+        /*****
+         * Look for an object in the inventory that is not being worn
+         * then throw it away...
+         *****/
+        found = FALSE;
+        if (!thrown)
+        {
+          for (obj2 = ch->first_carrying; obj2; obj2 = obj2->next_content)
+          {
+            if (obj2->wear_loc == WEAR_NONE)
+            {
+              do_say(ch, "Hmm, I can't use this.");
+              trash = obj2;
+              thrown = TRUE;
+            }
+          }
+        }
 
-	/*****
-	 * Ugly bit of code..
-	 * Checks if the object is to be thrown & there is a valid exit, 
-	 * randomly pick a direction to throw it, and check to make sure no other
-	 * spec_wanderer mobs are in that room.
-	 *****/
-	if (thrown && !noexit)
-	{
-	  while (!found && !noexit)
-	  {
-	    door = number_door();
-	    if ((pexit = get_exit(ch->in_room, door)) != NULL
-		&& pexit->to_room
-		&& !IS_SET(pexit->exit_info, EX_CLOSED) && !xIS_SET(pexit->to_room->room_flags, ROOM_NODROP))
-	    {
-	      if ((vch = pexit->to_room->first_person) != NULL)
-		for (vch = pexit->to_room->first_person; vch; vch = vch->next_in_room)
-		{
-		  if (!str_cmp(vch->spec_funname, "spec_wanderer"))
-		  {
-		    noexit = TRUE;
-		    return FALSE;
-		  }
-		}
-	      found = TRUE;
-	    }
-	  }
-	}
+        /*****
+         * Ugly bit of code..
+         * Checks if the object is to be thrown & there is a valid exit, 
+         * randomly pick a direction to throw it, and check to make sure no other
+         * spec_wanderer mobs are in that room.
+         *****/
+        if (thrown && !noexit)
+        {
+          while (!found && !noexit)
+          {
+            door = number_door();
+            if ((pexit = get_exit(ch->in_room, door)) != NULL
+                && pexit->to_room
+                && !IS_SET(pexit->exit_info, EX_CLOSED) && !xIS_SET(pexit->to_room->room_flags, ROOM_NODROP))
+            {
+              if ((vch = pexit->to_room->first_person) != NULL)
+                for (vch = pexit->to_room->first_person; vch; vch = vch->next_in_room)
+                {
+                  if (!str_cmp(vch->spec_funname, "spec_wanderer"))
+                  {
+                    noexit = TRUE;
+                    return FALSE;
+                  }
+                }
+              found = TRUE;
+            }
+          }
+        }
 
-	if (!noexit && thrown)
-	{
-	  set_cur_obj(trash);
-	  if (damage_obj(trash) != rOBJ_SCRAPPED)
-	  {
-	    separate_obj(trash);
-	    act(AT_ACTION, "$n growls and throws $p $T.", ch, trash, dir_name[pexit->vdir], TO_ROOM);
-	    obj_from_char(trash);
-	    obj_to_room(trash, pexit->to_room);
-	    char_from_room(ch);
-	    char_to_room(ch, pexit->to_room);
-	    act(AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, TO_ROOM);
-	    char_from_room(ch);
-	    char_to_room(ch, was_in_room);
-	  }
-	  else
-	  {
-	    do_say(ch, "This thing is junk!");
-	    act(AT_ACTION, "$n growls and breaks $p.", ch, trash, NULL, TO_ROOM);
-	  }
-	  return TRUE;
-	}
-	return TRUE;
+        if (!noexit && thrown)
+        {
+          set_cur_obj(trash);
+          if (damage_obj(trash) != rOBJ_SCRAPPED)
+          {
+            separate_obj(trash);
+            act(AT_ACTION, "$n growls and throws $p $T.", ch, trash, dir_name[pexit->vdir], TO_ROOM);
+            obj_from_char(trash);
+            obj_to_room(trash, pexit->to_room);
+            char_from_room(ch);
+            char_to_room(ch, pexit->to_room);
+            act(AT_CYAN, "$p thrown by $n lands in the room.", ch, trash, ch, TO_ROOM);
+            char_from_room(ch);
+            char_to_room(ch, was_in_room);
+          }
+          else
+          {
+            do_say(ch, "This thing is junk!");
+            act(AT_ACTION, "$n growls and breaks $p.", ch, trash, NULL, TO_ROOM);
+          }
+          return TRUE;
+        }
+        return TRUE;
       }
     }  /* get next obj */
     return FALSE;  /* No objects :< */

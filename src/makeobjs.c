@@ -48,7 +48,7 @@ OBJ_DATA *make_trap(int v0, int v1, int v2, int v3)
 }
 
 /*
- * Turn an object into scraps.		-Thoric
+ * Turn an object into scraps.          -Thoric
  */
 void make_scraps(OBJ_DATA * obj)
 {
@@ -84,7 +84,7 @@ void make_scraps(OBJ_DATA * obj)
   {
     act(AT_OBJECT, "$p falls to the ground in scraps!", obj->carried_by, obj, NULL, TO_CHAR);
     if (obj == get_eq_char(obj->carried_by, WEAR_WIELD)
-	&& (tmpobj = get_eq_char(obj->carried_by, WEAR_DUAL_WIELD)) != NULL)
+        && (tmpobj = get_eq_char(obj->carried_by, WEAR_DUAL_WIELD)) != NULL)
       tmpobj->wear_loc = WEAR_WIELD;
 
     obj_to_room(scraps, obj->carried_by->in_room);
@@ -99,7 +99,7 @@ void make_scraps(OBJ_DATA * obj)
     obj_to_room(scraps, obj->in_room);
   }
   if ((obj->item_type == ITEM_CONTAINER || obj->item_type == ITEM_KEYRING
-	|| obj->item_type == ITEM_QUIVER || obj->item_type == ITEM_CORPSE_PC) && obj->first_content)
+        || obj->item_type == ITEM_QUIVER || obj->item_type == ITEM_CORPSE_PC) && obj->first_content)
   {
     if (ch && ch->in_room)
     {
@@ -136,8 +136,8 @@ OBJ_DATA *make_corpse(CHAR_DATA * ch, CHAR_DATA * killer)
     {
       if (ch->in_room)
       {
-	ch->in_room->area->gold_looted += ch->gold;
-	sysdata.global_looted += ch->gold / 100;
+        ch->in_room->area->gold_looted += ch->gold;
+        sysdata.global_looted += ch->gold / 100;
       }
       obj_to_obj(create_money(ch->gold), corpse);
       ch->gold = 0;
@@ -147,7 +147,7 @@ OBJ_DATA *make_corpse(CHAR_DATA * ch, CHAR_DATA * killer)
    corpse->value[0] = (int)ch->pIndexData->vnum;
    corpse->value[1] = (int)ch->max_hit;
 */
-/*	Using corpse cost to cheat, since corpses not sellable */
+/*      Using corpse cost to cheat, since corpses not sellable */
     corpse->cost = (-(int)ch->pIndexData->vnum);
     corpse->value[2] = corpse->timer;
   }
@@ -231,11 +231,11 @@ void make_puddle(CHAR_DATA * ch, OBJ_DATA * cont)
     {
       if (obj->value[2] == cont->value[2])
       {
-	obj->value[1] += cont->value[1];
-	obj->value[3] += cont->value[3];
-	obj->timer = number_range(2, 4);
-	found = TRUE;
-	break;
+        obj->value[1] += cont->value[1];
+        obj->value[3] += cont->value[3];
+        obj->timer = number_range(2, 4);
+        found = TRUE;
+        break;
       }
     }
   }

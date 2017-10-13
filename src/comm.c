@@ -644,7 +644,7 @@ static void clean_up_child_process(int signal_number)
 }
 
 /*
- * LAG alarm!							-Thoric
+ * LAG alarm!                                                   -Thoric
  */
 void caught_alarm(int signum)
 {
@@ -691,12 +691,12 @@ bool chk_watch(short player_level, const char *player_name, const char *player_s
     if (pw->target_name)
     {
       if (!str_cmp(pw->target_name, player_name) && player_level < pw->imm_level)
-	return TRUE;
+        return TRUE;
     }
     else if (pw->player_site)
     {
       if (!str_prefix(pw->player_site, player_site) && player_level < pw->imm_level)
-	return TRUE;
+        return TRUE;
     }
   }
   return FALSE;
@@ -783,94 +783,94 @@ void game_loop(void)
     {
       if (d == d->next)
       {
-	bug("descriptor_loop: loop found & fixed");
-	d->next = NULL;
+        bug("descriptor_loop: loop found & fixed");
+        d->next = NULL;
       }
       d_next = d->next;
 
       d->idle++;  /* make it so a descriptor can idle out */
       if (FD_ISSET(d->descriptor, &exc_set))
       {
-	FD_CLR(d->descriptor, &in_set);
-	FD_CLR(d->descriptor, &out_set);
-	if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
-	  save_char_obj(d->character);
-	d->outtop = 0;
-	close_socket(d, TRUE);
-	continue;
+        FD_CLR(d->descriptor, &in_set);
+        FD_CLR(d->descriptor, &out_set);
+        if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
+          save_char_obj(d->character);
+        d->outtop = 0;
+        close_socket(d, TRUE);
+        continue;
       }
       else if ((!d->character && d->idle > 360)  /* 2 mins */
-	       || (d->connected != CON_PLAYING && d->idle > 1200)  /* 5 mins */
-	       || d->idle > 28800) /* 2 hrs  */
+               || (d->connected != CON_PLAYING && d->idle > 1200)  /* 5 mins */
+               || d->idle > 28800) /* 2 hrs  */
       {
-	write_to_descriptor(d, "Idle timeout... disconnecting.\r\n", 0);
-	d->outtop = 0;
-	close_socket(d, TRUE);
-	continue;
+        write_to_descriptor(d, "Idle timeout... disconnecting.\r\n", 0);
+        d->outtop = 0;
+        close_socket(d, TRUE);
+        continue;
       }
       else
       {
-	d->fcommand = FALSE;
+        d->fcommand = FALSE;
 
-	if (FD_ISSET(d->descriptor, &in_set))
-	{
-	  d->idle = 0;
-	  if (d->character)
-	    d->character->timer = 0;
-	  if (!read_from_descriptor(d))
-	  {
-	    FD_CLR(d->descriptor, &out_set);
-	    if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
-	      save_char_obj(d->character);
-	    d->outtop = 0;
-	    close_socket(d, FALSE);
-	    continue;
-	  }
-	}
+        if (FD_ISSET(d->descriptor, &in_set))
+        {
+          d->idle = 0;
+          if (d->character)
+            d->character->timer = 0;
+          if (!read_from_descriptor(d))
+          {
+            FD_CLR(d->descriptor, &out_set);
+            if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
+              save_char_obj(d->character);
+            d->outtop = 0;
+            close_socket(d, FALSE);
+            continue;
+          }
+        }
 
-	/*
-	 * check for input from the dns 
-	 */
-	if ((d->connected == CON_PLAYING || d->character != NULL) && d->ifd != -1 && FD_ISSET(d->ifd, &in_set))
-	  process_dns(d);
+        /*
+         * check for input from the dns 
+         */
+        if ((d->connected == CON_PLAYING || d->character != NULL) && d->ifd != -1 && FD_ISSET(d->ifd, &in_set))
+          process_dns(d);
 
-	if (d->character && d->character->wait > 0)
-	{
-	  --d->character->wait;
-	  continue;
-	}
+        if (d->character && d->character->wait > 0)
+        {
+          --d->character->wait;
+          continue;
+        }
 
-	read_from_buffer(d);
-	if (d->incomm[0] != '\0')
-	{
-	  d->fcommand = TRUE;
-	  stop_idling(d->character);
+        read_from_buffer(d);
+        if (d->incomm[0] != '\0')
+        {
+          d->fcommand = TRUE;
+          stop_idling(d->character);
 
-	  mudstrlcpy(cmdline, d->incomm, MAX_INPUT_LENGTH);
-	  d->incomm[0] = '\0';
+          mudstrlcpy(cmdline, d->incomm, MAX_INPUT_LENGTH);
+          d->incomm[0] = '\0';
 
-	  if (d->character)
-	    set_cur_char(d->character);
+          if (d->character)
+            set_cur_char(d->character);
 
-	  if (d->pagepoint)
-	    set_pager_input(d, cmdline);
-	  else
-	    switch (d->connected)
-	    {
-	    default:
-	      nanny(d, cmdline);
-	      break;
-	    case CON_PLAYING:
-	      interpret(d->character, cmdline);
-	      break;
-	    case CON_EDITING:
-	      edit_buffer(d->character, cmdline);
-	      break;
-	    }
-	}
+          if (d->pagepoint)
+            set_pager_input(d, cmdline);
+          else
+            switch (d->connected)
+            {
+            default:
+              nanny(d, cmdline);
+              break;
+            case CON_PLAYING:
+              interpret(d->character, cmdline);
+              break;
+            case CON_EDITING:
+              edit_buffer(d->character, cmdline);
+              break;
+            }
+        }
       }
       if (d == last_descriptor)
-	break;
+        break;
     }
 
 #ifdef IMC
@@ -891,26 +891,26 @@ void game_loop(void)
 
       if ((d->fcommand || d->outtop > 0) && FD_ISSET(d->descriptor, &out_set))
       {
-	if (d->pagepoint)
-	{
-	  if (!pager_output(d))
-	  {
-	    if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
-	      save_char_obj(d->character);
-	    d->outtop = 0;
-	    close_socket(d, FALSE);
-	  }
-	}
-	else if (!flush_buffer(d, TRUE))
-	{
-	  if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
-	    save_char_obj(d->character);
-	  d->outtop = 0;
-	  close_socket(d, FALSE);
-	}
+        if (d->pagepoint)
+        {
+          if (!pager_output(d))
+          {
+            if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
+              save_char_obj(d->character);
+            d->outtop = 0;
+            close_socket(d, FALSE);
+          }
+        }
+        else if (!flush_buffer(d, TRUE))
+        {
+          if (d->character && (d->connected == CON_PLAYING || d->connected == CON_EDITING))
+            save_char_obj(d->character);
+          d->outtop = 0;
+          close_socket(d, FALSE);
+        }
       }
       if (d == last_descriptor)
-	break;
+        break;
     }
 
     /*
@@ -928,30 +928,30 @@ void game_loop(void)
       secDelta = ((int)last_time.tv_sec) - ((int)now_time.tv_sec);
       while (usecDelta < 0)
       {
-	usecDelta += 1000000;
-	secDelta -= 1;
+        usecDelta += 1000000;
+        secDelta -= 1;
       }
 
       while (usecDelta >= 1000000)
       {
-	usecDelta -= 1000000;
-	secDelta += 1;
+        usecDelta -= 1000000;
+        secDelta += 1;
       }
 
       if (secDelta > 0 || (secDelta == 0 && usecDelta > 0))
       {
-	struct timeval stall_time;
+        struct timeval stall_time;
 
-	stall_time.tv_usec = usecDelta;
-	stall_time.tv_sec = secDelta;
+        stall_time.tv_usec = usecDelta;
+        stall_time.tv_sec = secDelta;
 #ifdef WIN32
-	Sleep((stall_time.tv_sec * 1000L) + (stall_time.tv_usec / 1000L));
+        Sleep((stall_time.tv_sec * 1000L) + (stall_time.tv_usec / 1000L));
 #else
-	if (select(0, NULL, NULL, NULL, &stall_time) < 0 && errno != EINTR)
-	{
-	  perror("game_loop: select: stall");
-	  exit(1);
-	}
+        if (select(0, NULL, NULL, NULL, &stall_time) < 0 && errno != EINTR)
+        {
+          perror("game_loop: select: stall");
+          exit(1);
+        }
 #endif
       }
     }
@@ -1075,7 +1075,7 @@ void new_descriptor(int new_desc)
     bug("New_descriptor: last_desc is NULL, but first_desc is not! ...fixing");
     for (d = first_descriptor; d; d = d->next)
       if (!d->next)
-	last_descriptor = d;
+        last_descriptor = d;
   }
 
   LINK(dnew, first_descriptor, last_descriptor, next, prev);
@@ -1172,7 +1172,7 @@ void close_socket(DESCRIPTOR_DATA * dclose, bool force)
     else
     {
       bug("Close_socket: dclose->original without character %s",
-	   (dclose->original->name ? dclose->original->name : "unknown"));
+           (dclose->original->name ? dclose->original->name : "unknown"));
       dclose->character = dclose->original;
       dclose->original = NULL;
     }
@@ -1187,17 +1187,17 @@ void close_socket(DESCRIPTOR_DATA * dclose, bool force)
   {
     DESCRIPTOR_DATA *dp, *dn;
     bug("Close_socket: %s desc:%p != first_desc:%p and desc->prev = NULL!",
-	 ch ? ch->name : d->host, (void *)dclose, (void *)first_descriptor);
+         ch ? ch->name : d->host, (void *)dclose, (void *)first_descriptor);
     dp = NULL;
     for (d = first_descriptor; d; d = dn)
     {
       dn = d->next;
       if (d == dclose)
       {
-	bug("%s: %s desc:%p found, prev should be:%p, fixing.", __func__, ch ? ch->name : d->host, (void *)dclose,
-	     (void *)dp);
-	dclose->prev = dp;
-	break;
+        bug("%s: %s desc:%p found, prev should be:%p, fixing.", __func__, ch ? ch->name : d->host, (void *)dclose,
+             (void *)dp);
+        dclose->prev = dp;
+        break;
       }
       dp = d;
     }
@@ -1212,17 +1212,17 @@ void close_socket(DESCRIPTOR_DATA * dclose, bool force)
   {
     DESCRIPTOR_DATA *dp, *dn;
     bug("%s: %s desc:%p != last_desc:%p and desc->next = NULL!", __func__,
-	 ch ? ch->name : d->host, (void *)dclose, (void *)last_descriptor);
+         ch ? ch->name : d->host, (void *)dclose, (void *)last_descriptor);
     dn = NULL;
     for (d = last_descriptor; d; d = dp)
     {
       dp = d->prev;
       if (d == dclose)
       {
-	bug("%s: %s desc:%p found, next should be:%p, fixing.", __func__, ch ? ch->name : d->host, (void *)dclose,
-	     (void *)dn);
-	dclose->next = dn;
-	break;
+        bug("%s: %s desc:%p found, next should be:%p, fixing.", __func__, ch ? ch->name : d->host, (void *)dclose,
+             (void *)dn);
+        dclose->next = dn;
+        break;
       }
       dn = d;
     }
@@ -1240,9 +1240,9 @@ void close_socket(DESCRIPTOR_DATA * dclose, bool force)
     if (dclose->connected == CON_EDITING)
     {
       if (ch->last_cmd)
-	ch->last_cmd(ch, "");
+        ch->last_cmd(ch, "");
       else
-	stop_editing(ch);
+        stop_editing(ch);
       dclose->connected = CON_PLAYING;
     }
 
@@ -1317,7 +1317,7 @@ bool read_from_descriptor(DESCRIPTOR_DATA * d)
     {
       iStart += nRead;
       if (d->inbuf[iStart - 1] == '\n' || d->inbuf[iStart - 1] == '\r')
-	break;
+        break;
     }
     else if (nRead == 0)
     {
@@ -1386,18 +1386,18 @@ void read_from_buffer(DESCRIPTOR_DATA * d)
     if (d->inbuf[i] == (signed char)IAC)
       iac = 1;
     else if (iac == 1
-	     && (d->inbuf[i] == (signed char)DO || d->inbuf[i] == (signed char)DONT
-		  || d->inbuf[i] == (signed char)WILL))
+             && (d->inbuf[i] == (signed char)DO || d->inbuf[i] == (signed char)DONT
+                  || d->inbuf[i] == (signed char)WILL))
       iac = 2;
     else if (iac == 2)
     {
       iac = 0;
       if (d->inbuf[i] == (signed char)TELOPT_COMPRESS2)
       {
-	if (d->inbuf[i - 1] == (signed char)DO)
-	  compressStart(d);
-	else if (d->inbuf[i - 1] == (signed char)DONT)
-	  compressEnd(d);
+        if (d->inbuf[i - 1] == (signed char)DO)
+          compressStart(d);
+        else if (d->inbuf[i - 1] == (signed char)DONT)
+          compressEnd(d);
       }
     }
     else if (d->inbuf[i] == '\b' && k > 0)
@@ -1426,10 +1426,10 @@ void read_from_buffer(DESCRIPTOR_DATA * d)
     {
       if (++d->repeat >= 20)
       {
-/*		log_printf("%s input spamming!", d->host);
+/*              log_printf("%s input spamming!", d->host);
  */
-	write_to_descriptor(d, "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n", 0);
-	mudstrlcpy(d->incomm, "quit", MAX_INPUT_LENGTH);
+        write_to_descriptor(d, "\r\n*** PUT A LID ON IT!!! ***\r\nYou cannot enter the same command more than 20 consecutive times!\r\n", 0);
+        mudstrlcpy(d->incomm, "quit", MAX_INPUT_LENGTH);
       }
     }
   }
@@ -1475,11 +1475,11 @@ bool flush_buffer(DESCRIPTOR_DATA * d, bool fPrompt)
       buf[512] = '\0';
       if (d->character && d->character->name)
       {
-	if (d->original && d->original->name)
-	  snprintf(snoopbuf, MAX_INPUT_LENGTH, "%s (%s)", d->character->name, d->original->name);
-	else
-	  snprintf(snoopbuf, MAX_INPUT_LENGTH, "%s", d->character->name);
-	write_to_buffer(d->snoop_by, snoopbuf, 0);
+        if (d->original && d->original->name)
+          snprintf(snoopbuf, MAX_INPUT_LENGTH, "%s (%s)", d->character->name, d->original->name);
+        else
+          snprintf(snoopbuf, MAX_INPUT_LENGTH, "%s", d->character->name);
+        write_to_buffer(d->snoop_by, snoopbuf, 0);
       }
       write_to_buffer(d->snoop_by, "% ", 2);
       write_to_buffer(d->snoop_by, buf, 0);
@@ -1537,9 +1537,9 @@ bool flush_buffer(DESCRIPTOR_DATA * d, bool fPrompt)
        * Show original snooped names. -- Altrag 
        */
       if (d->original && d->original->name)
-	snprintf(buf, MAX_INPUT_LENGTH, "%s (%s)", d->character->name, d->original->name);
+        snprintf(buf, MAX_INPUT_LENGTH, "%s (%s)", d->character->name, d->original->name);
       else
-	snprintf(buf, MAX_INPUT_LENGTH, "%s", d->character->name);
+        snprintf(buf, MAX_INPUT_LENGTH, "%s", d->character->name);
       write_to_buffer(d->snoop_by, buf, 0);
     }
     write_to_buffer(d->snoop_by, "% ", 2);
@@ -1660,55 +1660,55 @@ bool write_to_descriptor(DESCRIPTOR_DATA * d, const char *txt, int length)
     while (d->mccp->out_compress->avail_in)
     {
       d->mccp->out_compress->avail_out =
-	COMPRESS_BUF_SIZE - (d->mccp->out_compress->next_out - d->mccp->out_compress_buf);
+        COMPRESS_BUF_SIZE - (d->mccp->out_compress->next_out - d->mccp->out_compress_buf);
 
       if (d->mccp->out_compress->avail_out)
       {
-	int status = deflate(d->mccp->out_compress, Z_SYNC_FLUSH);
+        int status = deflate(d->mccp->out_compress, Z_SYNC_FLUSH);
 
-	if (status != Z_OK)
-	  return FALSE;
+        if (status != Z_OK)
+          return FALSE;
       }
 
       len = d->mccp->out_compress->next_out - d->mccp->out_compress_buf;
       if (len > 0)
       {
-	for (iStart = 0; iStart < len; iStart += nWrite)
-	{
-	  nBlock = UMIN(len - iStart, 4096);
-	  nWrite = send(d->descriptor, d->mccp->out_compress_buf + iStart, nBlock, 0);
-	  if (nWrite == -1)
-	  {
-	    iErr = errno;
-	    if (iErr == EWOULDBLOCK)
-	    {
-	      /*
-	       * This is a SPAMMY little bug error. I would suggest
-	       * not using it, but I've included it in case. -Orion
-	       *
-	       perror("Write_to_descriptor: Send is blocking");
-	      */
-	      nWrite = 0;
-	      continue;
-	    }
-	    else
-	    {
-	      perror("Write_to_descriptor");
-	      return FALSE;
-	    }
-	  }
+        for (iStart = 0; iStart < len; iStart += nWrite)
+        {
+          nBlock = UMIN(len - iStart, 4096);
+          nWrite = send(d->descriptor, d->mccp->out_compress_buf + iStart, nBlock, 0);
+          if (nWrite == -1)
+          {
+            iErr = errno;
+            if (iErr == EWOULDBLOCK)
+            {
+              /*
+               * This is a SPAMMY little bug error. I would suggest
+               * not using it, but I've included it in case. -Orion
+               *
+               perror("Write_to_descriptor: Send is blocking");
+              */
+              nWrite = 0;
+              continue;
+            }
+            else
+            {
+              perror("Write_to_descriptor");
+              return FALSE;
+            }
+          }
 
-	  if (!nWrite)
-	    break;
-	}
+          if (!nWrite)
+            break;
+        }
 
-	if (!iStart)
-	  break;
+        if (!iStart)
+          break;
 
-	if (iStart < len)
-	  memmove(d->mccp->out_compress_buf, d->mccp->out_compress_buf + iStart, len - iStart);
+        if (iStart < len)
+          memmove(d->mccp->out_compress_buf, d->mccp->out_compress_buf + iStart, len - iStart);
 
-	d->mccp->out_compress->next_out = d->mccp->out_compress_buf + len - iStart;
+        d->mccp->out_compress->next_out = d->mccp->out_compress_buf + len - iStart;
       }
     }
     return TRUE;
@@ -1723,19 +1723,19 @@ bool write_to_descriptor(DESCRIPTOR_DATA * d, const char *txt, int length)
       iErr = errno;
       if (iErr == EWOULDBLOCK)
       {
-	/*
-	 * This is a SPAMMY little bug error. I would suggest
-	 * not using it, but I've included it in case. -Orion
-	 *
-	 perror("Write_to_descriptor: Send is blocking");
-	*/
-	nWrite = 0;
-	continue;
+        /*
+         * This is a SPAMMY little bug error. I would suggest
+         * not using it, but I've included it in case. -Orion
+         *
+         perror("Write_to_descriptor: Send is blocking");
+        */
+        nWrite = 0;
+        continue;
       }
       else
       {
-	perror("Write_to_descriptor");
-	return FALSE;
+        perror("Write_to_descriptor");
+        return FALSE;
       }
     }
   }
@@ -1767,19 +1767,19 @@ bool write_to_descriptor_old(int desc, const char *txt, int length)
       iErr = errno;
       if (iErr == EWOULDBLOCK)
       {
-	/*
-	 * This is a SPAMMY little bug error. I would suggest
-	 * not using it, but I've included it in case. -Orion
-	 *
-	 perror("Write_to_descriptor: Send is blocking");
-	*/
-	nWrite = 0;
-	continue;
+        /*
+         * This is a SPAMMY little bug error. I would suggest
+         * not using it, but I've included it in case. -Orion
+         *
+         perror("Write_to_descriptor: Send is blocking");
+        */
+        nWrite = 0;
+        continue;
       }
       else
       {
-	perror("Write_to_descriptor");
-	return FALSE;
+        perror("Write_to_descriptor");
+        return FALSE;
       }
     }
   }
@@ -1854,16 +1854,16 @@ void nanny_get_name(DESCRIPTOR_DATA * d, char *argument)
        */
       if (sysdata.DENY_NEW_PLAYERS == TRUE)
       {
-	write_to_buffer(d, "The mud is currently preparing for a reboot.\r\n", 0);
-	write_to_buffer(d, "New players are not accepted during this time.\r\n", 0);
-	write_to_buffer(d, "Please try again in a few minutes.\r\n", 0);
-	close_socket(d, FALSE);
+        write_to_buffer(d, "The mud is currently preparing for a reboot.\r\n", 0);
+        write_to_buffer(d, "New players are not accepted during this time.\r\n", 0);
+        write_to_buffer(d, "Please try again in a few minutes.\r\n", 0);
+        close_socket(d, FALSE);
       }
       write_to_buffer(d, "\r\nChoosing a name is one of the most important parts of this game...\r\n"
-		       "Make sure to pick a name appropriate to the character you are going\r\n"
-		       "to role play, and be sure that it suits a medieval theme.\r\n"
-		       "If the name you select is not acceptable, you will be asked to choose\r\n"
-		       "another one.\r\n\r\nPlease choose a name for your character: ", 0);
+                       "Make sure to pick a name appropriate to the character you are going\r\n"
+                       "to role play, and be sure that it suits a medieval theme.\r\n"
+                       "If the name you select is not acceptable, you will be asked to choose\r\n"
+                       "another one.\r\n\r\nPlease choose a name for your character: ", 0);
       d->newstate++;
       d->connected = CON_GET_NAME;
       return;
@@ -2091,8 +2091,8 @@ void nanny_confirm_new_name(DESCRIPTOR_DATA * d, char *argument)
   case 'y':
   case 'Y':
     snprintf(buf, MAX_STRING_LENGTH,
-	      "\r\nMake sure to use a password that won't be easily guessed by someone else."
-	      "\r\nPick a good password for %s: %s", ch->name, echo_off_str);
+              "\r\nMake sure to use a password that won't be easily guessed by someone else."
+              "\r\nPick a good password for %s: %s", ch->name, echo_off_str);
     write_to_buffer(d, buf, 0);
     d->connected = CON_GET_NEW_PASSWORD;
     break;
@@ -2196,14 +2196,14 @@ void nanny_get_new_sex(DESCRIPTOR_DATA * d, char *argument)
     {
       if (iClass > 0)
       {
-	if (strlen(buf) + strlen(class_table[iClass]->who_name) > 77)
-	{
-	  mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	  write_to_buffer(d, buf, 0);
-	  buf[0] = '\0';
-	}
-	else
-	  mudstrlcat(buf, " ", MAX_STRING_LENGTH);
+        if (strlen(buf) + strlen(class_table[iClass]->who_name) > 77)
+        {
+          mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
+          write_to_buffer(d, buf, 0);
+          buf[0] = '\0';
+        }
+        else
+          mudstrlcat(buf, " ", MAX_STRING_LENGTH);
       }
       mudstrlcat(buf, class_table[iClass]->who_name, MAX_STRING_LENGTH);
     }
@@ -2230,13 +2230,13 @@ void nanny_get_new_class(DESCRIPTOR_DATA * d, const char *argument)
     {
       if (class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0')
       {
-	if (toupper(argument[0]) == toupper(class_table[iClass]->who_name[0])
-	    && !str_prefix(argument, class_table[iClass]->who_name))
-	{
-	  do_help(ch, argument);
-	  write_to_buffer(d, "Please choose a class: ", 0);
-	  return;
-	}
+        if (toupper(argument[0]) == toupper(class_table[iClass]->who_name[0])
+            && !str_prefix(argument, class_table[iClass]->who_name))
+        {
+          do_help(ch, argument);
+          write_to_buffer(d, "Please choose a class: ", 0);
+          return;
+        }
       }
     }
     write_to_buffer(d, "No such help topic.  Please choose a class: ", 0);
@@ -2248,10 +2248,10 @@ void nanny_get_new_class(DESCRIPTOR_DATA * d, const char *argument)
     if (class_table[iClass]->who_name && class_table[iClass]->who_name[0] != '\0')
     {
       if (toupper(arg[0]) == toupper(class_table[iClass]->who_name[0])
-	  && !str_prefix(arg, class_table[iClass]->who_name))
+          && !str_prefix(arg, class_table[iClass]->who_name))
       {
-	ch->Class = iClass;
-	break;
+        ch->Class = iClass;
+        break;
       }
     }
   }
@@ -2276,20 +2276,20 @@ void nanny_get_new_class(DESCRIPTOR_DATA * d, const char *argument)
   for (iRace = 0; iRace < MAX_PC_RACE; iRace++)
   {
     if (iRace != RACE_VAMPIRE
-	&& race_table[iRace]->race_name && race_table[iRace]->race_name[0] != '\0'
-	&& !IS_SET(race_table[iRace]->class_restriction, 1 << ch->Class)
-	&& str_cmp(race_table[iRace]->race_name, "unused"))
+        && race_table[iRace]->race_name && race_table[iRace]->race_name[0] != '\0'
+        && !IS_SET(race_table[iRace]->class_restriction, 1 << ch->Class)
+        && str_cmp(race_table[iRace]->race_name, "unused"))
     {
       if (iRace > 0)
       {
-	if (strlen(buf) + strlen(race_table[iRace]->race_name) > 77)
-	{
-	  mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	  write_to_buffer(d, buf, 0);
-	  buf[0] = '\0';
-	}
-	else
-	  mudstrlcat(buf, " ", MAX_STRING_LENGTH);
+        if (strlen(buf) + strlen(race_table[iRace]->race_name) > 77)
+        {
+          mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
+          write_to_buffer(d, buf, 0);
+          buf[0] = '\0';
+        }
+        else
+          mudstrlcat(buf, " ", MAX_STRING_LENGTH);
       }
       mudstrlcat(buf, race_table[iRace]->race_name, MAX_STRING_LENGTH);
     }
@@ -2312,11 +2312,11 @@ void nanny_get_new_race(DESCRIPTOR_DATA * d, const char *argument)
     for (iRace = 0; iRace < MAX_PC_RACE; iRace++)
     {
       if (toupper(argument[0]) == toupper(race_table[iRace]->race_name[0])
-	  && !str_prefix(argument, race_table[iRace]->race_name))
+          && !str_prefix(argument, race_table[iRace]->race_name))
       {
-	do_help(ch, argument);
-	write_to_buffer(d, "Please choose a race: ", 0);
-	return;
+        do_help(ch, argument);
+        write_to_buffer(d, "Please choose a race: ", 0);
+        return;
       }
     }
     write_to_buffer(d, "No help on that topic.  Please choose a race: ", 0);
@@ -2327,7 +2327,7 @@ void nanny_get_new_race(DESCRIPTOR_DATA * d, const char *argument)
   for (iRace = 0; iRace < MAX_PC_RACE; iRace++)
   {
     if (toupper(arg[0]) == toupper(race_table[iRace]->race_name[0])
-	&& !str_prefix(arg, race_table[iRace]->race_name))
+        && !str_prefix(arg, race_table[iRace]->race_name))
     {
       ch->race = iRace;
       break;
@@ -2380,7 +2380,7 @@ void nanny_get_want_ripansi(DESCRIPTOR_DATA * d, const char *argument)
     return;
   }
   snprintf(log_buf, MAX_STRING_LENGTH, "%s@%s new %s %s.", ch->name, d->host,
-	    race_table[ch->race]->race_name, class_table[ch->Class]->who_name);
+            race_table[ch->race]->race_name, class_table[ch->Class]->who_name);
   log_string_plus(log_buf, LOG_COMM, sysdata.log_level);
   to_channel(log_buf, CHANNEL_MONITOR, "Monitor", LEVEL_IMMORTAL);
   write_to_buffer(d, "Press [ENTER] ", 0);
@@ -2504,13 +2504,13 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     {
       for (iLang = 0; lang_array[iLang] != LANG_UNKNOWN; iLang++)
       {
-	if (IS_SET(race_table[ch->race]->language, 1 << iLang))
-	{
-	  if ((uLang = skill_lookup(lang_names[iLang])) < 0)
-	    bug("%s: cannot find racial language [%s].", __func__, lang_names[iLang]);
-	  else
-	    ch->pcdata->learned[uLang] = 100;
-	}
+        if (IS_SET(race_table[ch->race]->language, 1 << iLang))
+        {
+          if ((uLang = skill_lookup(lang_names[iLang])) < 0)
+            bug("%s: cannot find racial language [%s].", __func__, lang_names[iLang]);
+          else
+            ch->pcdata->learned[uLang] = 100;
+        }
       }
     }
 
@@ -2558,9 +2558,9 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
       OBJ_INDEX_DATA *obj_ind = get_obj_index(10333);
       if (obj_ind != NULL)
       {
-	obj = create_object(obj_ind, 0);
-	obj_to_char(obj, ch);
-	equip_char(ch, obj, WEAR_HOLD);
+        obj = create_object(obj_ind, 0);
+        obj_to_char(obj, ch);
+        equip_char(ch, obj, WEAR_HOLD);
       }
     }
     if (!sysdata.WAIT_FOR_AUTH)
@@ -2763,9 +2763,9 @@ bool check_parse_name(const char *name, bool newchar)
     for (pc = name; *pc != '\0'; pc++)
     {
       if (!isalpha(*pc))
-	return FALSE;
+        return FALSE;
       if (LOWER(*pc) != 'i' && LOWER(*pc) != 'l')
-	fIll = FALSE;
+        fIll = FALSE;
     }
 
     if (fIll)
@@ -2793,44 +2793,44 @@ bool check_reconnect(DESCRIPTOR_DATA * d, const char *name, bool fConn)
     {
       if (fConn && ch->switched)
       {
-	write_to_buffer(d, "Already playing.\r\nName: ", 0);
-	d->connected = CON_GET_NAME;
-	if (d->character)
-	{
-	  /*
-	   * clear descriptor pointer to get rid of bug message in log 
-	   */
-	  d->character->desc = NULL;
-	  free_char(d->character);
-	  d->character = NULL;
-	}
-	return BERR;
+        write_to_buffer(d, "Already playing.\r\nName: ", 0);
+        d->connected = CON_GET_NAME;
+        if (d->character)
+        {
+          /*
+           * clear descriptor pointer to get rid of bug message in log 
+           */
+          d->character->desc = NULL;
+          free_char(d->character);
+          d->character = NULL;
+        }
+        return BERR;
       }
       if (fConn == FALSE)
       {
-	DISPOSE(d->character->pcdata->pwd);
-	d->character->pcdata->pwd = str_dup(ch->pcdata->pwd);
+        DISPOSE(d->character->pcdata->pwd);
+        d->character->pcdata->pwd = str_dup(ch->pcdata->pwd);
       }
       else
       {
-	/*
-	 * clear descriptor pointer to get rid of bug message in log 
-	 */
-	d->character->desc = NULL;
-	free_char(d->character);
-	d->character = ch;
-	ch->desc = d;
-	ch->timer = 0;
-	send_to_char("Reconnecting.\r\n", ch);
-	if (d->host)
-	  ch->pcdata->recent_site = STRALLOC(d->host);
-	rprog_login_trigger(ch);
-	mprog_login_trigger(ch);
-	act(AT_ACTION, "$n has reconnected.", ch, NULL, NULL, TO_CANSEE);
-	log_printf_plus(LOG_COMM, UMAX(sysdata.log_level, ch->level), "%s (%s) reconnected.", ch->name, d->host);
-	d->connected = CON_PLAYING;
-	do_look(ch, "auto");
-	check_loginmsg(ch);
+        /*
+         * clear descriptor pointer to get rid of bug message in log 
+         */
+        d->character->desc = NULL;
+        free_char(d->character);
+        d->character = ch;
+        ch->desc = d;
+        ch->timer = 0;
+        send_to_char("Reconnecting.\r\n", ch);
+        if (d->host)
+          ch->pcdata->recent_site = STRALLOC(d->host);
+        rprog_login_trigger(ch);
+        mprog_login_trigger(ch);
+        act(AT_ACTION, "$n has reconnected.", ch, NULL, NULL, TO_CANSEE);
+        log_printf_plus(LOG_COMM, UMAX(sysdata.log_level, ch->level), "%s (%s) reconnected.", ch->name, d->host);
+        d->connected = CON_PLAYING;
+        do_look(ch, "auto");
+        check_loginmsg(ch);
       }
       return TRUE;
     }
@@ -2850,19 +2850,19 @@ bool check_playing(DESCRIPTOR_DATA * d, const char *name, bool kick)
   for (dold = first_descriptor; dold; dold = dold->next)
   {
     if (dold != d
-	&& (dold->character || dold->original)
-	&& !str_cmp(name, dold->original ? dold->original->pcdata->filename : dold->character->pcdata->filename))
+        && (dold->character || dold->original)
+        && !str_cmp(name, dold->original ? dold->original->pcdata->filename : dold->character->pcdata->filename))
     {
       cstate = dold->connected;
       ch = dold->original ? dold->original : dold->character;
       if (!ch->name || (cstate != CON_PLAYING && cstate != CON_EDITING && cstate != CON_DELETE))
       {
-	write_to_buffer(d, "Already connected - try again.\r\n", 0);
-	log_printf_plus(LOG_COMM, sysdata.log_level, "%s already connected.", ch->pcdata->filename);
-	return BERR;
+        write_to_buffer(d, "Already connected - try again.\r\n", 0);
+        log_printf_plus(LOG_COMM, sysdata.log_level, "%s already connected.", ch->pcdata->filename);
+        return BERR;
       }
       if (!kick)
-	return TRUE;
+        return TRUE;
       write_to_buffer(d, "Already playing... Kicking off old connection.\r\n", 0);
       write_to_buffer(dold, "Kicking off old connection... bye!\r\n", 0);
       close_socket(dold, FALSE);
@@ -2875,18 +2875,18 @@ bool check_playing(DESCRIPTOR_DATA * d, const char *name, bool kick)
       ch->desc = d;
       ch->timer = 0;
       if (ch->switched)
-	do_return(ch->switched, "");
+        do_return(ch->switched, "");
       ch->switched = NULL;
       send_to_char("Reconnecting.\r\n", ch);
       if (d->host)
-	ch->pcdata->recent_site = STRALLOC(d->host);
+        ch->pcdata->recent_site = STRALLOC(d->host);
       rprog_login_trigger(ch);
       mprog_login_trigger(ch);
       do_look(ch, "auto");
       check_loginmsg(ch);
       act(AT_ACTION, "$n has reconnected, kicking off old link.", ch, NULL, NULL, TO_CANSEE);
       log_printf_plus(LOG_COMM, UMAX(sysdata.log_level, ch->level), "%s@%s reconnected, kicking off old link.",
-		       ch->pcdata->filename, d->host);
+                       ch->pcdata->filename, d->host);
       d->connected = cstate;
       return TRUE;
     }
@@ -2925,7 +2925,7 @@ void stop_idling(CHAR_DATA * ch)
  * the owner of the object.  (Ie: an object with the short description
  * "a long dark blade" would return "long dark blade" for use in a sentence
  * like "Your long dark blade".  The object name isn't always appropriate
- * since it contains keywords that may not look proper.		-Thoric
+ * since it contains keywords that may not look proper.         -Thoric
  */
 const char *myobj(OBJ_DATA * obj)
 {
@@ -3005,171 +3005,171 @@ char *act_string(const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void 
       switch (*str)
       {
       default:
-	bug("Act: bad code %c.", *str);
-	i = " <@@@> ";
-	break;
+        bug("Act: bad code %c.", *str);
+        i = " <@@@> ";
+        break;
 
       case 'd':
-	if (!arg2 || ((char *)arg2)[0] == '\0')
-	  i = "door";
-	else
-	{
-	  one_argument((char *)arg2, fname);
-	  i = fname;
-	}
-	break;
+        if (!arg2 || ((char *)arg2)[0] == '\0')
+          i = "door";
+        else
+        {
+          one_argument((char *)arg2, fname);
+          i = fname;
+        }
+        break;
 
       case 'e':
-	if (ch->sex > 2 || ch->sex < 0)
-	{
-	  bug("act_string: player %s has sex set at %d!", ch->name, ch->sex);
-	  i = should_upper ? "It" : "it";
-	}
-	else
-	  i = should_upper ?
-	    !can_see(to, ch) ? "It" : capitalize(he_she[URANGE(0, ch->sex, 2)]) :
-	    !can_see(to, ch) ? "it" : he_she[URANGE(0, ch->sex, 2)];
-	    break;
+        if (ch->sex > 2 || ch->sex < 0)
+        {
+          bug("act_string: player %s has sex set at %d!", ch->name, ch->sex);
+          i = should_upper ? "It" : "it";
+        }
+        else
+          i = should_upper ?
+            !can_see(to, ch) ? "It" : capitalize(he_she[URANGE(0, ch->sex, 2)]) :
+            !can_see(to, ch) ? "it" : he_she[URANGE(0, ch->sex, 2)];
+            break;
 
       case 'E':
-	if (vch->sex > 2 || vch->sex < 0)
-	{
-	  bug("act_string: player %s has sex set at %d!", vch->name, vch->sex);
-	  i = should_upper ? "It" : "it";
-	}
-	else
-	  i = should_upper ?
-	    !can_see(to, vch) ? "It" : capitalize(he_she[URANGE(0, vch->sex, 2)]) :
-	    !can_see(to, vch) ? "it" : he_she[URANGE(0, vch->sex, 2)];
-	    break;
+        if (vch->sex > 2 || vch->sex < 0)
+        {
+          bug("act_string: player %s has sex set at %d!", vch->name, vch->sex);
+          i = should_upper ? "It" : "it";
+        }
+        else
+          i = should_upper ?
+            !can_see(to, vch) ? "It" : capitalize(he_she[URANGE(0, vch->sex, 2)]) :
+            !can_see(to, vch) ? "it" : he_she[URANGE(0, vch->sex, 2)];
+            break;
 
       case 'm':
-	if (ch->sex > 2 || ch->sex < 0)
-	{
-	  bug("act_string: player %s has sex set at %d!", ch->name, ch->sex);
-	  i = should_upper ? "It" : "it";
-	}
-	else
-	  i = should_upper ?
-	    !can_see(to, ch) ? "It" : capitalize(him_her[URANGE(0, ch->sex, 2)]) :
-	    !can_see(to, ch) ? "it" : him_her[URANGE(0, ch->sex, 2)];
-	    break;
+        if (ch->sex > 2 || ch->sex < 0)
+        {
+          bug("act_string: player %s has sex set at %d!", ch->name, ch->sex);
+          i = should_upper ? "It" : "it";
+        }
+        else
+          i = should_upper ?
+            !can_see(to, ch) ? "It" : capitalize(him_her[URANGE(0, ch->sex, 2)]) :
+            !can_see(to, ch) ? "it" : him_her[URANGE(0, ch->sex, 2)];
+            break;
 
       case 'M':
-	if (vch->sex > 2 || vch->sex < 0)
-	{
-	  bug("act_string: player %s has sex set at %d!", vch->name, vch->sex);
-	  i = should_upper ? "It" : "it";
-	}
-	else
-	  i = should_upper ?
-	    !can_see(to, vch) ? "It" : capitalize(him_her[URANGE(0, vch->sex, 2)]) :
-	    !can_see(to, vch) ? "it" : him_her[URANGE(0, vch->sex, 2)];
-	    break;
+        if (vch->sex > 2 || vch->sex < 0)
+        {
+          bug("act_string: player %s has sex set at %d!", vch->name, vch->sex);
+          i = should_upper ? "It" : "it";
+        }
+        else
+          i = should_upper ?
+            !can_see(to, vch) ? "It" : capitalize(him_her[URANGE(0, vch->sex, 2)]) :
+            !can_see(to, vch) ? "it" : him_her[URANGE(0, vch->sex, 2)];
+            break;
 
       case 'n':
-	if (!can_see(to, ch))
-	  i = "Someone";
-	else
-	{
-	  snprintf(temp, sizeof(temp), "%s", (to ? PERS(ch, to) : NAME(ch)));
-	  i = temp;
-	}
-	break;
+        if (!can_see(to, ch))
+          i = "Someone";
+        else
+        {
+          snprintf(temp, sizeof(temp), "%s", (to ? PERS(ch, to) : NAME(ch)));
+          i = temp;
+        }
+        break;
 
       case 'N':
-	if (!can_see(to, vch))
-	  i = "Someone";
-	else
-	{
-	  snprintf(temp, sizeof(temp), "%s", (to ? PERS(vch, to) : NAME(vch)));
-	  i = temp;
-	}
-	break;
+        if (!can_see(to, vch))
+          i = "Someone";
+        else
+        {
+          snprintf(temp, sizeof(temp), "%s", (to ? PERS(vch, to) : NAME(vch)));
+          i = temp;
+        }
+        break;
 
       case 'p':
-	if (!to || can_see_obj(to, obj1))
-	{
-	  /*
-	   * Prevents act programs from triggering off note shorts 
-	   */
-	  if ((!to || IS_NPC(to)) && (obj1->item_type == ITEM_PAPER))
-	    i = obj1->pIndexData->short_descr;
-	  else
-	    i = obj_short(obj1);
-	}
-	else
-	  i = "something";
-	break;
+        if (!to || can_see_obj(to, obj1))
+        {
+          /*
+           * Prevents act programs from triggering off note shorts 
+           */
+          if ((!to || IS_NPC(to)) && (obj1->item_type == ITEM_PAPER))
+            i = obj1->pIndexData->short_descr;
+          else
+            i = obj_short(obj1);
+        }
+        else
+          i = "something";
+        break;
 
       case 'P':
-	if (!to || can_see_obj(to, obj2))
-	{
-	  /*
-	   * Prevents act programs from triggering off note shorts 
-	   */
-	  if ((!to || IS_NPC(to)) && (obj2->item_type == ITEM_PAPER))
-	    i = obj2->pIndexData->short_descr;
-	  else
-	    i = obj_short(obj2);
-	}
-	else
-	  i = "something";
-	break;
+        if (!to || can_see_obj(to, obj2))
+        {
+          /*
+           * Prevents act programs from triggering off note shorts 
+           */
+          if ((!to || IS_NPC(to)) && (obj2->item_type == ITEM_PAPER))
+            i = obj2->pIndexData->short_descr;
+          else
+            i = obj_short(obj2);
+        }
+        else
+          i = "something";
+        break;
 
       case 'q':
-	i = (to == ch) ? "" : "s";
-	break;
+        i = (to == ch) ? "" : "s";
+        break;
 
       case 'Q':
-	i = (to == ch) ? "your" : his_her[URANGE(0, ch->sex, 2)];
-	break;
+        i = (to == ch) ? "your" : his_her[URANGE(0, ch->sex, 2)];
+        break;
 
       case 's':
-	if (ch->sex > 2 || ch->sex < 0)
-	{
-	  bug("act_string: player %s has sex set at %d!", ch->name, ch->sex);
-	  i = should_upper ? "It" : "it";
-	}
-	else
-	  i = should_upper ? 
-	    !can_see(to, ch) ? "It" : capitalize(his_her[URANGE(0, ch->sex, 2)]) :
-	    !can_see(to, ch) ? "it" : his_her[URANGE(0, ch->sex, 2)];
-	    break;
+        if (ch->sex > 2 || ch->sex < 0)
+        {
+          bug("act_string: player %s has sex set at %d!", ch->name, ch->sex);
+          i = should_upper ? "It" : "it";
+        }
+        else
+          i = should_upper ? 
+            !can_see(to, ch) ? "It" : capitalize(his_her[URANGE(0, ch->sex, 2)]) :
+            !can_see(to, ch) ? "it" : his_her[URANGE(0, ch->sex, 2)];
+            break;
 
       case 'S':
-	if (vch->sex > 2 || vch->sex < 0)
-	{
-	  bug("act_string: player %s has sex set at %d!", vch->name, vch->sex);
-	  i = should_upper ? "It" : "it";
-	}
-	else
-	  i = should_upper ? 
-	    !can_see(to, vch) ? "It" : capitalize(his_her[URANGE(0, vch->sex, 2)]) :
-	    !can_see(to, vch) ? "it" : his_her[URANGE(0, vch->sex, 2)];
-	    break;
+        if (vch->sex > 2 || vch->sex < 0)
+        {
+          bug("act_string: player %s has sex set at %d!", vch->name, vch->sex);
+          i = should_upper ? "It" : "it";
+        }
+        else
+          i = should_upper ? 
+            !can_see(to, vch) ? "It" : capitalize(his_her[URANGE(0, vch->sex, 2)]) :
+            !can_see(to, vch) ? "it" : his_her[URANGE(0, vch->sex, 2)];
+            break;
 
       case 't':
-	/* bug fix - Edmond  i = (char *) arg1;         break; */
-	if (arg1)
-	  i = (char *) arg1;
-	else
-	{
-	  bug("Act: Bad variable $t");
-	  i = " <@@@> ";
-	}
-	break;
+        /* bug fix - Edmond  i = (char *) arg1;         break; */
+        if (arg1)
+          i = (char *) arg1;
+        else
+        {
+          bug("Act: Bad variable $t");
+          i = " <@@@> ";
+        }
+        break;
 
       case 'T':
-	/* same bug fix as above -  i = (char *) arg2;          break; */
-	if (arg2)
-	  i = (char *) arg2;
-	else
-	{
-	  bug("Act: Bad variable $T");
-	  i = " <@@@> ";
-	}
-	break;
+        /* same bug fix as above -  i = (char *) arg2;          break; */
+        if (arg2)
+          i = (char *) arg2;
+        else
+        {
+          bug("Act: Bad variable $T");
+          i = " <@@@> ";
+        }
+        break;
       }
     }
     ++str;
@@ -3186,21 +3186,21 @@ char *act_string(const char *format, CHAR_DATA * to, CHAR_DATA * ch, const void 
     {
       if (c == '&')
       {
-	//Color Code
-	c = *++astr;     //Read Color Code
-	if (c == '[')
-	{
-	  //Extended color code, skip until ']'
-	  do { c = *++astr; } while (c && c != ']');
-	}
+        //Color Code
+        c = *++astr;     //Read Color Code
+        if (c == '[')
+        {
+          //Extended color code, skip until ']'
+          do { c = *++astr; } while (c && c != ']');
+        }
 
-	if (!c)
-	  break;
+        if (!c)
+          break;
       }
       else if (bUppercase && isalpha(c))
       {
-	*astr = toupper(c);
-	bUppercase = false;
+        *astr = toupper(c);
+        bUppercase = false;
       }
     }
   }
@@ -3242,49 +3242,49 @@ void act(short AType, const char *format, CHAR_DATA * ch, const void *arg1, cons
     if (*str == '$')
     {
       if (!*++str)
-	break;
+        break;
       switch (*str)
       {
       default:
-	bug("%s: bad code %c for format %s.", __func__, *str, format);
-	break;
+        bug("%s: bad code %c for format %s.", __func__, *str, format);
+        break;
 
       case 't':
-	flags1 |= ACTF_TXT;
-	obj1 = NULL;
-	break;
+        flags1 |= ACTF_TXT;
+        obj1 = NULL;
+        break;
 
       case 'T':
       case 'd':
-	flags2 |= ACTF_TXT;
-	vch = NULL;
-	obj2 = NULL;
-	break;
+        flags2 |= ACTF_TXT;
+        vch = NULL;
+        obj2 = NULL;
+        break;
 
       case 'n':
       case 'e':
       case 'm':
       case 's':
       case 'q':
-	break;
+        break;
 
       case 'N':
       case 'E':
       case 'M':
       case 'S':
       case 'Q':
-	flags2 |= ACTF_CH;
-	obj2 = NULL;
-	break;
+        flags2 |= ACTF_CH;
+        obj2 = NULL;
+        break;
 
       case 'p':
-	flags1 |= ACTF_OBJ;
-	break;
+        flags1 |= ACTF_OBJ;
+        break;
 
       case 'P':
-	flags2 |= ACTF_OBJ;
-	vch = NULL;
-	break;
+        flags2 |= ACTF_OBJ;
+        vch = NULL;
+        break;
       }
     }
   }
@@ -3341,7 +3341,7 @@ void act(short AType, const char *format, CHAR_DATA * ch, const void *arg1, cons
       rprog_act_trigger(txt, to->in_room, ch, obj1, vch, obj2);
     for (to_obj = to->in_room->first_content; to_obj; to_obj = to_obj->next_content)
       if (HAS_PROG(to_obj->pIndexData, ACT_PROG))
-	oprog_act_trigger(txt, to_obj, ch, obj1, vch, obj2);
+        oprog_act_trigger(txt, to_obj, ch, obj1, vch, obj2);
   }
 
   /*
@@ -3362,8 +3362,8 @@ void act(short AType, const char *format, CHAR_DATA * ch, const void *arg1, cons
     if (type == TO_NOTVICT && (to == ch || to == vch))
       continue;
     if (type == TO_CANSEE && (to == ch
-			       || (!IS_NPC(ch) && (xIS_SET(ch->act, PLR_WIZINVIS)
-						    && (get_trust(to) < (ch->pcdata ? ch->pcdata->wizinvis : 0))))))
+                               || (!IS_NPC(ch) && (xIS_SET(ch->act, PLR_WIZINVIS)
+                                                    && (get_trust(to) < (ch->pcdata ? ch->pcdata->wizinvis : 0))))))
       continue;
 
     if (IS_IMMORTAL(to))
@@ -3610,270 +3610,270 @@ void display_prompt(DESCRIPTOR_DATA * d)
       switch (*prompt)
       {
       case '%':
-	*pbuf++ = '%';
-	*pbuf = '\0';
-	break;
+        *pbuf++ = '%';
+        *pbuf = '\0';
+        break;
 
       case 'a':
-	if (ch->level >= 10)
-	  pstat = ch->alignment;
-	else if (IS_GOOD(ch))
-	  mudstrlcpy(pbuf, "good", MAX_STRING_LENGTH);
-	else if (IS_EVIL(ch))
-	  mudstrlcpy(pbuf, "evil", MAX_STRING_LENGTH);
-	else
-	  mudstrlcpy(pbuf, "neutral", MAX_STRING_LENGTH);
-	break;
+        if (ch->level >= 10)
+          pstat = ch->alignment;
+        else if (IS_GOOD(ch))
+          mudstrlcpy(pbuf, "good", MAX_STRING_LENGTH);
+        else if (IS_EVIL(ch))
+          mudstrlcpy(pbuf, "evil", MAX_STRING_LENGTH);
+        else
+          mudstrlcpy(pbuf, "neutral", MAX_STRING_LENGTH);
+        break;
 
       case 'A':
-	snprintf(pbuf, MAX_STRING_LENGTH, "%s%s%s", IS_AFFECTED(ch, AFF_INVISIBLE) ? "I" : "",
-		  IS_AFFECTED(ch, AFF_HIDE) ? "H" : "", IS_AFFECTED(ch, AFF_SNEAK) ? "S" : "");
-	break;
+        snprintf(pbuf, MAX_STRING_LENGTH, "%s%s%s", IS_AFFECTED(ch, AFF_INVISIBLE) ? "I" : "",
+                  IS_AFFECTED(ch, AFF_HIDE) ? "H" : "", IS_AFFECTED(ch, AFF_SNEAK) ? "S" : "");
+        break;
 
       case 'C':  /* Tank */
-	if (!ch->fighting || (victim = ch->fighting->who) == NULL)
-	  mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
-	else if (!victim->fighting || (victim = victim->fighting->who) == NULL)
-	  mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
-	else
-	{
-	  if (victim->max_hit > 0)
-	    percent = (100 * victim->hit) / victim->max_hit;
-	  else
-	    percent = -1;
-	  if (percent >= 100)
-	    mudstrlcpy(pbuf, "perfect health", MAX_STRING_LENGTH);
-	  else if (percent >= 90)
-	    mudstrlcpy(pbuf, "slightly scratched", MAX_STRING_LENGTH);
-	  else if (percent >= 80)
-	    mudstrlcpy(pbuf, "few bruises", MAX_STRING_LENGTH);
-	  else if (percent >= 70)
-	    mudstrlcpy(pbuf, "some cuts", MAX_STRING_LENGTH);
-	  else if (percent >= 60)
-	    mudstrlcpy(pbuf, "several wounds", MAX_STRING_LENGTH);
-	  else if (percent >= 50)
-	    mudstrlcpy(pbuf, "nasty wounds", MAX_STRING_LENGTH);
-	  else if (percent >= 40)
-	    mudstrlcpy(pbuf, "bleeding freely", MAX_STRING_LENGTH);
-	  else if (percent >= 30)
-	    mudstrlcpy(pbuf, "covered in blood", MAX_STRING_LENGTH);
-	  else if (percent >= 20)
-	    mudstrlcpy(pbuf, "leaking guts", MAX_STRING_LENGTH);
-	  else if (percent >= 10)
-	    mudstrlcpy(pbuf, "almost dead", MAX_STRING_LENGTH);
-	  else
-	    mudstrlcpy(pbuf, "DYING", MAX_STRING_LENGTH);
-	}
-	break;
+        if (!ch->fighting || (victim = ch->fighting->who) == NULL)
+          mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+        else if (!victim->fighting || (victim = victim->fighting->who) == NULL)
+          mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+        else
+        {
+          if (victim->max_hit > 0)
+            percent = (100 * victim->hit) / victim->max_hit;
+          else
+            percent = -1;
+          if (percent >= 100)
+            mudstrlcpy(pbuf, "perfect health", MAX_STRING_LENGTH);
+          else if (percent >= 90)
+            mudstrlcpy(pbuf, "slightly scratched", MAX_STRING_LENGTH);
+          else if (percent >= 80)
+            mudstrlcpy(pbuf, "few bruises", MAX_STRING_LENGTH);
+          else if (percent >= 70)
+            mudstrlcpy(pbuf, "some cuts", MAX_STRING_LENGTH);
+          else if (percent >= 60)
+            mudstrlcpy(pbuf, "several wounds", MAX_STRING_LENGTH);
+          else if (percent >= 50)
+            mudstrlcpy(pbuf, "nasty wounds", MAX_STRING_LENGTH);
+          else if (percent >= 40)
+            mudstrlcpy(pbuf, "bleeding freely", MAX_STRING_LENGTH);
+          else if (percent >= 30)
+            mudstrlcpy(pbuf, "covered in blood", MAX_STRING_LENGTH);
+          else if (percent >= 20)
+            mudstrlcpy(pbuf, "leaking guts", MAX_STRING_LENGTH);
+          else if (percent >= 10)
+            mudstrlcpy(pbuf, "almost dead", MAX_STRING_LENGTH);
+          else
+            mudstrlcpy(pbuf, "DYING", MAX_STRING_LENGTH);
+        }
+        break;
 
       case 'c':
-	if (!ch->fighting || (victim = ch->fighting->who) == NULL)
-	  mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
-	else
-	{
-	  if (victim->max_hit > 0)
-	    percent = (100 * victim->hit) / victim->max_hit;
-	  else
-	    percent = -1;
-	  if (percent >= 100)
-	    mudstrlcpy(pbuf, "perfect health", MAX_STRING_LENGTH);
-	  else if (percent >= 90)
-	    mudstrlcpy(pbuf, "slightly scratched", MAX_STRING_LENGTH);
-	  else if (percent >= 80)
-	    mudstrlcpy(pbuf, "few bruises", MAX_STRING_LENGTH);
-	  else if (percent >= 70)
-	    mudstrlcpy(pbuf, "some cuts", MAX_STRING_LENGTH);
-	  else if (percent >= 60)
-	    mudstrlcpy(pbuf, "several wounds", MAX_STRING_LENGTH);
-	  else if (percent >= 50)
-	    mudstrlcpy(pbuf, "nasty wounds", MAX_STRING_LENGTH);
-	  else if (percent >= 40)
-	    mudstrlcpy(pbuf, "bleeding freely", MAX_STRING_LENGTH);
-	  else if (percent >= 30)
-	    mudstrlcpy(pbuf, "covered in blood", MAX_STRING_LENGTH);
-	  else if (percent >= 20)
-	    mudstrlcpy(pbuf, "leaking guts", MAX_STRING_LENGTH);
-	  else if (percent >= 10)
-	    mudstrlcpy(pbuf, "almost dead", MAX_STRING_LENGTH);
-	  else
-	    mudstrlcpy(pbuf, "DYING", MAX_STRING_LENGTH);
-	}
-	break;
+        if (!ch->fighting || (victim = ch->fighting->who) == NULL)
+          mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+        else
+        {
+          if (victim->max_hit > 0)
+            percent = (100 * victim->hit) / victim->max_hit;
+          else
+            percent = -1;
+          if (percent >= 100)
+            mudstrlcpy(pbuf, "perfect health", MAX_STRING_LENGTH);
+          else if (percent >= 90)
+            mudstrlcpy(pbuf, "slightly scratched", MAX_STRING_LENGTH);
+          else if (percent >= 80)
+            mudstrlcpy(pbuf, "few bruises", MAX_STRING_LENGTH);
+          else if (percent >= 70)
+            mudstrlcpy(pbuf, "some cuts", MAX_STRING_LENGTH);
+          else if (percent >= 60)
+            mudstrlcpy(pbuf, "several wounds", MAX_STRING_LENGTH);
+          else if (percent >= 50)
+            mudstrlcpy(pbuf, "nasty wounds", MAX_STRING_LENGTH);
+          else if (percent >= 40)
+            mudstrlcpy(pbuf, "bleeding freely", MAX_STRING_LENGTH);
+          else if (percent >= 30)
+            mudstrlcpy(pbuf, "covered in blood", MAX_STRING_LENGTH);
+          else if (percent >= 20)
+            mudstrlcpy(pbuf, "leaking guts", MAX_STRING_LENGTH);
+          else if (percent >= 10)
+            mudstrlcpy(pbuf, "almost dead", MAX_STRING_LENGTH);
+          else
+            mudstrlcpy(pbuf, "DYING", MAX_STRING_LENGTH);
+        }
+        break;
 
       case 'h':
-	pstat = ch->hit;
-	break;
+        pstat = ch->hit;
+        break;
 
       case 'H':
-	pstat = ch->max_hit;
-	break;
+        pstat = ch->max_hit;
+        break;
 
       case 'm':
-	if (IS_VAMPIRE(ch))
-	  pstat = 0;
-	else
-	  pstat = ch->mana;
-	break;
+        if (IS_VAMPIRE(ch))
+          pstat = 0;
+        else
+          pstat = ch->mana;
+        break;
 
       case 'M':
-	if (IS_VAMPIRE(ch))
-	  pstat = 0;
-	else
-	  pstat = ch->max_mana;
-	break;
+        if (IS_VAMPIRE(ch))
+          pstat = 0;
+        else
+          pstat = ch->max_mana;
+        break;
 
       case 'N':  /* Tank */
-	if (!ch->fighting || (victim = ch->fighting->who) == NULL)
-	  mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
-	else if (!victim->fighting || (victim = victim->fighting->who) == NULL)
-	  mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
-	else
-	{
-	  if (ch == victim)
-	    mudstrlcpy(pbuf, "You", MAX_STRING_LENGTH);
-	  else if (IS_NPC(victim))
-	    mudstrlcpy(pbuf, victim->short_descr, MAX_STRING_LENGTH);
-	  else
-	    mudstrlcpy(pbuf, victim->name, MAX_STRING_LENGTH);
-	  pbuf[0] = UPPER(pbuf[0]);
-	}
-	break;
+        if (!ch->fighting || (victim = ch->fighting->who) == NULL)
+          mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+        else if (!victim->fighting || (victim = victim->fighting->who) == NULL)
+          mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+        else
+        {
+          if (ch == victim)
+            mudstrlcpy(pbuf, "You", MAX_STRING_LENGTH);
+          else if (IS_NPC(victim))
+            mudstrlcpy(pbuf, victim->short_descr, MAX_STRING_LENGTH);
+          else
+            mudstrlcpy(pbuf, victim->name, MAX_STRING_LENGTH);
+          pbuf[0] = UPPER(pbuf[0]);
+        }
+        break;
 
       case 'n':
-	if (!ch->fighting || (victim = ch->fighting->who) == NULL)
-	  mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
-	else
-	{
-	  if (ch == victim)
-	    mudstrlcpy(pbuf, "You", MAX_STRING_LENGTH);
-	  else if (IS_NPC(victim))
-	    mudstrlcpy(pbuf, victim->short_descr, MAX_STRING_LENGTH);
-	  else
-	    mudstrlcpy(pbuf, victim->name, MAX_STRING_LENGTH);
-	  pbuf[0] = UPPER(pbuf[0]);
-	}
-	break;
+        if (!ch->fighting || (victim = ch->fighting->who) == NULL)
+          mudstrlcpy(pbuf, "N/A", MAX_STRING_LENGTH);
+        else
+        {
+          if (ch == victim)
+            mudstrlcpy(pbuf, "You", MAX_STRING_LENGTH);
+          else if (IS_NPC(victim))
+            mudstrlcpy(pbuf, victim->short_descr, MAX_STRING_LENGTH);
+          else
+            mudstrlcpy(pbuf, victim->name, MAX_STRING_LENGTH);
+          pbuf[0] = UPPER(pbuf[0]);
+        }
+        break;
 
       case 'T':
-	if (time_info.hour < 5)
-	  mudstrlcpy(pbuf, "night", MAX_STRING_LENGTH);
-	else if (time_info.hour < 6)
-	  mudstrlcpy(pbuf, "dawn", MAX_STRING_LENGTH);
-	else if (time_info.hour < 19)
-	  mudstrlcpy(pbuf, "day", MAX_STRING_LENGTH);
-	else if (time_info.hour < 21)
-	  mudstrlcpy(pbuf, "dusk", MAX_STRING_LENGTH);
-	else
-	  mudstrlcpy(pbuf, "night", MAX_STRING_LENGTH);
-	break;
+        if (time_info.hour < 5)
+          mudstrlcpy(pbuf, "night", MAX_STRING_LENGTH);
+        else if (time_info.hour < 6)
+          mudstrlcpy(pbuf, "dawn", MAX_STRING_LENGTH);
+        else if (time_info.hour < 19)
+          mudstrlcpy(pbuf, "day", MAX_STRING_LENGTH);
+        else if (time_info.hour < 21)
+          mudstrlcpy(pbuf, "dusk", MAX_STRING_LENGTH);
+        else
+          mudstrlcpy(pbuf, "night", MAX_STRING_LENGTH);
+        break;
 
       case 'b':
-	if (IS_VAMPIRE(ch))
-	  pstat = ch->pcdata->condition[COND_BLOODTHIRST];
-	else
-	  pstat = 0;
-	break;
+        if (IS_VAMPIRE(ch))
+          pstat = ch->pcdata->condition[COND_BLOODTHIRST];
+        else
+          pstat = 0;
+        break;
 
       case 'B':
-	if (IS_VAMPIRE(ch))
-	  pstat = ch->level + 10;
-	else
-	  pstat = 0;
-	break;
+        if (IS_VAMPIRE(ch))
+          pstat = ch->level + 10;
+        else
+          pstat = 0;
+        break;
 
       case 'u':
-	pstat = num_descriptors;
-	break;
+        pstat = num_descriptors;
+        break;
 
       case 'U':
-	pstat = sysdata.maxplayers;
-	break;
+        pstat = sysdata.maxplayers;
+        break;
 
       case 'v':
-	pstat = ch->move;
-	break;
+        pstat = ch->move;
+        break;
 
       case 'V':
-	pstat = ch->max_move;
-	break;
+        pstat = ch->max_move;
+        break;
 
       case 'g':
-	pstat = ch->gold;
-	break;
+        pstat = ch->gold;
+        break;
 
       case 'r':
-	if (IS_IMMORTAL(och))
-	  pstat = ch->in_room->vnum;
-	break;
+        if (IS_IMMORTAL(och))
+          pstat = ch->in_room->vnum;
+        break;
 
       case 'F':
-	if (IS_IMMORTAL(och))
-	  snprintf(pbuf, MAX_STRING_LENGTH, "%s", ext_flag_string(&ch->in_room->room_flags, r_flags));
-	break;
+        if (IS_IMMORTAL(och))
+          snprintf(pbuf, MAX_STRING_LENGTH, "%s", ext_flag_string(&ch->in_room->room_flags, r_flags));
+        break;
 
       case 'R':
-	if (xIS_SET(och->act, PLR_ROOMVNUM))
-	  snprintf(pbuf, MAX_STRING_LENGTH, "<#%d> ", ch->in_room->vnum);
-	break;
+        if (xIS_SET(och->act, PLR_ROOMVNUM))
+          snprintf(pbuf, MAX_STRING_LENGTH, "<#%d> ", ch->in_room->vnum);
+        break;
 
       case 'D': /*display DND status*/
-	if (IS_IMMORTAL(ch))
-	{
-	  if (IS_SET(ch->pcdata->flags, PCFLAG_DND))
-	    mudstrlcpy(pbuf, "DND", MAX_STRING_LENGTH);
-	}
-	break;
+        if (IS_IMMORTAL(ch))
+        {
+          if (IS_SET(ch->pcdata->flags, PCFLAG_DND))
+            mudstrlcpy(pbuf, "DND", MAX_STRING_LENGTH);
+        }
+        break;
 
       case 'x':
-	pstat = ch->exp;
-	break;
+        pstat = ch->exp;
+        break;
 
       case 'X':
-	pstat = exp_level(ch, ch->level + 1) - ch->exp;
-	break;
+        pstat = exp_level(ch, ch->level + 1) - ch->exp;
+        break;
 
       case 'w':
-	pstat = ch->carry_weight;
-	break;
+        pstat = ch->carry_weight;
+        break;
 
       case 'W':
-	pstat = can_carry_w(ch);
-	break;
+        pstat = can_carry_w(ch);
+        break;
 
       case 'o':  /* display name of object on auction */
-	if (auction->item)
-	  mudstrlcpy(pbuf, auction->item->name, MAX_STRING_LENGTH);
-	break;
+        if (auction->item)
+          mudstrlcpy(pbuf, auction->item->name, MAX_STRING_LENGTH);
+        break;
 
       case 'S':
-	if (ch->style == STYLE_BERSERK)
-	  mudstrlcpy(pbuf, "B", MAX_STRING_LENGTH);
-	else if (ch->style == STYLE_AGGRESSIVE)
-	  mudstrlcpy(pbuf, "A", MAX_STRING_LENGTH);
-	else if (ch->style == STYLE_DEFENSIVE)
-	  mudstrlcpy(pbuf, "D", MAX_STRING_LENGTH);
-	else if (ch->style == STYLE_EVASIVE)
-	  mudstrlcpy(pbuf, "E", MAX_STRING_LENGTH);
-	else
-	  mudstrlcpy(pbuf, "S", MAX_STRING_LENGTH);
-	break;
+        if (ch->style == STYLE_BERSERK)
+          mudstrlcpy(pbuf, "B", MAX_STRING_LENGTH);
+        else if (ch->style == STYLE_AGGRESSIVE)
+          mudstrlcpy(pbuf, "A", MAX_STRING_LENGTH);
+        else if (ch->style == STYLE_DEFENSIVE)
+          mudstrlcpy(pbuf, "D", MAX_STRING_LENGTH);
+        else if (ch->style == STYLE_EVASIVE)
+          mudstrlcpy(pbuf, "E", MAX_STRING_LENGTH);
+        else
+          mudstrlcpy(pbuf, "S", MAX_STRING_LENGTH);
+        break;
 
       case 'i':
-	if ((!IS_NPC(ch) && xIS_SET(ch->act, PLR_WIZINVIS)) ||
-	    (IS_NPC(ch) && xIS_SET(ch->act, ACT_MOBINVIS)))
-	  snprintf(pbuf, MAX_STRING_LENGTH, "(Invis %d) ",
-		    (IS_NPC(ch) ? ch->mobinvis : ch->pcdata->wizinvis));
-	else if (IS_AFFECTED(ch, AFF_INVISIBLE))
-	  mudstrlcpy(pbuf, "(Invis) ", MAX_STRING_LENGTH);
-	break;
+        if ((!IS_NPC(ch) && xIS_SET(ch->act, PLR_WIZINVIS)) ||
+            (IS_NPC(ch) && xIS_SET(ch->act, ACT_MOBINVIS)))
+          snprintf(pbuf, MAX_STRING_LENGTH, "(Invis %d) ",
+                    (IS_NPC(ch) ? ch->mobinvis : ch->pcdata->wizinvis));
+        else if (IS_AFFECTED(ch, AFF_INVISIBLE))
+          mudstrlcpy(pbuf, "(Invis) ", MAX_STRING_LENGTH);
+        break;
 
       case 'I':
-	pstat = (IS_NPC(ch) ? (xIS_SET(ch->act, ACT_MOBINVIS) ? ch->mobinvis : 0)
-		  : (xIS_SET(ch->act, PLR_WIZINVIS) ? ch->pcdata->wizinvis : 0));
-	break;
+        pstat = (IS_NPC(ch) ? (xIS_SET(ch->act, ACT_MOBINVIS) ? ch->mobinvis : 0)
+                  : (xIS_SET(ch->act, PLR_WIZINVIS) ? ch->pcdata->wizinvis : 0));
+        break;
       }
       if (pstat != 0x80000000)
-	snprintf(pbuf, MAX_STRING_LENGTH - strlen (buf), "%u", pstat);
+        snprintf(pbuf, MAX_STRING_LENGTH - strlen (buf), "%u", pstat);
       pbuf += strlen(pbuf);
       break;
     }

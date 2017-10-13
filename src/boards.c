@@ -200,7 +200,7 @@ void write_boards_txt(void)
     fprintf(fpout, "Min_post_level    %d\n", tboard->min_post_level);
     fprintf(fpout, "Min_remove_level  %d\n", tboard->min_remove_level);
     fprintf(fpout, "Max_posts         %d\n", tboard->max_posts);
-    fprintf(fpout, "Type 	           %d\n", tboard->type);
+    fprintf(fpout, "Type                   %d\n", tboard->type);
     fprintf(fpout, "Read_group        %s~\n", tboard->read_group);
     fprintf(fpout, "Post_group        %s~\n", tboard->post_group);
     fprintf(fpout, "Extra_readers     %s~\n", tboard->extra_readers);
@@ -208,19 +208,19 @@ void write_boards_txt(void)
     fprintf(fpout, "Extra_ballots     %s~\n", tboard->extra_ballots);
     fprintf(fpout, "Ballot_level      %d\n", tboard->min_ballot_level);
     if (tboard->ocopymessg)
-      fprintf(fpout, "OCopymessg	   %s~\n", tboard->ocopymessg);
+      fprintf(fpout, "OCopymessg           %s~\n", tboard->ocopymessg);
     if (tboard->olistmessg)
-      fprintf(fpout, "OListmessg	   %s~\n", tboard->olistmessg);
+      fprintf(fpout, "OListmessg           %s~\n", tboard->olistmessg);
     if (tboard->opostmessg)
-      fprintf(fpout, "OPostmessg	   %s~\n", tboard->opostmessg);
+      fprintf(fpout, "OPostmessg           %s~\n", tboard->opostmessg);
     if (tboard->oreadmessg)
-      fprintf(fpout, "OReadmessg	   %s~\n", tboard->oreadmessg);
+      fprintf(fpout, "OReadmessg           %s~\n", tboard->oreadmessg);
     if (tboard->oremovemessg)
       fprintf(fpout, "ORemovemessg      %s~\n", tboard->oremovemessg);
     if (tboard->otakemessg)
-      fprintf(fpout, "OTakemessg	   %s~\n", tboard->otakemessg);
+      fprintf(fpout, "OTakemessg           %s~\n", tboard->otakemessg);
     if (tboard->postmessg)
-      fprintf(fpout, "Postmessg	   %s~\n", tboard->postmessg);
+      fprintf(fpout, "Postmessg    %s~\n", tboard->postmessg);
     fprintf(fpout, "End\n");
   }
   fclose(fpout);
@@ -306,9 +306,9 @@ void write_board(BOARD_DATA * board)
     for (pnote = board->first_note; pnote; pnote = pnote->next)
     {
       fprintf(fp,
-	       "Sender  %s~\nDate    %s~\nTo      %s~\nSubject %s~\nVoting %d\nYesvotes %s~\nNovotes %s~\nAbstentions %s~\nYestally %d\nNotally %d\nAbstaintally %d\nNoremove %d\nText\n%s~\n\n",
-	       pnote->sender, pnote->date, pnote->to_list, pnote->subject, pnote->voting, pnote->yesvotes, pnote->novotes,
-	       pnote->abstentions, pnote->yestally, pnote->notally, pnote->abstaintally, pnote->no_remove, pnote->text);
+               "Sender  %s~\nDate    %s~\nTo      %s~\nSubject %s~\nVoting %d\nYesvotes %s~\nNovotes %s~\nAbstentions %s~\nYestally %d\nNotally %d\nAbstaintally %d\nNoremove %d\nText\n%s~\n\n",
+               pnote->sender, pnote->date, pnote->to_list, pnote->subject, pnote->voting, pnote->yesvotes, pnote->novotes,
+               pnote->abstentions, pnote->yestally, pnote->notally, pnote->abstaintally, pnote->no_remove, pnote->text);
     }
     fclose(fp);
     fp = NULL;
@@ -526,14 +526,14 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (IS_MAIL)
       {
-	send_to_char("You cannot use a list number (at this time) with mail.\r\n", ch);
-	return;
+        send_to_char("You cannot use a list number (at this time) with mail.\r\n", ch);
+        return;
       }
 
       if (first_list < 1)
       {
-	send_to_char("You can't read a note before 1!\r\n", ch);
-	return;
+        send_to_char("You can't read a note before 1!\r\n", ch);
+        return;
       }
     }
 
@@ -543,21 +543,21 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       vnum = 0;
       for (pnote = board->first_note; pnote; pnote = pnote->next)
       {
-	vnum++;
+        vnum++;
 
-	if ((first_list && vnum >= first_list) || !first_list)
-	  pager_printf(ch, "%2d%c %-12s%c %-24s : %-35s\n\r",
-			vnum,
-			is_note_to(ch, pnote) ? ')' : '}',
-			pnote->sender,
-			(pnote->voting != VOTE_NONE) ?
-			((pnote->voting > VOTE_BCLOSED) ?
-			  ((pnote->voting == VOTE_OPEN) ? 'V' : 'B') : 'C') : ':', pnote->date, pnote->subject);
+        if ((first_list && vnum >= first_list) || !first_list)
+          pager_printf(ch, "%2d%c %-12s%c %-24s : %-35s\n\r",
+                        vnum,
+                        is_note_to(ch, pnote) ? ')' : '}',
+                        pnote->sender,
+                        (pnote->voting != VOTE_NONE) ?
+                        ((pnote->voting > VOTE_BCLOSED) ?
+                          ((pnote->voting == VOTE_OPEN) ? 'V' : 'B') : 'C') : ':', pnote->date, pnote->subject);
       }
       if (board->olistmessg)
-	act(AT_ACTION, board->olistmessg, ch, NULL, NULL, TO_CANSEE);
+        act(AT_ACTION, board->olistmessg, ch, NULL, NULL, TO_CANSEE);
       else
-	act(AT_ACTION, "$n glances over the notes.", ch, NULL, NULL, TO_CANSEE);
+        act(AT_ACTION, "$n glances over the notes.", ch, NULL, NULL, TO_CANSEE);
       return;
     }
     else
@@ -566,21 +566,21 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
 
       if (IS_MAIL)  /* SB Mail check for Brit */
       {
-	for (pnote = board->first_note; pnote; pnote = pnote->next)
-	  if (is_note_to(ch, pnote))
-	    mfound = TRUE;
+        for (pnote = board->first_note; pnote; pnote = pnote->next)
+          if (is_note_to(ch, pnote))
+            mfound = TRUE;
 
-	if (!mfound && get_trust(ch) < sysdata.read_all_mail)
-	{
-	  ch_printf(ch, "You have no mail.\r\n");
-	  return;
-	}
+        if (!mfound && get_trust(ch) < sysdata.read_all_mail)
+        {
+          ch_printf(ch, "You have no mail.\r\n");
+          return;
+        }
       }
 
       for (pnote = board->first_note; pnote; pnote = pnote->next)
-	if (is_note_to(ch, pnote) || get_trust(ch) >= sysdata.read_all_mail)
-	  ch_printf(ch, "%2d%c %-12s: %-13s : %s\r\n",
-		     ++vnum, is_note_to(ch, pnote) ? '-' : '}', pnote->sender, pnote->subject, pnote->text);
+        if (is_note_to(ch, pnote) || get_trust(ch) >= sysdata.read_all_mail)
+          ch_printf(ch, "%2d%c %-12s: %-13s : %s\r\n",
+                     ++vnum, is_note_to(ch, pnote) ? '-' : '}', pnote->sender, pnote->subject, pnote->text);
       return;
     }
   }
@@ -617,14 +617,14 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (IS_MAIL)
       {
-	send_to_char("You cannot use a list number (at this time) with mail.\r\n", ch);
-	return;
+        send_to_char("You cannot use a list number (at this time) with mail.\r\n", ch);
+        return;
       }
 
       if (first_list < 1)
       {
-	send_to_char("You can't read a note before 1!\r\n", ch);
-	return;
+        send_to_char("You can't read a note before 1!\r\n", ch);
+        return;
       }
     }
 
@@ -635,27 +635,27 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       anum = 0;
       for (pnote = board->first_note; pnote; pnote = pnote->next)
       {
-	vnum++;
-	if ((first_list && vnum >= first_list)
-	    || (name_list && !str_cmp(arg, pnote->sender)) || (!name_list && !first_list))
-	{
-	  pager_printf(ch, "%2d%c %-12s%c %-12.12s : %s\r\n",
-			vnum,
-			is_note_to(ch, pnote) ? ')' : '}',
-			pnote->sender,
-			(pnote->voting != VOTE_NONE) ?
-			((pnote->voting > VOTE_BCLOSED) ?
-			  ((pnote->voting == VOTE_OPEN) ? 'V' : 'B')
-			  : 'C') : ':', pnote->to_list, pnote->subject);
-	  anum++;
-	}
+        vnum++;
+        if ((first_list && vnum >= first_list)
+            || (name_list && !str_cmp(arg, pnote->sender)) || (!name_list && !first_list))
+        {
+          pager_printf(ch, "%2d%c %-12s%c %-12.12s : %s\r\n",
+                        vnum,
+                        is_note_to(ch, pnote) ? ')' : '}',
+                        pnote->sender,
+                        (pnote->voting != VOTE_NONE) ?
+                        ((pnote->voting > VOTE_BCLOSED) ?
+                          ((pnote->voting == VOTE_OPEN) ? 'V' : 'B')
+                          : 'C') : ':', pnote->to_list, pnote->subject);
+          anum++;
+        }
       }
       if (anum == 0 && name_list)
-	pager_printf(ch, "There are no notes posted by %s.\n\r", capitalize(arg));
+        pager_printf(ch, "There are no notes posted by %s.\n\r", capitalize(arg));
       if (board->olistmessg)
-	act(AT_ACTION, board->olistmessg, ch, NULL, NULL, TO_CANSEE);
+        act(AT_ACTION, board->olistmessg, ch, NULL, NULL, TO_CANSEE);
       else
-	act(AT_ACTION, "$n glances over the notes.", ch, NULL, NULL, TO_CANSEE);
+        act(AT_ACTION, "$n glances over the notes.", ch, NULL, NULL, TO_CANSEE);
       return;
     }
     else
@@ -664,23 +664,23 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
 
       if (IS_MAIL)  /* SB Mail check for Brit */
       {
-	for (pnote = board->first_note; pnote; pnote = pnote->next)
-	  if (is_note_to(ch, pnote))
-	    mfound = TRUE;
+        for (pnote = board->first_note; pnote; pnote = pnote->next)
+          if (is_note_to(ch, pnote))
+            mfound = TRUE;
 
-	if (!mfound && get_trust(ch) < sysdata.read_all_mail)
-	{
-	  ch_printf(ch, "You have no mail.\r\n");
-	  return;
-	}
+        if (!mfound && get_trust(ch) < sysdata.read_all_mail)
+        {
+          ch_printf(ch, "You have no mail.\r\n");
+          return;
+        }
       }
 
       for (pnote = board->first_note; pnote; pnote = pnote->next)
-	if (is_note_to(ch, pnote) || (!mine && get_trust(ch) >= sysdata.read_all_mail))
-	  ch_printf(ch, "%2d%c %s: %s\n\r",
-		     ++vnum, is_note_to(ch, pnote) ? '-' : '}', pnote->sender, pnote->subject);
-	else if (mine && get_trust(ch) >= sysdata.read_all_mail)
-	  vnum++;
+        if (is_note_to(ch, pnote) || (!mine && get_trust(ch) >= sysdata.read_all_mail))
+          ch_printf(ch, "%2d%c %s: %s\n\r",
+                     ++vnum, is_note_to(ch, pnote) ? '-' : '}', pnote->sender, pnote->subject);
+        else if (mine && get_trust(ch) >= sysdata.read_all_mail)
+          vnum++;
       return;
     }
   }
@@ -723,31 +723,31 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       vnum = 0;
       for (pnote = board->first_note; pnote; pnote = pnote->next)
       {
-	vnum++;
-	if (vnum == anum || fAll)
-	{
-	  pager_printf(ch, "[%3d] %s: %s\r\n%s\r\nTo: %s\r\n%s",
-			vnum, pnote->sender, pnote->subject, pnote->date, pnote->to_list, pnote->text);
+        vnum++;
+        if (vnum == anum || fAll)
+        {
+          pager_printf(ch, "[%3d] %s: %s\r\n%s\r\nTo: %s\r\n%s",
+                        vnum, pnote->sender, pnote->subject, pnote->date, pnote->to_list, pnote->text);
 
-	  if (pnote->yesvotes[0] != '\0' || pnote->novotes[0] != '\0' || pnote->abstentions[0] != '\0')
-	  {
-	    send_to_pager("------------------------------------------------------------\r\n", ch);
-	    if (pnote->voting == VOTE_OPEN ||
-		pnote->voting == VOTE_CLOSED ||
-		get_trust(ch) >= board->min_ballot_level ||
-		(board->extra_ballots[0] != '\0' && is_name(ch->name, board->extra_ballots)))
-	      pager_printf(ch, "Votes:\r\nYes:  %s\r\nNo:  %s\r\nAbstain: %s\r\n", pnote->yesvotes, pnote->novotes,
-			    pnote->abstentions);
-	    else
-	      pager_printf(ch, "Votes:\r\nYes:  %d\r\nNo:  %d\r\nAbstain: %d\r\n", pnote->yestally, pnote->notally,
-			    pnote->abstaintally);
-	  }
-	  if (board->oreadmessg)
-	    act(AT_ACTION, board->oreadmessg, ch, NULL, NULL, TO_CANSEE);
-	  else
-	    act(AT_ACTION, "$n reads a note.", ch, NULL, NULL, TO_CANSEE);
-	  return;
-	}
+          if (pnote->yesvotes[0] != '\0' || pnote->novotes[0] != '\0' || pnote->abstentions[0] != '\0')
+          {
+            send_to_pager("------------------------------------------------------------\r\n", ch);
+            if (pnote->voting == VOTE_OPEN ||
+                pnote->voting == VOTE_CLOSED ||
+                get_trust(ch) >= board->min_ballot_level ||
+                (board->extra_ballots[0] != '\0' && is_name(ch->name, board->extra_ballots)))
+              pager_printf(ch, "Votes:\r\nYes:  %s\r\nNo:  %s\r\nAbstain: %s\r\n", pnote->yesvotes, pnote->novotes,
+                            pnote->abstentions);
+            else
+              pager_printf(ch, "Votes:\r\nYes:  %d\r\nNo:  %d\r\nAbstain: %d\r\n", pnote->yestally, pnote->notally,
+                            pnote->abstaintally);
+          }
+          if (board->oreadmessg)
+            act(AT_ACTION, board->oreadmessg, ch, NULL, NULL, TO_CANSEE);
+          else
+            act(AT_ACTION, "$n reads a note.", ch, NULL, NULL, TO_CANSEE);
+          return;
+        }
       }
       send_to_char("No such note.\r\n", ch);
       return;
@@ -757,23 +757,23 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       vnum = 0;
       for (pnote = board->first_note; pnote; pnote = pnote->next)
       {
-	if (is_note_to(ch, pnote) || get_trust(ch) >= sysdata.read_all_mail)
-	{
-	  vnum++;
-	  if (vnum == anum || fAll)
-	  {
-	    if (ch->gold < 10 && get_trust(ch) < sysdata.read_mail_free)
-	    {
-	      send_to_char("It costs 10 gold coins to read a message.\r\n", ch);
-	      return;
-	    }
-	    if (get_trust(ch) < sysdata.read_mail_free)
-	      ch->gold -= 10;
-	    pager_printf(ch, "[%3d] %s: %s\r\n%s\r\nTo: %s\r\n%s",
-			  vnum, pnote->sender, pnote->subject, pnote->date, pnote->to_list, pnote->text);
-	    return;
-	  }
-	}
+        if (is_note_to(ch, pnote) || get_trust(ch) >= sysdata.read_all_mail)
+        {
+          vnum++;
+          if (vnum == anum || fAll)
+          {
+            if (ch->gold < 10 && get_trust(ch) < sysdata.read_mail_free)
+            {
+              send_to_char("It costs 10 gold coins to read a message.\r\n", ch);
+              return;
+            }
+            if (get_trust(ch) < sysdata.read_mail_free)
+              ch->gold -= 10;
+            pager_printf(ch, "[%3d] %s: %s\r\n%s\r\nTo: %s\r\n%s",
+                          vnum, pnote->sender, pnote->subject, pnote->date, pnote->to_list, pnote->text);
+            return;
+          }
+        }
       }
       send_to_char("No such message.\r\n", ch);
       return;
@@ -879,14 +879,14 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (str_cmp(ch->name, pnote->sender) && get_trust(ch) < LEVEL_GREATER)
       {
-	send_to_char("You are not the author of this note.\r\n", ch);
-	return;
+        send_to_char("You are not the author of this note.\r\n", ch);
+        return;
       }
 
       if (pnote->voting)
       {
-	send_to_char("This note has already been made a vote.\r\n", ch);
-	return;
+        send_to_char("This note has already been made a vote.\r\n", ch);
+        return;
       }
 
       pnote->voting = VOTE_OPEN;
@@ -900,14 +900,14 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (str_cmp(ch->name, pnote->sender) && get_trust(ch) < LEVEL_GREATER)
       {
-	send_to_char("You are not the author of this note.\r\n", ch);
-	return;
+        send_to_char("You are not the author of this note.\r\n", ch);
+        return;
       }
 
       if (pnote->voting)
       {
-	send_to_char("This note has already been made a vote.\r\n", ch);
-	return;
+        send_to_char("This note has already been made a vote.\r\n", ch);
+        return;
       }
 
       pnote->voting = VOTE_BALLOT;
@@ -921,8 +921,8 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (str_cmp(ch->name, pnote->sender))
       {
-	send_to_char("You are not the author of this note.\r\n", ch);
-	return;
+        send_to_char("You are not the author of this note.\r\n", ch);
+        return;
       }
 
       pnote->voting = (pnote->voting == VOTE_BALLOT ? VOTE_BCLOSED : VOTE_CLOSED);
@@ -1002,13 +1002,13 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       quill = find_quill(ch);
       if (!quill)
       {
-	send_to_char("You need a quill to write a note.\r\n", ch);
-	return;
+        send_to_char("You need a quill to write a note.\r\n", ch);
+        return;
       }
       if (quill->value[0] < 1)
       {
-	send_to_char("Your quill is dry.\r\n", ch);
-	return;
+        send_to_char("Your quill is dry.\r\n", ch);
+        return;
       }
     }
 
@@ -1016,12 +1016,12 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (get_trust(ch) < sysdata.write_mail_free)
       {
-	send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
-	return;
+        send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
+        return;
       }
       paper = create_object(get_obj_index(OBJ_VNUM_NOTE), 0);
       if ((tmpobj = get_eq_char(ch, WEAR_HOLD)) != NULL)
-	unequip_char(ch, tmpobj);
+        unequip_char(ch, tmpobj);
       paper = obj_to_char(paper, ch);
       equip_char(ch, paper, WEAR_HOLD);
       act(AT_MAGIC, "A piece of parchment magically appears in $n's hands!", ch, NULL, NULL, TO_CANSEE);
@@ -1035,7 +1035,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       ch->substate = SUB_WRITING_NOTE;
       ch->dest_buf = ed;
       if (get_trust(ch) < sysdata.write_mail_free)
-	--quill->value[0];
+        --quill->value[0];
       start_editing(ch, ed->description);
       return;
     }
@@ -1053,13 +1053,13 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       quill = find_quill(ch);
       if (!quill)
       {
-	send_to_char("You need a quill to write a note.\r\n", ch);
-	return;
+        send_to_char("You need a quill to write a note.\r\n", ch);
+        return;
       }
       if (quill->value[0] < 1)
       {
-	send_to_char("Your quill is dry.\r\n", ch);
-	return;
+        send_to_char("Your quill is dry.\r\n", ch);
+        return;
       }
     }
 
@@ -1073,12 +1073,12 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (get_trust(ch) < sysdata.write_mail_free)
       {
-	send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
-	return;
+        send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
+        return;
       }
       paper = create_object(get_obj_index(OBJ_VNUM_NOTE), 0);
       if ((tmpobj = get_eq_char(ch, WEAR_HOLD)) != NULL)
-	unequip_char(ch, tmpobj);
+        unequip_char(ch, tmpobj);
       paper = obj_to_char(paper, ch);
       equip_char(ch, paper, WEAR_HOLD);
       act(AT_MAGIC, "A piece of parchment magically appears in $n's hands!", ch, NULL, NULL, TO_CANSEE);
@@ -1104,7 +1104,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
   if (!str_cmp(arg, "to"))
   {
     struct stat fst;
-/*	char *pn;*/
+/*      char *pn;*/
     char fname[1024];
 
     if (get_trust(ch) < sysdata.write_mail_free)
@@ -1112,13 +1112,13 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       quill = find_quill(ch);
       if (!quill)
       {
-	send_to_char("You need a quill to write a note.\r\n", ch);
-	return;
+        send_to_char("You need a quill to write a note.\r\n", ch);
+        return;
       }
       if (quill->value[0] < 1)
       {
-	send_to_char("Your quill is dry.\r\n", ch);
-	return;
+        send_to_char("Your quill is dry.\r\n", ch);
+        return;
       }
     }
 
@@ -1132,12 +1132,12 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (get_trust(ch) < sysdata.write_mail_free)
       {
-	send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
-	return;
+        send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
+        return;
       }
       paper = create_object(get_obj_index(OBJ_VNUM_NOTE), 0);
       if ((tmpobj = get_eq_char(ch, WEAR_HOLD)) != NULL)
-	unequip_char(ch, tmpobj);
+        unequip_char(ch, tmpobj);
       paper = obj_to_char(paper, ch);
       equip_char(ch, paper, WEAR_HOLD);
       act(AT_MAGIC, "A piece of parchment magically appears in $n's hands!", ch, NULL, NULL, TO_CANSEE);
@@ -1308,18 +1308,18 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       vnum = 1;
       for (pnote = board->first_note; pnote && vnum < anum; pnote = pnote->next)
-	vnum++;
+        vnum++;
     }
     else
     {
       vnum = 0;
       for (pnote = board->first_note; pnote && vnum < anum; pnote = pnote->next)
-	if (is_note_to(ch, pnote) || get_trust(ch) >= sysdata.read_all_mail)
-	{
-	  vnum++;
-	  if (vnum == anum)
-	    break;
-	}
+        if (is_note_to(ch, pnote) || get_trust(ch) >= sysdata.read_all_mail)
+        {
+          vnum++;
+          if (vnum == anum)
+            break;
+        }
     }
 
     if (!pnote)
@@ -1339,13 +1339,13 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       quill = find_quill(ch);
       if (!quill)
       {
-	send_to_char("You need a quill to write a note.\r\n", ch);
-	return;
+        send_to_char("You need a quill to write a note.\r\n", ch);
+        return;
       }
       if (quill->value[0] < 1)
       {
-	send_to_char("Your quill is dry.\n\r", ch);
-	return;
+        send_to_char("Your quill is dry.\n\r", ch);
+        return;
       }
     }
 
@@ -1353,12 +1353,12 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (get_trust(ch) < sysdata.write_mail_free)
       {
-	send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
-	return;
+        send_to_char("You need to be holding a fresh piece of parchment to write a note.\r\n", ch);
+        return;
       }
       paper = create_object(get_obj_index(OBJ_VNUM_NOTE), 0);
       if ((tmpobj = get_eq_char(ch, WEAR_HOLD)) != NULL)
-	unequip_char(ch, tmpobj);
+        unequip_char(ch, tmpobj);
       paper = obj_to_char(paper, ch);
       equip_char(ch, paper, WEAR_HOLD);
       act(AT_MAGIC, "A piece of parchment magically appears in $n's hands!", ch, NULL, NULL, TO_CANSEE);
@@ -1374,7 +1374,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       ch->substate = SUB_WRITING_NOTE;
       ch->dest_buf = ed;
       if (get_trust(ch) < sysdata.write_mail_free)
-	--quill->value[0];
+        --quill->value[0];
       start_editing(ch, ed->description);
       ed = SetOExtra(paper, "_to_");
       STRFREE(ed->description);
@@ -1408,8 +1408,8 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     {
       if (!IS_IMMORTAL(ch))
       {
-	send_to_char("Huh?  Type 'help note' for usage.\r\n", ch);
-	return;
+        send_to_char("Huh?  Type 'help note' for usage.\r\n", ch);
+        return;
       }
       take = 2;
     }
@@ -1433,108 +1433,108 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
     for (pnote = board->first_note; pnote; pnote = pnote->next)
     {
       if (IS_MAIL && ((is_note_to(ch, pnote)) || get_trust(ch) >= sysdata.take_others_mail))
-	vnum++;
+        vnum++;
       else if (!IS_MAIL)
-	vnum++;
+        vnum++;
       if ((is_note_to(ch, pnote) || can_remove(ch, board)) && (vnum == anum))
       {
-	if ((is_name("all", pnote->to_list))
-	    && (get_trust(ch) < sysdata.take_others_mail) && (take == 1) && str_cmp(ch->name, pnote->sender))
-	{
-	  send_to_char("Notes addressed to 'all' can only be taken by the author.\r\n", ch);
-	  return;
-	}
+        if ((is_name("all", pnote->to_list))
+            && (get_trust(ch) < sysdata.take_others_mail) && (take == 1) && str_cmp(ch->name, pnote->sender))
+        {
+          send_to_char("Notes addressed to 'all' can only be taken by the author.\r\n", ch);
+          return;
+        }
 
-	if (pnote->no_remove != 0 && (take == 1 || take == 0) && ch->level < pnote->no_remove)
-	{
-	  if (take == 0)
-	    send_to_char("You can't remove this note.\r\n", ch);
-	  else
-	    send_to_char("You can't take this note.\r\n", ch);
-	  return;
-	}
+        if (pnote->no_remove != 0 && (take == 1 || take == 0) && ch->level < pnote->no_remove)
+        {
+          if (take == 0)
+            send_to_char("You can't remove this note.\r\n", ch);
+          else
+            send_to_char("You can't take this note.\r\n", ch);
+          return;
+        }
 
-	if (take != 0)
-	{
-	  if (ch->gold < 50 && get_trust(ch) < sysdata.read_mail_free)
-	  {
-	    if (take == 1)
-	      send_to_char("It costs 50 coins to take your mail.\r\n", ch);
-	    else
-	      send_to_char("It costs 50 coins to copy your mail.\r\n", ch);
-	    return;
-	  }
-	  if (get_trust(ch) < sysdata.read_mail_free)
-	    ch->gold -= 50;
-	  paper = create_object(get_obj_index(OBJ_VNUM_NOTE), 0);
-	  ed = SetOExtra(paper, "_sender_");
-	  STRFREE(ed->description);
-	  ed->description = QUICKLINK(pnote->sender);
-	  ed = SetOExtra(paper, "_text_");
-	  STRFREE(ed->description);
-	  ed->description = QUICKLINK(pnote->text);
-	  ed = SetOExtra(paper, "_to_");
-	  STRFREE(ed->description);
-	  ed->description = QUICKLINK(pnote->to_list);
-	  ed = SetOExtra(paper, "_subject_");
-	  STRFREE(ed->description);
-	  ed->description = QUICKLINK(pnote->subject);
-	  ed = SetOExtra(paper, "_date_");
-	  STRFREE(ed->description);
-	  ed->description = QUICKLINK(pnote->date);
-	  ed = SetOExtra(paper, "note");
-	  STRFREE(ed->description);
-	  snprintf(notebuf, MAX_STRING_LENGTH, "%s", "From: ");
-	  mudstrlcat(notebuf, pnote->sender, MAX_STRING_LENGTH);
-	  mudstrlcat(notebuf, "\r\nTo: ", MAX_STRING_LENGTH);
-	  mudstrlcat(notebuf, pnote->to_list, MAX_STRING_LENGTH);
-	  mudstrlcat(notebuf, "\r\nSubject: ", MAX_STRING_LENGTH);
-	  mudstrlcat(notebuf, pnote->subject, MAX_STRING_LENGTH);
-	  mudstrlcat(notebuf, "\r\n\r\n", MAX_STRING_LENGTH);
-	  mudstrlcat(notebuf, pnote->text, MAX_STRING_LENGTH);
-	  mudstrlcat(notebuf, "\r\n", MAX_STRING_LENGTH);
-	  ed->description = STRALLOC(notebuf);
-	  paper->value[0] = 2;
-	  paper->value[1] = 2;
-	  paper->value[2] = 2;
-	  snprintf(short_desc_buf, MAX_STRING_LENGTH, "a note from %s to %s: %s", pnote->sender, pnote->to_list, pnote->subject);
-	  STRFREE(paper->short_descr);
-	  paper->short_descr = STRALLOC(short_desc_buf);
-	  snprintf(long_desc_buf, MAX_STRING_LENGTH, "A note from %s to %s lies on the ground.", pnote->sender,
-		    pnote->to_list);
-	  STRFREE(paper->description);
-	  paper->description = STRALLOC(long_desc_buf);
-	  snprintf(keyword_buf, MAX_STRING_LENGTH, "note parchment paper %s", pnote->to_list);
-	  STRFREE(paper->name);
-	  paper->name = STRALLOC(keyword_buf);
-	}
-	if (take != 2)
-	  note_remove(board, pnote);
-	send_to_char("Ok.\r\n", ch);
-	if (take == 1)
-	{
-	  if (board->otakemessg)
-	    act(AT_ACTION, board->otakemessg, ch, NULL, NULL, TO_CANSEE);
-	  else
-	    act(AT_ACTION, "$n takes a note.", ch, NULL, NULL, TO_CANSEE);
-	  obj_to_char(paper, ch);
-	}
-	else if (take == 2)
-	{
-	  if (board->ocopymessg)
-	    act(AT_ACTION, board->ocopymessg, ch, NULL, NULL, TO_CANSEE);
-	  else
-	    act(AT_ACTION, "$n copies a note.", ch, NULL, NULL, TO_CANSEE);
-	  obj_to_char(paper, ch);
-	}
-	else
-	{
-	  if (board->oremovemessg)
-	    act(AT_ACTION, board->oremovemessg, ch, NULL, NULL, TO_CANSEE);
-	  else
-	    act(AT_ACTION, "$n removes a note.", ch, NULL, NULL, TO_CANSEE);
-	}
-	return;
+        if (take != 0)
+        {
+          if (ch->gold < 50 && get_trust(ch) < sysdata.read_mail_free)
+          {
+            if (take == 1)
+              send_to_char("It costs 50 coins to take your mail.\r\n", ch);
+            else
+              send_to_char("It costs 50 coins to copy your mail.\r\n", ch);
+            return;
+          }
+          if (get_trust(ch) < sysdata.read_mail_free)
+            ch->gold -= 50;
+          paper = create_object(get_obj_index(OBJ_VNUM_NOTE), 0);
+          ed = SetOExtra(paper, "_sender_");
+          STRFREE(ed->description);
+          ed->description = QUICKLINK(pnote->sender);
+          ed = SetOExtra(paper, "_text_");
+          STRFREE(ed->description);
+          ed->description = QUICKLINK(pnote->text);
+          ed = SetOExtra(paper, "_to_");
+          STRFREE(ed->description);
+          ed->description = QUICKLINK(pnote->to_list);
+          ed = SetOExtra(paper, "_subject_");
+          STRFREE(ed->description);
+          ed->description = QUICKLINK(pnote->subject);
+          ed = SetOExtra(paper, "_date_");
+          STRFREE(ed->description);
+          ed->description = QUICKLINK(pnote->date);
+          ed = SetOExtra(paper, "note");
+          STRFREE(ed->description);
+          snprintf(notebuf, MAX_STRING_LENGTH, "%s", "From: ");
+          mudstrlcat(notebuf, pnote->sender, MAX_STRING_LENGTH);
+          mudstrlcat(notebuf, "\r\nTo: ", MAX_STRING_LENGTH);
+          mudstrlcat(notebuf, pnote->to_list, MAX_STRING_LENGTH);
+          mudstrlcat(notebuf, "\r\nSubject: ", MAX_STRING_LENGTH);
+          mudstrlcat(notebuf, pnote->subject, MAX_STRING_LENGTH);
+          mudstrlcat(notebuf, "\r\n\r\n", MAX_STRING_LENGTH);
+          mudstrlcat(notebuf, pnote->text, MAX_STRING_LENGTH);
+          mudstrlcat(notebuf, "\r\n", MAX_STRING_LENGTH);
+          ed->description = STRALLOC(notebuf);
+          paper->value[0] = 2;
+          paper->value[1] = 2;
+          paper->value[2] = 2;
+          snprintf(short_desc_buf, MAX_STRING_LENGTH, "a note from %s to %s: %s", pnote->sender, pnote->to_list, pnote->subject);
+          STRFREE(paper->short_descr);
+          paper->short_descr = STRALLOC(short_desc_buf);
+          snprintf(long_desc_buf, MAX_STRING_LENGTH, "A note from %s to %s lies on the ground.", pnote->sender,
+                    pnote->to_list);
+          STRFREE(paper->description);
+          paper->description = STRALLOC(long_desc_buf);
+          snprintf(keyword_buf, MAX_STRING_LENGTH, "note parchment paper %s", pnote->to_list);
+          STRFREE(paper->name);
+          paper->name = STRALLOC(keyword_buf);
+        }
+        if (take != 2)
+          note_remove(board, pnote);
+        send_to_char("Ok.\r\n", ch);
+        if (take == 1)
+        {
+          if (board->otakemessg)
+            act(AT_ACTION, board->otakemessg, ch, NULL, NULL, TO_CANSEE);
+          else
+            act(AT_ACTION, "$n takes a note.", ch, NULL, NULL, TO_CANSEE);
+          obj_to_char(paper, ch);
+        }
+        else if (take == 2)
+        {
+          if (board->ocopymessg)
+            act(AT_ACTION, board->ocopymessg, ch, NULL, NULL, TO_CANSEE);
+          else
+            act(AT_ACTION, "$n copies a note.", ch, NULL, NULL, TO_CANSEE);
+          obj_to_char(paper, ch);
+        }
+        else
+        {
+          if (board->oremovemessg)
+            act(AT_ACTION, board->oremovemessg, ch, NULL, NULL, TO_CANSEE);
+          else
+            act(AT_ACTION, "$n removes a note.", ch, NULL, NULL, TO_CANSEE);
+        }
+        return;
       }
     }
 
@@ -1598,22 +1598,22 @@ BOARD_DATA *read_board(FILE * fp)
       KEY("Extra_ballots", board->extra_ballots, fread_string_nohash(fp));
       if (!str_cmp(word, "End"))
       {
-	board->num_posts = 0;
-	board->first_note = NULL;
-	board->last_note = NULL;
-	board->next = NULL;
-	board->prev = NULL;
-	if (!board->read_group)
-	  board->read_group = str_dup("");
-	if (!board->post_group)
-	  board->post_group = str_dup("");
-	if (!board->extra_readers)
-	  board->extra_readers = str_dup("");
-	if (!board->extra_removers)
-	  board->extra_removers = str_dup("");
-	if (!board->extra_ballots)
-	  board->extra_ballots = str_dup("");
-	return board;
+        board->num_posts = 0;
+        board->first_note = NULL;
+        board->last_note = NULL;
+        board->next = NULL;
+        board->prev = NULL;
+        if (!board->read_group)
+          board->read_group = str_dup("");
+        if (!board->post_group)
+          board->post_group = str_dup("");
+        if (!board->extra_readers)
+          board->extra_readers = str_dup("");
+        if (!board->extra_removers)
+          board->extra_removers = str_dup("");
+        if (!board->extra_ballots)
+          board->extra_ballots = str_dup("");
+        return board;
       }
       break;
 
@@ -1676,8 +1676,8 @@ NOTE_DATA *read_note(FILE * fp)
       letter = getc(fp);
       if (feof(fp))
       {
-	fclose(fp);
-	return NULL;
+        fclose(fp);
+        return NULL;
       }
     }
     while (isspace(letter));
@@ -1708,32 +1708,32 @@ NOTE_DATA *read_note(FILE * fp)
       pnote->voting = fread_number(fp);
 
       if (str_cmp(fread_word(fp), "yesvotes"))
-	break;
+        break;
       pnote->yesvotes = fread_string_nohash(fp);
 
       if (str_cmp(fread_word(fp), "novotes"))
-	break;
+        break;
       pnote->novotes = fread_string_nohash(fp);
 
       if (str_cmp(fread_word(fp), "abstentions"))
-	break;
+        break;
       pnote->abstentions = fread_string_nohash(fp);
 
       word = fread_word(fp);
 
       if (!str_cmp(word, "yestally"))
       {
-	pnote->yestally = fread_number(fp);
+        pnote->yestally = fread_number(fp);
 
-	if (str_cmp(fread_word(fp), "notally"))
-	  break;
-	pnote->notally = fread_number(fp);
+        if (str_cmp(fread_word(fp), "notally"))
+          break;
+        pnote->notally = fread_number(fp);
 
-	if (str_cmp(fread_word(fp), "abstaintally"))
-	  break;
-	pnote->abstaintally = fread_number(fp);
+        if (str_cmp(fread_word(fp), "abstaintally"))
+          break;
+        pnote->abstaintally = fread_number(fp);
 
-	word = fread_word(fp);
+        word = fread_word(fp);
       }
     }
 
@@ -1789,8 +1789,8 @@ void load_boards(void)
     {
       while ((pnote = read_note(note_fp)) != NULL)
       {
-	LINK(pnote, board->first_note, board->last_note, next, prev);
-	board->num_posts++;
+        LINK(pnote, board->first_note, board->last_note, next, prev);
+        board->num_posts++;
       }
     }
   }
@@ -2222,21 +2222,21 @@ void do_bstat(CHAR_DATA* ch, const char* argument)
       board = find_board(ch);
       if (!board)
       {
-	send_to_char_color("&GNo board present.  Usage: bstat <board filename>\r\n", ch);
-	return;
+        send_to_char_color("&GNo board present.  Usage: bstat <board filename>\r\n", ch);
+        return;
       }
     }
   }
 
   ch_printf_color(ch,
-		   "\r\n&GFilename: &W%-15.15s &GOVnum: &W%-5d &GRead: &W%-2d &GPost: &W%-2d &GRemove: &W%-2d\r\n&GMaxpost: &W%d &GBallot: &W%-2d   &GType: &W%d\r\n&GPosts:    %d\r\n",
-		   board->note_file, board->board_obj, board->min_read_level, board->min_post_level,
-		   board->min_remove_level, board->max_posts, board->min_ballot_level, board->type, board->num_posts);
+                   "\r\n&GFilename: &W%-15.15s &GOVnum: &W%-5d &GRead: &W%-2d &GPost: &W%-2d &GRemove: &W%-2d\r\n&GMaxpost: &W%d &GBallot: &W%-2d   &GType: &W%d\r\n&GPosts:    %d\r\n",
+                   board->note_file, board->board_obj, board->min_read_level, board->min_post_level,
+                   board->min_remove_level, board->max_posts, board->min_ballot_level, board->type, board->num_posts);
 
   ch_printf_color(ch,
-		   "&GRead_group:  &W%s\r\n&GPost_group:  &W%s\r\n&GExtra_readers:  &W%s\r\n&GExtra_ballots: &W%s\r\n&GExtra_removers: &W%s\r\n",
-		   board->read_group, board->post_group, board->extra_readers, board->extra_ballots,
-		   board->extra_removers);
+                   "&GRead_group:  &W%s\r\n&GPost_group:  &W%s\r\n&GExtra_readers:  &W%s\r\n&GExtra_ballots: &W%s\r\n&GExtra_removers: &W%s\r\n",
+                   board->read_group, board->post_group, board->extra_readers, board->extra_ballots,
+                   board->extra_removers);
   ch_printf_color(ch, "&GPost Message:    %s\r\n", board->postmessg ? board->postmessg : "Default Message");
   ch_printf_color(ch, "&GOPost Message:   %s\r\n", board->opostmessg ? board->opostmessg : "Default Message");
   ch_printf_color(ch, "&GORead Message:   %s\r\n", board->oreadmessg ? board->oreadmessg : "Default Message");
@@ -2258,9 +2258,9 @@ void do_boards(CHAR_DATA* ch, const char* argument)
   }
   for (board = first_board; board; board = board->next)
     pager_printf_color(ch, "&G%-15.15s #: %5d Read: %2d Post: %2d Rmv: %2d Max: %3d Posts: &g%3d &GType: %d\r\n",
-			board->note_file, board->board_obj,
-			board->min_read_level, board->min_post_level,
-			board->min_remove_level, board->max_posts, board->num_posts, board->type);
+                        board->note_file, board->board_obj,
+                        board->min_read_level, board->min_post_level,
+                        board->min_remove_level, board->max_posts, board->num_posts, board->type);
 }
 
 void mail_count(CHAR_DATA * ch)
@@ -2273,10 +2273,10 @@ void mail_count(CHAR_DATA * ch)
     if (board->type == BOARD_MAIL && can_read(ch, board))
       for (note = board->first_note; note; note = note->next)
       {
-	if (is_name(ch->name, note->to_list))
-	  ++cnt_to;
-	else if (!str_cmp(ch->name, note->sender))
-	  ++cnt_from;
+        if (is_name(ch->name, note->to_list))
+          ++cnt_to;
+        else if (!str_cmp(ch->name, note->sender))
+          ++cnt_from;
       }
   if (cnt_to)
     ch_printf(ch, "You have %d mail message%swaiting for you.\r\n", cnt_to, (cnt_to > 1) ? "s " : " ");
@@ -2371,13 +2371,13 @@ void do_journal(CHAR_DATA * ch, const char *argument)
       quill = find_quill(ch);
       if (!quill)
       {
-	send_to_char("You need a quill to write in your journal.\r\n", ch);
-	return;
+        send_to_char("You need a quill to write in your journal.\r\n", ch);
+        return;
       }
       if (quill->value[0] < 1)
       {
-	send_to_char("Your quill is dry.\r\n", ch);
-	return;
+        send_to_char("Your quill is dry.\r\n", ch);
+        return;
       }
     }
 
@@ -2438,8 +2438,8 @@ void do_journal(CHAR_DATA * ch, const char *argument)
     {
       if (journal->value[0] > 50)
       {
-	journal->value[0] = 50;
-	bug("%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __func__, ch->name);
+        journal->value[0] = 50;
+        bug("%s: Journal size greater than 50 pages! Resetting to 50 pages. (Player: %s)", __func__, ch->name);
       }
       set_char_color(AT_GREY, ch);
       ch_printf(ch, "There are %d pages in this journal.\r\n", journal->value[0]);

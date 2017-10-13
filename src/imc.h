@@ -102,34 +102,34 @@ typedef enum
 /*
  * Memory allocation macros.
  */
-#define IMCCREATE(result, type, number)				\
-  do								\
-  {								\
-    if (!((result) = (type *) calloc ((number), sizeof(type))))	\
-    {								\
-      imclog("Malloc failure @ %s:%d\n", __FILE__, __LINE__);	\
-      abort();							\
-    }								\
+#define IMCCREATE(result, type, number)                         \
+  do                                                            \
+  {                                                             \
+    if (!((result) = (type *) calloc ((number), sizeof(type)))) \
+    {                                                           \
+      imclog("Malloc failure @ %s:%d\n", __FILE__, __LINE__);   \
+      abort();                                                  \
+    }                                                           \
   } while (0)
 
 #define IMCRECREATE(result, type, number)                               \
-  do									\
-  {									\
+  do                                                                    \
+  {                                                                     \
     if (!((result) = (type *)realloc((result), sizeof(type) * (number)))) \
-    {									\
+    {                                                                   \
       imclog("Realloc failure @ %s:%d\n", __FILE__, __LINE__);        \
       abort();                                                          \
-    }									\
+    }                                                                   \
   } while (0)
 
-#define IMCDISPOSE(point)			\
-  do						\
-  {						\
-    if ((point))					\
-    {						\
-      free((void*) (point));			\
-      (point) = NULL;				\
-    }						\
+#define IMCDISPOSE(point)                       \
+  do                                            \
+  {                                             \
+    if ((point))                                        \
+    {                                           \
+      free((void*) (point));                    \
+      (point) = NULL;                           \
+    }                                           \
   } while (0)
 
 #define IMCSTRALLOC strdup
@@ -138,58 +138,58 @@ typedef enum
 /* double-linked list handling macros -Thoric (From the Smaug codebase) */
 /* Updated by Scion 8/6/1999 */
 #define IMCLINK(link, first, last, next, prev)  \
-  do						\
-  {						\
-    if (!(first))				\
-    {						\
+  do                                            \
+  {                                             \
+    if (!(first))                               \
+    {                                           \
       (first) = (link);                         \
       (last) = (link);                          \
-    }						\
-    else					\
+    }                                           \
+    else                                        \
       (last)->next = (link);                    \
-    (link)->next = NULL;			\
-    if ((first) == (link))			\
+    (link)->next = NULL;                        \
+    if ((first) == (link))                      \
       (link)->prev = NULL;                      \
-    else					\
+    else                                        \
       (link)->prev = (last);                    \
-    (last) = (link);				\
+    (last) = (link);                            \
   } while (0)
 
-#define IMCINSERT(link, insert, first, next, prev)	\
+#define IMCINSERT(link, insert, first, next, prev)      \
   do                                                    \
   {                                                     \
-    (link)->prev = (insert)->prev;			\
-    if (!(insert)->prev)				\
-      (first) = (link);					\
-    else						\
-      (insert)->prev->next = (link);			\
-    (insert)->prev = (link);				\
-    (link)->next = (insert);				\
+    (link)->prev = (insert)->prev;                      \
+    if (!(insert)->prev)                                \
+      (first) = (link);                                 \
+    else                                                \
+      (insert)->prev->next = (link);                    \
+    (insert)->prev = (link);                            \
+    (link)->next = (insert);                            \
   } while (0)
 
-#define IMCUNLINK(link, first, last, next, prev)	\
-  do							\
-  {							\
-    if (!(link)->prev)				\
-    {							\
-      (first) = (link)->next;				\
-      if ((first))					\
-	(first)->prev = NULL;				\
-    }							\
-    else						\
-    {							\
-      (link)->prev->next = (link)->next;		\
-    }							\
-    if (!(link)->next)					\
-    {							\
-      (last) = (link)->prev;				\
-      if ((last))					\
-	(last)->next = NULL;				\
-    }							\
-    else						\
-    {							\
-      (link)->next->prev = (link)->prev;		\
-    }							\
+#define IMCUNLINK(link, first, last, next, prev)        \
+  do                                                    \
+  {                                                     \
+    if (!(link)->prev)                          \
+    {                                                   \
+      (first) = (link)->next;                           \
+      if ((first))                                      \
+        (first)->prev = NULL;                           \
+    }                                                   \
+    else                                                \
+    {                                                   \
+      (link)->prev->next = (link)->next;                \
+    }                                                   \
+    if (!(link)->next)                                  \
+    {                                                   \
+      (last) = (link)->prev;                            \
+      if ((last))                                       \
+        (last)->next = NULL;                            \
+    }                                                   \
+    else                                                \
+    {                                                   \
+      (link)->next->prev = (link)->prev;                \
+    }                                                   \
   } while (0)
 
 /* No real functional difference in alot of this, but double linked lists DO seem to handle better,

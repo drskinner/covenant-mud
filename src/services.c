@@ -103,8 +103,8 @@ int main(int argc, char **argv)
       status = get_service_status(&svcstatus, TRUE);
       if (status == 0 && svcstatus.dwCurrentState == SERVICE_RUNNING)
       {
-	fprintf(stderr, "The SMAUG is already running as a service.\n");
-	return 1;
+        fprintf(stderr, "The SMAUG is already running as a service.\n");
+        return 1;
       }
       worker_thread(NULL);
     }
@@ -186,9 +186,9 @@ static VOID service_main(DWORD dwArgc, LPTSTR * lpszArgv)
    * report the status to Service Control Manager. 
    */
   if (!ReportStatusToSCMgr(SERVICE_START_PENDING,   /* service state */
-			    NO_ERROR, /* exit code */
-			    1,  /* checkpoint */
-			    3000))  /* wait hint */
+                            NO_ERROR, /* exit code */
+                            1,  /* checkpoint */
+                            3000))  /* wait hint */
     goto cleanup;
 
 
@@ -196,10 +196,10 @@ static VOID service_main(DWORD dwArgc, LPTSTR * lpszArgv)
    * start the thread that performs the work of the service. 
    */
   threadHandle = (HANDLE) _beginthreadex(NULL, /* security attributes */
-					    0, /* stack size (0 means inherit parent's stack size) */
-					    (LPTHREAD_START_ROUTINE) worker_thread, NULL, /* argument to thread */
-					    0, /* thread creation flags */
-					    &TID);  /* pointer to thread ID */
+                                            0, /* stack size (0 means inherit parent's stack size) */
+                                            (LPTHREAD_START_ROUTINE) worker_thread, NULL, /* argument to thread */
+                                            0, /* thread creation flags */
+                                            &TID);  /* pointer to thread ID */
 
   if (!threadHandle)
     goto cleanup;
@@ -208,9 +208,9 @@ static VOID service_main(DWORD dwArgc, LPTSTR * lpszArgv)
    * report the status to the service control manager. 
    */
   if (!ReportStatusToSCMgr(SERVICE_RUNNING,   /* service state */
-			    NO_ERROR, /* exit code */
-			    0,  /* checkpoint */
-			    0))  /* wait hint */
+                            NO_ERROR, /* exit code */
+                            0,  /* checkpoint */
+                            0))  /* wait hint */
     goto cleanup;
 
   /*
@@ -218,7 +218,7 @@ static VOID service_main(DWORD dwArgc, LPTSTR * lpszArgv)
    * The thread handle is signalled when the thread terminates
    */
   dwWait = WaitForSingleObject(threadHandle,  /* event object */
-				INFINITE); /* wait indefinitely */
+                                INFINITE); /* wait indefinitely */
 
 cleanup:
 
@@ -281,9 +281,9 @@ static VOID WINAPI service_ctrl(DWORD dwCtrlCode)
     //  before setting the termination event.
     //
     ReportStatusToSCMgr(SERVICE_STOP_PENDING,   // current state
-			 NO_ERROR,   // exit code
-			 1, // checkpoint
-			 10000); // waithint (10 secs)
+                         NO_ERROR,   // exit code
+                         1, // checkpoint
+                         10000); // waithint (10 secs)
 
     bailout();
 
@@ -338,7 +338,7 @@ static BOOL ReportStatusToSCMgr(DWORD dwCurrentState, DWORD dwWin32ExitCode, DWO
   // Report the status of the service to the service control manager.
   //
   if (!(fResult = SetServiceStatus(sshStatusHandle,   // service reference handle
-				     &ssStatus)))
+                                     &ssStatus)))
   {  // SERVICE_STATUS structure
 
     // If an error occurs, stop the service.
@@ -372,14 +372,14 @@ static void StopService(LPTSTR lpszMsg)
   if (hEventSource)
   {
     ReportEvent(hEventSource, // handle of event source
-		 EVENTLOG_ERROR_TYPE,   // event type
-		 0,   // event category
-		 0,   // event ID
-		 NULL,   // current user's SID
-		 2,   // strings in lpszStrings
-		 0,   // no bytes of raw data
-		 lpszStrings,  // array of error strings
-		 NULL); // no raw data
+                 EVENTLOG_ERROR_TYPE,   // event type
+                 0,   // event category
+                 0,   // event ID
+                 NULL,   // current user's SID
+                 2,   // strings in lpszStrings
+                 0,   // no bytes of raw data
+                 lpszStrings,  // array of error strings
+                 NULL); // no raw data
 
     (VOID) DeregisterEventSource(hEventSource);
   }
@@ -501,9 +501,9 @@ void shutdown_checkpoint(void)
 
   if (threadHandle)
     ReportStatusToSCMgr(SERVICE_STOP_PENDING,   // current state
-			 NO_ERROR,   // exit code
-			 ++checkpoint,  // checkpoint
-			 3000);  // waithint  (3 seconds)
+                         NO_ERROR,   // exit code
+                         ++checkpoint,  // checkpoint
+                         3000);  // waithint  (3 seconds)
 }  // end of shutdown_checkpoint
 
 
@@ -652,10 +652,10 @@ static int CmdInstallService(int argc, char *argv[])
 */
 
   service = CreateService(SCmanager, THIS_SERVICE, THIS_SERVICE_DISPLAY, SERVICE_ALL_ACCESS, SERVICE_WIN32_OWN_PROCESS, SERVICE_AUTO_START, SERVICE_ERROR_NORMAL, fullfilename, NULL,   // no load ordering group
-			   NULL,   // no tag identifier
-			   NULL,   // no dependencies
-			   NULL,   // LocalSystem account
-			   NULL); // no password
+                           NULL,   // no tag identifier
+                           NULL,   // no dependencies
+                           NULL,   // LocalSystem account
+                           NULL); // no password
   if (!service)
     return service_error(GetLastError(), "Unable to create service");
 
@@ -848,8 +848,8 @@ static char *convert_error(DWORD error)
   static char buff[100];
 
   if (!FormatMessage(FORMAT_MESSAGE_FROM_SYSTEM |
-		      FORMAT_MESSAGE_ALLOCATE_BUFFER |
-		      FORMAT_MESSAGE_IGNORE_INSERTS, NULL, error, LANG_NEUTRAL, (LPTSTR) & formattedmsg, 0, NULL))
+                      FORMAT_MESSAGE_ALLOCATE_BUFFER |
+                      FORMAT_MESSAGE_IGNORE_INSERTS, NULL, error, LANG_NEUTRAL, (LPTSTR) & formattedmsg, 0, NULL))
   {
     snprintf(buff, 100, "<Error code: %ld>", error);
     return buff;

@@ -78,44 +78,44 @@ bool check_pos(CHAR_DATA * ch, short position)
     case POS_FIGHTING:
       if (position <= POS_EVASIVE)
       {
-	send_to_char("This fighting style is too demanding for that!\r\n", ch);
+        send_to_char("This fighting style is too demanding for that!\r\n", ch);
       }
       else
       {
-	send_to_char("No way!  You are still fighting!\r\n", ch);
+        send_to_char("No way!  You are still fighting!\r\n", ch);
       }
       break;
 
     case POS_DEFENSIVE:
       if (position <= POS_EVASIVE)
       {
-	send_to_char("This fighting style is too demanding for that!\r\n", ch);
+        send_to_char("This fighting style is too demanding for that!\r\n", ch);
       }
       else
       {
-	send_to_char("No way!  You are still fighting!\r\n", ch);
+        send_to_char("No way!  You are still fighting!\r\n", ch);
       }
       break;
 
     case POS_AGGRESSIVE:
       if (position <= POS_EVASIVE)
       {
-	send_to_char("This fighting style is too demanding for that!\r\n", ch);
+        send_to_char("This fighting style is too demanding for that!\r\n", ch);
       }
       else
       {
-	send_to_char("No way!  You are still fighting!\r\n", ch);
+        send_to_char("No way!  You are still fighting!\r\n", ch);
       }
       break;
 
     case POS_BERSERK:
       if (position <= POS_EVASIVE)
       {
-	send_to_char("This fighting style is too demanding for that!\r\n", ch);
+        send_to_char("This fighting style is too demanding for that!\r\n", ch);
       }
       else
       {
-	send_to_char("No way!  You are still fighting!\r\n", ch);
+        send_to_char("No way!  You are still fighting!\r\n", ch);
       }
       break;
 
@@ -179,23 +179,23 @@ void write_watch_files(CHAR_DATA * ch, CMDTYPE * cmd, char *logline)
       for (cur_imm = pw->imm_name; pw && !strcmp(pw->imm_name, cur_imm); pw = pw->next)
       {
 
-	if (!found && ch->desc && get_trust(ch) < pw->imm_level
-	    && ((pw->target_name && !strcmp(cmd->name, pw->target_name))
-		 || (pw->player_site && !str_prefix(pw->player_site, ch->desc->host))))
-	{
-	  snprintf(fname, MAX_INPUT_LENGTH, "%s%s", WATCH_DIR, strlower(pw->imm_name));
-	  if (!(fp = fopen(fname, "a+")))
-	  {
-	    bug("%s%s", "Write_watch_files: Cannot open ", fname);
-	    perror(fname);
-	    return;
-	  }
-	  snprintf(buf, MAX_STRING_LENGTH, "%.2d/%.2d %.2d:%.2d %s: %s\r\n",
-		    t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->name, logline);
-	  fputs(buf, fp);
-	  fclose(fp);
-	  found = TRUE;
-	}
+        if (!found && ch->desc && get_trust(ch) < pw->imm_level
+            && ((pw->target_name && !strcmp(cmd->name, pw->target_name))
+                 || (pw->player_site && !str_prefix(pw->player_site, ch->desc->host))))
+        {
+          snprintf(fname, MAX_INPUT_LENGTH, "%s%s", WATCH_DIR, strlower(pw->imm_name));
+          if (!(fp = fopen(fname, "a+")))
+          {
+            bug("%s%s", "Write_watch_files: Cannot open ", fname);
+            perror(fname);
+            return;
+          }
+          snprintf(buf, MAX_STRING_LENGTH, "%.2d/%.2d %.2d:%.2d %s: %s\r\n",
+                    t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->name, logline);
+          fputs(buf, fp);
+          fclose(fp);
+          found = TRUE;
+        }
       }
     }
   }
@@ -203,20 +203,20 @@ void write_watch_files(CHAR_DATA * ch, CMDTYPE * cmd, char *logline)
   {
     for (pw = first_watch; pw; pw = pw->next)
       if (((pw->target_name && !str_cmp(pw->target_name, ch->name))
-	    || (pw->player_site
-		 && !str_prefix(pw->player_site, ch->desc->host))) && get_trust(ch) < pw->imm_level && ch->desc)
+            || (pw->player_site
+                 && !str_prefix(pw->player_site, ch->desc->host))) && get_trust(ch) < pw->imm_level && ch->desc)
       {
-	snprintf(fname, MAX_INPUT_LENGTH, "%s%s", WATCH_DIR, strlower(pw->imm_name));
-	if (!(fp = fopen(fname, "a+")))
-	{
-	  bug("%s%s", "Write_watch_files: Cannot open ", fname);
-	  perror(fname);
-	  return;
-	}
-	snprintf(buf, MAX_STRING_LENGTH, "%.2d/%.2d %.2d:%.2d %s: %s\r\n",
-		  t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->name, logline);
-	fputs(buf, fp);
-	fclose(fp);
+        snprintf(fname, MAX_INPUT_LENGTH, "%s%s", WATCH_DIR, strlower(pw->imm_name));
+        if (!(fp = fopen(fname, "a+")))
+        {
+          bug("%s%s", "Write_watch_files: Cannot open ", fname);
+          perror(fname);
+          return;
+        }
+        snprintf(buf, MAX_STRING_LENGTH, "%.2d/%.2d %.2d:%.2d %s: %s\r\n",
+                  t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->name, logline);
+        fputs(buf, fp);
+        fclose(fp);
       }
   }
 
@@ -283,20 +283,20 @@ void interpret(CHAR_DATA * ch, char *argument)
        */
       for (x = 0; x < 126; x++)
       {
-	for (cmd = command_hash[x]; cmd; cmd = cmd->next)
-	  if (cmd->do_fun == fun)
-	  {
-	    found = TRUE;
-	    break;
-	  }
-	if (found)
-	  break;
+        for (cmd = command_hash[x]; cmd; cmd = cmd->next)
+          if (cmd->do_fun == fun)
+          {
+            found = TRUE;
+            break;
+          }
+        if (found)
+          break;
       }
       if (!found)
       {
-	cmd = NULL;
-	bug("%s: SUB_REPEATCMD: last_cmd invalid", __func__);
-	return;
+        cmd = NULL;
+        bug("%s: SUB_REPEATCMD: last_cmd invalid", __func__);
+        return;
       }
       snprintf(logline, MAX_INPUT_LENGTH, "(%s) %s", cmd->name, argument);
     }
@@ -346,7 +346,7 @@ void interpret(CHAR_DATA * ch, char *argument)
       command[1] = '\0';
       argument++;
       while (isspace(*argument))
-	argument++;
+        argument++;
     }
     else
       argument = one_argument(argument, command);
@@ -358,17 +358,17 @@ void interpret(CHAR_DATA * ch, char *argument)
     trust = get_trust(ch);
     for (cmd = command_hash[LOWER(command[0]) % 126]; cmd; cmd = cmd->next)
       if (!str_prefix(command, cmd->name)
-	  && (cmd->level <= trust
-	       || (!IS_NPC(ch) && ch->pcdata->council
-		    && is_name(cmd->name, ch->pcdata->council->powers)
-		    && cmd->level <= (trust + MAX_CPD))
-	       || (!IS_NPC(ch) && IS_SET(ch->pcdata->flags, PCFLAG_RETIRED)
-		    && IS_SET(cmd->flags, CMD_FLAG_RETIRED))
-	       || (!IS_NPC(ch) && ch->pcdata->bestowments && ch->pcdata->bestowments[0] != '\0'
-		    && is_name(cmd->name, ch->pcdata->bestowments) && cmd->level <= (trust + sysdata.bestow_dif))))
+          && (cmd->level <= trust
+               || (!IS_NPC(ch) && ch->pcdata->council
+                    && is_name(cmd->name, ch->pcdata->council->powers)
+                    && cmd->level <= (trust + MAX_CPD))
+               || (!IS_NPC(ch) && IS_SET(ch->pcdata->flags, PCFLAG_RETIRED)
+                    && IS_SET(cmd->flags, CMD_FLAG_RETIRED))
+               || (!IS_NPC(ch) && ch->pcdata->bestowments && ch->pcdata->bestowments[0] != '\0'
+                    && is_name(cmd->name, ch->pcdata->bestowments) && cmd->level <= (trust + sysdata.bestow_dif))))
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
 
     /*
@@ -463,12 +463,12 @@ void interpret(CHAR_DATA * ch, char *argument)
   if (!found)
   {
     if (!check_skill(ch, command, argument) && !check_ability(ch, command, argument)   // Racial Abilities Support - Kayle 7-8-07
-	&& !rprog_command_trigger(ch, origarg)
-	&& !mprog_command_trigger(ch, origarg)
-	&& !oprog_command_trigger(ch, origarg)
-	&& !check_social(ch, command, argument) && !news_cmd_hook(ch, command, argument)
+        && !rprog_command_trigger(ch, origarg)
+        && !mprog_command_trigger(ch, origarg)
+        && !oprog_command_trigger(ch, origarg)
+        && !check_social(ch, command, argument) && !news_cmd_hook(ch, command, argument)
 #ifdef IMC
-	&& !imc_command_hook(ch, command, argument)
+        && !imc_command_hook(ch, command, argument)
 #endif
      )
     {
@@ -479,18 +479,18 @@ void interpret(CHAR_DATA * ch, char *argument)
        */
       if ((pexit = find_door(ch, command, TRUE)) != NULL && IS_SET(pexit->exit_info, EX_xAUTO))
       {
-	if (IS_SET(pexit->exit_info, EX_CLOSED)
-	    && (!IS_AFFECTED(ch, AFF_PASS_DOOR) || IS_SET(pexit->exit_info, EX_NOPASSDOOR)))
-	{
-	  if (!IS_SET(pexit->exit_info, EX_SECRET))
-	    act(AT_PLAIN, "The $d is closed.", ch, NULL, pexit->keyword, TO_CHAR);
-	  else
-	    send_to_char("You cannot do that here.\r\n", ch);
-	  return;
-	}
-	if (check_pos(ch, POS_STANDING))
-	  move_char(ch, pexit, 0);
-	return;
+        if (IS_SET(pexit->exit_info, EX_CLOSED)
+            && (!IS_AFFECTED(ch, AFF_PASS_DOOR) || IS_SET(pexit->exit_info, EX_NOPASSDOOR)))
+        {
+          if (!IS_SET(pexit->exit_info, EX_SECRET))
+            act(AT_PLAIN, "The $d is closed.", ch, NULL, pexit->keyword, TO_CHAR);
+          else
+            send_to_char("You cannot do that here.\r\n", ch);
+          return;
+        }
+        if (check_pos(ch, POS_STANDING))
+          move_char(ch, pexit, 0);
+        return;
       }
       send_to_char("Huh?\r\n", ch);
     }
@@ -562,8 +562,8 @@ void interpret(CHAR_DATA * ch, char *argument)
   if (tmptime > 1500000)
   {
     log_printf_plus(LOG_NORMAL, get_trust(ch), "[*****] LAG: %s: %s %s (R:%d S:%ld.%06ld)", ch->name,
-		     cmd->name, (cmd->log == LOG_NEVER ? "XXX" : argument),
-		     ch->in_room ? ch->in_room->vnum : 0, time_used.tv_sec, time_used.tv_usec);
+                     cmd->name, (cmd->log == LOG_NEVER ? "XXX" : argument),
+                     ch->in_room ? ch->in_room->vnum : 0, time_used.tv_sec, time_used.tv_usec);
     cmd->lag_count++; /* count the lag flags */
   }
 
@@ -662,14 +662,14 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
     {
       if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch))
       {
-	removed[i] = victim;
-	i++;
-	UNLINK(victim, room->first_person, room->last_person, next_in_room, prev_in_room);
+        removed[i] = victim;
+        i++;
+        UNLINK(victim, room->first_person, room->last_person, next_in_room, prev_in_room);
       }
       else
       {
-	set_char_color(AT_IGNORE, victim);
-	ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see(victim, ch) ? "Someone" : ch->name);
+        set_char_color(AT_IGNORE, victim);
+        ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see(victim, ch) ? "Someone" : ch->name);
       }
     }
   }
@@ -691,12 +691,12 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
     {
       for (k = 0, victim = removed[0]; k < i; k++, victim = removed[k])
       {
-	if (nifty_is_name(victim->name, arg) || nifty_is_name_prefix(arg, victim->name))
-	{
-	  set_char_color(AT_IGNORE, ch);
-	  ch_printf(ch, "%s is ignoring you.\r\n", victim->name);
-	  break;
-	}
+        if (nifty_is_name(victim->name, arg) || nifty_is_name_prefix(arg, victim->name))
+        {
+          set_char_color(AT_IGNORE, ch);
+          ch_printf(ch, "%s is ignoring you.\r\n", victim->name);
+          break;
+        }
       }
     }
 
@@ -715,26 +715,26 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
     act(AT_SOCIAL, social->vict_found, ch, NULL, victim, TO_VICT);
 
     if (!IS_NPC(ch) && IS_NPC(victim) && !IS_AFFECTED(victim, AFF_CHARM) && IS_AWAKE(victim) && !victim->desc // This was just really annoying.. lemme do my own socials! -- Alty
-	&& !HAS_PROG(victim->pIndexData, ACT_PROG))
+        && !HAS_PROG(victim->pIndexData, ACT_PROG))
     {
       switch (number_bits(4))
       {
       case 0:
-	if (IS_EVIL(ch) && !is_safe(victim, ch, TRUE))   /* was IS_EVIL(ch) ||.... didn't make sense to me - FB */
-	  multi_hit(victim, ch, TYPE_UNDEFINED);
-	else if (IS_NEUTRAL(ch))
-	{
-	  act(AT_ACTION, "$n slaps $N.", victim, NULL, ch, TO_NOTVICT);
-	  act(AT_ACTION, "You slap $N.", victim, NULL, ch, TO_CHAR);
-	  act(AT_ACTION, "$n slaps you.", victim, NULL, ch, TO_VICT);
-	}
-	else
-	{
-	  act(AT_ACTION, "$n acts like $N doesn't even exist.", victim, NULL, ch, TO_NOTVICT);
-	  act(AT_ACTION, "You just ignore $N.", victim, NULL, ch, TO_CHAR);
-	  act(AT_ACTION, "$n appears to be ignoring you.", victim, NULL, ch, TO_VICT);
-	}
-	break;
+        if (IS_EVIL(ch) && !is_safe(victim, ch, TRUE))   /* was IS_EVIL(ch) ||.... didn't make sense to me - FB */
+          multi_hit(victim, ch, TYPE_UNDEFINED);
+        else if (IS_NEUTRAL(ch))
+        {
+          act(AT_ACTION, "$n slaps $N.", victim, NULL, ch, TO_NOTVICT);
+          act(AT_ACTION, "You slap $N.", victim, NULL, ch, TO_CHAR);
+          act(AT_ACTION, "$n slaps you.", victim, NULL, ch, TO_VICT);
+        }
+        else
+        {
+          act(AT_ACTION, "$n acts like $N doesn't even exist.", victim, NULL, ch, TO_NOTVICT);
+          act(AT_ACTION, "You just ignore $N.", victim, NULL, ch, TO_CHAR);
+          act(AT_ACTION, "$n appears to be ignoring you.", victim, NULL, ch, TO_VICT);
+        }
+        break;
 
       case 1:
       case 2:
@@ -744,19 +744,19 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
       case 6:
       case 7:
       case 8:
-	act(AT_SOCIAL, social->others_found, victim, NULL, ch, TO_NOTVICT);
-	act(AT_SOCIAL, social->char_found, victim, NULL, ch, TO_CHAR);
-	act(AT_SOCIAL, social->vict_found, victim, NULL, ch, TO_VICT);
-	break;
+        act(AT_SOCIAL, social->others_found, victim, NULL, ch, TO_NOTVICT);
+        act(AT_SOCIAL, social->char_found, victim, NULL, ch, TO_CHAR);
+        act(AT_SOCIAL, social->vict_found, victim, NULL, ch, TO_VICT);
+        break;
 
       case 9:
       case 10:
       case 11:
       case 12:
-	act(AT_ACTION, "$n slaps $N.", victim, NULL, ch, TO_NOTVICT);
-	act(AT_ACTION, "You slap $N.", victim, NULL, ch, TO_CHAR);
-	act(AT_ACTION, "$n slaps you.", victim, NULL, ch, TO_VICT);
-	break;
+        act(AT_ACTION, "$n slaps $N.", victim, NULL, ch, TO_NOTVICT);
+        act(AT_ACTION, "You slap $N.", victim, NULL, ch, TO_CHAR);
+        act(AT_ACTION, "$n slaps you.", victim, NULL, ch, TO_VICT);
+        break;
       }
     }
   }
@@ -1002,8 +1002,8 @@ void send_timer(struct timerset *vtime, CHAR_DATA * ch)
   ntime.tv_usec = (vtime->total_time.tv_usec + carry) / vtime->num_uses;
   ch_printf(ch, "Has been used %d times this boot.\r\n", vtime->num_uses);
   ch_printf(ch, "Time (in secs): min %ld.%06ld; avg: %ld.%06ld; max %ld.%06ld"
-	     "\r\n", vtime->min_time.tv_sec, vtime->min_time.tv_usec, ntime.tv_sec,
-	     ntime.tv_usec, vtime->max_time.tv_sec, vtime->max_time.tv_usec);
+             "\r\n", vtime->min_time.tv_sec, vtime->min_time.tv_usec, ntime.tv_sec,
+             ntime.tv_usec, vtime->max_time.tv_sec, vtime->max_time.tv_usec);
   return;
 }
 

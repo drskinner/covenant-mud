@@ -153,18 +153,18 @@ void do_mpstat(CHAR_DATA* ch, const char* argument)
   ch_printf(ch, "Name: %s.  Vnum: %d.\r\n", victim->name, victim->pIndexData->vnum);
 
   ch_printf(ch, "Short description: %s.\r\nLong  description: %s",
-	     victim->short_descr, victim->long_descr[0] != '\0' ? victim->long_descr : "(none).\r\n");
+             victim->short_descr, victim->long_descr[0] != '\0' ? victim->long_descr : "(none).\r\n");
 
   ch_printf(ch, "Hp: %d/%d.  Mana: %d/%d.  Move: %d/%d. \r\n",
-	     victim->hit, victim->max_hit, victim->mana, victim->max_mana, victim->move, victim->max_move);
+             victim->hit, victim->max_hit, victim->mana, victim->max_mana, victim->move, victim->max_move);
 
   ch_printf(ch,
-	     "Lv: %d.  Class: %d.  Align: %d.  AC: %d.  Gold: %d.  Exp: %d.\r\n",
-	     victim->level, victim->Class, victim->alignment, GET_AC(victim), victim->gold, victim->exp);
+             "Lv: %d.  Class: %d.  Align: %d.  AC: %d.  Gold: %d.  Exp: %d.\r\n",
+             victim->level, victim->Class, victim->alignment, GET_AC(victim), victim->gold, victim->exp);
 
   for (mprg = victim->pIndexData->mudprogs; mprg; mprg = mprg->next)
     ch_printf(ch, "%d%s>%s %s\r\n%s\r\n", ++cnt, (mprg->fileprog ? "(FILEPROG) " : " "),
-	       mprog_type_to_name(mprg->type), mprg->arglist, mprg->comlist);
+               mprog_type_to_name(mprg->type), mprg->arglist, mprg->comlist);
   return;
 }
 
@@ -364,9 +364,9 @@ void do_mpjunk(CHAR_DATA* ch, const char* argument)
       obj_next = obj->next_content;
       if (arg[3] == '\0' || is_name(&arg[4], obj->name))
       {
-	if (obj->wear_loc != WEAR_NONE)
-	  unequip_char(ch, obj);
-	extract_obj(obj);
+        if (obj->wear_loc != WEAR_NONE)
+          unequip_char(ch, obj);
+        extract_obj(obj);
       }
     }
 
@@ -433,9 +433,9 @@ void do_mpasound(CHAR_DATA* ch, const char* argument)
       ch->in_room = pexit->to_room;
       MOBtrigger = FALSE;
       if (color)
-	act(color, argument, ch, NULL, NULL, TO_ROOM);
+        act(color, argument, ch, NULL, NULL, TO_ROOM);
       else
-	act(AT_SAY, argument, ch, NULL, NULL, TO_ROOM);
+        act(AT_SAY, argument, ch, NULL, NULL, TO_ROOM);
     }
   }
   ch->act = actflags;
@@ -930,19 +930,19 @@ void do_mpplace(CHAR_DATA * ch, const char *argument)
     {
       if (!str_cmp(arg3, tarea->filename))
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
     }
 
     if (!found)
       for (tarea = first_build; tarea; tarea = tarea->next)
       {
-	if (!str_cmp(arg2, tarea->filename))
-	{
-	  found = TRUE;
-	  break;
-	}
+        if (!str_cmp(arg2, tarea->filename))
+        {
+          found = TRUE;
+          break;
+        }
       }
 
     if (!found)
@@ -981,7 +981,7 @@ void do_mpplace(CHAR_DATA * ch, const char *argument)
 
     if (pRoomIndex)
       if (!pRoomIndex->first_person || xIS_SET(pRoomIndex->room_flags, ROOM_DEATH))
-	break;
+        break;
   }
 
   snprintf(buf, MAX_INPUT_LENGTH, "%d drop %s", pRoomIndex->vnum, arg1);
@@ -1103,7 +1103,7 @@ void do_mppurge(CHAR_DATA* ch, const char* argument)
     {
       vnext = victim->next_in_room;
       if (IS_NPC(victim) && victim != ch)
-	extract_char(victim, TRUE);
+        extract_char(victim, TRUE);
     }
     while (ch->in_room->first_content)
       extract_obj(ch->in_room->first_content);
@@ -1333,9 +1333,9 @@ void do_mpadvance(CHAR_DATA* ch, const char* argument)
   {
     set_char_color(AT_IMMORT, victim);
     act(AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s fingers at you!",
-	 ch, NULL, victim, TO_VICT);
+         ch, NULL, victim, TO_VICT);
     act(AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s fingers at $N!",
-	 ch, NULL, victim, TO_NOTVICT);
+         ch, NULL, victim, TO_NOTVICT);
     set_char_color(AT_WHITE, victim);
     send_to_char("You suddenly feel very strange...\r\n\r\n", victim);
     set_char_color(AT_LBLUE, victim);
@@ -1483,10 +1483,10 @@ void do_mptransfer(CHAR_DATA* ch, const char* argument)
       ChNext = victim->prev_in_room;
 
       if (victim == ch || NOT_AUTHED(victim) || !can_see(ch, victim) || !in_hard_range(victim, destination->area))
-	continue;
+        continue;
 
       if (victim->fighting)
-	stop_fighting(victim, TRUE);
+        stop_fighting(victim, TRUE);
       char_from_room(victim);
       victim->next_in_room = ChList;
       ChList = victim;
@@ -1500,14 +1500,14 @@ void do_mptransfer(CHAR_DATA* ch, const char* argument)
     for (d = first_descriptor; d; d = d->next)
     {
       if (!d->character
-	  || (d->connected != CON_PLAYING && d->connected != CON_EDITING)
-	  || !can_see(ch, d->character)
-	  || !d->character->in_room
-	  || ch->in_room->area != d->character->in_room->area
-	  || NOT_AUTHED(d->character) || !in_hard_range(d->character, destination->area))
-	continue;
+          || (d->connected != CON_PLAYING && d->connected != CON_EDITING)
+          || !can_see(ch, d->character)
+          || !d->character->in_room
+          || ch->in_room->area != d->character->in_room->area
+          || NOT_AUTHED(d->character) || !in_hard_range(d->character, destination->area))
+        continue;
       if (d->character->fighting)
-	stop_fighting(d->character, TRUE);
+        stop_fighting(d->character, TRUE);
       char_from_room(d->character);
       d->character->next_in_room = ChList;
       ChList = d->character;
@@ -1554,9 +1554,9 @@ void do_mptransfer(CHAR_DATA* ch, const char* argument)
     {
       ChNext = victim->prev_in_room;
       if (IS_NPC(victim) || get_trust(victim) <= LEVEL_AVATAR || victim->master != ListIdx)
-	continue;
+        continue;
       if (victim->fighting)
-	stop_fighting(victim, TRUE);
+        stop_fighting(victim, TRUE);
       char_from_room(victim);
       victim->next_in_room = ChList;
       ChList = victim;
@@ -1601,17 +1601,17 @@ void do_mpforce(CHAR_DATA* ch, const char* argument)
     {
       if (!IS_IMMORTAL(vch) && can_see(ch, vch))
       {
-	mst = vch->mental_state;
-	vch->mental_state = 0;
-	if (!IS_NPC(vch))
-	{
-	  drunk = vch->pcdata->condition[COND_DRUNK];
-	  vch->pcdata->condition[COND_DRUNK] = 0;
-	}
-	interpret(vch, argument);
-	vch->mental_state = mst;
-	if (!IS_NPC(vch))
-	  vch->pcdata->condition[COND_DRUNK] = drunk;
+        mst = vch->mental_state;
+        vch->mental_state = 0;
+        if (!IS_NPC(vch))
+        {
+          drunk = vch->pcdata->condition[COND_DRUNK];
+          vch->pcdata->condition[COND_DRUNK] = 0;
+        }
+        interpret(vch, argument);
+        vch->mental_state = mst;
+        if (!IS_NPC(vch))
+          vch->pcdata->condition[COND_DRUNK] = drunk;
       }
     }
   }
@@ -1929,11 +1929,11 @@ void do_mpechozone(CHAR_DATA * ch, const char *argument)  /* Blod, late 97 */
     if (vch->in_room->area == ch->in_room->area && !IS_NPC(vch) && IS_AWAKE(vch))
     {
       if (argument[0] == '\0')
-	act(AT_ACTION, " ", vch, NULL, NULL, TO_CHAR);
+        act(AT_ACTION, " ", vch, NULL, NULL, TO_CHAR);
       else if (color)
-	act(color, argument, vch, NULL, NULL, TO_CHAR);
+        act(color, argument, vch, NULL, NULL, TO_CHAR);
       else
-	act(AT_ACTION, argument, vch, NULL, NULL, TO_CHAR);
+        act(AT_ACTION, argument, vch, NULL, NULL, TO_CHAR);
     }
   }
   DONT_UPPER = FALSE;
@@ -2320,8 +2320,8 @@ void do_mp_damage(CHAR_DATA* ch, const char* argument)
       nextinroom = victim->next_in_room;
       if (victim != ch && can_see(ch, victim))  /* Could go either way */
       {
-	snprintf(buf, MAX_STRING_LENGTH, "'%s' %s", victim->name, arg2);
-	do_mp_damage(ch, buf);
+        snprintf(buf, MAX_STRING_LENGTH, "'%s' %s", victim->name, arg2);
+        do_mp_damage(ch, buf);
       }
     }
     return;
@@ -2386,7 +2386,7 @@ void do_mp_log(CHAR_DATA* ch, const char* argument)
     return;
   }
   snprintf(buf, MAX_STRING_LENGTH, "&p%-2.2d/%-2.2d | %-2.2d:%-2.2d  &P%s:  &p%s",
-	    t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->short_descr, argument);
+            t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, ch->short_descr, argument);
   append_to_file(MOBLOG_FILE, buf);
   return;
 }
@@ -2804,9 +2804,9 @@ void do_mpapply(CHAR_DATA* ch, const char* argument)
     return;
 
   snprintf(log_buf, MAX_STRING_LENGTH, "%s@%s new %s %s %s applying...",
-	    victim->name, victim->desc->host,
-	    race_table[victim->race]->race_name,
-	    class_table[victim->Class]->who_name, IS_PKILL(victim) ? "(Deadly)" : "(Peaceful)");
+            victim->name, victim->desc->host,
+            race_table[victim->race]->race_name,
+            class_table[victim->Class]->who_name, IS_PKILL(victim) ? "(Deadly)" : "(Peaceful)");
 /*  log_string(log_buf);*/
   to_channel(log_buf, CHANNEL_AUTH, "Auth", LEVEL_IMMORTAL);
   victim->pcdata->auth_state = 1;
@@ -2855,9 +2855,9 @@ void do_mpapplyb(CHAR_DATA* ch, const char* argument)
   default:
     send_to_char("You attempt to regain the gods' attention.\r\n", victim);
     snprintf(log_buf, MAX_STRING_LENGTH, "%s@%s new %s %s %s applying...",
-	      victim->name, victim->desc->host,
-	      race_table[victim->race]->race_name,
-	      class_table[victim->Class]->who_name, IS_PKILL(victim) ? "(Deadly)" : "(Peaceful)");
+              victim->name, victim->desc->host,
+              race_table[victim->race]->race_name,
+              class_table[victim->Class]->who_name, IS_PKILL(victim) ? "(Deadly)" : "(Peaceful)");
     log_string(log_buf);
     to_channel(log_buf, CHANNEL_AUTH, "Auth", LEVEL_IMMORTAL);
     add_timer(victim, TIMER_APPLIED, 10, NULL, 0);
@@ -2867,7 +2867,7 @@ void do_mpapplyb(CHAR_DATA* ch, const char* argument)
   case 2:
     send_to_char
       ("Your name has been deemed unsuitable by the gods.  Please choose a more medieval name with the 'name' command.\r\n",
-	victim);
+        victim);
     add_timer(victim, TIMER_APPLIED, 10, NULL, 0);
     break;
 
@@ -2929,7 +2929,7 @@ void do_mpapplyb(CHAR_DATA* ch, const char* argument)
 }
 
 /*
- * Deposit some gold into the current area's economy		-Thoric
+ * Deposit some gold into the current area's economy            -Thoric
  */
 void do_mp_deposit(CHAR_DATA* ch, const char* argument)
 {
@@ -2959,7 +2959,7 @@ void do_mp_deposit(CHAR_DATA* ch, const char* argument)
 
 
 /*
- * Withdraw some gold from the current area's economy		-Thoric
+ * Withdraw some gold from the current area's economy           -Thoric
  */
 void do_mp_withdraw(CHAR_DATA* ch, const char* argument)
 {
@@ -3063,8 +3063,8 @@ void do_mppeace(CHAR_DATA* ch, const char* argument)
     {
       if (rch->fighting)
       {
-	stop_fighting(rch, TRUE);
-	do_sit(rch, "");
+        stop_fighting(rch, TRUE);
+        do_sit(rch, "");
       }
       stop_hating(rch);
       stop_hunting(rch);
@@ -3222,8 +3222,8 @@ ch_ret simple_damage(CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt)
     {
       if (dam > get_obj_resistance(damobj))
       {
-	set_cur_obj(damobj);
-	damage_obj(damobj);
+        set_cur_obj(damobj);
+        damage_obj(damobj);
       }
     }
   }
@@ -3281,7 +3281,7 @@ ch_ret simple_damage(CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt)
     if (!npcvict)
     {
       snprintf(log_buf, MAX_STRING_LENGTH, "%s (%d) killed by %s at %d",
-		victim->name, victim->level, (IS_NPC(ch) ? ch->short_descr : ch->name), victim->in_room->vnum);
+                victim->name, victim->level, (IS_NPC(ch) ? ch->short_descr : ch->name), victim->in_room->vnum);
       log_string(log_buf);
       to_channel(log_buf, CHANNEL_DEATH, "Death", LEVEL_IMMORTAL);
 
@@ -3290,7 +3290,7 @@ ch_ret simple_damage(CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt)
        * 1/2 way back to previous level.
        */
       if (victim->exp > exp_level(victim, victim->level))
-	gain_exp(victim, (exp_level(victim, victim->level) - victim->exp) / 2);
+        gain_exp(victim, (exp_level(victim, victim->level) - victim->exp) / 2);
 
       /*
        * New penalty... go back to the beginning of current level.
@@ -3325,8 +3325,8 @@ ch_ret simple_damage(CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt)
   if (npcvict && dam > 0)
   {
     if ((xIS_SET(victim->act, ACT_WIMPY) && number_bits(1) == 0
-	  && victim->hit < victim->max_hit / 2)
-	|| (IS_AFFECTED(victim, AFF_CHARM) && victim->master && victim->master->in_room != victim->in_room))
+          && victim->hit < victim->max_hit / 2)
+        || (IS_AFFECTED(victim, AFF_CHARM) && victim->master && victim->master->in_room != victim->in_room))
     {
       start_fearing(victim, ch);
       stop_hunting(victim);
@@ -3376,8 +3376,8 @@ void do_mphate(CHAR_DATA* ch, const char* argument)
     {
       if (!(victim = get_char_world(ch, master->name)))
       {
-	progbug("Mphate - NULL NPC Master", ch);
-	return;
+        progbug("Mphate - NULL NPC Master", ch);
+        return;
       }
     }
     else
@@ -3399,8 +3399,8 @@ void do_mphate(CHAR_DATA* ch, const char* argument)
       vnum = atoi(arg2);
       if (vnum < 1 || vnum > MAX_VNUM)
       {
-	progbug("Mphate -- aggressor vnum out of range", ch);
-	return;
+        progbug("Mphate -- aggressor vnum out of range", ch);
+        return;
       }
     }
     else
@@ -3452,8 +3452,8 @@ void do_mphunt(CHAR_DATA* ch, const char* argument)
     {
       if (!(victim = get_char_world(ch, master->name)))
       {
-	progbug("Mphunt - NULL NPC Master", ch);
-	return;
+        progbug("Mphunt - NULL NPC Master", ch);
+        return;
       }
     }
     else
@@ -3475,8 +3475,8 @@ void do_mphunt(CHAR_DATA* ch, const char* argument)
       vnum = atoi(arg2);
       if (vnum < 1 || vnum > MAX_VNUM)
       {
-	progbug("Mphunt -- aggressor vnum out of range", ch);
-	return;
+        progbug("Mphunt -- aggressor vnum out of range", ch);
+        return;
       }
     }
     else
@@ -3528,8 +3528,8 @@ void do_mpfear(CHAR_DATA* ch, const char* argument)
     {
       if (!(victim = get_char_world(ch, master->name)))
       {
-	progbug("Mpfear - NULL NPC Master", ch);
-	return;
+        progbug("Mpfear - NULL NPC Master", ch);
+        return;
       }
     }
     else
@@ -3551,8 +3551,8 @@ void do_mpfear(CHAR_DATA* ch, const char* argument)
       vnum = atoi(arg2);
       if (vnum < 1 || vnum > MAX_VNUM)
       {
-	progbug("Mpfear -- aggressor vnum out of range", ch);
-	return;
+        progbug("Mpfear -- aggressor vnum out of range", ch);
+        return;
       }
     }
     else

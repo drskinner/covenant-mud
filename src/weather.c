@@ -21,7 +21,7 @@
 * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
 * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
 * ------------------------------------------------------------------------ *
-*	                     Weather System Header                             *
+*                            Weather System Header                             *
 ****************************************************************************
 *     Base Weather Model Copyright (c) 2007 Chris Jacobson                 *
 ****************************************************************************/
@@ -69,7 +69,7 @@ struct WeatherCell
    int cloudcover;     // 0..100, amount of clouds in the sky
    int humidity;       // 0+
    int precipitation;  // 0..100
-   int energy;			// 0..100 Storm Energy, chance of storm.
+   int energy;                  // 0..100 Storm Energy, chance of storm.
    /*
    *  Instead of a wind direction we use an X/Y speed
    *  It makes the math below much simpler this way.
@@ -84,25 +84,25 @@ struct WeatherCell
 };
 
 /*
-*	This is the Weather Map.  It is a grid of cells representing X-mile square
-*	areas of weather
+*       This is the Weather Map.  It is a grid of cells representing X-mile square
+*       areas of weather
 */
-struct WeatherCell	weatherMap[WEATHER_SIZE_X][WEATHER_SIZE_Y];
+struct WeatherCell      weatherMap[WEATHER_SIZE_X][WEATHER_SIZE_Y];
 
 /*
-*	This is the Weather Delta Map.  It is used to accumulate changes to be
-*	applied to the Weather Map.  Why accumulate changes then apply them, rather
-*	than just change the Weather Map as we go?
-*	Because doing that can mean a change just made to a neighbor can
-*	immediately cause ANOTHER change to a neighbor, causing things
-*	to get out of control or causing cascading weather, propagating much
-*	faster and unpredictably (in a BAD unpredictable way)
-*	Instead, we determine all the changes that should occur based on the current
-*	'snapshot' of weather, than apply them all at once!
+*       This is the Weather Delta Map.  It is used to accumulate changes to be
+*       applied to the Weather Map.  Why accumulate changes then apply them, rather
+*       than just change the Weather Map as we go?
+*       Because doing that can mean a change just made to a neighbor can
+*       immediately cause ANOTHER change to a neighbor, causing things
+*       to get out of control or causing cascading weather, propagating much
+*       faster and unpredictably (in a BAD unpredictable way)
+*       Instead, we determine all the changes that should occur based on the current
+*       'snapshot' of weather, than apply them all at once!
 */
-struct WeatherCell	weatherDelta[WEATHER_SIZE_X][WEATHER_SIZE_Y];
+struct WeatherCell      weatherDelta[WEATHER_SIZE_X][WEATHER_SIZE_Y];
 
-//	Set everything up with random non-equal values to prevent equalibrium
+//      Set everything up with random non-equal values to prevent equalibrium
 void InitializeWeatherMap(void)
 {
    int x, y;
@@ -116,12 +116,12 @@ void InitializeWeatherMap(void)
 
          cell->climate        = number_range(0, 10);
          cell->hemisphere     = number_range(0, 1);
-         cell->temperature    = number_range(-30, 100);	
-         cell->pressure       = number_range(0, 100);	
-         cell->cloudcover     = number_range(0, 100);	
-         cell->humidity       = number_range(0, 100);	
-         cell->precipitation  = number_range(0, 100);	
-         cell->windSpeedX     = number_range(-100, 100);	
+         cell->temperature    = number_range(-30, 100); 
+         cell->pressure       = number_range(0, 100);   
+         cell->cloudcover     = number_range(0, 100);   
+         cell->humidity       = number_range(0, 100);   
+         cell->precipitation  = number_range(0, 100);   
+         cell->windSpeedX     = number_range(-100, 100);        
          cell->windSpeedY     = number_range(-100, 100);
          cell->energy         = number_range(0, 100);
       }
@@ -565,7 +565,7 @@ void ApplyDeltaChanges(void)
                if (cell->temperature <= 32)
                   WeatherMessage("&WA few scattered snowflakes fall to the ground.&D\r\n", x, y);
                else
-                  WeatherMessage("&BA light mist falls to the ground.&D\r\n", x, y);				
+                  WeatherMessage("&BA light mist falls to the ground.&D\r\n", x, y);                            
          }
          else
          {
@@ -586,7 +586,7 @@ void ApplyDeltaChanges(void)
                   WeatherMessage("&wMany clouds cover the sky.&D\r\n", x, y);
             }
             else if (isPartlyCloudy(getCloudCover(cell)))
-            {				
+            {                           
                if (ExceedsThreshold(cell->cloudcover, delta->cloudcover, 40))
                   WeatherMessage("&wMore clouds roll in making it partly cloudy.&D\r\n", x, y);
                else if (DropsBelowThreshold(cell->cloudcover, delta->cloudcover, 60))
@@ -724,20 +724,20 @@ void ApplyDeltaChanges(void)
             }
          }
          //Here we actually apply the changes making sure they stay within specific bounds
-         cell->temperature	= URANGE(-30, cell->temperature + delta->temperature, 100);
-         cell->pressure		= URANGE(0, cell->pressure + delta->pressure, 100);
+         cell->temperature      = URANGE(-30, cell->temperature + delta->temperature, 100);
+         cell->pressure         = URANGE(0, cell->pressure + delta->pressure, 100);
          cell->cloudcover    = URANGE(0, cell->cloudcover + delta->cloudcover, 100);
-         cell->energy		= URANGE(0, cell->energy + delta->energy, 100);
-         cell->humidity		= URANGE(0, cell->humidity + delta->humidity, 100);
+         cell->energy           = URANGE(0, cell->energy + delta->energy, 100);
+         cell->humidity         = URANGE(0, cell->humidity + delta->humidity, 100);
          cell->precipitation = URANGE(0, cell->precipitation + delta->precipitation, 100);
-         cell->windSpeedX	= URANGE(-100, cell->windSpeedX + delta->windSpeedX, 100);
-         cell->windSpeedY	= URANGE(-100, cell->windSpeedY + delta->windSpeedY, 100);
+         cell->windSpeedX       = URANGE(-100, cell->windSpeedX + delta->windSpeedX, 100);
+         cell->windSpeedY       = URANGE(-100, cell->windSpeedY + delta->windSpeedY, 100);
       }
    }
 }
 
 void ClearWeatherDeltas(void)
-{	//  Clear delta map
+{       //  Clear delta map
    memset(weatherDelta, 0, sizeof(weatherDelta));
 }
 
@@ -792,8 +792,8 @@ void CalculateCellToCellChanges(void)
    {
       for (x = 0; x < WEATHER_SIZE_X; x++)
       {
-         struct	WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
-         struct	WeatherCell *delta = &weatherDelta[x][y]; //  Where we accumulate the changes to apply
+         struct WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
+         struct WeatherCell *delta = &weatherDelta[x][y]; //  Where we accumulate the changes to apply
 
          /*
          *  Here we force the system to take day/night into account
@@ -813,20 +813,20 @@ void CalculateCellToCellChanges(void)
          //  Humidity and pressure can affect the precipitation level
          int humidityAndPressure = (cell->humidity + cell->pressure);
          if ((humidityAndPressure / 2) >= 60)
-            delta->precipitation	+= (cell->humidity / 10);
+            delta->precipitation        += (cell->humidity / 10);
          else if ((humidityAndPressure / 2) < 60 && (humidityAndPressure / 2) > 40)
-            delta->precipitation	+= number_range(-2, 2);
+            delta->precipitation        += number_range(-2, 2);
          else if ((humidityAndPressure / 2) <= 40)
-            delta->precipitation	-= (cell->humidity / 5);
+            delta->precipitation        -= (cell->humidity / 5);
 
          //  Humidity and precipitation can affect the cloud cover
          int humidityAndPrecip = (cell->humidity + cell->precipitation);
          if ((humidityAndPrecip / 2) >= 60)
-            delta->cloudcover	-= (cell->humidity / 10);
+            delta->cloudcover   -= (cell->humidity / 10);
          else if ((humidityAndPrecip / 2) < 60 && (humidityAndPrecip / 2) > 40)
-            delta->cloudcover	+= number_range(-2, 2);
+            delta->cloudcover   += number_range(-2, 2);
          else if ((humidityAndPrecip / 2) <= 40)
-            delta->cloudcover	+= (cell->humidity / 5);
+            delta->cloudcover   += (cell->humidity / 5);
 
          int totalPressure = cell->pressure;
          int numPressureCells = 1;
@@ -865,13 +865,13 @@ void CalculateCellToCellChanges(void)
                *  wind increase towards them!
                *  So if they are west neighbor (dx < 0)
                */
-               int	pressureDelta = cell->pressure - neighborCell->pressure;
+               int      pressureDelta = cell->pressure - neighborCell->pressure;
                int windSpeedDelta = pressureDelta / 4;
 
-               if (dx != 0)		//	Neighbor to east or west
-                  delta->windSpeedX += (windSpeedDelta * dx);	//	dx = -1 or 1
-               if (dy != 0)		//	Neighbor to north or south
-                  delta->windSpeedY += (windSpeedDelta * dy);	//	dy = -1 or 1
+               if (dx != 0)             //      Neighbor to east or west
+                  delta->windSpeedX += (windSpeedDelta * dx);   //      dx = -1 or 1
+               if (dy != 0)             //      Neighbor to north or south
+                  delta->windSpeedY += (windSpeedDelta * dy);   //      dy = -1 or 1
 
                totalPressure += neighborCell->pressure; ++numPressureCells;
 
@@ -931,8 +931,8 @@ void EnforceClimateConditions(void)
       for (x = 0; x < WEATHER_SIZE_X; x++)
       {
 
-         struct	WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
-         struct	WeatherCell *delta = &weatherDelta[x][y];
+         struct WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
+         struct WeatherCell *delta = &weatherDelta[x][y];
 
          if (cell->climate == CLIMATE_RAINFOREST)  
          {
@@ -1242,7 +1242,7 @@ void RandomizeCells(void)
    {
       for (x = 0; x < WEATHER_SIZE_X; x++)
       {
-         struct	WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
+         struct WeatherCell *cell = &weatherMap[x][y];    //  Weather cell
 
          if (cell->hemisphere == HEMISPHERE_NORTH)
          {
@@ -1250,496 +1250,496 @@ void RandomizeCells(void)
             {
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(20, 40);	
-                  cell->humidity		= number_range(60, 80);	
-                  cell->precipitation	= number_range(60, 80);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(20, 40);   
+                  cell->humidity                = number_range(60, 80); 
+                  cell->precipitation   = number_range(60, 80); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(40, 70);	
-                  cell->pressure		= number_range(20, 40);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 70); 
+                  cell->pressure                = number_range(20, 40); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(50, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(50, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
                {
-                  cell->temperature	= number_range(30, 50);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 50); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DECIDUOUS)  
                {
-                  cell->temperature	= number_range(45, 65);	
-                  cell->pressure		= number_range(20, 40);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(45, 65); 
+                  cell->pressure                = number_range(20, 40); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(0, 30);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(0, 30);  
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(10, 40);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(10, 40); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
                {
-                  cell->temperature	= number_range(20, 50);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(20, 50); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
                {
-                  cell->temperature	= number_range(0, 20);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(0, 20);  
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
             }
             else if (time_info.season == SEASON_SUMMER)
             {
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(20, 40);	
-                  cell->humidity		= number_range(60, 80);	
-                  cell->precipitation	= number_range(60, 80);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(20, 40);   
+                  cell->humidity                = number_range(60, 80); 
+                  cell->precipitation   = number_range(60, 80); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
                {
-                  cell->temperature	= number_range(80, 100);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(80, 100);        
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(80, 100);	
-                  cell->pressure		= number_range(50, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(80, 100);        
+                  cell->pressure                = number_range(50, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DECIDUOUS)  
                {
-                  cell->temperature	= number_range(65, 95);	
-                  cell->pressure		= number_range(60, 90);	
-                  cell->cloudcover    = number_range(10, 30);	
-                  cell->humidity		= number_range(10, 30);	
-                  cell->precipitation	= number_range(10, 30);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(65, 95); 
+                  cell->pressure                = number_range(60, 90); 
+                  cell->cloudcover    = number_range(10, 30);   
+                  cell->humidity                = number_range(10, 30); 
+                  cell->precipitation   = number_range(10, 30); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(30, 70);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(20, 50);	
-                  cell->humidity		= number_range(20, 50);	
-                  cell->precipitation	= number_range(20, 50);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 70); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(20, 50);   
+                  cell->humidity                = number_range(20, 50); 
+                  cell->precipitation   = number_range(20, 50); 
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(40, 70);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 70); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
                {
-                  cell->temperature	= number_range(30, 60);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 60); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
                {
-                  cell->temperature	= number_range(-30, -10);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-30, -10);       
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
             }
             else if (time_info.season == SEASON_FALL)
             {
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(60, 80);	
-                  cell->cloudcover    = number_range(10, 30);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(60, 80); 
+                  cell->cloudcover    = number_range(10, 30);   
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(40, 70);	
-                  cell->pressure		= number_range(20, 40);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 70); 
+                  cell->pressure                = number_range(20, 40); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(30, 70);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(20, 40);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(30, 70); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(20, 40); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
                {
-                  cell->temperature	= number_range(30, 50);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 50); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DECIDUOUS)  
                {
-                  cell->temperature	= number_range(55, 75);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(40, 60);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(55, 75); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(40, 60); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(0, 30);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
-               }	
+                  cell->temperature     = number_range(0, 30);  
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
+               }        
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(10, 40);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(20, 60);	
-                  cell->humidity		= number_range(20, 60);	
-                  cell->precipitation	= number_range(20, 60);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(10, 40); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(20, 60);   
+                  cell->humidity                = number_range(20, 60); 
+                  cell->precipitation   = number_range(20, 60); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
-               {	
-                  cell->temperature	= number_range(20, 50);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(20, 50); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
                {
-                  cell->temperature	= number_range(0, 20);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
-               }	
+                  cell->temperature     = number_range(0, 20);  
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
+               }        
             }
             else if (time_info.season == SEASON_WINTER)
-            {	
+            {   
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(60, 80);	
-                  cell->cloudcover    = number_range(10, 30);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(60, 80); 
+                  cell->cloudcover    = number_range(10, 30);   
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
-               {	
-                  cell->temperature	= number_range(50, 70);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(50, 70); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(-10, 20);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-10, 20);        
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(40, 60);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(60, 80);	
-                  cell->precipitation	= number_range(40, 60);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 60); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(60, 80); 
+                  cell->precipitation   = number_range(40, 60); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
-               {	
-                  cell->temperature	= number_range(-30, 0);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(-30, 0); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
-               else if (cell->climate == CLIMATE_DECIDUOUS)	
+               else if (cell->climate == CLIMATE_DECIDUOUS)     
                {
-                  cell->temperature	= number_range(10, 30);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(40, 60);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(10, 30); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(40, 60); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(-30, 0);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-30, 0); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(-10, 20);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(20, 60);	
-                  cell->humidity		= number_range(20, 60);	
-                  cell->precipitation	= number_range(20, 60);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-10, 20);        
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(20, 60);   
+                  cell->humidity                = number_range(20, 60); 
+                  cell->precipitation   = number_range(20, 60); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
                {
-                  cell->temperature	= number_range(-30, 10);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-30, 10);        
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
                {
-                  cell->temperature	= number_range(30, 60);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 60); 
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
             }
          }
@@ -1749,496 +1749,496 @@ void RandomizeCells(void)
             {
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
-               {	
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(60, 80);	
-                  cell->cloudcover    = number_range(10, 30);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(60, 80); 
+                  cell->cloudcover    = number_range(10, 30);   
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(40, 70);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 70); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(30, 70);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(20, 40);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(30, 70); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(20, 40); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
                {
-                  cell->temperature	= number_range(30, 50);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 50); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DECIDUOUS)  
                {
-                  cell->temperature	= number_range(55, 75);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(40, 60);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(55, 75); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(40, 60); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(0, 30);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(0, 30);  
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(10, 40);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(20, 60);	
-                  cell->humidity		= number_range(20, 60);	
-                  cell->precipitation	= number_range(20, 60);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(10, 40); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(20, 60);   
+                  cell->humidity                = number_range(20, 60); 
+                  cell->precipitation   = number_range(20, 60); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
                {
-                  cell->temperature	= number_range(20, 50);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(20, 50); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
                {
-                  cell->temperature	= number_range(0, 20);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(0, 20);  
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
             }
             else if (time_info.season == SEASON_SUMMER)
             {
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(60, 80);	
-                  cell->cloudcover    = number_range(10, 30);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(60, 80); 
+                  cell->cloudcover    = number_range(10, 30);   
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
                {
-                  cell->temperature	= number_range(80, 100);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(80, 100);        
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(40, 60);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(60, 80);	
-                  cell->precipitation	= number_range(40, 60);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 60); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(60, 80); 
+                  cell->precipitation   = number_range(40, 60); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(50, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(50, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
                {
-                  cell->temperature	= number_range(-30, 0);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-30, 0); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DECIDUOUS)  
                {
-                  cell->temperature	= number_range(10, 30);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(40, 60);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(10, 30); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(40, 60); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(-30, 0);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-30, 0); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(-10, 20);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(20, 60);	
-                  cell->humidity		= number_range(20, 60);	
-                  cell->precipitation	= number_range(20, 60);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-10, 20);        
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(20, 60);   
+                  cell->humidity                = number_range(20, 60); 
+                  cell->precipitation   = number_range(20, 60); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
                {
-                  cell->temperature	= number_range(-30, 10);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-30, 10);        
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
-               {	
-                  cell->temperature	= number_range(30, 60);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(30, 60); 
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
             }
             else if (time_info.season == SEASON_FALL)
-            {	
+            {   
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(20, 40);	
-                  cell->humidity		= number_range(60, 80);	
-                  cell->precipitation	= number_range(60, 80);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(20, 40);   
+                  cell->humidity                = number_range(60, 80); 
+                  cell->precipitation   = number_range(60, 80); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(40, 70);	
-                  cell->pressure		= number_range(20, 40);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 70); 
+                  cell->pressure                = number_range(20, 40); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(-10, 20);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-10, 20);        
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
                {
-                  cell->temperature	= number_range(30, 50);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 50); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DECIDUOUS)  
                {
-                  cell->temperature	= number_range(45, 65);	
-                  cell->pressure		= number_range(20, 40);	
-                  cell->cloudcover    = number_range(40, 60);	
-                  cell->humidity		= number_range(40, 60);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(45, 65); 
+                  cell->pressure                = number_range(20, 40); 
+                  cell->cloudcover    = number_range(40, 60);   
+                  cell->humidity                = number_range(40, 60); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(0, 30);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
-               }	
+                  cell->temperature     = number_range(0, 30);  
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
+               }        
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(10, 40);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(10, 40); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
-               {	
-                  cell->temperature	= number_range(20, 50);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(20, 50); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
                {
-                  cell->temperature	= number_range(0, 20);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
-               }	
+                  cell->temperature     = number_range(0, 20);  
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
+               }        
             }
             else if (time_info.season == SEASON_WINTER)
-            {	
+            {   
                if (cell->climate == CLIMATE_RAINFOREST)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(30, 60);	
-                  cell->cloudcover    = number_range(50, 70);	
-                  cell->humidity		= number_range(70, 100);	
-                  cell->precipitation	= number_range(70, 100);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(30, 60); 
+                  cell->cloudcover    = number_range(50, 70);   
+                  cell->humidity                = number_range(70, 100);        
+                  cell->precipitation   = number_range(70, 100);        
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_SAVANNA)  
                {
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(20, 40);	
-                  cell->humidity		= number_range(60, 80);	
-                  cell->precipitation	= number_range(60, 80);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(20, 40);   
+                  cell->humidity                = number_range(60, 80); 
+                  cell->precipitation   = number_range(60, 80); 
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_DESERT)  
-               {	
-                  cell->temperature	= number_range(50, 70);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 10);	
-                  cell->precipitation	= number_range(0, 10);	
-                  cell->windSpeedX	= number_range(-10, 10);	
-                  cell->windSpeedY	= number_range(-10, 10);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(50, 70); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 10);  
+                  cell->precipitation   = number_range(0, 10);  
+                  cell->windSpeedX      = number_range(-10, 10);        
+                  cell->windSpeedY      = number_range(-10, 10);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_STEPPE)  
                {
-                  cell->temperature	= number_range(70, 90);	
-                  cell->pressure		= number_range(70, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-30, 30);	
-                  cell->windSpeedY	= number_range(-30, 30);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(70, 90); 
+                  cell->pressure                = number_range(70, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-30, 30);        
+                  cell->windSpeedY      = number_range(-30, 30);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_CHAPPARAL)  
                {
-                  cell->temperature	= number_range(80, 100);	
-                  cell->pressure		= number_range(50, 90);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(80, 100);        
+                  cell->pressure                = number_range(50, 90); 
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_GRASSLANDS)  
-               {	
-                  cell->temperature	= number_range(60, 80);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+               {        
+                  cell->temperature     = number_range(60, 80); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
-               else if (cell->climate == CLIMATE_DECIDUOUS)	
+               else if (cell->climate == CLIMATE_DECIDUOUS)     
                {
-                  cell->temperature	= number_range(65, 95);	
-                  cell->pressure		= number_range(60, 90);	
-                  cell->cloudcover    = number_range(10, 30);	
-                  cell->humidity		= number_range(10, 30);	
-                  cell->precipitation	= number_range(10, 30);	
-                  cell->windSpeedX	= number_range(-40, 40);	
-                  cell->windSpeedY	= number_range(-40, 40);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(65, 95); 
+                  cell->pressure                = number_range(60, 90); 
+                  cell->cloudcover    = number_range(10, 30);   
+                  cell->humidity                = number_range(10, 30); 
+                  cell->precipitation   = number_range(10, 30); 
+                  cell->windSpeedX      = number_range(-40, 40);        
+                  cell->windSpeedY      = number_range(-40, 40);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TAIGA)  
                {
-                  cell->temperature	= number_range(30, 70);	
-                  cell->pressure		= number_range(40, 60);	
-                  cell->cloudcover    = number_range(20, 50);	
-                  cell->humidity		= number_range(20, 50);	
-                  cell->precipitation	= number_range(20, 50);	
-                  cell->windSpeedX	= number_range(-50, 50);	
-                  cell->windSpeedY	= number_range(-50, 50);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 70); 
+                  cell->pressure                = number_range(40, 60); 
+                  cell->cloudcover    = number_range(20, 50);   
+                  cell->humidity                = number_range(20, 50); 
+                  cell->precipitation   = number_range(20, 50); 
+                  cell->windSpeedX      = number_range(-50, 50);        
+                  cell->windSpeedY      = number_range(-50, 50);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_TUNDRA)  
                {
-                  cell->temperature	= number_range(40, 70);	
-                  cell->pressure		= number_range(80, 100);	
-                  cell->cloudcover    = number_range(0, 20);	
-                  cell->humidity		= number_range(0, 20);	
-                  cell->precipitation	= number_range(0, 20);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(40, 70); 
+                  cell->pressure                = number_range(80, 100);        
+                  cell->cloudcover    = number_range(0, 20);    
+                  cell->humidity                = number_range(0, 20);  
+                  cell->precipitation   = number_range(0, 20);  
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ALPINE)  
                {
-                  cell->temperature	= number_range(30, 60);	
-                  cell->pressure		= number_range(30, 50);	
-                  cell->cloudcover    = number_range(60, 80);	
-                  cell->humidity		= number_range(50, 70);	
-                  cell->precipitation	= number_range(50, 70);	
-                  cell->windSpeedX	= number_range(-60, 60);	
-                  cell->windSpeedY	= number_range(-60, 60);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(30, 60); 
+                  cell->pressure                = number_range(30, 50); 
+                  cell->cloudcover    = number_range(60, 80);   
+                  cell->humidity                = number_range(50, 70); 
+                  cell->precipitation   = number_range(50, 70); 
+                  cell->windSpeedX      = number_range(-60, 60);        
+                  cell->windSpeedY      = number_range(-60, 60);
+                  cell->energy          = number_range(0, 100);
                }
                else if (cell->climate == CLIMATE_ARCTIC)  
                {
-                  cell->temperature	= number_range(-30, -10);	
-                  cell->pressure		= number_range(85, 100);	
-                  cell->cloudcover    = number_range(0, 15);	
-                  cell->humidity		= number_range(0, 15);	
-                  cell->precipitation	= number_range(0, 15);	
-                  cell->windSpeedX	= number_range(-20, 20);	
-                  cell->windSpeedY	= number_range(-20, 20);
-                  cell->energy		= number_range(0, 100);
+                  cell->temperature     = number_range(-30, -10);       
+                  cell->pressure                = number_range(85, 100);        
+                  cell->cloudcover    = number_range(0, 15);    
+                  cell->humidity                = number_range(0, 15);  
+                  cell->precipitation   = number_range(0, 15);  
+                  cell->windSpeedX      = number_range(-20, 20);        
+                  cell->windSpeedY      = number_range(-20, 20);
+                  cell->energy          = number_range(0, 100);
                }
             }
          }
@@ -2269,9 +2269,9 @@ void save_weathermap(void)
    {
       for (x = 0; x < WEATHER_SIZE_X; x++)
       {
-         struct	WeatherCell *cell = &weatherMap[x][y];
+         struct WeatherCell *cell = &weatherMap[x][y];
 
-         fprintf(fp, "#CELL		%d %d\n", x, y);
+         fprintf(fp, "#CELL             %d %d\n", x, y);
          fprintf(fp, "Climate     %s~\n", climate_names[cell->climate]);
          fprintf(fp, "Hemisphere  %s~\n", hemisphere_name[cell->hemisphere]); 
          fprintf(fp, "State       %d %d %d %d %d %d %d %d\n", cell->cloudcover, cell->energy, cell->humidity, 
@@ -2450,7 +2450,7 @@ bool load_weathermap(void)
 struct WeatherCell *getWeatherCell(AREA_DATA *pArea )
 {
    return &weatherMap[pArea->weatherx][pArea->weathery];
-}	
+}       
 
 void IncreaseTemp(struct WeatherCell *cell, int change)
 {
@@ -3185,7 +3185,7 @@ void do_showweather(CHAR_DATA* ch, const char* argument)
    {
       ch_printf(ch, "X value must be between 0 and %d.\r\n", WEATHER_SIZE_X - 1);
       return;
-   }	
+   }    
 
    if (y < 0 || y > WEATHER_SIZE_Y - 1)
    {

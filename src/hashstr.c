@@ -2,16 +2,16 @@
  * Advanced string hashing functions (c)1996 D.S.D. Software, written by    *
  * Derek Snider for use in SMAUG.                                           *
  *                                                                          *
- * These functions keep track of how many "links" are pointing to the	    *
+ * These functions keep track of how many "links" are pointing to the       *
  * memory allocated, and will free the memory if all the links are removed. *
  * Make absolutely sure you do not mix use of strdup and free with these    *
  * functions, or nasty stuff will happen!                                   *
  * Most occurances of strdup/str_dup should be replaced with str_alloc, and *
- * any free/DISPOSE used on the same pointer should be replaced with	    *
+ * any free/DISPOSE used on the same pointer should be replaced with        *
  * str_free.  If a function uses strdup for temporary use... it is best if  *
  * it is left as is.  Just don't get usage mixed up between conventions.    *
  * The hashstr_data size is 8 bytes of overhead.  Don't be concerned about  *
- * this as you still save lots of space on duplicate strings.	-Thoric   *
+ * this as you still save lots of space on duplicate strings.   -Thoric   *
  ****************************************************************************/
 
 #include <stdio.h>
@@ -31,7 +31,7 @@ typedef unsigned char bool;
 #endif
 extern bool mud_down;
 
-#define STR_HASH_SIZE	1024
+#define STR_HASH_SIZE   1024
 
 struct hashstr_data
 {
@@ -65,7 +65,7 @@ const char *str_alloc(const char *str)
     if (len == ptr->length && !strcmp(str, (char *)ptr + psize))
     {
       if (ptr->links < 65535)
-	++ptr->links;
+        ++ptr->links;
       return (char *)ptr + psize;
     }
   ptr = (struct hashstr_data *)malloc(len + psize + 1);
@@ -135,9 +135,9 @@ int str_free(const char *str)
       ptr2_next = ptr2->next;
       if (ptr2_next == ptr)
       {
-	ptr2->next = ptr->next;
-	free(ptr);
-	return 0;
+        ptr2->next = ptr->next;
+        free(ptr);
+        return 0;
       }
     }
     fprintf(stderr, "str_free: pointer not found for string: %s\n", str);
@@ -198,7 +198,7 @@ const char *check_hash(const char *str)
     }
   if (fnd)
     snprintf(buf, 1024, "Hash info on string: %s\r\nLinks: %d  Position: %d/%d  Hash: %d  Length: %d\r\n",
-	      str, fnd->links, p, c, hash, fnd->length);
+              str, fnd->links, p, c, hash, fnd->length);
   else
     snprintf(buf, 1024, "%s not found.\r\n", str);
   return buf;
@@ -217,17 +217,17 @@ char *hash_stats(void)
     {
       total++;
       if (ptr->links == 1)
-	unique++;
+        unique++;
       if (ptr->links > hilink)
-	hilink = ptr->links;
+        hilink = ptr->links;
       totlinks += ptr->links;
       bytesused += (ptr->length + 1 + sizeof(struct hashstr_data));
       wouldhave += ((ptr->links * sizeof(struct hashstr_data)) + (ptr->links * (ptr->length + 1)));
     }
   }
   snprintf(buf, 1024,
-	    "Hash strings allocated:%8d  Total links  : %d\r\nString bytes allocated:%8d  Bytes saved  : %d\r\nUnique (wasted) links :%8d  Hi-Link count: %d\r\n",
-	    total, totlinks, bytesused, wouldhave - bytesused, unique, hilink);
+            "Hash strings allocated:%8d  Total links  : %d\r\nString bytes allocated:%8d  Bytes saved  : %d\r\nUnique (wasted) links :%8d  Hi-Link count: %d\r\n",
+            total, totlinks, bytesused, wouldhave - bytesused, unique, hilink);
   return buf;
 }
 
@@ -242,8 +242,8 @@ void show_high_hash(int top)
     for (ptr = string_hash[x]; ptr; ptr = ptr->next)
       if (ptr->links >= top)
       {
-	str = (char *)(((long)ptr) + psize);
-	fprintf(stderr, "Links: %5d  String: >%s<\r\n", ptr->links, str);
+        str = (char *)(((long)ptr) + psize);
+        fprintf(stderr, "Links: %5d  String: >%s<\r\n", ptr->links, str);
       }
 }
 

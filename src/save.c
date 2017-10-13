@@ -86,7 +86,7 @@ void kill_timer()
 #endif
 
 /*
- * Un-equip character before saving to ensure proper	-Thoric
+ * Un-equip character before saving to ensure proper    -Thoric
  * stats are saved in case of changes to or removal of EQ
  */
 void de_equip_char(CHAR_DATA * ch)
@@ -99,9 +99,9 @@ void de_equip_char(CHAR_DATA * ch)
     for (y = 0; y < MAX_LAYERS; y++)
     {
       if (IS_NPC(ch))
-	mob_save_equipment[x][y] = NULL;
+        mob_save_equipment[x][y] = NULL;
       else
-	save_equipment[x][y] = NULL;
+        save_equipment[x][y] = NULL;
     }
   }
 
@@ -111,34 +111,34 @@ void de_equip_char(CHAR_DATA * ch)
     {
       if (get_trust(ch) >= obj->level)
       {
-	for (x = 0; x < MAX_LAYERS; x++)
-	{
-	  if (IS_NPC(ch))
-	  {
-	    if (!mob_save_equipment[obj->wear_loc][x])
-	    {
-	      mob_save_equipment[obj->wear_loc][x] = obj;
-	      break;
-	    }
-	  }
-	  else
-	  {
-	    if (!save_equipment[obj->wear_loc][x])
-	    {
-	      save_equipment[obj->wear_loc][x] = obj;
-	      break;
-	    }
-	  }
-	}
-	if (x == MAX_LAYERS)
-	{
-	  bug("%s had on more than %d layers of clothing in one location (%d): %s",
-	       ch->name, MAX_LAYERS, obj->wear_loc, obj->name);
-	}
+        for (x = 0; x < MAX_LAYERS; x++)
+        {
+          if (IS_NPC(ch))
+          {
+            if (!mob_save_equipment[obj->wear_loc][x])
+            {
+              mob_save_equipment[obj->wear_loc][x] = obj;
+              break;
+            }
+          }
+          else
+          {
+            if (!save_equipment[obj->wear_loc][x])
+            {
+              save_equipment[obj->wear_loc][x] = obj;
+              break;
+            }
+          }
+        }
+        if (x == MAX_LAYERS)
+        {
+          bug("%s had on more than %d layers of clothing in one location (%d): %s",
+               ch->name, MAX_LAYERS, obj->wear_loc, obj->name);
+        }
       }
       else
       {
-	bug("%s had on %s:  ch->level = %d  obj->level = %d", ch->name, obj->name, ch->level, obj->level);
+        bug("%s had on %s:  ch->level = %d  obj->level = %d", ch->name, obj->name, ch->level, obj->level);
       }
       unequip_char(ch, obj);
     }
@@ -153,15 +153,15 @@ void de_equip_char(CHAR_DATA * ch)
      */
     for (paf = ch->in_room->first_affect; paf; paf = paf->next)
       if (paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL)
-	affect_modify(ch, paf, FALSE);
+        affect_modify(ch, paf, FALSE);
     for (paf = ch->in_room->first_permaffect; paf; paf = paf->next)
       if (paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL)
-	affect_modify(ch, paf, FALSE);
+        affect_modify(ch, paf, FALSE);
   }
 }
 
 /*
- * Re-equip character					-Thoric
+ * Re-equip character                                   -Thoric
  */
 void re_equip_char(CHAR_DATA * ch)
 {
@@ -173,25 +173,25 @@ void re_equip_char(CHAR_DATA * ch)
     {
       if (IS_NPC(ch))
       {
-	if (mob_save_equipment[x][y] != NULL)
-	{
-	  if (quitting_char != ch)
-	    equip_char(ch, mob_save_equipment[x][y], x);
-	  mob_save_equipment[x][y] = NULL;
-	}
-	else
-	  break;
+        if (mob_save_equipment[x][y] != NULL)
+        {
+          if (quitting_char != ch)
+            equip_char(ch, mob_save_equipment[x][y], x);
+          mob_save_equipment[x][y] = NULL;
+        }
+        else
+          break;
       }
       else
       {
-	if (save_equipment[x][y] != NULL)
-	{
-	  if (quitting_char != ch)
-	    equip_char(ch, save_equipment[x][y], x);
-	  save_equipment[x][y] = NULL;
-	}
-	else
-	  break;
+        if (save_equipment[x][y] != NULL)
+        {
+          if (quitting_char != ch)
+            equip_char(ch, save_equipment[x][y], x);
+          save_equipment[x][y] = NULL;
+        }
+        else
+          break;
       }
     }
   }
@@ -206,10 +206,10 @@ void re_equip_char(CHAR_DATA * ch)
      */
     for (paf = ch->in_room->first_affect; paf; paf = paf->next)
       if (paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL)
-	affect_modify(ch, paf, TRUE);
+        affect_modify(ch, paf, TRUE);
     for (paf = ch->in_room->first_permaffect; paf; paf = paf->next)
       if (paf->location != APPLY_WEARSPELL && paf->location != APPLY_REMOVESPELL)
-	affect_modify(ch, paf, TRUE);
+        affect_modify(ch, paf, TRUE);
   }
 }
 
@@ -262,7 +262,7 @@ void save_char_obj(CHAR_DATA * ch)
 
   ch->save_time = current_time;
   snprintf(strsave, MAX_INPUT_LENGTH, "%s%c/%s", PLAYER_DIR, tolower(ch->pcdata->filename[0]),
-	    capitalize(ch->pcdata->filename));
+            capitalize(ch->pcdata->filename));
 
   /*
    * Auto-backup pfile (can cause lag with high disk access situtations).
@@ -276,7 +276,7 @@ void save_char_obj(CHAR_DATA * ch)
   if (IS_SET(sysdata.save_flags, SV_BACKUP) || (IS_SET(sysdata.save_flags, SV_QUITBACKUP) && quitting_char == ch))
   {
     snprintf(strback, MAX_INPUT_LENGTH, "%s%c/%s", BACKUP_DIR, tolower(ch->pcdata->filename[0]),
-	      capitalize(ch->pcdata->filename));
+              capitalize(ch->pcdata->filename));
     rename(strsave, strback);
   }
 
@@ -301,11 +301,11 @@ void save_char_obj(CHAR_DATA * ch)
       fprintf(fp, "Level        %d\n", ch->level);
       fprintf(fp, "Pcflags      %d\n", ch->pcdata->flags);
       if (ch->pcdata->r_range_lo && ch->pcdata->r_range_hi)
-	fprintf(fp, "RoomRange    %d %d\n", ch->pcdata->r_range_lo, ch->pcdata->r_range_hi);
+        fprintf(fp, "RoomRange    %d %d\n", ch->pcdata->r_range_lo, ch->pcdata->r_range_hi);
       if (ch->pcdata->o_range_lo && ch->pcdata->o_range_hi)
-	fprintf(fp, "ObjRange     %d %d\n", ch->pcdata->o_range_lo, ch->pcdata->o_range_hi);
+        fprintf(fp, "ObjRange     %d %d\n", ch->pcdata->o_range_lo, ch->pcdata->o_range_hi);
       if (ch->pcdata->m_range_lo && ch->pcdata->m_range_hi)
-	fprintf(fp, "MobRange     %d %d\n", ch->pcdata->m_range_lo, ch->pcdata->m_range_hi);
+        fprintf(fp, "MobRange     %d %d\n", ch->pcdata->m_range_lo, ch->pcdata->m_range_hi);
       fclose(fp);
       fp = NULL;
     }
@@ -349,11 +349,11 @@ void save_char_obj(CHAR_DATA * ch)
     {
       if (ferr)
       {
-	perror(strsave);
-	bug("%s: Error writing temp file for %s -- not copying", __func__, strsave);
+        perror(strsave);
+        bug("%s: Error writing temp file for %s -- not copying", __func__, strsave);
       }
       else
-	rename(TEMP_FILE, strsave);
+        rename(TEMP_FILE, strsave);
     }
   }
 
@@ -384,13 +384,13 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   fprintf(fp, "Class        %d\n", ch->Class);
   fprintf(fp, "Race         %d\n", ch->race);
   fprintf(fp, "Age          %d %d %d %d\n",
-	   ch->pcdata->age_bonus, ch->pcdata->day, ch->pcdata->month, ch->pcdata->year);
+           ch->pcdata->age_bonus, ch->pcdata->day, ch->pcdata->month, ch->pcdata->year);
   fprintf(fp, "Languages    %d %d\n", ch->speaks, ch->speaking);
   fprintf(fp, "Level        %d\n", ch->level);
   fprintf(fp, "Played       %d\n", ch->played + (int)(current_time - ch->logon));
   fprintf(fp, "Room         %d\n",
-	   (ch->in_room == get_room_index(ROOM_VNUM_LIMBO)
-	     && ch->was_in_room) ? ch->was_in_room->vnum : ch->in_room->vnum);
+           (ch->in_room == get_room_index(ROOM_VNUM_LIMBO)
+             && ch->was_in_room) ? ch->was_in_room->vnum : ch->in_room->vnum);
 
   fprintf(fp, "HpManaMove   %d %d %d %d %d %d\n", ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move);
   fprintf(fp, "Gold         %d\n", ch->gold);
@@ -418,7 +418,7 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
 
   fprintf(fp, "Practice     %d\n", ch->practice);
   fprintf(fp, "SavingThrows %d %d %d %d %d\n",
-	   ch->saving_poison_death, ch->saving_wand, ch->saving_para_petri, ch->saving_breath, ch->saving_spell_staff);
+           ch->saving_poison_death, ch->saving_wand, ch->saving_para_petri, ch->saving_breath, ch->saving_spell_staff);
   fprintf(fp, "Alignment    %d\n", ch->alignment);
   fprintf(fp, "Favor        %d\n", ch->pcdata->favor);
   fprintf(fp, "Glory        %d\n", ch->pcdata->quest_curr);
@@ -446,7 +446,7 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
     fprintf(fp, "Outcast_time %ld\n", ch->pcdata->outcast_time);
   if (ch->pcdata && ch->pcdata->nuisance)
     fprintf(fp, "NuisanceNew %ld %ld %d %d\n", ch->pcdata->nuisance->set_time,
-	     ch->pcdata->nuisance->max_time, ch->pcdata->nuisance->flags, ch->pcdata->nuisance->power);
+             ch->pcdata->nuisance->max_time, ch->pcdata->nuisance->flags, ch->pcdata->nuisance->power);
   if (ch->mental_state != -10)
     fprintf(fp, "Mentalstate  %d\n", ch->mental_state);
 
@@ -467,7 +467,7 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   if (ch->pcdata->prompt && *ch->pcdata->prompt)
     fprintf(fp, "Prompt       %s~\n", ch->pcdata->prompt);
   if (ch->pcdata->fprompt && *ch->pcdata->fprompt)
-    fprintf(fp, "FPrompt	     %s~\n", ch->pcdata->fprompt);
+    fprintf(fp, "FPrompt             %s~\n", ch->pcdata->fprompt);
   if (ch->pcdata->pagerlen != 24)
     fprintf(fp, "Pagerlen     %d\n", ch->pcdata->pagerlen);
 
@@ -503,7 +503,7 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   if (ch->pcdata->council)
     fprintf(fp, "Council      %s~\n", ch->pcdata->council_name);
   if (ch->pcdata->deity_name && ch->pcdata->deity_name[0] != '\0')
-    fprintf(fp, "Deity	     %s~\n", ch->pcdata->deity_name);
+    fprintf(fp, "Deity       %s~\n", ch->pcdata->deity_name);
   if (ch->pcdata->clan_name && ch->pcdata->clan_name[0] != '\0')
     fprintf(fp, "Clan         %s~\n", ch->pcdata->clan_name);
   fprintf(fp, "Flags        %d\n", ch->pcdata->flags);
@@ -518,13 +518,13 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   fprintf(fp, "IllegalPK    %d\n", ch->pcdata->illegal_pk);
   fprintf(fp, "Timezone     %d\n", ch->pcdata->timezone);
   fprintf(fp, "AttrPerm     %d %d %d %d %d %d %d\n",
-	   ch->perm_str, ch->perm_int, ch->perm_wis, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
+           ch->perm_str, ch->perm_int, ch->perm_wis, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
 
   fprintf(fp, "AttrMod      %d %d %d %d %d %d %d\n",
-	   ch->mod_str, ch->mod_int, ch->mod_wis, ch->mod_dex, ch->mod_con, ch->mod_cha, ch->mod_lck);
+           ch->mod_str, ch->mod_int, ch->mod_wis, ch->mod_dex, ch->mod_con, ch->mod_cha, ch->mod_lck);
 
   fprintf(fp, "Condition    %d %d %d %d\n",
-	   ch->pcdata->condition[0], ch->pcdata->condition[1], ch->pcdata->condition[2], ch->pcdata->condition[3]);
+           ch->pcdata->condition[0], ch->pcdata->condition[1], ch->pcdata->condition[2], ch->pcdata->condition[3]);
   if (ch->pcdata->recent_site)
     fprintf(fp, "Site         %s\n", ch->pcdata->recent_site);
   else
@@ -538,8 +538,8 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
 
     for (tmphome = first_home; tmphome; tmphome = tmphome->next)
       for (i = 0; i < MAX_HOUSE_ROOMS; ++i)
-	if (tmphome->vnum[i] == ch->in_room->vnum)
-	  fprintf(fp, "Homeowner %s~\n", tmphome->name);
+        if (tmphome->vnum[i] == ch->in_room->vnum)
+          fprintf(fp, "Homeowner %s~\n", tmphome->name);
   }
   else
   {
@@ -547,7 +547,7 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
 
     for (tmphb = first_homebuy; tmphb; tmphb = tmphb->next)
       if (ch->in_room->vnum == tmphb->vnum)
-	fprintf(fp, "Homeowner %s~\n", tmphb->seller);
+        fprintf(fp, "Homeowner %s~\n", tmphb->seller);
   }
 
   for (sn = 1; sn < num_skills; ++sn)
@@ -556,20 +556,20 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
       switch (skill_table[sn]->type)
       {
       default:
-	fprintf(fp, "Skill        %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
-	break;
+        fprintf(fp, "Skill        %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
+        break;
       case SKILL_RACIAL:
-	fprintf(fp, "Ability      %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
-	break;
+        fprintf(fp, "Ability      %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
+        break;
       case SKILL_SPELL:
-	fprintf(fp, "Spell        %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
-	break;
+        fprintf(fp, "Spell        %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
+        break;
       case SKILL_WEAPON:
-	fprintf(fp, "Weapon       %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
-	break;
+        fprintf(fp, "Weapon       %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
+        break;
       case SKILL_TONGUE:
-	fprintf(fp, "Tongue       %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
-	break;
+        fprintf(fp, "Tongue       %d '%s'\n", ch->pcdata->learned[sn], skill_table[sn]->name);
+        break;
       }
   }
 
@@ -580,10 +580,10 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
 
     if (paf->type >= 0 && paf->type < TYPE_PERSONAL)
       fprintf(fp, "AffectData   '%s' %3d %3d %3d %s\n",
-	       skill->name, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
+               skill->name, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
     else
       fprintf(fp, "Affect       %3d %3d %3d %3d %s\n",
-	       paf->type, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
+               paf->type, paf->duration, paf->modifier, paf->location, print_bitvector(&paf->bitvector));
   }
 
   track = URANGE(2, ((ch->level + 3) * MAX_KILLTRACK) / LEVEL_AVATAR, MAX_KILLTRACK);
@@ -650,10 +650,10 @@ void fwrite_obj(CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_t
   if (!hotboot)
   {
     if ((ch && ch->level < obj->level)
-	|| (obj->item_type == ITEM_KEY && !IS_OBJ_STAT(obj, ITEM_CLANOBJECT))
-	|| ((os_type == OS_VAULT) && (obj->item_type == ITEM_CORPSE_PC))
-	|| obj_extracted(obj)
-	|| IS_OBJ_STAT(obj, ITEM_PROTOTYPE))
+        || (obj->item_type == ITEM_KEY && !IS_OBJ_STAT(obj, ITEM_CLANOBJECT))
+        || ((os_type == OS_VAULT) && (obj->item_type == ITEM_CORPSE_PC))
+        || obj_extracted(obj)
+        || IS_OBJ_STAT(obj, ITEM_PROTOTYPE))
       return;
   }
 
@@ -686,7 +686,7 @@ void fwrite_obj(CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_t
   if ((os_type == OS_CORPSE || os_type == OS_VAULT || hotboot) && obj->in_room)
   {
     fprintf(fp, "Room      %d\n", obj->in_room->vnum);
-    fprintf(fp, "Rvnum	   %d\n", obj->room_vnum);
+    fprintf(fp, "Rvnum     %d\n", obj->room_vnum);
   }
   if (!xSAME_BITS(obj->extra_flags, obj->pIndexData->extra_flags))
     fprintf(fp, "ExtraFlags   %s\n", print_bitvector(&obj->extra_flags));
@@ -699,26 +699,26 @@ void fwrite_obj(CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_t
     {
       if (ch)
       {
-	if (IS_NPC(ch))
-	{
-	  if (obj == mob_save_equipment[wear][x])
-	  {
-	    wear_loc = wear;
-	    break;
-	  }
-	  else if (!mob_save_equipment[wear][x])
-	    break;
-	}
-	else
-	{
-	  if (obj == save_equipment[wear][x])
-	  {
-	    wear_loc = wear;
-	    break;
-	  }
-	  else if (!save_equipment[wear][x])
-	    break;
-	}
+        if (IS_NPC(ch))
+        {
+          if (obj == mob_save_equipment[wear][x])
+          {
+            wear_loc = wear;
+            break;
+          }
+          else if (!mob_save_equipment[wear][x])
+            break;
+        }
+        else
+        {
+          if (obj == save_equipment[wear][x])
+          {
+            wear_loc = wear;
+            break;
+          }
+          else if (!save_equipment[wear][x])
+            break;
+        }
       }
     }
   }
@@ -736,7 +736,7 @@ void fwrite_obj(CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_t
     fprintf(fp, "Cost         %d\n", obj->cost);
   if (obj->value[0] || obj->value[1] || obj->value[2] || obj->value[3] || obj->value[4] || obj->value[5])
     fprintf(fp, "Values       %d %d %d %d %d %d\n",
-	     obj->value[0], obj->value[1], obj->value[2], obj->value[3], obj->value[4], obj->value[5]);
+             obj->value[0], obj->value[1], obj->value[2], obj->value[3], obj->value[4], obj->value[5]);
 
   switch (obj->item_type)
   {
@@ -873,7 +873,7 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
     else
     {
       log_printf_plus(LOG_COMM, LEVEL_GREATER, "%s player data for: %s (%dK)",
-		       preload ? "Preloading" : "Loading", ch->pcdata->filename, (int)fst.st_size / 1024);
+                       preload ? "Preloading" : "Loading", ch->pcdata->filename, (int)fst.st_size / 1024);
     }
   }
 
@@ -901,50 +901,50 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
       letter = fread_letter(fp);
       if (letter == '*')
       {
-	fread_to_eol(fp);
-	continue;
+        fread_to_eol(fp);
+        continue;
       }
 
       if (letter != '#')
       {
-	bug("%s: # not found. (%s)", __func__, name);
-	break;
+        bug("%s: # not found. (%s)", __func__, name);
+        break;
       }
 
       word = fread_word(fp);
       if (!strcmp(word, "PLAYER"))
       {
-	fread_char(ch, fp, preload, copyover);
-	if (preload)
-	  break;
+        fread_char(ch, fp, preload, copyover);
+        if (preload)
+          break;
       }
       else if (!strcmp(word, "OBJECT"))   /* Objects  */
-	fread_obj(ch, fp, OS_CARRY);
+        fread_obj(ch, fp, OS_CARRY);
       else if (!strcmp(word, "MorphData"))   /* Morphs */
-	fread_morph_data(ch, fp);
+        fread_morph_data(ch, fp);
       else if (!strcmp(word, "COMMENT"))
-	fread_comment(ch, fp);   /* Comments */
+        fread_comment(ch, fp);   /* Comments */
       else if (!strcmp(word, "MOBILE"))
       {
-	CHAR_DATA *mob;
+        CHAR_DATA *mob;
 
-	if ((mob = fread_mobile(fp)))
-	{
-	  ch->pcdata->pet = mob;
-	  mob->master = ch;
-	  xSET_BIT(mob->affected_by, AFF_CHARM);
-	}
-	else
-	  bug("%s: Deleted mob saved on %s - skipping", __func__, ch->name);
+        if ((mob = fread_mobile(fp)))
+        {
+          ch->pcdata->pet = mob;
+          mob->master = ch;
+          xSET_BIT(mob->affected_by, AFF_CHARM);
+        }
+        else
+          bug("%s: Deleted mob saved on %s - skipping", __func__, ch->name);
       }
       else if (!str_cmp(word, "VARIABLE"))   // Quest Flags
-	fread_variable(ch, fp);
+        fread_variable(ch, fp);
       else if (!strcmp(word, "END"))   /* Done     */
-	break;
+        break;
       else
       {
-	bug("%s: bad section: %s", __func__, word);
-	break;
+        bug("%s: bad section: %s", __func__, word);
+        break;
       }
     }
     fclose(fp);
@@ -1018,20 +1018,20 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
     if (IS_IMMORTAL(ch))
     {
       if (ch->pcdata->wizinvis < 2)
-	ch->pcdata->wizinvis = ch->level;
+        ch->pcdata->wizinvis = ch->level;
       assign_area(ch);
     }
     if (file_ver > 1)
     {
       for (i = 0; i < MAX_WEAR; i++)
-	for (x = 0; x < MAX_LAYERS; x++)
-	  if (save_equipment[i][x])
-	  {
-	    equip_char(ch, save_equipment[i][x], i);
-	    save_equipment[i][x] = NULL;
-	  }
-	  else
-	    break;
+        for (x = 0; x < MAX_LAYERS; x++)
+          if (save_equipment[i][x])
+          {
+            equip_char(ch, save_equipment[i][x], i);
+            save_equipment[i][x] = NULL;
+          }
+          else
+            break;
     }
   }
 
@@ -1090,134 +1090,134 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
 
       if (!str_cmp(word, "Ability"))
       {
-	int sn, value;
+        int sn, value;
 
-	if (preload)
-	  word = "End";
-	else
-	{
-	  value = fread_number(fp);
-	  if (file_ver < 3)
-	    sn = skill_lookup(fread_word(fp));
-	  else
-	    sn = find_ability(NULL, fread_word(fp), FALSE);
+        if (preload)
+          word = "End";
+        else
+        {
+          value = fread_number(fp);
+          if (file_ver < 3)
+            sn = skill_lookup(fread_word(fp));
+          else
+            sn = find_ability(NULL, fread_word(fp), FALSE);
 
-	  if (sn < 0)
-	    bug("%s: unknown skill.", __func__);
-	  else
-	  {
-	    ch->pcdata->learned[sn] = value;
-	    if (ch->level < LEVEL_IMMORTAL)
-	    {
-	      if (skill_table[sn]->race_level[ch->race] >= LEVEL_IMMORTAL)
-	      {
-		ch->pcdata->learned[sn] = 0;
-		++ch->practice;
-	      }
-	    }
-	  }
-	  fMatch = TRUE;
-	  break;
-	}
+          if (sn < 0)
+            bug("%s: unknown skill.", __func__);
+          else
+          {
+            ch->pcdata->learned[sn] = value;
+            if (ch->level < LEVEL_IMMORTAL)
+            {
+              if (skill_table[sn]->race_level[ch->race] >= LEVEL_IMMORTAL)
+              {
+                ch->pcdata->learned[sn] = 0;
+                ++ch->practice;
+              }
+            }
+          }
+          fMatch = TRUE;
+          break;
+        }
       }
 
       if (!strcmp(word, "Affect") || !strcmp(word, "AffectData"))
       {
-	AFFECT_DATA *paf;
+        AFFECT_DATA *paf;
 
-	if (preload)
-	{
-	  fMatch = TRUE;
-	  fread_to_eol(fp);
-	  break;
-	}
+        if (preload)
+        {
+          fMatch = TRUE;
+          fread_to_eol(fp);
+          break;
+        }
 
-	CREATE(paf, AFFECT_DATA, 1);
-	if (!strcmp(word, "Affect"))
-	{
-	  paf->type = fread_number(fp);
-	}
-	else
-	{
-	  int sn;
-	  char *sname = fread_word(fp);
+        CREATE(paf, AFFECT_DATA, 1);
+        if (!strcmp(word, "Affect"))
+        {
+          paf->type = fread_number(fp);
+        }
+        else
+        {
+          int sn;
+          char *sname = fread_word(fp);
 
-	  if ((sn = skill_lookup(sname)) < 0)
-	  {
-	    if ((sn = herb_lookup(sname)) < 0)
-	      bug("Fread_char: unknown skill %s.", sname);
-	    else
-	      sn += TYPE_HERB;
-	  }
-	  paf->type = sn;
-	}
+          if ((sn = skill_lookup(sname)) < 0)
+          {
+            if ((sn = herb_lookup(sname)) < 0)
+              bug("Fread_char: unknown skill %s.", sname);
+            else
+              sn += TYPE_HERB;
+          }
+          paf->type = sn;
+        }
 
-	paf->duration = fread_number(fp);
-	paf->modifier = fread_number(fp);
-	paf->location = fread_number(fp);
-	if (paf->location == APPLY_WEAPONSPELL
-	    || paf->location == APPLY_WEARSPELL
-	    || paf->location == APPLY_REMOVESPELL
-	    || paf->location == APPLY_STRIPSN || paf->location == APPLY_RECURRINGSPELL)
-	  paf->modifier = slot_lookup(paf->modifier);
-	paf->bitvector = fread_bitvector(fp);
-	LINK(paf, ch->first_affect, ch->last_affect, next, prev);
-	fMatch = TRUE;
-	break;
+        paf->duration = fread_number(fp);
+        paf->modifier = fread_number(fp);
+        paf->location = fread_number(fp);
+        if (paf->location == APPLY_WEAPONSPELL
+            || paf->location == APPLY_WEARSPELL
+            || paf->location == APPLY_REMOVESPELL
+            || paf->location == APPLY_STRIPSN || paf->location == APPLY_RECURRINGSPELL)
+          paf->modifier = slot_lookup(paf->modifier);
+        paf->bitvector = fread_bitvector(fp);
+        LINK(paf, ch->first_affect, ch->last_affect, next, prev);
+        fMatch = TRUE;
+        break;
       }
 
       if (file_ver < 5)
-	find_old_age(ch);
+        find_old_age(ch);
       else
       {
-	if (!str_cmp(word, "Age"))
-	{
-	  line = fread_line(fp);
-	  x1 = x2 = x3 = x4 = 0;
-	  sscanf(line, "%d %d %d %d", &x1, &x2, &x3, &x4);
-	  ch->pcdata->age_bonus = x1;
-	  ch->pcdata->day = x2;
-	  ch->pcdata->month = x3;
-	  ch->pcdata->year = x4;
-	  fMatch = TRUE;
-	  break;
-	}
+        if (!str_cmp(word, "Age"))
+        {
+          line = fread_line(fp);
+          x1 = x2 = x3 = x4 = 0;
+          sscanf(line, "%d %d %d %d", &x1, &x2, &x3, &x4);
+          ch->pcdata->age_bonus = x1;
+          ch->pcdata->day = x2;
+          ch->pcdata->month = x3;
+          ch->pcdata->year = x4;
+          fMatch = TRUE;
+          break;
+        }
       }
 
       if (!strcmp(word, "AttrMod"))
       {
-	line = fread_line(fp);
-	x1 = x2 = x3 = x4 = x5 = x6 = x7 = 13;
-	sscanf(line, "%d %d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6, &x7);
-	ch->mod_str = x1;
-	ch->mod_int = x2;
-	ch->mod_wis = x3;
-	ch->mod_dex = x4;
-	ch->mod_con = x5;
-	ch->mod_cha = x6;
-	ch->mod_lck = x7;
-	if (!x7)
-	  ch->mod_lck = 0;
-	fMatch = TRUE;
-	break;
+        line = fread_line(fp);
+        x1 = x2 = x3 = x4 = x5 = x6 = x7 = 13;
+        sscanf(line, "%d %d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6, &x7);
+        ch->mod_str = x1;
+        ch->mod_int = x2;
+        ch->mod_wis = x3;
+        ch->mod_dex = x4;
+        ch->mod_con = x5;
+        ch->mod_cha = x6;
+        ch->mod_lck = x7;
+        if (!x7)
+          ch->mod_lck = 0;
+        fMatch = TRUE;
+        break;
       }
 
       if (!strcmp(word, "AttrPerm"))
       {
-	line = fread_line(fp);
-	x1 = x2 = x3 = x4 = x5 = x6 = x7 = 0;
-	sscanf(line, "%d %d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6, &x7);
-	ch->perm_str = x1;
-	ch->perm_int = x2;
-	ch->perm_wis = x3;
-	ch->perm_dex = x4;
-	ch->perm_con = x5;
-	ch->perm_cha = x6;
-	ch->perm_lck = x7;
-	if (x7 == 0)
-	  ch->perm_lck = 13;
-	fMatch = TRUE;
-	break;
+        line = fread_line(fp);
+        x1 = x2 = x3 = x4 = x5 = x6 = x7 = 0;
+        sscanf(line, "%d %d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6, &x7);
+        ch->perm_str = x1;
+        ch->perm_int = x2;
+        ch->perm_wis = x3;
+        ch->perm_dex = x4;
+        ch->perm_con = x5;
+        ch->perm_cha = x6;
+        ch->perm_lck = x7;
+        if (x7 == 0)
+          ch->perm_lck = 13;
+        fMatch = TRUE;
+        break;
       }
       KEY("AuthedBy", ch->pcdata->authed_by, fread_string(fp));
       break;
@@ -1232,19 +1232,19 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
     case 'C':
       if (!strcmp(word, "Clan"))
       {
-	ch->pcdata->clan_name = fread_string(fp);
+        ch->pcdata->clan_name = fread_string(fp);
 
-	if (!preload
-	    && ch->pcdata->clan_name[0] != '\0' && (ch->pcdata->clan = get_clan(ch->pcdata->clan_name)) == NULL)
-	{
-	  snprintf(buf, MAX_STRING_LENGTH, "&R\r\nWarning: The organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
-		    ch->pcdata->clan_name);
-	  add_loginmsg(ch->name, 18, buf);
-	  STRFREE(ch->pcdata->clan_name);
-	  ch->pcdata->clan_name = STRALLOC("");
-	}
-	fMatch = TRUE;
-	break;
+        if (!preload
+            && ch->pcdata->clan_name[0] != '\0' && (ch->pcdata->clan = get_clan(ch->pcdata->clan_name)) == NULL)
+        {
+          snprintf(buf, MAX_STRING_LENGTH, "&R\r\nWarning: The organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
+                    ch->pcdata->clan_name);
+          add_loginmsg(ch->name, 18, buf);
+          STRFREE(ch->pcdata->clan_name);
+          ch->pcdata->clan_name = STRALLOC("");
+        }
+        fMatch = TRUE;
+        break;
       }
 
       KEY("Class", ch->Class, fread_number(fp));
@@ -1254,42 +1254,42 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
        */
       if (!str_cmp(word, "Colors"))
       {
-	int x;
+        int x;
 
-	for (x = 0; x < max_colors; x++)
-	  ch->colors[x] = fread_number(fp);
-	fread_to_eol(fp);
-	fMatch = TRUE;
-	break;
+        for (x = 0; x < max_colors; x++)
+          ch->colors[x] = fread_number(fp);
+        fread_to_eol(fp);
+        fMatch = TRUE;
+        break;
       }
 
       if (!str_cmp(word, "Condition"))
       {
-	line = fread_line(fp);
-	sscanf(line, "%d %d %d %d", &x1, &x2, &x3, &x4);
-	ch->pcdata->condition[0] = x1;
-	ch->pcdata->condition[1] = x2;
-	ch->pcdata->condition[2] = x3;
-	ch->pcdata->condition[3] = x4;
-	fMatch = TRUE;
-	break;
+        line = fread_line(fp);
+        sscanf(line, "%d %d %d %d", &x1, &x2, &x3, &x4);
+        ch->pcdata->condition[0] = x1;
+        ch->pcdata->condition[1] = x2;
+        ch->pcdata->condition[2] = x3;
+        ch->pcdata->condition[3] = x4;
+        fMatch = TRUE;
+        break;
       }
 
       if (!strcmp(word, "Council"))
       {
-	ch->pcdata->council_name = fread_string(fp);
-	if (!preload
-	    && ch->pcdata->council_name[0] != '\0'
-	    && (ch->pcdata->council = get_council(ch->pcdata->council_name)) == NULL)
-	{
-	  snprintf(buf, MAX_STRING_LENGTH, "&Y\r\nWarning:  the council %s no longer exists, and therefore you no longer\r\nbelong to a council.\r\n",
-		    ch->pcdata->council_name);
-	  add_loginmsg(ch->name, 18, buf);
-	  STRFREE(ch->pcdata->council_name);
-	  ch->pcdata->council_name = STRALLOC("");
-	}
-	fMatch = TRUE;
-	break;
+        ch->pcdata->council_name = fread_string(fp);
+        if (!preload
+            && ch->pcdata->council_name[0] != '\0'
+            && (ch->pcdata->council = get_council(ch->pcdata->council_name)) == NULL)
+        {
+          snprintf(buf, MAX_STRING_LENGTH, "&Y\r\nWarning:  the council %s no longer exists, and therefore you no longer\r\nbelong to a council.\r\n",
+                    ch->pcdata->council_name);
+          add_loginmsg(ch->name, 18, buf);
+          STRFREE(ch->pcdata->council_name);
+          ch->pcdata->council_name = STRALLOC("");
+        }
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1298,20 +1298,20 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("Deaf", ch->deaf, fread_number(fp));
       if (!strcmp(word, "Deity"))
       {
-	ch->pcdata->deity_name = fread_string(fp);
+        ch->pcdata->deity_name = fread_string(fp);
 
-	if (!preload
-	    && ch->pcdata->deity_name[0] != '\0'
-	    && (ch->pcdata->deity = get_deity(ch->pcdata->deity_name)) == NULL)
-	{
-	  snprintf(buf, MAX_STRING_LENGTH, "&R\r\nYour deity, %s, has met its demise!\r\n", ch->pcdata->deity_name);
-	  add_loginmsg(ch->name, 18, buf);
-	  STRFREE(ch->pcdata->deity_name);
-	  ch->pcdata->deity_name = STRALLOC("");
-	  ch->pcdata->favor = 0;
-	}
-	fMatch = TRUE;
-	break;
+        if (!preload
+            && ch->pcdata->deity_name[0] != '\0'
+            && (ch->pcdata->deity = get_deity(ch->pcdata->deity_name)) == NULL)
+        {
+          snprintf(buf, MAX_STRING_LENGTH, "&R\r\nYour deity, %s, has met its demise!\r\n", ch->pcdata->deity_name);
+          add_loginmsg(ch->name, 18, buf);
+          STRFREE(ch->pcdata->deity_name);
+          ch->pcdata->deity_name = STRALLOC("");
+          ch->pcdata->favor = 0;
+        }
+        fMatch = TRUE;
+        break;
       }
       KEY("Description", ch->description, fread_string(fp));
       break;
@@ -1323,12 +1323,12 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("Favor", ch->pcdata->favor, fread_number(fp));
       if (!strcmp(word, "Filename"))
       {
-	/*
-	 * File Name already set externally.
-	 */
-	fread_to_eol(fp);
-	fMatch = TRUE;
-	break;
+        /*
+         * File Name already set externally.
+         */
+        fread_to_eol(fp);
+        fMatch = TRUE;
+        break;
       }
       KEY("Flags", ch->pcdata->flags, fread_number(fp));
       KEY("FPrompt", ch->pcdata->fprompt, fread_string(fp));
@@ -1342,19 +1342,19 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
        */
       if (!strcmp(word, "Guild"))
       {
-	ch->pcdata->clan_name = fread_string(fp);
+        ch->pcdata->clan_name = fread_string(fp);
 
-	if (!preload
-	    && ch->pcdata->clan_name[0] != '\0' && (ch->pcdata->clan = get_clan(ch->pcdata->clan_name)) == NULL)
-	{
-	  snprintf(buf, MAX_STRING_LENGTH, "&R\r\nWarning: The organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
-		    ch->pcdata->clan_name);
-	  add_loginmsg(ch->name, 18, buf);
-	  STRFREE(ch->pcdata->clan_name);
-	  ch->pcdata->clan_name = STRALLOC("");
-	}
-	fMatch = TRUE;
-	break;
+        if (!preload
+            && ch->pcdata->clan_name[0] != '\0' && (ch->pcdata->clan = get_clan(ch->pcdata->clan_name)) == NULL)
+        {
+          snprintf(buf, MAX_STRING_LENGTH, "&R\r\nWarning: The organization %s no longer exists, and therefore you no longer\r\nbelong to that organization.\r\n",
+                    ch->pcdata->clan_name);
+          add_loginmsg(ch->name, 18, buf);
+          STRFREE(ch->pcdata->clan_name);
+          ch->pcdata->clan_name = STRALLOC("");
+        }
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1363,10 +1363,10 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
 
       if (!strcmp(word, "Helled"))
       {
-	ch->pcdata->release_date = fread_number(fp);
-	ch->pcdata->helled_by = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        ch->pcdata->release_date = fread_number(fp);
+        ch->pcdata->helled_by = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
 
       KEY("Hitroll", ch->hitroll, fread_number(fp));
@@ -1374,120 +1374,120 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
 
       if (!strcmp(word, "Homeowner"))
       {
-	int i;
+        int i;
 
-	fMatch = TRUE;
+        fMatch = TRUE;
 
-	if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
-	{
-	  HOME_DATA *tmphome;
+        if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
+        {
+          HOME_DATA *tmphome;
 
-	  for (tmphome = first_home; tmphome; tmphome = tmphome->next)
-	    for (i = 0; i < MAX_HOUSE_ROOMS; ++i)
-	      if (tmphome->vnum[i] == ch->in_room->vnum)
-		if (strcmp(tmphome->name, fread_string(fp)))
-		  ch->in_room = get_room_index(ROOM_VNUM_TEMPLE);
-	}
-	else
-	  fread_flagstring(fp);
-	break;
+          for (tmphome = first_home; tmphome; tmphome = tmphome->next)
+            for (i = 0; i < MAX_HOUSE_ROOMS; ++i)
+              if (tmphome->vnum[i] == ch->in_room->vnum)
+                if (strcmp(tmphome->name, fread_string(fp)))
+                  ch->in_room = get_room_index(ROOM_VNUM_TEMPLE);
+        }
+        else
+          fread_flagstring(fp);
+        break;
       }
 
       if (!strcmp(word, "HpManaMove"))
       {
-	ch->hit = fread_number(fp);
-	ch->max_hit = fread_number(fp);
-	ch->mana = fread_number(fp);
-	ch->max_mana = fread_number(fp);
-	ch->move = fread_number(fp);
-	ch->max_move = fread_number(fp);
-	fMatch = TRUE;
-	break;
+        ch->hit = fread_number(fp);
+        ch->max_hit = fread_number(fp);
+        ch->mana = fread_number(fp);
+        ch->max_mana = fread_number(fp);
+        ch->move = fread_number(fp);
+        ch->max_move = fread_number(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'I':
       if (!strcmp(word, "Ignored"))
       {
-	const char *temp;
-	char fname[1024];
-	struct stat fst;
-	int ign;
-	IGNORE_DATA *inode;
+        const char *temp;
+        char fname[1024];
+        struct stat fst;
+        int ign;
+        IGNORE_DATA *inode;
 
-	/*
-	 * Get the name 
-	 */
-	temp = fread_string(fp);
+        /*
+         * Get the name 
+         */
+        temp = fread_string(fp);
 
-	snprintf(fname, 1024, "%s%c/%s", PLAYER_DIR, tolower(temp[0]), capitalize(temp));
+        snprintf(fname, 1024, "%s%c/%s", PLAYER_DIR, tolower(temp[0]), capitalize(temp));
 
-	/*
-	 * If there isn't a pfile for the name 
-	 */
-	/*
-	 * then don't add it to the list       
-	 */
-	if (stat(fname, &fst) == -1)
-	{
-	  if (temp)
-	    STRFREE(temp);
-	  fMatch = TRUE;
-	  break;
-	}
+        /*
+         * If there isn't a pfile for the name 
+         */
+        /*
+         * then don't add it to the list       
+         */
+        if (stat(fname, &fst) == -1)
+        {
+          if (temp)
+            STRFREE(temp);
+          fMatch = TRUE;
+          break;
+        }
 
-	/*
-	 * Count the number of names already ignored 
-	 */
-	for (ign = 0, inode = ch->pcdata->first_ignored; inode; inode = inode->next)
-	{
-	  ++ign;
-	}
+        /*
+         * Count the number of names already ignored 
+         */
+        for (ign = 0, inode = ch->pcdata->first_ignored; inode; inode = inode->next)
+        {
+          ++ign;
+        }
 
-	/*
-	 * Add the name unless the limit has been reached 
-	 */
-	if (ign >= MAX_IGN)
-	{
-	  bug("%s: too many ignored names", __func__);
-	}
-	else
-	{
-	  /*
-	   * Add the name to the list 
-	   */
-	  CREATE(inode, IGNORE_DATA, 1);
-	  inode->name = STRALLOC(temp);
-	  inode->next = NULL;
-	  inode->prev = NULL;
+        /*
+         * Add the name unless the limit has been reached 
+         */
+        if (ign >= MAX_IGN)
+        {
+          bug("%s: too many ignored names", __func__);
+        }
+        else
+        {
+          /*
+           * Add the name to the list 
+           */
+          CREATE(inode, IGNORE_DATA, 1);
+          inode->name = STRALLOC(temp);
+          inode->next = NULL;
+          inode->prev = NULL;
 
-	  LINK(inode, ch->pcdata->first_ignored, ch->pcdata->last_ignored, next, prev);
-	}
-	if (temp)
-	  STRFREE(temp);
-	fMatch = TRUE;
-	break;
+          LINK(inode, ch->pcdata->first_ignored, ch->pcdata->last_ignored, next, prev);
+        }
+        if (temp)
+          STRFREE(temp);
+        fMatch = TRUE;
+        break;
       }
       KEY("IllegalPK", ch->pcdata->illegal_pk, fread_number(fp));
       KEY("Immune", ch->immune, fread_number(fp));
 #ifdef IMC
       if ((fMatch = imc_loadchar(ch, fp, word)))
-	break;
+        break;
 #endif
       break;
 
     case 'K':
       if (!strcmp(word, "Killed"))
       {
-	if (killcnt >= MAX_KILLTRACK)
-	  bug("%s: killcnt (%d) >= MAX_KILLTRACK", __func__, killcnt);
-	else
-	{
-	  ch->pcdata->killed[killcnt].vnum = fread_number(fp);
-	  ch->pcdata->killed[killcnt++].count = fread_number(fp);
-	}
-	fMatch = TRUE;
-	break;
+        if (killcnt >= MAX_KILLTRACK)
+          bug("%s: killcnt (%d) >= MAX_KILLTRACK", __func__, killcnt);
+        else
+        {
+          ch->pcdata->killed[killcnt].vnum = fread_number(fp);
+          ch->pcdata->killed[killcnt++].count = fread_number(fp);
+        }
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1496,22 +1496,22 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("LongDescr", ch->long_descr, fread_string(fp));
       if (!strcmp(word, "Languages"))
       {
-	ch->speaks = fread_number(fp);
-	ch->speaking = fread_number(fp);
-	fMatch = TRUE;
-	break;
+        ch->speaks = fread_number(fp);
+        ch->speaking = fread_number(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'M':
       if (!str_cmp(word, "MaxColors"))
       {
-	int temp = fread_number(fp);
+        int temp = fread_number(fp);
 
-	max_colors = UMIN(temp, MAX_COLORS);
+        max_colors = UMIN(temp, MAX_COLORS);
 
-	fMatch = TRUE;
-	break;
+        fMatch = TRUE;
+        break;
       }
       KEY("MDeaths", ch->pcdata->mdeaths, fread_number(fp));
       KEY("Mentalstate", ch->mental_state, fread_number(fp));
@@ -1521,10 +1521,10 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("Mobinvis", ch->mobinvis, fread_number(fp));
       if (!strcmp(word, "MobRange"))
       {
-	ch->pcdata->m_range_lo = fread_number(fp);
-	ch->pcdata->m_range_hi = fread_number(fp);
-	fMatch = TRUE;
-	break;
+        ch->pcdata->m_range_lo = fread_number(fp);
+        ch->pcdata->m_range_hi = fread_number(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1536,28 +1536,28 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("NoSusceptible", ch->no_susceptible, fread_number(fp));
       if (!str_cmp("Nuisance", word))
       {
-	CREATE(ch->pcdata->nuisance, NUISANCE_DATA, 1);
+        CREATE(ch->pcdata->nuisance, NUISANCE_DATA, 1);
 
-	ch->pcdata->nuisance->set_time = fread_number(fp);
-	ch->pcdata->nuisance->max_time = fread_number(fp);
-	ch->pcdata->nuisance->flags = fread_number(fp);
-	ch->pcdata->nuisance->power = 1;
+        ch->pcdata->nuisance->set_time = fread_number(fp);
+        ch->pcdata->nuisance->max_time = fread_number(fp);
+        ch->pcdata->nuisance->flags = fread_number(fp);
+        ch->pcdata->nuisance->power = 1;
 
-	fMatch = TRUE;
-	break;
+        fMatch = TRUE;
+        break;
       }
 
       if (!str_cmp("NuisanceNew", word))
       {
-	CREATE(ch->pcdata->nuisance, NUISANCE_DATA, 1);
+        CREATE(ch->pcdata->nuisance, NUISANCE_DATA, 1);
 
-	ch->pcdata->nuisance->set_time = fread_number(fp);
-	ch->pcdata->nuisance->max_time = fread_number(fp);
-	ch->pcdata->nuisance->flags = fread_number(fp);
-	ch->pcdata->nuisance->power = fread_number(fp);
+        ch->pcdata->nuisance->set_time = fread_number(fp);
+        ch->pcdata->nuisance->max_time = fread_number(fp);
+        ch->pcdata->nuisance->flags = fread_number(fp);
+        ch->pcdata->nuisance->power = fread_number(fp);
 
-	fMatch = TRUE;
-	break;
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1565,10 +1565,10 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("Outcast_time", ch->pcdata->outcast_time, fread_number(fp));
       if (!strcmp(word, "ObjRange"))
       {
-	ch->pcdata->o_range_lo = fread_number(fp);
-	ch->pcdata->o_range_hi = fread_number(fp);
-	fMatch = TRUE;
-	break;
+        ch->pcdata->o_range_lo = fread_number(fp);
+        ch->pcdata->o_range_hi = fread_number(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1585,56 +1585,56 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
        */
       if (!strcmp(word, "Position"))
       {
-	ch->position = fread_number(fp);
-	if (ch->position < 100)
-	{
-	  switch (ch->position)
-	  {
-	  default:;
-	  case 0:;
-	  case 1:;
-	  case 2:;
-	  case 3:;
-	  case 4:
-	    break;
-	  case 5:
-	    ch->position = 6;
-	    break;
-	  case 6:
-	    ch->position = 8;
-	    break;
-	  case 7:
-	    ch->position = 9;
-	    break;
-	  case 8:
-	    ch->position = 12;
-	    break;
-	  case 9:
-	    ch->position = 13;
-	    break;
-	  case 10:
-	    ch->position = 14;
-	    break;
-	  case 11:
-	    ch->position = 15;
-	    break;
-	  }
-	  fMatch = TRUE;
-	}
-	else
-	{
-	  ch->position -= 100;
-	  fMatch = TRUE;
-	}
-	break;
+        ch->position = fread_number(fp);
+        if (ch->position < 100)
+        {
+          switch (ch->position)
+          {
+          default:;
+          case 0:;
+          case 1:;
+          case 2:;
+          case 3:;
+          case 4:
+            break;
+          case 5:
+            ch->position = 6;
+            break;
+          case 6:
+            ch->position = 8;
+            break;
+          case 7:
+            ch->position = 9;
+            break;
+          case 8:
+            ch->position = 12;
+            break;
+          case 9:
+            ch->position = 13;
+            break;
+          case 10:
+            ch->position = 14;
+            break;
+          case 11:
+            ch->position = 15;
+            break;
+          }
+          fMatch = TRUE;
+        }
+        else
+        {
+          ch->position -= 100;
+          fMatch = TRUE;
+        }
+        break;
       }
       KEY("Practice", ch->practice, fread_number(fp));
       KEY("Prompt", ch->pcdata->prompt, fread_string(fp));
       if (!strcmp(word, "PTimer"))
       {
-	add_timer(ch, TIMER_PKILLED, fread_number(fp), NULL, 0);
-	fMatch = TRUE;
-	break;
+        add_timer(ch, TIMER_PKILLED, fread_number(fp), NULL, 0);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1646,19 +1646,19 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
 
       if (!strcmp(word, "Room"))
       {
-	ch->in_room = get_room_index(fread_number(fp));
-	if (!ch->in_room)
-	  ch->in_room = get_room_index(ROOM_VNUM_LIMBO);
-	fMatch = TRUE;
-	break;
+        ch->in_room = get_room_index(fread_number(fp));
+        if (!ch->in_room)
+          ch->in_room = get_room_index(ROOM_VNUM_LIMBO);
+        fMatch = TRUE;
+        break;
       }
 
       if (!strcmp(word, "RoomRange"))
       {
-	ch->pcdata->r_range_lo = fread_number(fp);
-	ch->pcdata->r_range_hi = fread_number(fp);
-	fMatch = TRUE;
-	break;
+        ch->pcdata->r_range_lo = fread_number(fp);
+        ch->pcdata->r_range_hi = fread_number(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1669,183 +1669,183 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("Susceptible", ch->susceptible, fread_number(fp));
       if (!strcmp(word, "SavingThrow"))
       {
-	ch->saving_wand = fread_number(fp);
-	ch->saving_poison_death = ch->saving_wand;
-	ch->saving_para_petri = ch->saving_wand;
-	ch->saving_breath = ch->saving_wand;
-	ch->saving_spell_staff = ch->saving_wand;
-	fMatch = TRUE;
-	break;
+        ch->saving_wand = fread_number(fp);
+        ch->saving_poison_death = ch->saving_wand;
+        ch->saving_para_petri = ch->saving_wand;
+        ch->saving_breath = ch->saving_wand;
+        ch->saving_spell_staff = ch->saving_wand;
+        fMatch = TRUE;
+        break;
       }
 
       if (!strcmp(word, "SavingThrows"))
       {
-	ch->saving_poison_death = fread_number(fp);
-	ch->saving_wand = fread_number(fp);
-	ch->saving_para_petri = fread_number(fp);
-	ch->saving_breath = fread_number(fp);
-	ch->saving_spell_staff = fread_number(fp);
-	fMatch = TRUE;
-	break;
+        ch->saving_poison_death = fread_number(fp);
+        ch->saving_wand = fread_number(fp);
+        ch->saving_para_petri = fread_number(fp);
+        ch->saving_breath = fread_number(fp);
+        ch->saving_spell_staff = fread_number(fp);
+        fMatch = TRUE;
+        break;
       }
 
       if (!strcmp(word, "Site"))
       {
-	if (!preload && !copyover)
-	{
-	  ch->pcdata->prev_site = STRALLOC(fread_word(fp));
-	  ch_printf(ch, "Last connected from: %s\r\n", ch->pcdata->prev_site);
-	}
-	else
-	  fread_to_eol(fp);
-	fMatch = TRUE;
-	if (preload)
-	  word = "End";
-	else
-	  break;
+        if (!preload && !copyover)
+        {
+          ch->pcdata->prev_site = STRALLOC(fread_word(fp));
+          ch_printf(ch, "Last connected from: %s\r\n", ch->pcdata->prev_site);
+        }
+        else
+          fread_to_eol(fp);
+        fMatch = TRUE;
+        if (preload)
+          word = "End";
+        else
+          break;
       }
 
       if (!strcmp(word, "Skill"))
       {
-	int sn, value;
+        int sn, value;
 
-	if (preload)
-	  word = "End";
-	else
-	{
-	  value = fread_number(fp);
-	  if (file_ver < 3)
-	    sn = skill_lookup(fread_word(fp));
-	  else
-	    sn = find_skill(NULL, fread_word(fp), FALSE);
+        if (preload)
+          word = "End";
+        else
+        {
+          value = fread_number(fp);
+          if (file_ver < 3)
+            sn = skill_lookup(fread_word(fp));
+          else
+            sn = find_skill(NULL, fread_word(fp), FALSE);
 
-	  if (sn < 0)
-	    bug("%s: unknown skill.", __func__);
-	  else
-	  {
-	    ch->pcdata->learned[sn] = value;
-	    /*
-	     * Take care of people who have stuff they shouldn't     *
-	     * * Assumes class and level were loaded before. -- Altrag *
-	     * * Assumes practices are loaded first too now. -- Altrag 
-	     */
-	    if (ch->level < LEVEL_IMMORTAL)
-	    {
-	      if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
-	      {
-		ch->pcdata->learned[sn] = 0;
-		++ch->practice;
-	      }
-	    }
-	  }
-	  fMatch = TRUE;
-	  break;
-	}
+          if (sn < 0)
+            bug("%s: unknown skill.", __func__);
+          else
+          {
+            ch->pcdata->learned[sn] = value;
+            /*
+             * Take care of people who have stuff they shouldn't     *
+             * * Assumes class and level were loaded before. -- Altrag *
+             * * Assumes practices are loaded first too now. -- Altrag 
+             */
+            if (ch->level < LEVEL_IMMORTAL)
+            {
+              if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
+              {
+                ch->pcdata->learned[sn] = 0;
+                ++ch->practice;
+              }
+            }
+          }
+          fMatch = TRUE;
+          break;
+        }
       }
 
       if (!strcmp(word, "Spell"))
       {
-	int sn, value;
+        int sn, value;
 
-	if (preload)
-	  word = "End";
-	else
-	{
-	  value = fread_number(fp);
+        if (preload)
+          word = "End";
+        else
+        {
+          value = fread_number(fp);
 
-	  sn = find_spell(NULL, fread_word(fp), FALSE);
-	  if (sn < 0)
-	    bug("%s: unknown spell.", __func__);
-	  else
-	  {
-	    ch->pcdata->learned[sn] = value;
-	    if (ch->level < LEVEL_IMMORTAL)
-	      if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
-	      {
-		ch->pcdata->learned[sn] = 0;
-		++ch->practice;
-	      }
-	  }
-	  fMatch = TRUE;
-	  break;
-	}
+          sn = find_spell(NULL, fread_word(fp), FALSE);
+          if (sn < 0)
+            bug("%s: unknown spell.", __func__);
+          else
+          {
+            ch->pcdata->learned[sn] = value;
+            if (ch->level < LEVEL_IMMORTAL)
+              if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
+              {
+                ch->pcdata->learned[sn] = 0;
+                ++ch->practice;
+              }
+          }
+          fMatch = TRUE;
+          break;
+        }
       }
       if (strcmp(word, "End"))
-	break;
+        break;
 
     case 'E':
       if (!strcmp(word, "End"))
       {
-	if (!ch->short_descr)
-	  ch->short_descr = STRALLOC("");
-	if (!ch->long_descr)
-	  ch->long_descr = STRALLOC("");
-	if (!ch->description)
-	  ch->description = STRALLOC("");
-	if (!ch->pcdata->pwd)
-	  ch->pcdata->pwd = str_dup("");
-	if (!ch->pcdata->bamfin)
-	  ch->pcdata->bamfin = str_dup("");
-	if (!ch->pcdata->bamfout)
-	  ch->pcdata->bamfout = str_dup("");
-	if (!ch->pcdata->bio)
-	  ch->pcdata->bio = STRALLOC("");
-	if (!ch->pcdata->rank)
-	  ch->pcdata->rank = str_dup("");
-	if (!ch->pcdata->bestowments)
-	  ch->pcdata->bestowments = str_dup("");
-	if (!ch->pcdata->title)
-	  ch->pcdata->title = STRALLOC("");
-	if (!ch->pcdata->homepage)
-	  ch->pcdata->homepage = str_dup("");
-	if (!ch->pcdata->authed_by)
-	  ch->pcdata->authed_by = STRALLOC("");
-	if (!ch->pcdata->prompt)
-	  ch->pcdata->prompt = STRALLOC("");
-	if (!ch->pcdata->fprompt)
-	  ch->pcdata->fprompt = STRALLOC("");
-	ch->editor = NULL;
-	killcnt = URANGE(2, ((ch->level + 3) * MAX_KILLTRACK) / LEVEL_AVATAR, MAX_KILLTRACK);
-	if (killcnt < MAX_KILLTRACK)
-	  ch->pcdata->killed[killcnt].vnum = 0;
+        if (!ch->short_descr)
+          ch->short_descr = STRALLOC("");
+        if (!ch->long_descr)
+          ch->long_descr = STRALLOC("");
+        if (!ch->description)
+          ch->description = STRALLOC("");
+        if (!ch->pcdata->pwd)
+          ch->pcdata->pwd = str_dup("");
+        if (!ch->pcdata->bamfin)
+          ch->pcdata->bamfin = str_dup("");
+        if (!ch->pcdata->bamfout)
+          ch->pcdata->bamfout = str_dup("");
+        if (!ch->pcdata->bio)
+          ch->pcdata->bio = STRALLOC("");
+        if (!ch->pcdata->rank)
+          ch->pcdata->rank = str_dup("");
+        if (!ch->pcdata->bestowments)
+          ch->pcdata->bestowments = str_dup("");
+        if (!ch->pcdata->title)
+          ch->pcdata->title = STRALLOC("");
+        if (!ch->pcdata->homepage)
+          ch->pcdata->homepage = str_dup("");
+        if (!ch->pcdata->authed_by)
+          ch->pcdata->authed_by = STRALLOC("");
+        if (!ch->pcdata->prompt)
+          ch->pcdata->prompt = STRALLOC("");
+        if (!ch->pcdata->fprompt)
+          ch->pcdata->fprompt = STRALLOC("");
+        ch->editor = NULL;
+        killcnt = URANGE(2, ((ch->level + 3) * MAX_KILLTRACK) / LEVEL_AVATAR, MAX_KILLTRACK);
+        if (killcnt < MAX_KILLTRACK)
+          ch->pcdata->killed[killcnt].vnum = 0;
 
-	/*
-	 * no good for newbies at all 
-	 */
-	if (!IS_IMMORTAL(ch) && !ch->speaking)
-	  ch->speaking = LANG_COMMON;
-	/*
-	 * ch->speaking = race_table[ch->race]->language; 
-	 */
-	if (IS_IMMORTAL(ch))
-	{
-	  int i;
+        /*
+         * no good for newbies at all 
+         */
+        if (!IS_IMMORTAL(ch) && !ch->speaking)
+          ch->speaking = LANG_COMMON;
+        /*
+         * ch->speaking = race_table[ch->race]->language; 
+         */
+        if (IS_IMMORTAL(ch))
+        {
+          int i;
 
-	  ch->speaks = ~0;
-	  if (ch->speaking == 0)
-	    ch->speaking = ~0;
+          ch->speaks = ~0;
+          if (ch->speaking == 0)
+            ch->speaking = ~0;
 
-	  CREATE(ch->pcdata->tell_history, const char *, 26);
-	  for (i = 0; i < 26; i++)
-	    ch->pcdata->tell_history[i] = NULL;
-	}
-	if (!ch->pcdata->prompt)
-	  ch->pcdata->prompt = STRALLOC("");
+          CREATE(ch->pcdata->tell_history, const char *, 26);
+          for (i = 0; i < 26; i++)
+            ch->pcdata->tell_history[i] = NULL;
+        }
+        if (!ch->pcdata->prompt)
+          ch->pcdata->prompt = STRALLOC("");
 
-	/*
-	 * this disallows chars from being 6', 180lbs, but easier than a flag 
-	 */
-	if (ch->height == 72)
-	  ch->height =
-	    number_range((int)(race_table[ch->race]->height * .9),
-			  (int)(race_table[ch->race]->height * 1.1));
-	if (ch->weight == 180)
-	  ch->weight =
-	    number_range((int)(race_table[ch->race]->weight * .9),
-			  (int)(race_table[ch->race]->weight * 1.1));
-	if (ch->pcdata->clan)
-	  update_roster(ch);
-	return;
+        /*
+         * this disallows chars from being 6', 180lbs, but easier than a flag 
+         */
+        if (ch->height == 72)
+          ch->height =
+            number_range((int)(race_table[ch->race]->height * .9),
+                          (int)(race_table[ch->race]->height * 1.1));
+        if (ch->weight == 180)
+          ch->weight =
+            number_range((int)(race_table[ch->race]->weight * .9),
+                          (int)(race_table[ch->race]->weight * 1.1));
+        if (ch->pcdata->clan)
+          update_roster(ch);
+        return;
       }
       KEY("Exp", ch->exp, fread_number(fp));
       break;
@@ -1853,30 +1853,30 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
     case 'T':
       if (!strcmp(word, "Tongue"))
       {
-	int sn, value;
+        int sn, value;
 
-	if (preload)
-	  word = "End";
-	else
-	{
-	  value = fread_number(fp);
+        if (preload)
+          word = "End";
+        else
+        {
+          value = fread_number(fp);
 
-	  sn = find_tongue(NULL, fread_word(fp), FALSE);
-	  if (sn < 0)
-	    bug("%s: unknown tongue.", __func__);
-	  else
-	  {
-	    ch->pcdata->learned[sn] = value;
-	    if (ch->level < LEVEL_IMMORTAL)
-	      if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
-	      {
-		ch->pcdata->learned[sn] = 0;
-		ch->practice++;
-	      }
-	  }
-	  fMatch = TRUE;
-	}
-	break;
+          sn = find_tongue(NULL, fread_word(fp), FALSE);
+          if (sn < 0)
+            bug("%s: unknown tongue.", __func__);
+          else
+          {
+            ch->pcdata->learned[sn] = value;
+            if (ch->level < LEVEL_IMMORTAL)
+              if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
+              {
+                ch->pcdata->learned[sn] = 0;
+                ch->practice++;
+              }
+          }
+          fMatch = TRUE;
+        }
+        break;
       }
       KEY("Trust", ch->trust, fread_number(fp));
       KEY("Timezone", ch->pcdata->timezone, fread_number(fp)); 
@@ -1887,16 +1887,16 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
 
       if (!strcmp(word, "Title"))
       {
-	ch->pcdata->title = fread_string(fp);
-	if (isalpha(ch->pcdata->title[0]) || isdigit(ch->pcdata->title[0]))
-	{
-	  snprintf(buf, MAX_STRING_LENGTH, " %s", ch->pcdata->title);
-	  if (ch->pcdata->title)
-	    STRFREE(ch->pcdata->title);
-	  ch->pcdata->title = STRALLOC(buf);
-	}
-	fMatch = TRUE;
-	break;
+        ch->pcdata->title = fread_string(fp);
+        if (isalpha(ch->pcdata->title[0]) || isdigit(ch->pcdata->title[0]))
+        {
+          snprintf(buf, MAX_STRING_LENGTH, " %s", ch->pcdata->title);
+          if (ch->pcdata->title)
+            STRFREE(ch->pcdata->title);
+          ch->pcdata->title = STRALLOC(buf);
+        }
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -1908,30 +1908,30 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("Weight", ch->weight, fread_number(fp));
       if (!strcmp(word, "Weapon"))
       {
-	int sn, value;
+        int sn, value;
 
-	if (preload)
-	  word = "End";
-	else
-	{
-	  value = fread_number(fp);
+        if (preload)
+          word = "End";
+        else
+        {
+          value = fread_number(fp);
 
-	  sn = find_weapon(NULL, fread_word(fp), FALSE);
-	  if (sn < 0)
-	    bug("%s: unknown weapon.", __func__);
-	  else
-	  {
-	    ch->pcdata->learned[sn] = value;
-	    if (ch->level < LEVEL_IMMORTAL)
-	      if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
-	      {
-		ch->pcdata->learned[sn] = 0;
-		++ch->practice;
-	      }
-	  }
-	  fMatch = TRUE;
-	}
-	break;
+          sn = find_weapon(NULL, fread_word(fp), FALSE);
+          if (sn < 0)
+            bug("%s: unknown weapon.", __func__);
+          else
+          {
+            ch->pcdata->learned[sn] = value;
+            if (ch->level < LEVEL_IMMORTAL)
+              if (skill_table[sn]->skill_level[ch->Class] >= LEVEL_IMMORTAL)
+              {
+                ch->pcdata->learned[sn] = 0;
+                ++ch->practice;
+              }
+          }
+          fMatch = TRUE;
+        }
+        break;
       }
       KEY("Wimpy", ch->wimpy, fread_number(fp));
       KEY("WizInvis", ch->pcdata->wizinvis, fread_number(fp));
@@ -1953,7 +1953,7 @@ bool check_owner(OBJ_DATA *obj)
   for (home = first_home; home; home = home->next)
     if (home->vnum[0] == obj->pIndexData->vnum)
       if (!str_cmp(home->name, obj->owner))
-	return TRUE;
+        return TRUE;
   return FALSE;
 }
 
@@ -2003,38 +2003,38 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
       KEY("ActionDesc", obj->action_desc, fread_string(fp));
       if (!strcmp(word, "Affect") || !strcmp(word, "AffectData"))
       {
-	AFFECT_DATA *paf;
-	int pafmod;
+        AFFECT_DATA *paf;
+        int pafmod;
 
-	CREATE(paf, AFFECT_DATA, 1);
-	if (!strcmp(word, "Affect"))
-	{
-	  paf->type = fread_number(fp);
-	}
-	else
-	{
-	  int sn;
+        CREATE(paf, AFFECT_DATA, 1);
+        if (!strcmp(word, "Affect"))
+        {
+          paf->type = fread_number(fp);
+        }
+        else
+        {
+          int sn;
 
-	  sn = skill_lookup(fread_word(fp));
-	  if (sn < 0)
-	    bug("%s: unknown skill.", __func__);
-	  else
-	    paf->type = sn;
-	}
-	paf->duration = fread_number(fp);
-	pafmod = fread_number(fp);
-	paf->location = fread_number(fp);
-	paf->bitvector = fread_bitvector(fp);
-	if (paf->location == APPLY_WEAPONSPELL
-	    || paf->location == APPLY_WEARSPELL
-	    || paf->location == APPLY_STRIPSN
-	    || paf->location == APPLY_REMOVESPELL || paf->location == APPLY_RECURRINGSPELL)
-	  paf->modifier = slot_lookup(pafmod);
-	else
-	  paf->modifier = pafmod;
-	LINK(paf, obj->first_affect, obj->last_affect, next, prev);
-	fMatch = TRUE;
-	break;
+          sn = skill_lookup(fread_word(fp));
+          if (sn < 0)
+            bug("%s: unknown skill.", __func__);
+          else
+            paf->type = sn;
+        }
+        paf->duration = fread_number(fp);
+        pafmod = fread_number(fp);
+        paf->location = fread_number(fp);
+        paf->bitvector = fread_bitvector(fp);
+        if (paf->location == APPLY_WEAPONSPELL
+            || paf->location == APPLY_WEARSPELL
+            || paf->location == APPLY_STRIPSN
+            || paf->location == APPLY_REMOVESPELL || paf->location == APPLY_RECURRINGSPELL)
+          paf->modifier = slot_lookup(pafmod);
+        else
+          paf->modifier = pafmod;
+        LINK(paf, obj->first_affect, obj->last_affect, next, prev);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -2052,155 +2052,155 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
 
       if (!strcmp(word, "ExtraDescr"))
       {
-	EXTRA_DESCR_DATA *ed;
+        EXTRA_DESCR_DATA *ed;
 
-	CREATE(ed, EXTRA_DESCR_DATA, 1);
-	ed->keyword = fread_string(fp);
-	ed->description = fread_string(fp);
-	LINK(ed, obj->first_extradesc, obj->last_extradesc, next, prev);
-	fMatch = TRUE;
+        CREATE(ed, EXTRA_DESCR_DATA, 1);
+        ed->keyword = fread_string(fp);
+        ed->description = fread_string(fp);
+        LINK(ed, obj->first_extradesc, obj->last_extradesc, next, prev);
+        fMatch = TRUE;
       }
 
       if (!strcmp(word, "End"))
       {
-	if (obj->item_type == ITEM_HOUSEKEY)
-	{
-	  if (!check_owner(obj))
-	  {
-	    bug("%s: house key found not belonging to correct house", __func__);
-	    if (obj->name)
-	      STRFREE(obj->name);
-	    if (obj->description)
-	      STRFREE(obj->description);
+        if (obj->item_type == ITEM_HOUSEKEY)
+        {
+          if (!check_owner(obj))
+          {
+            bug("%s: house key found not belonging to correct house", __func__);
+            if (obj->name)
+              STRFREE(obj->name);
+            if (obj->description)
+              STRFREE(obj->description);
             if (obj->full_desc)
               STRFREE(obj->full_desc);
-	    if (obj->short_descr)
-	      STRFREE(obj->short_descr);
-	    DISPOSE(obj);
-	    return;
-	  }
-	}
+            if (obj->short_descr)
+              STRFREE(obj->short_descr);
+            DISPOSE(obj);
+            return;
+          }
+        }
 
-	if (!fNest || !fVnum)
-	{
-	  if (obj->name)
-	    bug("%s: %s incomplete object.", __func__, obj->name);
-	  else
-	    bug("%s: incomplete object.", __func__);
-	  free_obj(obj);
-	  return;
-	}
-	else
-	{
-	  short wear_loc = obj->wear_loc;
+        if (!fNest || !fVnum)
+        {
+          if (obj->name)
+            bug("%s: %s incomplete object.", __func__, obj->name);
+          else
+            bug("%s: incomplete object.", __func__);
+          free_obj(obj);
+          return;
+        }
+        else
+        {
+          short wear_loc = obj->wear_loc;
 
-	  if (!obj->name)
-	    obj->name = QUICKLINK(obj->pIndexData->name);
-	  if (!obj->description)
-	    obj->description = QUICKLINK(obj->pIndexData->description);
-	  if (!obj->short_descr)
-	    obj->short_descr = QUICKLINK(obj->pIndexData->short_descr);
-	  if (!obj->action_desc)
-	    obj->action_desc = QUICKLINK(obj->pIndexData->action_desc);
-	  if (IS_OBJ_STAT(obj, ITEM_PERSONAL) && !obj->owner && ch)
-	    obj->owner = QUICKLINK(ch->name);
-	  if (!obj->owner)
-	    obj->owner = STRALLOC("");
-	  LINK(obj, first_object, last_object, next, prev);
-	  obj->pIndexData->count += obj->count;
-	  if (!obj->serial)
-	  {
-	    cur_obj_serial = UMAX((cur_obj_serial + 1) & (BV30 - 1), 1);
-	    obj->serial = obj->pIndexData->serial = cur_obj_serial;
-	  }
-	  if (fNest)
-	    rgObjNest[iNest] = obj;
-	  numobjsloaded += obj->count;
-	  ++physicalobjects;
-	  if (file_ver > 1 || obj->wear_loc < -1 || obj->wear_loc >= MAX_WEAR)
-	    obj->wear_loc = -1;
-	  /*
-	   * Corpse saving. -- Altrag 
-	   */
-	  if (os_type == OS_CORPSE)
-	  {
-	    if (!room)
-	    {
-	      bug("%s", "Fread_obj: Corpse without room");
-	      room = get_room_index(ROOM_VNUM_LIMBO);
-	    }
+          if (!obj->name)
+            obj->name = QUICKLINK(obj->pIndexData->name);
+          if (!obj->description)
+            obj->description = QUICKLINK(obj->pIndexData->description);
+          if (!obj->short_descr)
+            obj->short_descr = QUICKLINK(obj->pIndexData->short_descr);
+          if (!obj->action_desc)
+            obj->action_desc = QUICKLINK(obj->pIndexData->action_desc);
+          if (IS_OBJ_STAT(obj, ITEM_PERSONAL) && !obj->owner && ch)
+            obj->owner = QUICKLINK(ch->name);
+          if (!obj->owner)
+            obj->owner = STRALLOC("");
+          LINK(obj, first_object, last_object, next, prev);
+          obj->pIndexData->count += obj->count;
+          if (!obj->serial)
+          {
+            cur_obj_serial = UMAX((cur_obj_serial + 1) & (BV30 - 1), 1);
+            obj->serial = obj->pIndexData->serial = cur_obj_serial;
+          }
+          if (fNest)
+            rgObjNest[iNest] = obj;
+          numobjsloaded += obj->count;
+          ++physicalobjects;
+          if (file_ver > 1 || obj->wear_loc < -1 || obj->wear_loc >= MAX_WEAR)
+            obj->wear_loc = -1;
+          /*
+           * Corpse saving. -- Altrag 
+           */
+          if (os_type == OS_CORPSE)
+          {
+            if (!room)
+            {
+              bug("%s", "Fread_obj: Corpse without room");
+              room = get_room_index(ROOM_VNUM_LIMBO);
+            }
 
-	    /*
-	     * Give the corpse a timer if there isn't one 
-	     */
-	    if (obj->timer < 1)
-	      obj->timer = 40;
-	    if (room->vnum == ROOM_VNUM_HALLOFFALLEN && obj->first_content)
-	      obj->timer = -1;
-	    obj = obj_to_room(obj, room);
-	  }
-	  else if (os_type == OS_VAULT && room)
-	  {
-	    obj = obj_to_room(obj, room);
-	  }
-	  else if (iNest == 0 || rgObjNest[iNest] == NULL)
-	  {
-	    int slot = -1;
-	    bool reslot = FALSE;
+            /*
+             * Give the corpse a timer if there isn't one 
+             */
+            if (obj->timer < 1)
+              obj->timer = 40;
+            if (room->vnum == ROOM_VNUM_HALLOFFALLEN && obj->first_content)
+              obj->timer = -1;
+            obj = obj_to_room(obj, room);
+          }
+          else if (os_type == OS_VAULT && room)
+          {
+            obj = obj_to_room(obj, room);
+          }
+          else if (iNest == 0 || rgObjNest[iNest] == NULL)
+          {
+            int slot = -1;
+            bool reslot = FALSE;
 
-	    if (file_ver > 1 && wear_loc > -1 && wear_loc < MAX_WEAR)
-	    {
-	      int x;
+            if (file_ver > 1 && wear_loc > -1 && wear_loc < MAX_WEAR)
+            {
+              int x;
 
-	      for (x = 0; x < MAX_LAYERS; x++)
-	      {
-		if (IS_NPC(ch))
-		{
-		  if (!mob_save_equipment[wear_loc][x])
-		  {
-		    mob_save_equipment[wear_loc][x] = obj;
-		    slot = x;
-		    reslot = TRUE;
-		    break;
-		  }
-		}
-		else
-		{
-		  if (!save_equipment[wear_loc][x])
-		  {
-		    save_equipment[wear_loc][x] = obj;
-		    slot = x;
-		    reslot = TRUE;
-		    break;
-		  }
-		}
-	      }
-	      if (x == MAX_LAYERS)
-		bug("%s: too many layers %d", __func__, wear_loc);
-	    }
-	    obj = obj_to_char(obj, ch);
-	    if (reslot && slot != -1)
-	    {
-	      if (IS_NPC(ch))
-		mob_save_equipment[wear_loc][slot] = obj;
-	      else
-		save_equipment[wear_loc][slot] = obj;
-	    }
-	  }
-	  else
-	  {
-	    if (rgObjNest[iNest - 1])
-	    {
-	      separate_obj(rgObjNest[iNest - 1]);
-	      obj = obj_to_obj(obj, rgObjNest[iNest - 1]);
-	    }
-	    else
-	      bug("%s: nest layer missing %d", __func__, iNest - 1);
-	  }
-	  if (fNest)
-	    rgObjNest[iNest] = obj;
-	  return;
-	}
+              for (x = 0; x < MAX_LAYERS; x++)
+              {
+                if (IS_NPC(ch))
+                {
+                  if (!mob_save_equipment[wear_loc][x])
+                  {
+                    mob_save_equipment[wear_loc][x] = obj;
+                    slot = x;
+                    reslot = TRUE;
+                    break;
+                  }
+                }
+                else
+                {
+                  if (!save_equipment[wear_loc][x])
+                  {
+                    save_equipment[wear_loc][x] = obj;
+                    slot = x;
+                    reslot = TRUE;
+                    break;
+                  }
+                }
+              }
+              if (x == MAX_LAYERS)
+                bug("%s: too many layers %d", __func__, wear_loc);
+            }
+            obj = obj_to_char(obj, ch);
+            if (reslot && slot != -1)
+            {
+              if (IS_NPC(ch))
+                mob_save_equipment[wear_loc][slot] = obj;
+              else
+                save_equipment[wear_loc][slot] = obj;
+            }
+          }
+          else
+          {
+            if (rgObjNest[iNest - 1])
+            {
+              separate_obj(rgObjNest[iNest - 1]);
+              obj = obj_to_obj(obj, rgObjNest[iNest - 1]);
+            }
+            else
+              bug("%s: nest layer missing %d", __func__, iNest - 1);
+          }
+          if (fNest)
+            rgObjNest[iNest] = obj;
+          return;
+        }
       }
       break;
 
@@ -2217,24 +2217,24 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
 
       if (!strcmp(word, "Nest"))
       {
-	iNest = fread_number(fp);
-	if (iNest < 0 || iNest >= MAX_NEST)
-	{
-	  bug("%s: bad nest %d.", __func__, iNest);
-	  iNest = 0;
-	  fNest = FALSE;
-	}
-	fMatch = TRUE;
+        iNest = fread_number(fp);
+        if (iNest < 0 || iNest >= MAX_NEST)
+        {
+          bug("%s: bad nest %d.", __func__, iNest);
+          iNest = 0;
+          fNest = FALSE;
+        }
+        fMatch = TRUE;
       }
       break;
 
     case 'O':
       if (!strcmp(word, "Owner"))
       {
-	STRFREE(obj->owner);
-	obj->owner = fread_string(fp);
-	xSET_BIT(obj->extra_flags, ITEM_PERSONAL);
-	fMatch = TRUE;
+        STRFREE(obj->owner);
+        obj->owner = fread_string(fp);
+        xSET_BIT(obj->extra_flags, ITEM_PERSONAL);
+        fMatch = TRUE;
       }
       break;
 
@@ -2248,19 +2248,19 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
 
       if (!strcmp(word, "Spell"))
       {
-	int iValue;
-	int sn;
+        int iValue;
+        int sn;
 
-	iValue = fread_number(fp);
-	sn = skill_lookup(fread_word(fp));
-	if (iValue < 0 || iValue > 5)
-	  bug("%s: bad iValue %d.", __func__, iValue);
-	else if (sn < 0)
-	  bug("%s: unknown skill.", __func__);
-	else
-	  obj->value[iValue] = sn;
-	fMatch = TRUE;
-	break;
+        iValue = fread_number(fp);
+        sn = skill_lookup(fread_word(fp));
+        if (iValue < 0 || iValue > 5)
+          bug("%s: bad iValue %d.", __func__, iValue);
+        else if (sn < 0)
+          bug("%s: unknown skill.", __func__);
+        else
+          obj->value[iValue] = sn;
+        fMatch = TRUE;
+        break;
       }
 
       break;
@@ -2272,47 +2272,47 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
     case 'V':
       if (!strcmp(word, "Values"))
       {
-	int x1, x2, x3, x4, x5, x6;
-	char *ln = fread_line(fp);
+        int x1, x2, x3, x4, x5, x6;
+        char *ln = fread_line(fp);
 
-	x1 = x2 = x3 = x4 = x5 = x6 = 0;
-	sscanf(ln, "%d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6);
+        x1 = x2 = x3 = x4 = x5 = x6 = 0;
+        sscanf(ln, "%d %d %d %d %d %d", &x1, &x2, &x3, &x4, &x5, &x6);
 
-	/* clean up some garbage */
-	if (file_ver < 3 && os_type != OS_VAULT)
-	  x5 = x6 = 0;
+        /* clean up some garbage */
+        if (file_ver < 3 && os_type != OS_VAULT)
+          x5 = x6 = 0;
 
-	obj->value[0] = x1;
-	obj->value[1] = x2;
-	obj->value[2] = x3;
-	obj->value[3] = x4;
-	obj->value[4] = x5;
-	obj->value[5] = x6;
-	fMatch = TRUE;
-	break;
+        obj->value[0] = x1;
+        obj->value[1] = x2;
+        obj->value[2] = x3;
+        obj->value[3] = x4;
+        obj->value[4] = x5;
+        obj->value[5] = x6;
+        fMatch = TRUE;
+        break;
       }
 
       if (!strcmp(word, "Vnum"))
       {
-	int vnum;
+        int vnum;
 
-	vnum = fread_number(fp);
-	/*
-	 * bug("Fread_obj: bad vnum %d.", vnum);  
-	 */
-	if ((obj->pIndexData = get_obj_index(vnum)) == NULL)
-	  fVnum = FALSE;
-	else
-	{
-	  fVnum = TRUE;
-	  obj->cost = obj->pIndexData->cost;
-	  obj->weight = obj->pIndexData->weight;
-	  obj->item_type = obj->pIndexData->item_type;
-	  obj->wear_flags = obj->pIndexData->wear_flags;
-	  obj->extra_flags = obj->pIndexData->extra_flags;
-	}
-	fMatch = TRUE;
-	break;
+        vnum = fread_number(fp);
+        /*
+         * bug("Fread_obj: bad vnum %d.", vnum);  
+         */
+        if ((obj->pIndexData = get_obj_index(vnum)) == NULL)
+          fVnum = FALSE;
+        else
+        {
+          fVnum = TRUE;
+          obj->cost = obj->pIndexData->cost;
+          obj->weight = obj->pIndexData->weight;
+          obj->item_type = obj->pIndexData->item_type;
+          obj->wear_flags = obj->pIndexData->wear_flags;
+          obj->extra_flags = obj->pIndexData->extra_flags;
+        }
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -2333,24 +2333,24 @@ void fread_obj(CHAR_DATA * ch, FILE * fp, short os_type)
       bug("%s", word);
       fread_to_eol(fp);
       if (obj->name)
-	STRFREE(obj->name);
+        STRFREE(obj->name);
       if (obj->description)
-	STRFREE(obj->description);
+        STRFREE(obj->description);
       if (obj->full_desc)
         STRFREE(obj->full_desc);
       if (obj->short_descr)
-	STRFREE(obj->short_descr);
+        STRFREE(obj->short_descr);
       while ((ed = obj->first_extradesc) != NULL)
       {
-	STRFREE(ed->keyword);
-	STRFREE(ed->description);
-	UNLINK(ed, obj->first_extradesc, obj->last_extradesc, next, prev);
-	DISPOSE(ed);
+        STRFREE(ed->keyword);
+        STRFREE(ed->description);
+        UNLINK(ed, obj->first_extradesc, obj->last_extradesc, next, prev);
+        DISPOSE(ed);
       }
       while ((paf = obj->first_affect) != NULL)
       {
-	UNLINK(paf, obj->first_affect, obj->last_affect, next, prev);
-	DISPOSE(paf);
+        UNLINK(paf, obj->first_affect, obj->last_affect, next, prev);
+        DISPOSE(paf);
       }
       DISPOSE(obj);
       return;
@@ -2369,7 +2369,7 @@ void set_alarm(long seconds)
 }
 
 /*
- * Based on last time modified, show when a player was last on	-Thoric
+ * Based on last time modified, show when a player was last on  -Thoric
  */
 void do_last(CHAR_DATA* ch, const char* argument)
 {
@@ -2417,19 +2417,19 @@ void write_corpses(CHAR_DATA * ch, const char *name, OBJ_DATA * objrem)
    */
   for (corpse = first_object; corpse; corpse = corpse->next)
     if (corpse->pIndexData->vnum == OBJ_VNUM_CORPSE_PC &&
-	corpse->in_room != NULL && !str_cmp(corpse->short_descr + 14, name) && objrem != corpse)
+        corpse->in_room != NULL && !str_cmp(corpse->short_descr + 14, name) && objrem != corpse)
     {
       if (!fp)
       {
-	char buf[127];
+        char buf[127];
 
-	snprintf(buf, 127, "%s%s", CORPSE_DIR, capitalize(name));
-	if (!(fp = fopen(buf, "w")))
-	{
-	  bug("Write_corpses: Cannot open file %s.", buf);
-	  perror(buf);
-	  return;
-	}
+        snprintf(buf, 127, "%s%s", CORPSE_DIR, capitalize(name));
+        if (!(fp = fopen(buf, "w")))
+        {
+          bug("Write_corpses: Cannot open file %s.", buf);
+          perror(buf);
+          return;
+        }
       }
       fwrite_obj(ch, corpse, fp, 0, OS_CORPSE, FALSE);
     }
@@ -2472,37 +2472,37 @@ void load_corpses(void)
       fprintf(stderr, "Corpse -> %s\n", corpsefile);
       if (!(cfp = fopen(corpsefile, "r")))
       {
-	perror(corpsefile);
-	continue;
+        perror(corpsefile);
+        continue;
       }
       for (;;)
       {
-	char letter;
-	char *word;
+        char letter;
+        char *word;
 
-	letter = fread_letter(cfp);
-	if (letter == '*')
-	{
-	  fread_to_eol(cfp);
-	  continue;
-	}
-	if (letter != '#')
-	{
-	  bug("%s: # not found.", __func__);
-	  break;
-	}
-	word = fread_word(cfp);
-	if (!strcmp(word, "CORPSE"))
-	  fread_obj(NULL, cfp, OS_CORPSE);
-	else if (!strcmp(word, "OBJECT"))
-	  fread_obj(NULL, cfp, OS_CARRY);
-	else if (!strcmp(word, "END"))
-	  break;
-	else
-	{
-	  bug("%s: bad section.", __func__);
-	  break;
-	}
+        letter = fread_letter(cfp);
+        if (letter == '*')
+        {
+          fread_to_eol(cfp);
+          continue;
+        }
+        if (letter != '#')
+        {
+          bug("%s: # not found.", __func__);
+          break;
+        }
+        word = fread_word(cfp);
+        if (!strcmp(word, "CORPSE"))
+          fread_obj(NULL, cfp, OS_CORPSE);
+        else if (!strcmp(word, "OBJECT"))
+          fread_obj(NULL, cfp, OS_CARRY);
+        else if (!strcmp(word, "END"))
+          break;
+        else
+        {
+          bug("%s: bad section.", __func__);
+          break;
+        }
       }
       fclose(cfp);
     }
@@ -2523,17 +2523,17 @@ void fwrite_mobile(FILE * fp, CHAR_DATA * mob)
     return;
   de_equip_char(mob);
   fprintf(fp, "#MOBILE\n");
-  fprintf(fp, "Vnum	%d\n", mob->pIndexData->vnum);
+  fprintf(fp, "Vnum     %d\n", mob->pIndexData->vnum);
   if (mob->in_room)
-    fprintf(fp, "Room	%d\n",
-	     (mob->in_room == get_room_index(ROOM_VNUM_LIMBO)
-	       && mob->was_in_room) ? mob->was_in_room->vnum : mob->in_room->vnum);
+    fprintf(fp, "Room   %d\n",
+             (mob->in_room == get_room_index(ROOM_VNUM_LIMBO)
+               && mob->was_in_room) ? mob->was_in_room->vnum : mob->in_room->vnum);
   if (mob->name && mob->pIndexData->player_name && str_cmp(mob->name, mob->pIndexData->player_name))
     fprintf(fp, "Name     %s~\n", mob->name);
   if (mob->short_descr && mob->pIndexData->short_descr && str_cmp(mob->short_descr, mob->pIndexData->short_descr))
-    fprintf(fp, "Short	%s~\n", mob->short_descr);
+    fprintf(fp, "Short  %s~\n", mob->short_descr);
   if (mob->long_descr && mob->pIndexData->long_descr && str_cmp(mob->long_descr, mob->pIndexData->long_descr))
-    fprintf(fp, "Long	%s~\n", mob->long_descr);
+    fprintf(fp, "Long   %s~\n", mob->long_descr);
   if (mob->description && mob->pIndexData->description && str_cmp(mob->description, mob->pIndexData->description))
     fprintf(fp, "Description %s~\n", mob->description);
   fprintf(fp, "Position %d\n", mob->position);
@@ -2574,20 +2574,20 @@ CHAR_DATA *fread_mobile(FILE * fp)
     {
       for (;;)
       {
-	word = (feof(fp) ? "EndMobile" : fread_word(fp));
+        word = (feof(fp) ? "EndMobile" : fread_word(fp));
 
-	if (word[0] == '\0')
-	{
-	  bug("%s: EOF encountered reading file!", __func__);
-	  word = "EndMobile";
-	}
+        if (word[0] == '\0')
+        {
+          bug("%s: EOF encountered reading file!", __func__);
+          word = "EndMobile";
+        }
 
-	/*
-	 * So we don't get so many bug messages when something messes up
-	 * * --Shaddai 
-	 */
-	if (!str_cmp(word, "EndMobile"))
-	  break;
+        /*
+         * So we don't get so many bug messages when something messes up
+         * * --Shaddai 
+         */
+        if (!str_cmp(word, "EndMobile"))
+          break;
       }
       bug("%s: No index data for vnum %d", __func__, vnum);
       return NULL;
@@ -2601,8 +2601,8 @@ CHAR_DATA *fread_mobile(FILE * fp)
 
       if (word[0] == '\0')
       {
-	bug("%s: EOF encountered reading file!", __func__);
-	word = "EndMobile";
+        bug("%s: EOF encountered reading file!", __func__);
+        word = "EndMobile";
       }
 
       /*
@@ -2610,7 +2610,7 @@ CHAR_DATA *fread_mobile(FILE * fp)
        * * --Shaddai 
        */
       if (!str_cmp(word, "EndMobile"))
-	break;
+        break;
     }
     bug("%s: Vnum not found", __func__);
     return NULL;
@@ -2637,34 +2637,34 @@ CHAR_DATA *fread_mobile(FILE * fp)
     case '#':
       if (!str_cmp(word, "#OBJECT"))
       {
-	fread_obj(mob, fp, OS_CARRY);
-	fMatch = TRUE;
-	break;
+        fread_obj(mob, fp, OS_CARRY);
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'D':
       if (!str_cmp(word, "Description"))
       {
-	if (mob->description)
-	  STRFREE(mob->description);
-	mob->description = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        if (mob->description)
+          STRFREE(mob->description);
+        mob->description = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'E':
       if (!str_cmp(word, "EndMobile"))
       {
-	if (inroom == 0)
-	  inroom = ROOM_VNUM_TEMPLE;
-	pRoomIndex = get_room_index(inroom);
-	if (!pRoomIndex)
-	  pRoomIndex = get_room_index(ROOM_VNUM_TEMPLE);
-	char_to_room(mob, pRoomIndex);
-	re_equip_char(mob);
-	return mob;
+        if (inroom == 0)
+          inroom = ROOM_VNUM_TEMPLE;
+        pRoomIndex = get_room_index(inroom);
+        if (!pRoomIndex)
+          pRoomIndex = get_room_index(ROOM_VNUM_TEMPLE);
+        char_to_room(mob, pRoomIndex);
+        re_equip_char(mob);
+        return mob;
       }
       break;
 
@@ -2675,22 +2675,22 @@ CHAR_DATA *fread_mobile(FILE * fp)
     case 'L':
       if (!str_cmp(word, "Long"))
       {
-	if (mob->long_descr)
-	  STRFREE(mob->long_descr);
-	mob->long_descr = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        if (mob->long_descr)
+          STRFREE(mob->long_descr);
+        mob->long_descr = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
     case 'N':
       if (!str_cmp(word, "Name"))
       {
-	if (mob->name)
-	  STRFREE(mob->name);
-	mob->name = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        if (mob->name)
+          STRFREE(mob->name);
+        mob->name = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
 
@@ -2705,11 +2705,11 @@ CHAR_DATA *fread_mobile(FILE * fp)
     case 'S':
       if (!str_cmp(word, "Short"))
       {
-	if (mob->short_descr)
-	  STRFREE(mob->short_descr);
-	mob->short_descr = fread_string(fp);
-	fMatch = TRUE;
-	break;
+        if (mob->short_descr)
+          STRFREE(mob->short_descr);
+        mob->short_descr = fread_string(fp);
+        fMatch = TRUE;
+        break;
       }
       break;
     }

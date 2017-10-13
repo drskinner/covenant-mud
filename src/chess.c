@@ -76,8 +76,8 @@ static char *print_big_board(CHAR_DATA * ch, GAME_BOARD_DATA * board)
     for (y = 0; y < 8; y++)
     {
       sprintf(buf, "%s%s",
-	       x % 2 == 0 ? (y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND) :
-	       (y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND), big_pieces[board->board[x][y]][0]);
+               x % 2 == 0 ? (y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND) :
+               (y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND), big_pieces[board->board[x][y]][0]);
       sprintf(buf2, buf, IS_WHITE(board->board[x][y]) ? s1 : s2);
       strcat(retbuf, buf2);
     }
@@ -88,8 +88,8 @@ static char *print_big_board(CHAR_DATA * ch, GAME_BOARD_DATA * board)
     for (y = 0; y < 8; y++)
     {
       sprintf(buf, "%s%s",
-	       x % 2 == 0 ? (y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND) :
-	       (y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND), big_pieces[board->board[x][y]][1]);
+               x % 2 == 0 ? (y % 2 == 0 ? BLACK_BACKGROUND : WHITE_BACKGROUND) :
+               (y % 2 == 0 ? WHITE_BACKGROUND : BLACK_BACKGROUND), big_pieces[board->board[x][y]][1]);
       sprintf(buf2, buf, IS_WHITE(board->board[x][y]) ? s1 : s2);
       strcat(retbuf, buf2);
     }
@@ -139,7 +139,7 @@ static bool find_piece(GAME_BOARD_DATA * board, int *x, int *y, int piece)
   {
     for (b = 0; b < 8; b++)
       if (board->board[a][b] == piece)
-	break;
+        break;
     if (board->board[a][b] == piece)
       break;
   }
@@ -150,7 +150,7 @@ static bool find_piece(GAME_BOARD_DATA * board, int *x, int *y, int piece)
   return FALSE;
 }
 
-#define SAME_COLOR(x1,y1,x2,y2)						\
+#define SAME_COLOR(x1,y1,x2,y2)                                         \
   ((IS_WHITE(board->board[x1][y1]) && IS_WHITE(board->board[x2][y2])) || \
    (IS_BLACK(board->board[x1][y1]) && IS_BLACK(board->board[x2][y2])))
 
@@ -174,45 +174,45 @@ static bool king_in_check(GAME_BOARD_DATA * board, int piece)
       ((y > 0 && IS_BLACK(board->board[x + 1][y - 1])) || (y < 7 && IS_BLACK(board->board[x + 1][y + 1]))))
     return TRUE;
   else if (IS_BLACK(piece) && x > 0 &&
-	   ((y > 0 && IS_WHITE(board->board[x - 1][y - 1])) || (y < 7 && IS_WHITE(board->board[x - 1][y + 1]))))
+           ((y > 0 && IS_WHITE(board->board[x - 1][y - 1])) || (y < 7 && IS_WHITE(board->board[x - 1][y + 1]))))
     return TRUE;
   /*
    * knights 
    */
   if (x - 2 >= 0 && y - 1 >= 0 &&
       ((board->board[x - 2][y - 1] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x - 2][y - 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x - 2][y - 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
   if (x - 2 >= 0 && y + 1 < 8 &&
       ((board->board[x - 2][y + 1] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x - 2][y + 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x - 2][y + 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
 
   if (x - 1 >= 0 && y - 2 >= 0 &&
       ((board->board[x - 1][y - 2] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x - 1][y - 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x - 1][y - 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
   if (x - 1 >= 0 && y + 2 < 8 &&
       ((board->board[x - 1][y + 2] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x - 1][y + 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x - 1][y + 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
 
   if (x + 1 < 8 && y - 2 >= 0 &&
       ((board->board[x + 1][y - 2] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x + 1][y - 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x + 1][y - 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
   if (x + 1 < 8 && y + 2 < 8 &&
       ((board->board[x + 1][y + 2] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x + 1][y + 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x + 1][y + 2] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
 
   if (x + 2 < 8 && y - 1 >= 0 &&
       ((board->board[x + 2][y - 1] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x + 2][y - 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x + 2][y - 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
   if (x + 2 < 8 && y + 1 < 8 &&
       ((board->board[x + 2][y + 1] == BLACK_KNIGHT && IS_WHITE(board->board[x][y])) ||
-	(board->board[x + 2][y + 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
+        (board->board[x + 2][y + 1] == WHITE_KNIGHT && IS_BLACK(board->board[x][y]))))
     return TRUE;
 
   /*
@@ -222,40 +222,40 @@ static bool king_in_check(GAME_BOARD_DATA * board, int piece)
     if (board->board[l][y] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, l, y))
-	break;
+        break;
       if (board->board[l][y] == BLACK_QUEEN || board->board[l][y] == WHITE_QUEEN ||
-	  board->board[l][y] == BLACK_ROOK || board->board[l][y] == WHITE_ROOK)
-	return TRUE;
+          board->board[l][y] == BLACK_ROOK || board->board[l][y] == WHITE_ROOK)
+        return TRUE;
       break;
     }
   for (l = x - 1; l >= 0; l--)
     if (board->board[l][y] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, l, y))
-	break;
+        break;
       if (board->board[l][y] == BLACK_QUEEN || board->board[l][y] == WHITE_QUEEN ||
-	  board->board[l][y] == BLACK_ROOK || board->board[l][y] == WHITE_ROOK)
-	return TRUE;
+          board->board[l][y] == BLACK_ROOK || board->board[l][y] == WHITE_ROOK)
+        return TRUE;
       break;
     }
   for (m = y + 1; m < 8; m++)
     if (board->board[x][m] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, x, m))
-	break;
+        break;
       if (board->board[x][m] == BLACK_QUEEN || board->board[x][m] == WHITE_QUEEN ||
-	  board->board[x][m] == BLACK_ROOK || board->board[x][m] == WHITE_ROOK)
-	return TRUE;
+          board->board[x][m] == BLACK_ROOK || board->board[x][m] == WHITE_ROOK)
+        return TRUE;
       break;
     }
   for (m = y - 1; m >= 0; m--)
     if (board->board[x][m] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, x, m))
-	break;
+        break;
       if (board->board[x][m] == BLACK_QUEEN || board->board[x][m] == WHITE_QUEEN ||
-	  board->board[x][m] == BLACK_ROOK || board->board[x][m] == WHITE_ROOK)
-	return TRUE;
+          board->board[x][m] == BLACK_ROOK || board->board[x][m] == WHITE_ROOK)
+        return TRUE;
       break;
     }
   /*
@@ -265,40 +265,40 @@ static bool king_in_check(GAME_BOARD_DATA * board, int piece)
     if (board->board[l][m] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, l, m))
-	break;
+        break;
       if (board->board[l][m] == BLACK_QUEEN || board->board[l][m] == WHITE_QUEEN ||
-	  board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
-	return TRUE;
+          board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
+        return TRUE;
       break;
     }
   for (l = x - 1, m = y + 1; l >= 0 && m < 8; l--, m++)
     if (board->board[l][m] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, l, m))
-	break;
+        break;
       if (board->board[l][m] == BLACK_QUEEN || board->board[l][m] == WHITE_QUEEN ||
-	  board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
-	return TRUE;
+          board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
+        return TRUE;
       break;
     }
   for (l = x + 1, m = y - 1; l < 8 && m >= 0; l++, m--)
     if (board->board[l][m] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, l, m))
-	break;
+        break;
       if (board->board[l][m] == BLACK_QUEEN || board->board[l][m] == WHITE_QUEEN ||
-	  board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
-	return TRUE;
+          board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
+        return TRUE;
       break;
     }
   for (l = x - 1, m = y - 1; l >= 0 && m >= 0; l--, m--)
     if (board->board[l][m] != NO_PIECE)
     {
       if (SAME_COLOR(x, y, l, m))
-	break;
+        break;
       if (board->board[l][m] == BLACK_QUEEN || board->board[l][m] == WHITE_QUEEN ||
-	  board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
-	return TRUE;
+          board->board[l][m] == BLACK_BISHOP || board->board[l][m] == WHITE_BISHOP)
+        return TRUE;
       break;
     }
   return FALSE;
@@ -476,11 +476,11 @@ static int is_valid_move(CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, 
   case WHITE_PAWN:
   case BLACK_PAWN:
     if (IS_WHITE(board->board[x][y]) &&
-	dx == x + 2 && x == 1 && dy == y && board->board[dx][dy] == NO_PIECE && board->board[x + 1][dy] == NO_PIECE)
+        dx == x + 2 && x == 1 && dy == y && board->board[dx][dy] == NO_PIECE && board->board[x + 1][dy] == NO_PIECE)
       return MOVE_OK;
     else if (IS_BLACK(board->board[x][y]) &&
-	     dx == x - 2 && x == 6 && dy == y &&
-	     board->board[dx][dy] == NO_PIECE && board->board[x - 1][dy] == NO_PIECE)
+             dx == x - 2 && x == 6 && dy == y &&
+             board->board[dx][dy] == NO_PIECE && board->board[x - 1][dy] == NO_PIECE)
       return MOVE_OK;
     if (IS_WHITE(board->board[x][y]) && dx != x + 1)
       return MOVE_INVALID;
@@ -491,22 +491,22 @@ static int is_valid_move(CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, 
     if (dy == y)
     {
       if (board->board[dx][dy] == NO_PIECE)
-	return MOVE_OK;
+        return MOVE_OK;
       else if (SAME_COLOR(x, y, dx, dy))
-	return MOVE_SAMECOLOR;
+        return MOVE_SAMECOLOR;
       else
-	return MOVE_BLOCKED;
+        return MOVE_BLOCKED;
     }
     else
     {
       if (board->board[dx][dy] == NO_PIECE)
-	return MOVE_INVALID;
+        return MOVE_INVALID;
       else if (SAME_COLOR(x, y, dx, dy))
-	return MOVE_SAMECOLOR;
+        return MOVE_SAMECOLOR;
       else if (board->board[dx][dy] != BLACK_KING && board->board[dx][dy] != WHITE_KING)
-	return MOVE_TAKEN;
+        return MOVE_TAKEN;
       else
-	return MOVE_INVALID;
+        return MOVE_INVALID;
     }
     break;
   case WHITE_ROOK:
@@ -521,24 +521,24 @@ static int is_valid_move(CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, 
     {
       for (cnt = y; cnt != dy;)
       {
-	if (cnt != y && board->board[x][cnt] != NO_PIECE)
-	  return MOVE_BLOCKED;
-	if (dy > y)
-	  cnt++;
-	else
-	  cnt--;
+        if (cnt != y && board->board[x][cnt] != NO_PIECE)
+          return MOVE_BLOCKED;
+        if (dy > y)
+          cnt++;
+        else
+          cnt--;
       }
     }
     else if (dy == y)
     {
       for (cnt = x; cnt != dx;)
       {
-	if (cnt != x && board->board[cnt][y] != NO_PIECE)
-	  return MOVE_BLOCKED;
-	if (dx > x)
-	  cnt++;
-	else
-	  cnt--;
+        if (cnt != x && board->board[cnt][y] != NO_PIECE)
+          return MOVE_BLOCKED;
+        if (dx > x)
+          cnt++;
+        else
+          cnt--;
       }
     }
 
@@ -554,16 +554,16 @@ static int is_valid_move(CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, 
   case WHITE_KNIGHT:
   case BLACK_KNIGHT:
     if ((dx == x - 2 && dy == y - 1) ||
-	(dx == x - 2 && dy == y + 1) ||
-	(dx == x - 1 && dy == y - 2) ||
-	(dx == x - 1 && dy == y + 2) ||
-	(dx == x + 1 && dy == y - 2) ||
-	(dx == x + 1 && dy == y + 2) || (dx == x + 2 && dy == y - 1) || (dx == x + 2 && dy == y + 1))
+        (dx == x - 2 && dy == y + 1) ||
+        (dx == x - 1 && dy == y - 2) ||
+        (dx == x - 1 && dy == y + 2) ||
+        (dx == x + 1 && dy == y - 2) ||
+        (dx == x + 1 && dy == y + 2) || (dx == x + 2 && dy == y - 1) || (dx == x + 2 && dy == y + 1))
     {
       if (board->board[dx][dy] == NO_PIECE)
-	return MOVE_OK;
+        return MOVE_OK;
       if (SAME_COLOR(x, y, dx, dy))
-	return MOVE_SAMECOLOR;
+        return MOVE_SAMECOLOR;
       return MOVE_TAKEN;
     }
     return MOVE_INVALID;
@@ -582,19 +582,19 @@ static int is_valid_move(CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, 
     while (1)
     {
       if (dx > x)
-	l++;
+        l++;
       else
-	l--;
+        l--;
       if (dy > y)
-	m++;
+        m++;
       else
-	m--;
+        m--;
       if (l > 7 || m > 7 || l < 0 || m < 0)
-	return MOVE_INVALID;
+        return MOVE_INVALID;
       if (l == dx && m == dy)
-	break;
+        break;
       if (board->board[l][m] != NO_PIECE)
-	blocked = TRUE;
+        blocked = TRUE;
     }
     if (l != dx || m != dy)
       return MOVE_INVALID;
@@ -622,19 +622,19 @@ static int is_valid_move(CHAR_DATA * ch, GAME_BOARD_DATA * board, int x, int y, 
     while (1)
     {
       if (dx > x)
-	l++;
+        l++;
       else if (dx < x)
-	l--;
+        l--;
       if (dy > y)
-	m++;
+        m++;
       else if (dy < y)
-	m--;
+        m--;
       if (l > 7 || m > 7 || l < 0 || m < 0)
-	return MOVE_INVALID;
+        return MOVE_INVALID;
       if (l == dx && m == dy)
-	break;
+        break;
       if (board->board[l][m] != NO_PIECE)
-	blocked = TRUE;
+        blocked = TRUE;
     }
     if (l != dx || m != dy)
       return MOVE_INVALID;
@@ -768,8 +768,8 @@ PFUN(imc_recv_chess)
   if (!str_cmp(txt, "accepted"))
   {
     if (!victim->pcdata->game_board ||
-	victim->pcdata->game_board->player2 == NULL ||
-	victim->pcdata->game_board->type != TYPE_IMC || str_cmp(victim->pcdata->game_board->player2, q->from))
+        victim->pcdata->game_board->player2 == NULL ||
+        victim->pcdata->game_board->type != TYPE_IMC || str_cmp(victim->pcdata->game_board->player2, q->from))
     {
       imc_send_chess(victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from, "stop");
       return;
@@ -811,10 +811,10 @@ PFUN(imc_recv_chess)
     x = y = dx = dy = -1;
 
     if (sscanf(txt, "move %c%d %c%d", &a, &y, &b, &dy) != 4 ||
-	a < '0' || a > '7' || b < '0' || b > '7' || y < 0 || y > 7 || dy < 0 || dy > 7)
+        a < '0' || a > '7' || b < '0' || b > '7' || y < 0 || y > 7 || dy < 0 || dy > 7)
     {
       imc_send_chess(victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from,
-		      "invalidmove");
+                      "invalidmove");
       return;
     }
 
@@ -838,20 +838,20 @@ PFUN(imc_recv_chess)
       board->board[x][y] = NO_PIECE;
 
       if (king_in_check(board, IS_WHITE(board->board[dx][dy]) ? WHITE_KING : BLACK_KING) &&
-	  (board->board[dx][dy] != WHITE_KING && board->board[dx][dy] != BLACK_KING))
+          (board->board[dx][dy] != WHITE_KING && board->board[dx][dy] != BLACK_KING))
       {
-	board->board[dx][dy] = destpiece;
-	board->board[x][y] = piece;
+        board->board[dx][dy] = destpiece;
+        board->board[x][y] = piece;
       }
       else
       {
-	board->turn++;
-	imc_send_chess(board->player1 ? board->player1 : NULL, q->from, "moveok");
-	return;
+        board->turn++;
+        imc_send_chess(board->player1 ? board->player1 : NULL, q->from, "moveok");
+        return;
       }
     }
     imc_send_chess(victim->pcdata->game_board->player1 ? victim->pcdata->game_board->player1 : NULL, q->from,
-		    "invalidmove");
+                    "invalidmove");
     return;
   }
 
@@ -955,20 +955,20 @@ void do_chess(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(imc_mudof(arg2), this_imcmud->localname))
       {
-	send_to_char("You cannot join IMC chess on the local mud!\r\n", ch);
-	return;
+        send_to_char("You cannot join IMC chess on the local mud!\r\n", ch);
+        return;
       }
 
       if (!str_cmp(imc_mudof(arg2), "*"))
       {
-	send_to_char("* is not a valid mud name.\r\n", ch);
-	return;
+        send_to_char("* is not a valid mud name.\r\n", ch);
+        return;
       }
 
       if (!str_cmp(imc_nameof(arg2), "*"))
       {
-	send_to_char("* is not a valid player name.\r\n", ch);
-	return;
+        send_to_char("* is not a valid player name.\r\n", ch);
+        return;
       }
 
       send_to_char("Attempting to initiate IMC chess game...\r\n", ch);
@@ -1166,21 +1166,21 @@ void do_chess(CHAR_DATA* ch, const char* argument)
       board->board[x][y] = NO_PIECE;
 
       if (king_in_check(board, IS_WHITE(board->board[dx][dy]) ? WHITE_KING : BLACK_KING)
-	  && (board->board[dx][dy] != WHITE_KING && board->board[dx][dy] != BLACK_KING))
+          && (board->board[dx][dy] != WHITE_KING && board->board[dx][dy] != BLACK_KING))
       {
-	board->board[dx][dy] = destpiece;
-	board->board[x][y] = piece;
-	ret = MOVE_INCHECK;
+        board->board[dx][dy] = destpiece;
+        board->board[x][y] = piece;
+        ret = MOVE_INCHECK;
       }
       else
       {
-	++board->turn;
+        ++board->turn;
 #ifdef IMC
-	if (ch->pcdata->game_board->type == TYPE_IMC)
-	{
-	  snprintf(arg, MAX_INPUT_LENGTH, "move %d%d %d%d", x, y, dx, dy);
-	  imc_send_chess(ch->pcdata->game_board->player1, ch->pcdata->game_board->player2, arg);
-	}
+        if (ch->pcdata->game_board->type == TYPE_IMC)
+        {
+          snprintf(arg, MAX_INPUT_LENGTH, "move %d%d %d%d", x, y, dx, dy);
+          imc_send_chess(ch->pcdata->game_board->player1, ch->pcdata->game_board->player2, arg);
+        }
 #endif
       }
     }
@@ -1189,33 +1189,33 @@ void do_chess(CHAR_DATA* ch, const char* argument)
     {
       opp = get_char_world(ch, ch->pcdata->game_board->player2);
       if (!opp)
-	mudstrlcpy(opp_name, ch->pcdata->game_board->player2, MAX_INPUT_LENGTH);
+        mudstrlcpy(opp_name, ch->pcdata->game_board->player2, MAX_INPUT_LENGTH);
     }
     else
     {
       opp = get_char_world(ch, ch->pcdata->game_board->player1);
       if (!opp)
-	mudstrlcpy(opp_name, ch->pcdata->game_board->player1, MAX_INPUT_LENGTH);
+        mudstrlcpy(opp_name, ch->pcdata->game_board->player1, MAX_INPUT_LENGTH);
     }
 
 #ifdef IMC
-#define SEND_TO_OPP(arg,opp)				\
-    if (opp)						\
-    {							\
-      if (ch->pcdata->game_board->type == TYPE_LOCAL)	\
-	ch_printf((opp), "%s\r\n", (arg));		\
-    }							\
-    else						\
-    {							\
-      if (ch->pcdata->game_board->type == TYPE_IMC)	\
-	imc_send_tell(ch->name, opp_name, (arg), 1);	\
+#define SEND_TO_OPP(arg,opp)                            \
+    if (opp)                                            \
+    {                                                   \
+      if (ch->pcdata->game_board->type == TYPE_LOCAL)   \
+        ch_printf((opp), "%s\r\n", (arg));              \
+    }                                                   \
+    else                                                \
+    {                                                   \
+      if (ch->pcdata->game_board->type == TYPE_IMC)     \
+        imc_send_tell(ch->name, opp_name, (arg), 1);    \
     }
 #else
-#define SEND_TO_OPP(arg,opp)				\
-    if (opp)						\
-    {							\
-      if (ch->pcdata->game_board->type == TYPE_LOCAL)	\
-	ch_printf((opp), "%s\r\n", (arg));		\
+#define SEND_TO_OPP(arg,opp)                            \
+    if (opp)                                            \
+    {                                                   \
+      if (ch->pcdata->game_board->type == TYPE_LOCAL)   \
+        ch_printf((opp), "%s\r\n", (arg));              \
     }
 #endif
 

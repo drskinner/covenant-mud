@@ -9,8 +9,8 @@
  * ------------------------------------------------------------------------ *
  * v. 0.9: 6/19/95:  Converts an ascii map to rooms.                        *
  * v. 1.0: 7/05/95:  Read/write maps to .are files.  Efficient storage.     *
- *	             Room qualities based on map code. Can add & remove rms      *
- *	                from a map. (Somewhat) intelligent exit decisions.       *
+ *                   Room qualities based on map code. Can add & remove rms      *
+ *                      from a map. (Somewhat) intelligent exit decisions.       *
  * v. 1.1: 7/11/95:  Various display options.  See comments over draw_map   *
  ****************************************************************************/
 
@@ -179,11 +179,11 @@ void map_stats(CHAR_DATA * ch, int *rooms, int *rows, int *cols)
        * Make sure it has a closeing ] 
        */
       if (c == ']')
-	col++;
+        col++;
       if (col < leftmost)
-	leftmost = col;
+        leftmost = col;
       if (col > rightmost)
-	rightmost = col;
+        rightmost = col;
     }
     if ((c == ' ' || c == '-' || c == '|' || c == '=' || c == '\\' || c == '/' || c == '^' || c == ':'))
       col++;
@@ -355,8 +355,8 @@ int add_new_room_to_map(CHAR_DATA * ch, char code)
     {
       if (!(location = make_room(i, ch->pcdata->area)))
       {
-	bug("%s: make_room failed", __func__);
-	return -1;
+        bug("%s: make_room failed", __func__);
+        return -1;
       }
       /*
        * Clones current room  (quietly) 
@@ -367,37 +367,37 @@ int add_new_room_to_map(CHAR_DATA * ch, char code)
       xSET_BIT(location->room_flags, ROOM_PROTOTYPE);
       location->light = 0;
       if (code == 'I')
-	location->sector_type = SECT_INSIDE;
+        location->sector_type = SECT_INSIDE;
       else if (code == 'C')
-	location->sector_type = SECT_CITY;
+        location->sector_type = SECT_CITY;
       else if (code == 'f')
-	location->sector_type = SECT_FIELD;
+        location->sector_type = SECT_FIELD;
       else if (code == 'F')
-	location->sector_type = SECT_FOREST;
+        location->sector_type = SECT_FOREST;
       else if (code == 'H')
-	location->sector_type = SECT_HILLS;
+        location->sector_type = SECT_HILLS;
       else if (code == 'M')
-	location->sector_type = SECT_MOUNTAIN;
+        location->sector_type = SECT_MOUNTAIN;
       else if (code == 's')
-	location->sector_type = SECT_WATER_SWIM;
+        location->sector_type = SECT_WATER_SWIM;
       else if (code == 'S')
-	location->sector_type = SECT_WATER_NOSWIM;
+        location->sector_type = SECT_WATER_NOSWIM;
       else if (code == 'A')
-	location->sector_type = SECT_AIR;
+        location->sector_type = SECT_AIR;
       else if (code == 'D')
-	location->sector_type = SECT_DESERT;
+        location->sector_type = SECT_DESERT;
       else if (code == 'O')
-	location->sector_type = SECT_OCEANFLOOR;
+        location->sector_type = SECT_OCEANFLOOR;
       else if (code == 'u')
-	location->sector_type = SECT_UNDERGROUND;
+        location->sector_type = SECT_UNDERGROUND;
       else if (code == 'U')
-	location->sector_type = SECT_UNDERWATER;
+        location->sector_type = SECT_UNDERWATER;
       else if (code == 'L')
-	location->sector_type = SECT_LAVA;
+        location->sector_type = SECT_LAVA;
       else if (code == 'W')
-	location->sector_type = SECT_SWAMP;
+        location->sector_type = SECT_SWAMP;
       else
-	location->sector_type = SECT_DUNNO;
+        location->sector_type = SECT_DUNNO;
       return i;
     }
   }
@@ -461,8 +461,8 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
     {
       if ((tmp = get_map_index(i)) == NULL)
       {
-	map_index = make_new_map_index(i);
-	break;
+        map_index = make_new_map_index(i);
+        break;
       }
     }
   }
@@ -507,7 +507,7 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
       break;
     }
     if (c != ' ' && c != '-' && c != '|' && c != '=' && c != '\\' && c != '/' && c != '^'
-	&& c != ':' && c != '[' && c != ']' && c != '^' && !getroomnext)
+        && c != ':' && c != '[' && c != ']' && c != '^' && !getroomnext)
     {
       l++;
       continue;
@@ -546,39 +546,39 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
     {  /* cols (78, i think) */
 
       if (map[y][x].vnum == 0)
-	continue;
+        continue;
 
       newrm = get_room_index(map[y][x].vnum);
       /*
        * Continue if no newrm 
        */
       if (!newrm)
-	continue;
+        continue;
 
       /*
        * Check up 
        */
       if (y > 1)
       {
-	newx = x;
-	newy = y;
-	newy--;
-	while (newy >= 0 && (map[newy][x].code == '^'))
-	  newy--;
+        newx = x;
+        newy = y;
+        newy--;
+        while (newy >= 0 && (map[newy][x].code == '^'))
+          newy--;
 
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][x].vnum)
-	  break;
-	if ((tvnum = map[newy][x].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_UP);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  xit->exit_info = 0;
-	}
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][x].vnum)
+          break;
+        if ((tvnum = map[newy][x].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_UP);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          xit->exit_info = 0;
+        }
       }
 
       /*
@@ -586,24 +586,24 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (y < 48)
       {
-	newx = x;
-	newy = y;
-	newy++;
-	while (newy <= 48 && (map[newy][x].code == '^'))
-	  newy++;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][x].vnum)
-	  break;
-	if ((tvnum = map[newy][x].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_DOWN);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newy++;
+        while (newy <= 48 && (map[newy][x].code == '^'))
+          newy++;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][x].vnum)
+          break;
+        if ((tvnum = map[newy][x].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_DOWN);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          xit->exit_info = 0;
+        }
       }
 
       /*
@@ -611,30 +611,30 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (y > 1)
       {
-	newx = x;
-	newy = y;
-	newy--;
-	while (newy >= 0 && (map[newy][x].code == '|' || map[newy][x].code == ':' || map[newy][x].code == '='))
-	  newy--;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][x].vnum)
-	  break;
-	if ((tvnum = map[newy][x].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_NORTH);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  if (map[newy + 1][x].code == ':' || map[newy + 1][x].code == '=')
-	  {
-	    SET_BIT(xit->exit_info, EX_ISDOOR);
-	    SET_BIT(xit->exit_info, EX_CLOSED);
-	  }
-	  else
-	    xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newy--;
+        while (newy >= 0 && (map[newy][x].code == '|' || map[newy][x].code == ':' || map[newy][x].code == '='))
+          newy--;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][x].vnum)
+          break;
+        if ((tvnum = map[newy][x].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_NORTH);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          if (map[newy + 1][x].code == ':' || map[newy + 1][x].code == '=')
+          {
+            SET_BIT(xit->exit_info, EX_ISDOOR);
+            SET_BIT(xit->exit_info, EX_CLOSED);
+          }
+          else
+            xit->exit_info = 0;
+        }
       }
 
       /*
@@ -642,30 +642,30 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (y < 48)
       {
-	newx = x;
-	newy = y;
-	newy++;
-	while (newy <= 48 && (map[newy][x].code == '|' || map[newy][x].code == ':' || map[newy][x].code == '='))
-	  newy++;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][x].vnum)
-	  break;
-	if ((tvnum = map[newy][x].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_SOUTH);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  if (map[newy - 1][x].code == ':' || map[newy - 1][x].code == '=')
-	  {
-	    SET_BIT(xit->exit_info, EX_ISDOOR);
-	    SET_BIT(xit->exit_info, EX_CLOSED);
-	  }
-	  else
-	    xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newy++;
+        while (newy <= 48 && (map[newy][x].code == '|' || map[newy][x].code == ':' || map[newy][x].code == '='))
+          newy++;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][x].vnum)
+          break;
+        if ((tvnum = map[newy][x].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_SOUTH);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          if (map[newy - 1][x].code == ':' || map[newy - 1][x].code == '=')
+          {
+            SET_BIT(xit->exit_info, EX_ISDOOR);
+            SET_BIT(xit->exit_info, EX_CLOSED);
+          }
+          else
+            xit->exit_info = 0;
+        }
       }
 
       /*
@@ -673,31 +673,31 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (x < 79)
       {
-	newx = x;
-	newy = y;
-	newx++;
-	while (newx <= 79 && (map[y][newx].code == '-' || map[y][newx].code == ':' || map[y][newx].code == '='
-			       || map[y][newx].code == '[' || map[y][newx].code == ']'))
-	  newx++;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[y][newx].vnum)
-	  break;
-	if ((tvnum = map[y][newx].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_EAST);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  if (map[y][newx - 2].code == ':' || map[y][newx - 2].code == '=')
-	  {
-	    SET_BIT(xit->exit_info, EX_ISDOOR);
-	    SET_BIT(xit->exit_info, EX_CLOSED);
-	  }
-	  else
-	    xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newx++;
+        while (newx <= 79 && (map[y][newx].code == '-' || map[y][newx].code == ':' || map[y][newx].code == '='
+                               || map[y][newx].code == '[' || map[y][newx].code == ']'))
+          newx++;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[y][newx].vnum)
+          break;
+        if ((tvnum = map[y][newx].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_EAST);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          if (map[y][newx - 2].code == ':' || map[y][newx - 2].code == '=')
+          {
+            SET_BIT(xit->exit_info, EX_ISDOOR);
+            SET_BIT(xit->exit_info, EX_CLOSED);
+          }
+          else
+            xit->exit_info = 0;
+        }
       }
 
       /*
@@ -705,31 +705,31 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (x > 1)
       {
-	newx = x;
-	newy = y;
-	newx--;
-	while (newx >= 0 && (map[y][newx].code == '-' || map[y][newx].code == ':' || map[y][newx].code == '='
-			      || map[y][newx].code == '[' || map[y][newx].code == ']'))
-	  newx--;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[y][newx].vnum)
-	  break;
-	if ((tvnum = map[y][newx].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_WEST);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  if (map[y][newx + 2].code == ':' || map[y][newx + 2].code == '=')
-	  {
-	    SET_BIT(xit->exit_info, EX_ISDOOR);
-	    SET_BIT(xit->exit_info, EX_CLOSED);
-	  }
-	  else
-	    xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newx--;
+        while (newx >= 0 && (map[y][newx].code == '-' || map[y][newx].code == ':' || map[y][newx].code == '='
+                              || map[y][newx].code == '[' || map[y][newx].code == ']'))
+          newx--;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[y][newx].vnum)
+          break;
+        if ((tvnum = map[y][newx].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_WEST);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          if (map[y][newx + 2].code == ':' || map[y][newx + 2].code == '=')
+          {
+            SET_BIT(xit->exit_info, EX_ISDOOR);
+            SET_BIT(xit->exit_info, EX_CLOSED);
+          }
+          else
+            xit->exit_info = 0;
+        }
       }
 
       /*
@@ -737,31 +737,31 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (y < 48 && x < 79)
       {
-	newx = x;
-	newy = y;
-	newx += 2;
-	newy++;
-	while (newx <= 79 && newy <= 48 && (map[newy][newx].code == '\\' || map[newy][newx].code == ':'
-					     || map[newy][newx].code == '='))
-	{
-	  newx++;
-	  newy++;
-	}
-	if (map[newy][newx].code == '[')
-	  newx++;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][newx].vnum)
-	  break;
-	if ((tvnum = map[newy][newx].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_SOUTHEAST);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newx += 2;
+        newy++;
+        while (newx <= 79 && newy <= 48 && (map[newy][newx].code == '\\' || map[newy][newx].code == ':'
+                                             || map[newy][newx].code == '='))
+        {
+          newx++;
+          newy++;
+        }
+        if (map[newy][newx].code == '[')
+          newx++;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][newx].vnum)
+          break;
+        if ((tvnum = map[newy][newx].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_SOUTHEAST);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          xit->exit_info = 0;
+        }
       }
 
       /*
@@ -769,32 +769,32 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (y > 1 && x < 79)
       {
-	newx = x;
-	newy = y;
-	newx += 2;
-	newy--;
-	while (newx >= 0 && newy <= 48 && (map[newy][newx].code == '/' || map[newy][newx].code == ':'
-					    || map[newy][newx].code == '='))
-	{
-	  newx++;
-	  newy--;
-	}
-	if (map[newy][newx].code == '[')
-	  newx++;
+        newx = x;
+        newy = y;
+        newx += 2;
+        newy--;
+        while (newx >= 0 && newy <= 48 && (map[newy][newx].code == '/' || map[newy][newx].code == ':'
+                                            || map[newy][newx].code == '='))
+        {
+          newx++;
+          newy--;
+        }
+        if (map[newy][newx].code == '[')
+          newx++;
 
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][newx].vnum)
-	  break;
-	if ((tvnum = map[newy][newx].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_NORTHEAST);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  xit->exit_info = 0;
-	}
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][newx].vnum)
+          break;
+        if ((tvnum = map[newy][newx].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_NORTHEAST);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          xit->exit_info = 0;
+        }
       }
 
       /*
@@ -802,31 +802,31 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (y > 1 && x > 1)
       {
-	newx = x;
-	newy = y;
-	newx -= 2;
-	newy--;
-	while (newx >= 0 && newy >= 0 && (map[newy][newx].code == '\\' || map[newy][newx].code == ':'
-					   || map[newy][newx].code == '='))
-	{
-	  newx--;
-	  newy--;
-	}
-	if (map[newy][newx].code == ']')
-	  newx--;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][newx].vnum)
-	  break;
-	if ((tvnum = map[newy][newx].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_NORTHWEST);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newx -= 2;
+        newy--;
+        while (newx >= 0 && newy >= 0 && (map[newy][newx].code == '\\' || map[newy][newx].code == ':'
+                                           || map[newy][newx].code == '='))
+        {
+          newx--;
+          newy--;
+        }
+        if (map[newy][newx].code == ']')
+          newx--;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][newx].vnum)
+          break;
+        if ((tvnum = map[newy][newx].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_NORTHWEST);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          xit->exit_info = 0;
+        }
       }
 
       /*
@@ -834,31 +834,31 @@ void map_to_rooms(CHAR_DATA * ch, MAP_INDEX_DATA * m_index)
        */
       if (y < 48 && x > 1)
       {
-	newx = x;
-	newy = y;
-	newx -= 2;
-	newy++;
-	while (newx >= 0 && newy <= 48 && (map[newy][newx].code == '/' || map[newy][newx].code == ':'
-					    || map[newy][newx].code == '='))
-	{
-	  newx--;
-	  newy++;
-	}
-	if (map[newy][newx].code == ']')
-	  newx--;
-	/*
-	 * dont link it to itself 
-	 */
-	if (map[y][x].vnum == map[newy][newx].vnum)
-	  break;
-	if ((tvnum = map[newy][newx].vnum) != 0)
-	{
-	  xit = make_exit(newrm, get_room_index(tvnum), DIR_SOUTHWEST);
-	  xit->keyword = STRALLOC("");
-	  xit->description = STRALLOC("");
-	  xit->key = -1;
-	  xit->exit_info = 0;
-	}
+        newx = x;
+        newy = y;
+        newx -= 2;
+        newy++;
+        while (newx >= 0 && newy <= 48 && (map[newy][newx].code == '/' || map[newy][newx].code == ':'
+                                            || map[newy][newx].code == '='))
+        {
+          newx--;
+          newy++;
+        }
+        if (map[newy][newx].code == ']')
+          newx--;
+        /*
+         * dont link it to itself 
+         */
+        if (map[y][x].vnum == map[newy][newx].vnum)
+          break;
+        if ((tvnum = map[newy][newx].vnum) != 0)
+        {
+          xit = make_exit(newrm, get_room_index(tvnum), DIR_SOUTHWEST);
+          xit->keyword = STRALLOC("");
+          xit->description = STRALLOC("");
+          xit->key = -1;
+          xit->exit_info = 0;
+        }
       }
     }
   }

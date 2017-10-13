@@ -65,7 +65,7 @@ const char *get_hint(int level)
     for (hintData = first_hint; hintData; hintData = hintData->next)
     {
       if (level >= hintData->low && level <= hintData->high)
-	++count;
+        ++count;
     }
     if (count > 1)
     {
@@ -73,24 +73,24 @@ const char *get_hint(int level)
       count = 0;
       for (hintData = first_hint; hintData; hintData = hintData->next)
       {
-	if (level >= hintData->low && level <= hintData->high)
-	  ++count;
-	if (count == which)
-	{
-	  mudstrlcpy(buf, hintData->text, MAX_STRING_LENGTH);
-	  return buf;
-	}
+        if (level >= hintData->low && level <= hintData->high)
+          ++count;
+        if (count == which)
+        {
+          mudstrlcpy(buf, hintData->text, MAX_STRING_LENGTH);
+          return buf;
+        }
       }
     }
     else if (count == 1)
     {
       for (hintData = first_hint; hintData; hintData = hintData->next)
       {
-	if (level >= hintData->low && level <= hintData->high)
-	{
-	  mudstrlcpy(buf, hintData->text, MAX_STRING_LENGTH);
-	  return buf;
-	}
+        if (level >= hintData->low && level <= hintData->high)
+        {
+          mudstrlcpy(buf, hintData->text, MAX_STRING_LENGTH);
+          return buf;
+        }
       }
     }
     else
@@ -163,8 +163,8 @@ void do_hintedit(CHAR_DATA* ch, const char* argument)
       i = 0;
       for (hintData = first_hint; hintData; hintData = hintData->next)
       {
-	++i;
-	pager_printf(ch, "%2d | %3d | %4d | %-30s\r\n", i, hintData->low, hintData->high, hintData->text);
+        ++i;
+        pager_printf(ch, "%2d | %3d | %4d | %-30s\r\n", i, hintData->low, hintData->high, hintData->text);
       }
       pager_printf(ch, "\r\n%d hints in file.\r\n", i);
     }
@@ -188,12 +188,12 @@ void do_hintedit(CHAR_DATA* ch, const char* argument)
       ++no;
       if (no == ano)
       {
-	ch_printf_color(ch, "&CHint Number %d removed\r\n", ano);
-	UNLINK(hintData, first_hint, last_hint, next, prev);
-	STRFREE(hintData->text);
-	DISPOSE(hintData);
-	found = TRUE;
-	break;
+        ch_printf_color(ch, "&CHint Number %d removed\r\n", ano);
+        UNLINK(hintData, first_hint, last_hint, next, prev);
+        STRFREE(hintData->text);
+        DISPOSE(hintData);
+        found = TRUE;
+        break;
       }
     }
     if (!found)
@@ -260,8 +260,8 @@ void do_hintedit(CHAR_DATA* ch, const char* argument)
       ++i;
       if (i == no)
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
     }
     if (!found)
@@ -273,37 +273,37 @@ void do_hintedit(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(arg3, "text"))
       {
-	STRFREE(hintData->text);
-	hintData->text = STRALLOC(argument);
-	send_to_char("Hint text changed!\r\n", ch);
-	return;
+        STRFREE(hintData->text);
+        hintData->text = STRALLOC(argument);
+        send_to_char("Hint text changed!\r\n", ch);
+        return;
       }
       else if (!str_cmp(arg3, "low"))
       {
-	if (atoi(argument) > hintData->high)
-	{
-	  send_to_char("Aborting:  min higher than max.\r\n", ch);
-	  return;
-	}
-	hintData->low = atoi(argument);
-	send_to_char("Minimum level for hint changed.\r\n", ch);
-	return;
+        if (atoi(argument) > hintData->high)
+        {
+          send_to_char("Aborting:  min higher than max.\r\n", ch);
+          return;
+        }
+        hintData->low = atoi(argument);
+        send_to_char("Minimum level for hint changed.\r\n", ch);
+        return;
       }
       else if (!str_cmp(arg3, "high"))
       {
-	if (atoi(argument) < hintData->low)
-	{
-	  send_to_char("Aborting:  max lower than min.\r\n", ch);
-	  return;
-	}
-	hintData->high = atoi(argument);
-	send_to_char("Maximum level for hint changed.\r\n", ch);
-	return;
+        if (atoi(argument) < hintData->low)
+        {
+          send_to_char("Aborting:  max lower than min.\r\n", ch);
+          return;
+        }
+        hintData->high = atoi(argument);
+        send_to_char("Maximum level for hint changed.\r\n", ch);
+        return;
       }
       else
       {
-	send_to_char("Valid fields are:  low/high/text\r\n", ch);
-	return;
+        send_to_char("Valid fields are:  low/high/text\r\n", ch);
+        return;
       }
     }
   }
@@ -356,16 +356,16 @@ HINT_DATA *read_hint(char *filename, FILE * fp)
     {
     case 'T':
       if (!str_cmp(word, "Text"))
-	STRFREE(hintData->text);
+        STRFREE(hintData->text);
       KEY("Text", hintData->text, fread_string(fp));
       break;
 
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if (!hintData->text)
-	  hintData->text = STRALLOC("");
-	return hintData;
+        if (!hintData->text)
+          hintData->text = STRALLOC("");
+        return hintData;
       }
       break;
 

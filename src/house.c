@@ -83,7 +83,7 @@ void fwrite_house(HOME_DATA * homedata)
       supermob->level = MAX_LEVEL;
 
       if (obj)
-	fwrite_obj(supermob, obj, fpout, 0, OS_VAULT, FALSE);
+        fwrite_obj(supermob, obj, fpout, 0, OS_VAULT, FALSE);
       supermob->level = j;
     }
   }
@@ -139,11 +139,11 @@ bool in_same_house(CHAR_DATA * ch, CHAR_DATA * vch)
     for (x = 0; x < MAX_HOUSE_ROOMS; x++)
       if (home->vnum[x] == ch->in_room->vnum)
       {
-	for (y = 0; y < MAX_HOUSE_ROOMS; y++)
-	  if (home->vnum[y] == vch->in_room->vnum)
-	    return TRUE;
+        for (y = 0; y < MAX_HOUSE_ROOMS; y++)
+          if (home->vnum[y] == vch->in_room->vnum)
+            return TRUE;
 
-	return FALSE;
+        return FALSE;
       }
 
   return FALSE;
@@ -196,9 +196,9 @@ bool set_house(CHAR_DATA * ch, int vnum, bool apartment)
     {
       if (strcmp(tmphome->name, shome->name) < 0)
       {
-	INSERT(tmphome, shome, first_home, next, prev);
-	found = TRUE;
-	break;
+        INSERT(tmphome, shome, first_home, next, prev);
+        found = TRUE;
+        break;
       }
     }
 
@@ -264,15 +264,15 @@ bool set_house(CHAR_DATA * ch, int vnum, bool apartment)
 
       if ((revroom = get_room_index(pexit->vnum)))
       {
-	add_reset(revroom, 'D', 0, revroom->vnum, pexit->rexit->vdir, 2);
-	fold_area(revroom->area, revroom->area->filename, FALSE);
+        add_reset(revroom, 'D', 0, revroom->vnum, pexit->rexit->vdir, 2);
+        fold_area(revroom->area, revroom->area->filename, FALSE);
       }
 
     }
 
   }
 
-/*	if (apartment)
+/*      if (apartment)
   return TRUE; */
 
   if ((obj = get_obj_index(location->vnum)) != NULL)
@@ -332,20 +332,20 @@ bool remove_house(CHAR_DATA * ch)
     for (i = 1; i < MAX_HOUSE_ROOMS; i++)
     {
       if (home->vnum[i] <= 0)
-	continue;
+        continue;
 
       if ((addloc = get_room_index(home->vnum[i])) == NULL)
       {
-	home->vnum[i] = 0;
-	continue;
+        home->vnum[i] = 0;
+        continue;
       }
 
       area = addloc->area;
 
       for (pexit = addloc->first_exit; pexit; pexit = pexit->next)
       {
-	if (pexit->rexit)
-	  extract_exit(pexit->to_room, pexit->rexit);
+        if (pexit->rexit)
+          extract_exit(pexit->to_room, pexit->rexit);
       }
 
       wipe_resets(addloc);
@@ -437,8 +437,8 @@ bool add_room(HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argument
     {
       if ((addloc = make_room(i, pArea)) == NULL)
       {
-	bug("%s: make_room unable to complete.", __func__);
-	return FALSE;
+        bug("%s: make_room unable to complete.", __func__);
+        return FALSE;
       }
       break;
     }
@@ -629,35 +629,35 @@ void do_house(CHAR_DATA * ch, const char *argument)
     if (get_trust(ch) < LEVEL_DEMI)
     {
       if (ch->gold >= DEFAULT_MOB_PRICE)
-	victim = ch;
+        victim = ch;
       else
       {
-	send_to_char("You do not have the necessary gold to make a key.\r\n", ch);
-	return;
+        send_to_char("You do not have the necessary gold to make a key.\r\n", ch);
+        return;
       }
     }
     else
     {
       if (!argument || argument[0] == '\0')
       {
-	send_to_char("Syntax:  house givekey <character name>\r\n", ch);
-	return;
+        send_to_char("Syntax:  house givekey <character name>\r\n", ch);
+        return;
       }
 
       if ((victim = get_char_world(ch, argument)) == NULL)
       {
-	send_to_char("That character is not online.\r\n", ch);
-	return;
+        send_to_char("That character is not online.\r\n", ch);
+        return;
       }
 
       for (homedata = first_home; homedata; homedata = homedata->next)
-	if (!str_cmp(homedata->name, victim->name))
-	  break;
+        if (!str_cmp(homedata->name, victim->name))
+          break;
 
       if (!homedata)
       {
-	send_to_char("They do not own a home.\r\n", ch);
-	return;
+        send_to_char("They do not own a home.\r\n", ch);
+        return;
       }
     }
 
@@ -679,15 +679,15 @@ void do_house(CHAR_DATA * ch, const char *argument)
     for (i = 0; i < MAX_HOUSE_ROOMS; i++)
       if (homedata->vnum[i] == ch->in_room->vnum)
       {
-	location = ch->in_room;
-	break;
+        location = ch->in_room;
+        break;
       }
 
     if (!location)
       if (!IS_IMMORTAL(ch) || (location = get_room_index(homedata->vnum[0])) == NULL)
       {
-	send_to_char("You must be in your house to make changes to it.\r\n", ch);
-	return;
+        send_to_char("You must be in your house to make changes to it.\r\n", ch);
+        return;
       }
 
     if (!str_cmp(arg, "desc"))
@@ -720,30 +720,30 @@ void do_house(CHAR_DATA * ch, const char *argument)
     {
       if (ch->gold < ADDITIONAL_ROOM_COST)
       {
-	send_to_char("You do not have enough money for an additional room.\r\n", ch);
-	return;
+        send_to_char("You do not have enough money for an additional room.\r\n", ch);
+        return;
       }
 
       for (i = 0; i < MAX_HOUSE_ROOMS; i++)
-	if (homedata->vnum[i] == 0)
-	  break;
+        if (homedata->vnum[i] == 0)
+          break;
 
       if (i == MAX_HOUSE_ROOMS)
       {
-	send_to_char("You currently have the maximum number of additional rooms.\r\n", ch);
-	return;
+        send_to_char("You currently have the maximum number of additional rooms.\r\n", ch);
+        return;
       }
 
       if ((get_exit(location, get_dir(argument))) != NULL)
       {
-	send_to_char("An exit already exists in that direction.\r\n", ch);
-	return;
+        send_to_char("An exit already exists in that direction.\r\n", ch);
+        return;
       }
 
       if (!add_room(homedata, location, argument))
       {
-	send_to_char("An exit could not be created.  You may need to contact an immortal.\r\n", ch);
-	return;
+        send_to_char("An exit could not be created.  You may need to contact an immortal.\r\n", ch);
+        return;
       }
 
       ch->gold -= ADDITIONAL_ROOM_COST;
@@ -792,8 +792,8 @@ void do_house(CHAR_DATA * ch, const char *argument)
     for (homedata = first_home; homedata; homedata = homedata->next)
       if (!str_cmp(homedata->name, victim->name))
       {
-	apt = homedata->apartment;
-	break;
+        apt = homedata->apartment;
+        break;
       }
 
     if (!str_cmp(arg3, "addroom"))
@@ -803,57 +803,57 @@ void do_house(CHAR_DATA * ch, const char *argument)
       argument = one_argument(argument, arg3);
       if (argument[0] == '\0' || arg3[0] == '\0' || !is_number(arg3))
       {
-	send_to_char("Syntax: house set <character name> addroom <current vnum> <direction>\r\n", ch);
-	return;
+        send_to_char("Syntax: house set <character name> addroom <current vnum> <direction>\r\n", ch);
+        return;
       }
 
       if (!homedata)
       {
-	send_to_char("They do not have a house.\r\n", ch);
-	return;
+        send_to_char("They do not have a house.\r\n", ch);
+        return;
       }
       else if (apt)
       {
-	send_to_char("Apartments cannot have additional rooms.\r\n", ch);
-	return;
+        send_to_char("Apartments cannot have additional rooms.\r\n", ch);
+        return;
       }
 
       if ((location = get_room_index(atoi(arg3))) == NULL)
       {
-	send_to_char("That location does not exist.\r\n", ch);
-	return;
+        send_to_char("That location does not exist.\r\n", ch);
+        return;
       }
 
       for (i = 0; i < MAX_HOUSE_ROOMS; i++)
       {
-	if (homedata->vnum[i] == atoi(arg3))
-	  found = TRUE;
-	if (homedata->vnum[i] == 0)
-	  break;
+        if (homedata->vnum[i] == atoi(arg3))
+          found = TRUE;
+        if (homedata->vnum[i] == 0)
+          break;
       }
 
       if (!found)
       {
-	send_to_char("That vnum is not part of their house.\r\n", ch);
-	return;
+        send_to_char("That vnum is not part of their house.\r\n", ch);
+        return;
       }
 
       if (i == MAX_HOUSE_ROOMS)
       {
-	send_to_char("That character already has the maximum number of additional rooms.\r\n", ch);
-	return;
+        send_to_char("That character already has the maximum number of additional rooms.\r\n", ch);
+        return;
       }
 
       if ((get_exit(location, get_dir(argument))) != NULL)
       {
-	send_to_char("An exit already exists in that direction.\r\n", ch);
-	return;
+        send_to_char("An exit already exists in that direction.\r\n", ch);
+        return;
       }
 
       if (!add_room(homedata, location, argument))
       {
-	send_to_char("Error: Room could not be created.\r\n", ch);
-	return;
+        send_to_char("Error: Room could not be created.\r\n", ch);
+        return;
       }
 
       send_to_char("Additional room added to that house.\r\n", ch);
@@ -907,7 +907,7 @@ void do_house(CHAR_DATA * ch, const char *argument)
 
     for (homedata = first_home; homedata; homedata = homedata->next)
       if (!str_cmp(homedata->name, victim->name))
-	break;
+        break;
 
     if (!homedata)
     {
@@ -1031,10 +1031,10 @@ void do_residence(CHAR_DATA * ch, const char *argument)
 
     for (i = 0; i < MAX_HOUSE_ROOMS; i++)
       if (home->vnum[i] <= 0)
-	break;
+        break;
 
     ch_printf_color(ch, "&w%3d&G| &w%-15.15s &G| &w%-28.28s &G|  &w%s &G| &w%5d &G| &w%10d &G|\r\n", z, home->name,
-		     room->area->name, home->apartment ? "A" : "H", i, home->vnum[0]);
+                     room->area->name, home->apartment ? "A" : "H", i, home->vnum[0]);
     z++;
   }
   send_to_char_color("&G-------------------------------------------------------------------------------\r\n", ch);
@@ -1110,34 +1110,34 @@ void do_accessories(CHAR_DATA * ch, const char *argument)
     {
       if (!acc->mob)
       {
-	if ((obj = get_obj_index(acc->vnum)) == NULL)
-	{
-	  bug("%s: Accessories list: object vnum %d does not exist.", __func__, acc->vnum);
-	  ch_printf_color(ch, "&g%3d&G| &RAccessory currently unavailable.\r\n", i);
-	  ++i;
-	  continue;
-	}
-	name = str_dup(obj->short_descr);
+        if ((obj = get_obj_index(acc->vnum)) == NULL)
+        {
+          bug("%s: Accessories list: object vnum %d does not exist.", __func__, acc->vnum);
+          ch_printf_color(ch, "&g%3d&G| &RAccessory currently unavailable.\r\n", i);
+          ++i;
+          continue;
+        }
+        name = str_dup(obj->short_descr);
       }
       else
       {
-	if ((mob = get_mob_index(acc->vnum)) == NULL)
-	{
-	  bug("%s: Accessories list: mob vnum %d does not exist.", __func__, acc->vnum);
-	  ch_printf_color(ch, "&g%3d&G| &RAccessory currently unavailable.\r\n", i);
-	  ++i;
-	  continue;
-	}
-	name = str_dup(mob->short_descr);
+        if ((mob = get_mob_index(acc->vnum)) == NULL)
+        {
+          bug("%s: Accessories list: mob vnum %d does not exist.", __func__, acc->vnum);
+          ch_printf_color(ch, "&g%3d&G| &RAccessory currently unavailable.\r\n", i);
+          ++i;
+          continue;
+        }
+        name = str_dup(mob->short_descr);
       }
 
       if (!IS_IMMORTAL(ch))
       {
-	ch_printf_color(ch, "&g%3d&G| &g%-28.28s &G| &g%10d &G|\r\n", i, name, acc->price);
+        ch_printf_color(ch, "&g%3d&G| &g%-28.28s &G| &g%10d &G|\r\n", i, name, acc->price);
       }
       else
       {
-	ch_printf_color(ch, "&g%3d&G| &g%-28.28s &G| &g%10d &G| &g%10d &G|\r\n", i, name, acc->price, acc->vnum);
+        ch_printf_color(ch, "&g%3d&G| &g%-28.28s &G| &g%10d &G| &g%10d &G|\r\n", i, name, acc->price, acc->vnum);
       }
       ++i;
     }
@@ -1182,8 +1182,8 @@ void do_accessories(CHAR_DATA * ch, const char *argument)
     {
       if ((mob = get_mob_index(vnum)) == NULL)
       {
-	send_to_char("That mob does not exist.\r\n", ch);
-	return;
+        send_to_char("That mob does not exist.\r\n", ch);
+        return;
       }
     }
 
@@ -1197,19 +1197,19 @@ void do_accessories(CHAR_DATA * ch, const char *argument)
     {
       if (acc->vnum == vnum)
       {
-	if (mob && acc->mob)
-	{
-	  send_to_char("That mob is already an accessory.\r\n", ch);
-	  return;
-	}
+        if (mob && acc->mob)
+        {
+          send_to_char("That mob is already an accessory.\r\n", ch);
+          return;
+        }
       }
       else
       {
-	if (!mob && !acc->mob)
-	{
-	  send_to_char("That object is already an accessory.\r\n", ch);
-	  return;
-	}
+        if (!mob && !acc->mob)
+        {
+          send_to_char("That object is already an accessory.\r\n", ch);
+          return;
+        }
       }
     }
 
@@ -1252,7 +1252,7 @@ void do_accessories(CHAR_DATA * ch, const char *argument)
 
     for (home = first_home; home; home = home->next)
       if (!str_cmp(home->name, ch->name))
-	break;
+        break;
 
     if (!home || home->apartment)
     {
@@ -1270,8 +1270,8 @@ void do_accessories(CHAR_DATA * ch, const char *argument)
     {
       if (ch->in_room->vnum == home->vnum[i])
       {
-	location = ch->in_room;
-	break;
+        location = ch->in_room;
+        break;
       }
     }
 
@@ -1322,14 +1322,14 @@ void do_accessories(CHAR_DATA * ch, const char *argument)
       send_to_char_color("&cMob Accessory Information\r\n", ch);
       ch_printf_color(ch, "&gName: &G%s\r\n", mob->short_descr);
       if (get_trust(ch) > LEVEL_CREATOR)
-	ch_printf_color(ch, "&gVnum: &G%d\r\n", mob->vnum);
+        ch_printf_color(ch, "&gVnum: &G%d\r\n", mob->vnum);
       ch_printf_color(ch, "&gRace: &G%s\r\n",
-		       (mob->race < MAX_NPC_RACE && mob->race >= 0 ? npc_race[mob->race] : "unknown"));
+                       (mob->race < MAX_NPC_RACE && mob->race >= 0 ? npc_race[mob->race] : "unknown"));
       ch_printf_color(ch, "&gClass: &G%s\r\n",
-		       (mob->Class < MAX_NPC_CLASS && mob->Class >= 0 ? npc_class[mob->Class] : "unknown"));
+                       (mob->Class < MAX_NPC_CLASS && mob->Class >= 0 ? npc_class[mob->Class] : "unknown"));
       ch_printf_color(ch, "&gAverage Hp: &G%d\r\n",
-		       (!mob->hitnodice ? (mob->level * 8 + number_range(mob->level * mob->level / 4, mob->level * mob->level))
-			 : (mob->hitnodice * number_range(1, mob->hitsizedice) + mob->hitplus)));
+                       (!mob->hitnodice ? (mob->level * 8 + number_range(mob->level * mob->level / 4, mob->level * mob->level))
+                         : (mob->hitnodice * number_range(1, mob->hitsizedice) + mob->hitplus)));
       ch_printf_color(ch, "&gAverage AC: &G%d\r\n", (mob->ac ? mob->ac : interpolate(mob->level, 100, -100)));
       ch_printf_color(ch, "&gNumber of Attacks(Per Round): &G%d\r\n", mob->numattacks);
 
@@ -1340,7 +1340,7 @@ void do_accessories(CHAR_DATA * ch, const char *argument)
       send_to_char_color("&C&cObject Accessory Information\r\n", ch);
       ch_printf_color(ch, "&C&gName: &G%s\r\n", obj->short_descr);
       if (get_trust(ch) > LEVEL_CREATOR)
-	ch_printf_color(ch, "&gVnum: &G%d", obj->vnum);
+        ch_printf_color(ch, "&gVnum: &G%d", obj->vnum);
       ch_printf_color(ch, "&C&gType: &G%s\r\n", o_types[obj->item_type]);
       ch_printf_color(ch, "&C&gFlags: &G%s\r\n", ext_flag_string(&obj->extra_flags, o_flags));
       ch_printf_color(ch, "&C&gMagical Flags: &G%s\r\n", magic_bit_name(obj->magic_flags));
@@ -1535,22 +1535,22 @@ void do_homebuy(CHAR_DATA * ch, const char *argument)
 
       if ((location = get_room_index(homeb->vnum)) == NULL)
       {
-	bug("%s: Homebuy list: location does not exist.  -V:%d  #:%d", __func__, homeb->vnum, i);
-	ch_printf_color(ch, "&c%2d&C| &RThis residence not currently available.", i);
-	continue;
+        bug("%s: Homebuy list: location does not exist.  -V:%d  #:%d", __func__, homeb->vnum, i);
+        ch_printf_color(ch, "&c%2d&C| &RThis residence not currently available.", i);
+        continue;
       }
 
       strcpy(area, location->area->name);
       if (homeb->apartment)
-	snprintf(name, MAX_INPUT_LENGTH, "(A) %s", location->name);
+        snprintf(name, MAX_INPUT_LENGTH, "(A) %s", location->name);
       else
-	mudstrlcpy(name, location->name, MAX_INPUT_LENGTH);
+        mudstrlcpy(name, location->name, MAX_INPUT_LENGTH);
 
       bidinc = homeb->incpercent * (homeb->bid / 100);
       days = homeb->endtime / 48;
 
       ch_printf_color(ch, "&c%2d&C|&c%-22.22s&C|&c%-16.16s&C|&c%10d&C|&c%10d&C|&c%2d &CDays &c%2d &CHrs|\r\n", i, name,
-		       area, homeb->bid, bidinc, days, ((homeb->endtime - (days * 48)) / 2));
+                       area, homeb->bid, bidinc, days, ((homeb->endtime - (days * 48)) / 2));
 
     }
 
@@ -1605,15 +1605,15 @@ void do_homebuy(CHAR_DATA * ch, const char *argument)
     {
       if (xIS_SET(location->room_flags, ROOM_HOUSE))
       {
-	send_to_char("That room is already a residence.  Use \"sellhouse\" or first remove that player's house.\r\n", ch);
-	return;
+        send_to_char("That room is already a residence.  Use \"sellhouse\" or first remove that player's house.\r\n", ch);
+        return;
       }
     }
 
     if (!add_homebuy(ch, vnum, apartment, 0))
     {
       send_to_char("Vnum could not be added to the auction.\r\n"
-		    "Vnum may already be on auction or vnum does not exist.\r\n", ch);
+                    "Vnum may already be on auction or vnum does not exist.\r\n", ch);
       return;
     }
 
@@ -1678,15 +1678,15 @@ void do_homebuy(CHAR_DATA * ch, const char *argument)
     for (home = first_home; home; home = home->next)
       if (!str_cmp(home->name, ch->name))
       {
-	send_to_char("You already own a home. You must sell that one first.\r\n", ch);
-	return;
+        send_to_char("You already own a home. You must sell that one first.\r\n", ch);
+        return;
       }
 
     for (checkhome = first_homebuy; checkhome; checkhome = checkhome->next)
       if (!str_cmp(checkhome->bidder, ch->name))
       {
-	send_to_char("You are already bidding on a home.\r\n", ch);
-	return;
+        send_to_char("You are already bidding on a home.\r\n", ch);
+        return;
       }
 
     if (!str_cmp(homeb->seller, ch->name))
@@ -1853,13 +1853,13 @@ void do_sellhouse(CHAR_DATA * ch, const char *argument)
   if (!add_homebuy(ch, home->vnum[0], home->apartment, bid))
   {
     send_to_char("Your residence could not be added to the auction.\r\n"
-		  "Please contact an immortal for assistance.\r\n", ch);
+                  "Please contact an immortal for assistance.\r\n", ch);
     return;
   }
 
   send_to_char("You have successfully placed your residence on auction for the given starting bid.\r\n"
-		"Profit from the sale should occur when your house has been bought on auction.\r\n"
-		"Loss of your residence should also occur at that time.\r\n", ch);
+                "Profit from the sale should occur when your house has been bought on auction.\r\n"
+                "Loss of your residence should also occur at that time.\r\n", ch);
   return;
 }
 
@@ -1889,16 +1889,16 @@ int fread_house(FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if (!homedata->name)
-	{
-	  bug("%s: NULL Name", __func__);
-	  DISPOSE(homedata);
-	  return -1;
-	}
+        if (!homedata->name)
+        {
+          bug("%s: NULL Name", __func__);
+          DISPOSE(homedata);
+          return -1;
+        }
 
-	LINK(homedata, first_home, last_home, next, prev);
+        LINK(homedata, first_home, last_home, next, prev);
 
-	return (homedata->vnum[0] <= 0 ? 2 : homedata->vnum[0]);
+        return (homedata->vnum[0] <= 0 ? 2 : homedata->vnum[0]);
       }
       break;
 
@@ -1913,16 +1913,16 @@ int fread_house(FILE * fp)
     case 'V':
       if (!str_cmp(word, "Vnum"))
       {
-	int vnum;
+        int vnum;
 
-	fMatch = TRUE;
-	vnum = fread_number(fp);
-	if (!get_room_index(vnum))
-	{
-	  DISPOSE(homedata);
-	  return -1;
-	}
-	homedata->vnum[i++] = vnum;
+        fMatch = TRUE;
+        vnum = fread_number(fp);
+        if (!get_room_index(vnum))
+        {
+          DISPOSE(homedata);
+          return -1;
+        }
+        homedata->vnum[i++] = vnum;
       }
       break;
     }
@@ -1979,8 +1979,8 @@ bool load_house_file(const char *name)
       pRoom = get_room_index(vnum = fread_house(fp));
       if (!pRoom)
       {
-	bug("%s: bad house vnum in %s.  Vnum %d", __func__, filename, vnum);
-	return FALSE;
+        bug("%s: bad house vnum in %s.  Vnum %d", __func__, filename, vnum);
+        return FALSE;
       }
       rset_supermob(pRoom);
       continue;
@@ -1993,7 +1993,7 @@ bool load_house_file(const char *name)
     else if (!str_cmp(word, "END"))
     {
       if (!pRoom)
-	return FALSE;
+        return FALSE;
       break;
     }
     else
@@ -2061,8 +2061,8 @@ void save_house_by_vnum(int vnum)
   for (tmphome = first_home; tmphome; tmphome = tmphome->next)
     if (!tmphome->apartment)
       for (i = 0; i < MAX_HOUSE_ROOMS; i++)
-	if (tmphome->vnum[i] == vnum)
-	  fwrite_house(tmphome);
+        if (tmphome->vnum[i] == vnum)
+          fwrite_house(tmphome);
 
   return;
 }
@@ -2086,12 +2086,12 @@ void save_accessories()
     if (!tmpacc->mob)
     {
       if ((obj = get_obj_index(tmpacc->vnum)) == NULL)
-	continue;
+        continue;
     }
     else
     {
       if ((mob = get_mob_index(tmpacc->vnum)) == NULL)
-	continue;
+        continue;
     }
 
     fprintf(fpout, "#ACCESSORIES\n");
@@ -2180,17 +2180,17 @@ void fread_accessories(FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if ((newacc->mob && (get_mob_index(newacc->vnum)) == NULL)
-	    || (!newacc->mob && (get_obj_index(newacc->vnum)) == NULL))
-	{
-	  bug("%s: Accessory doesn't exist", __func__);
-	  DISPOSE(newacc);
-	  return;
-	}
+        if ((newacc->mob && (get_mob_index(newacc->vnum)) == NULL)
+            || (!newacc->mob && (get_obj_index(newacc->vnum)) == NULL))
+        {
+          bug("%s: Accessory doesn't exist", __func__);
+          DISPOSE(newacc);
+          return;
+        }
 
-	LINK(newacc, first_accessory, last_accessory, next, prev);
+        LINK(newacc, first_accessory, last_accessory, next, prev);
 
-	return;
+        return;
       }
       break;
 
@@ -2252,16 +2252,16 @@ void fread_homebuy(FILE * fp)
 
       if (!str_cmp(word, "End"))
       {
-	if ((get_room_index(newhome->vnum)) == NULL)
-	{
-	  bug("%s: Residence doesn't exist", __func__);
-	  DISPOSE(newhome);
-	  return;
-	}
+        if ((get_room_index(newhome->vnum)) == NULL)
+        {
+          bug("%s: Residence doesn't exist", __func__);
+          DISPOSE(newhome);
+          return;
+        }
 
-	LINK(newhome, first_homebuy, last_homebuy, next, prev);
+        LINK(newhome, first_homebuy, last_homebuy, next, prev);
 
-	return;
+        return;
       }
 
       break;
@@ -2446,21 +2446,21 @@ void homebuy_update()
     {
       if (bidder->gold < home->bid)
       {
-	if ((bidder->gold -= (home->bid / 100 * PENALTY_PERCENTAGE)) < 0)
-	  bidder->gold = 0;
-	home->endtime = 144;
-	STRFREE(home->bidder);
-	home->bidder = STRALLOC("None");
+        if ((bidder->gold -= (home->bid / 100 * PENALTY_PERCENTAGE)) < 0)
+          bidder->gold = 0;
+        home->endtime = 144;
+        STRFREE(home->bidder);
+        home->bidder = STRALLOC("None");
 
-	if (bidder->desc)
-	  send_to_char("You did not have enough money for the residence you bid on.\r\n"
-			"It has been readded to the auction and you have been penalized.\r\n", bidder);
-	else
-	  add_loginmsg(bidder->name, 1, NULL);
+        if (bidder->desc)
+          send_to_char("You did not have enough money for the residence you bid on.\r\n"
+                        "It has been readded to the auction and you have been penalized.\r\n", bidder);
+        else
+          add_loginmsg(bidder->name, 1, NULL);
 
-	save_homebuy();
-	logoff(bidder);
-	continue;
+        save_homebuy();
+        logoff(bidder);
+        continue;
       }
     }
 
@@ -2470,15 +2470,15 @@ void homebuy_update()
 
       if (!remove_homebuy(home))
       {
-	bug("%s: this is an error", __func__);
-	return;
+        bug("%s: this is an error", __func__);
+        return;
       }
 
       if (bidder->desc)
-	send_to_char("There was an error while looking up the seller for the residence you had\r\n"
-		      "bid on.  That residence was removed and no interaction has taken place.\r\n", bidder);
+        send_to_char("There was an error while looking up the seller for the residence you had\r\n"
+                      "bid on.  That residence was removed and no interaction has taken place.\r\n", bidder);
       else
-	add_loginmsg(bidder->name, 2, NULL);
+        add_loginmsg(bidder->name, 2, NULL);
 
       continue;
     }
@@ -2486,13 +2486,13 @@ void homebuy_update()
     if (!bidder)
     {
       if ((seller->gold -= home->bid / 100 * PENALTY_PERCENTAGE) < 0)
-	seller->gold = 0;
+        seller->gold = 0;
 
       if (seller->desc)
-	send_to_char("There was no bid on your residence.  It has been removed from auction\r\n"
-		      "and you have been penalized.\r\n", seller);
+        send_to_char("There was no bid on your residence.  It has been removed from auction\r\n"
+                      "and you have been penalized.\r\n", seller);
       else
-	add_loginmsg(seller->name, 3, NULL);
+        add_loginmsg(seller->name, 3, NULL);
 
       remove_homebuy(home);
       logoff(seller);
@@ -2502,12 +2502,12 @@ void homebuy_update()
     if (get_trust(seller) < LEVEL_GREATER)
       if (!remove_house(seller))
       {
-	bug("%s: residence could not be removed from seller after sale.", __func__);
-	bug("%s: Vnum: %d  Seller: %s   Bidder: %s", __func__, home->vnum, seller->name, bidder->name);
+        bug("%s: residence could not be removed from seller after sale.", __func__);
+        bug("%s: Vnum: %d  Seller: %s   Bidder: %s", __func__, home->vnum, seller->name, bidder->name);
 
-	logoff(bidder);
-	logoff(seller);
-	continue;
+        logoff(bidder);
+        logoff(seller);
+        continue;
       }
 
     if (!set_house(bidder, home->vnum, home->apartment))

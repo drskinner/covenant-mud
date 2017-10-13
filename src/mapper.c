@@ -38,7 +38,7 @@
  *  If you like the snippet let me know                                    *
  ***************************************************************************/
 /**************************************************************************
- * 	                       Version History                              *
+ *                             Version History                              *
  **************************************************************************
  *  (v1.0) - Converted Automapper to AFKMud 1.64 and added additional     *
  *           directions and removed room desc code into a sep func        *
@@ -145,43 +145,43 @@ char *get_exits(CHAR_DATA * ch)
     {
       if (pexit->to_room)
       {
-	found = TRUE;
-	mudstrlcat(buf, " ", MAX_STRING_LENGTH);
+        found = TRUE;
+        mudstrlcat(buf, " ", MAX_STRING_LENGTH);
 
-	mudstrlcat(buf, capitalize(dir_name[pexit->vdir]), MAX_STRING_LENGTH);
+        mudstrlcat(buf, capitalize(dir_name[pexit->vdir]), MAX_STRING_LENGTH);
 
-	/*
-	 * New code added to display closed, or otherwise invisible exits to immortals 
-	 * Installed by Samson 1-25-98 
-	 */
-	if (IS_SET(pexit->exit_info, EX_CLOSED))
-	  mudstrlcat(buf, "->(Closed)", MAX_STRING_LENGTH);
-	if (IS_SET(pexit->exit_info, EX_DIG))
-	  mudstrlcat(buf, "->(Dig)", MAX_STRING_LENGTH);
-	if (IS_SET(pexit->exit_info, EX_WINDOW))
-	  mudstrlcat(buf, "->(Window)", MAX_STRING_LENGTH);
-	if (IS_SET(pexit->exit_info, EX_HIDDEN))
-	  mudstrlcat(buf, "->(Hidden)", MAX_STRING_LENGTH);
-	if (xIS_SET(pexit->to_room->room_flags, ROOM_DEATH))
-	  mudstrlcat(buf, "->(Deathtrap)", MAX_STRING_LENGTH);
+        /*
+         * New code added to display closed, or otherwise invisible exits to immortals 
+         * Installed by Samson 1-25-98 
+         */
+        if (IS_SET(pexit->exit_info, EX_CLOSED))
+          mudstrlcat(buf, "->(Closed)", MAX_STRING_LENGTH);
+        if (IS_SET(pexit->exit_info, EX_DIG))
+          mudstrlcat(buf, "->(Dig)", MAX_STRING_LENGTH);
+        if (IS_SET(pexit->exit_info, EX_WINDOW))
+          mudstrlcat(buf, "->(Window)", MAX_STRING_LENGTH);
+        if (IS_SET(pexit->exit_info, EX_HIDDEN))
+          mudstrlcat(buf, "->(Hidden)", MAX_STRING_LENGTH);
+        if (xIS_SET(pexit->to_room->room_flags, ROOM_DEATH))
+          mudstrlcat(buf, "->(Deathtrap)", MAX_STRING_LENGTH);
       }
     }
     else
     {
       if (pexit->to_room
-	  && !IS_SET(pexit->exit_info, EX_SECRET)
-	  && (!IS_SET(pexit->exit_info, EX_WINDOW) || IS_SET(pexit->exit_info, EX_ISDOOR))
-	  && !IS_SET(pexit->exit_info, EX_HIDDEN))
+          && !IS_SET(pexit->exit_info, EX_SECRET)
+          && (!IS_SET(pexit->exit_info, EX_WINDOW) || IS_SET(pexit->exit_info, EX_ISDOOR))
+          && !IS_SET(pexit->exit_info, EX_HIDDEN))
       {
-	found = TRUE;
-	mudstrlcat(buf, " ", MAX_STRING_LENGTH);
+        found = TRUE;
+        mudstrlcat(buf, " ", MAX_STRING_LENGTH);
 
-	mudstrlcat(buf, capitalize(dir_name[pexit->vdir]), MAX_STRING_LENGTH);
+        mudstrlcat(buf, capitalize(dir_name[pexit->vdir]), MAX_STRING_LENGTH);
 
-	if (IS_SET(pexit->exit_info, EX_CLOSED))
-	  mudstrlcat(buf, "->(Closed)", MAX_STRING_LENGTH);
-	if (IS_AFFECTED(ch, AFF_DETECTTRAPS) && xIS_SET(pexit->to_room->room_flags, ROOM_DEATH))
-	  mudstrlcat(buf, "->(Deathtrap)", MAX_STRING_LENGTH);
+        if (IS_SET(pexit->exit_info, EX_CLOSED))
+          mudstrlcat(buf, "->(Closed)", MAX_STRING_LENGTH);
+        if (IS_AFFECTED(ch, AFF_DETECTTRAPS) && xIS_SET(pexit->to_room->room_flags, ROOM_DEATH))
+          mudstrlcat(buf, "->(Deathtrap)", MAX_STRING_LENGTH);
       }
     }
   }
@@ -337,7 +337,7 @@ void map_exits(CHAR_DATA * ch, ROOM_INDEX_DATA * pRoom, int x, int y, int depth)
        * Use the new room if the depth is higher 
        */
       if (dmap[roomx][roomy].depth <= depth)
-	continue;
+        continue;
 
       /*
        * It is so clear the old room 
@@ -418,7 +418,7 @@ void reformat_desc(char *desc)
     {
       do
       {
-	++p;
+        ++p;
       }
       while (*(p + 1) == ' ');
     }
@@ -501,8 +501,8 @@ char *whatColor(char *str, char *pos)
       ++str;
       if (!str)
       {
-	col[1] = '\0';
-	break;
+        col[1] = '\0';
+        break;
       }
       col[1] = *str;
     }
@@ -571,44 +571,44 @@ void show_map(CHAR_DATA * ch, char *text)
       case '|':
       case '\\':
       case '/':
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&O%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&O%c&d", dmap[x][y].tegn);
+        break;
 
       case '@':  // Character is standing here
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&R%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&R%c&d", dmap[x][y].tegn);
+        break;
 
       case 'O':  // Indoors
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&w%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&w%c&d", dmap[x][y].tegn);
+        break;
 
       case '=':
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&B%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&B%c&d", dmap[x][y].tegn);
+        break;
 
       case '~':
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&C%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&C%c&d", dmap[x][y].tegn);
+        break;
 
       case '+':
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&Y%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&Y%c&d", dmap[x][y].tegn);
+        break;
 
       case '*':
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&g%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&g%c&d", dmap[x][y].tegn);
+        break;
 
       case 'X':
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&R%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&R%c&d", dmap[x][y].tegn);
+        break;
 
       case ':':
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&Y%c&d", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "&Y%c&d", dmap[x][y].tegn);
+        break;
 
       default:   // Empty space
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "%c", dmap[x][y].tegn);
-	break;
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH * 2) - strlen(buf), "%c", dmap[x][y].tegn);
+        break;
       }
     }
     mudstrlcat(buf, "&z|&D ", MAX_STRING_LENGTH * 2);
@@ -623,21 +623,21 @@ void show_map(CHAR_DATA * ch, char *text)
 
       strcpy(c, whatColor(text, p));
       if (c[0] == '\0')
-	mudstrlcpy(col, color_str(AT_ROOM_DESC, ch), 10);
+        mudstrlcpy(col, color_str(AT_ROOM_DESC, ch), 10);
       else
-	snprintf(col, 10, "%s", c);
+        snprintf(col, 10, "%s", c);
 
       if (pos > 0)
       {
-	mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
-	strncat(buf, p, pos);
-	p += pos;
+        mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
+        strncat(buf, p, pos);
+        p += pos;
       }
       else
       {
-	mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
-	mudstrlcat(buf, p, MAX_STRING_LENGTH * 2);
-	alldesc = TRUE;
+        mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
+        mudstrlcat(buf, p, MAX_STRING_LENGTH * 2);
+        alldesc = TRUE;
       }
     }
     mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH * 2);
@@ -689,22 +689,22 @@ void show_map(CHAR_DATA * ch, char *text)
 
       strcpy(c, whatColor(text, p));
       if (c[0] == '\0')
-	mudstrlcpy(col, color_str(AT_ROOM_DESC, ch), 10);
+        mudstrlcpy(col, color_str(AT_ROOM_DESC, ch), 10);
       else
-	snprintf(col, 10, "%s", c);
+        snprintf(col, 10, "%s", c);
 
       if (pos > 0)
       {
-	mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
-	strncat(buf, p, pos);
-	p += pos;
-	mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH * 2);
+        mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
+        strncat(buf, p, pos);
+        p += pos;
+        mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH * 2);
       }
       else
       {
-	mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
-	mudstrlcat(buf, p, MAX_STRING_LENGTH * 2);
-	alldesc = TRUE;
+        mudstrlcat(buf, col, MAX_STRING_LENGTH * 2);
+        mudstrlcat(buf, p, MAX_STRING_LENGTH * 2);
+        alldesc = TRUE;
       }
     }
     while (!alldesc);

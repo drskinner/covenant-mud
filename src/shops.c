@@ -310,8 +310,8 @@ int get_cost(CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj, bool fBuy)
     {
       if (obj->item_type == pShop->buy_type[itype])
       {
-	cost = (int)(obj->cost * UMIN((pShop->profit_buy - 1), pShop->profit_sell + profitmod)) / 100;
-	break;
+        cost = (int)(obj->cost * UMIN((pShop->profit_buy - 1), pShop->profit_sell + profitmod)) / 100;
+        break;
       }
     }
 
@@ -319,8 +319,8 @@ int get_cost(CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj, bool fBuy)
     {
       if (obj->pIndexData == obj2->pIndexData)
       {
-	cost = 0;
-	break;
+        cost = 0;
+        break;
       }
     }
   }
@@ -348,11 +348,11 @@ int get_repaircost(CHAR_DATA * keeper, OBJ_DATA * obj)
     if (obj->item_type == rShop->fix_type[itype])
     {
       if (obj->item_type == ITEM_ARMOR && obj->cost == 0)
-	cost = (int)((obj->pIndexData->cost * 66) / 100 * rShop->profit_fix / 1000);
+        cost = (int)((obj->pIndexData->cost * 66) / 100 * rShop->profit_fix / 1000);
       else if (obj->item_type == ITEM_WEAPON && obj->cost == 0)
-	cost = (int)((obj->pIndexData->cost * 66) / 100 * rShop->profit_fix / 1000);
+        cost = (int)((obj->pIndexData->cost * 66) / 100 * rShop->profit_fix / 1000);
       else
-	cost = (int)(obj->cost * rShop->profit_fix / 1000);
+        cost = (int)(obj->cost * rShop->profit_fix / 1000);
       found = TRUE;
       break;
     }
@@ -370,22 +370,22 @@ int get_repaircost(CHAR_DATA * keeper, OBJ_DATA * obj)
     {
     case ITEM_ARMOR:
       if (obj->value[0] >= obj->value[1])
-	cost = -2;
+        cost = -2;
       else
-	cost *= (obj->value[1] - obj->value[0]);
+        cost *= (obj->value[1] - obj->value[0]);
       break;
     case ITEM_WEAPON:
       if (INIT_WEAPON_CONDITION == obj->value[0])
-	cost = -2;
+        cost = -2;
       else
-	cost *= (INIT_WEAPON_CONDITION - obj->value[0]);
+        cost *= (INIT_WEAPON_CONDITION - obj->value[0]);
       break;
     case ITEM_WAND:
     case ITEM_STAFF:
       if (obj->value[2] >= obj->value[1])
-	cost = -2;
+        cost = -2;
       else
-	cost *= (obj->value[1] - obj->value[2]);
+        cost *= (obj->value[1] - obj->value[2]);
     }
   }
 
@@ -497,9 +497,9 @@ void do_buy(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg);
       if (noi > mnoi)
       {
-	act(AT_TELL, "$n tells you 'I don't sell that many items at" " once.'", keeper, NULL, ch, TO_VICT);
-	ch->reply = keeper;
-	return;
+        act(AT_TELL, "$n tells you 'I don't sell that many items at" " once.'", keeper, NULL, ch, TO_VICT);
+        ch->reply = keeper;
+        return;
       }
     }
 
@@ -516,7 +516,7 @@ void do_buy(CHAR_DATA* ch, const char* argument)
     {
       interpret(keeper, "laugh");
       act(AT_TELL, "$n tells you 'I don't have enough of those in stock"
-	   " to sell more than one at a time.'", keeper, NULL, ch, TO_VICT);
+           " to sell more than one at a time.'", keeper, NULL, ch, TO_VICT);
       ch->reply = keeper;
       return;
     }
@@ -562,10 +562,10 @@ void do_buy(CHAR_DATA* ch, const char* argument)
     else
     {
       snprintf(arg, MAX_INPUT_LENGTH, "$n buys %d $p%s.", noi,
-		(obj->short_descr[strlen(obj->short_descr) - 1] == 's' ? "" : "s"));
+                (obj->short_descr[strlen(obj->short_descr) - 1] == 's' ? "" : "s"));
       act(AT_ACTION, arg, ch, obj, NULL, TO_ROOM);
       snprintf(arg, MAX_INPUT_LENGTH, "You buy %d $p%s.", noi,
-		(obj->short_descr[strlen(obj->short_descr) - 1] == 's' ? "" : "s"));
+                (obj->short_descr[strlen(obj->short_descr) - 1] == 's' ? "" : "s"));
       act(AT_ACTION, arg, ch, obj, NULL, TO_CHAR);
       act(AT_ACTION, "$N puts them into a bag and hands it to you.", ch, NULL, keeper, TO_CHAR);
     }
@@ -594,21 +594,21 @@ void do_buy(CHAR_DATA* ch, const char* argument)
        */
       if (noi > 1)
       {
-	bag = create_object(get_obj_index(OBJ_VNUM_SHOPPING_BAG), 1);
-	xSET_BIT(bag->extra_flags, ITEM_GROUNDROT);
-	bag->timer = 10;  /* Blodkai, 4/97 */
-	/*
-	 * perfect size bag ;) 
-	 */
-	bag->value[0] = bag->weight + (buy_obj->weight * noi);
-	buy_obj->count = noi;
-	obj->pIndexData->count += (noi - 1);
-	numobjsloaded += (noi - 1);
-	obj_to_obj(buy_obj, bag);
-	obj_to_char(bag, ch);
+        bag = create_object(get_obj_index(OBJ_VNUM_SHOPPING_BAG), 1);
+        xSET_BIT(bag->extra_flags, ITEM_GROUNDROT);
+        bag->timer = 10;  /* Blodkai, 4/97 */
+        /*
+         * perfect size bag ;) 
+         */
+        bag->value[0] = bag->weight + (buy_obj->weight * noi);
+        buy_obj->count = noi;
+        obj->pIndexData->count += (noi - 1);
+        numobjsloaded += (noi - 1);
+        obj_to_obj(buy_obj, bag);
+        obj_to_char(bag, ch);
       }
       else
-	obj_to_char(buy_obj, ch);
+        obj_to_char(buy_obj, ch);
     }
     else
     {
@@ -667,12 +667,12 @@ void do_list(CHAR_DATA* ch, const char* argument)
     {
       if (xIS_SET(pet->act, ACT_PET) && IS_NPC(pet))
       {
-	if (!found)
-	{
-	  found = TRUE;
-	  send_to_pager("Pets for sale:\r\n", ch);
-	}
-	pager_printf(ch, "[%2d] %8d - %s\r\n", pet->level, 10 * pet->level * pet->level, pet->short_descr);
+        if (!found)
+        {
+          found = TRUE;
+          send_to_pager("Pets for sale:\r\n", ch);
+        }
+        pager_printf(ch, "[%2d] %8d - %s\r\n", pet->level, 10 * pet->level * pet->level, pet->short_descr);
       }
     }
     if (!found)
@@ -709,8 +709,8 @@ void do_list(CHAR_DATA* ch, const char* argument)
 
       if (is_number(arg))
       {
-	upper = atoi(arg);
-	rest = one_argument(rest, arg);
+        upper = atoi(arg);
+        rest = one_argument(rest, arg);
       }
     }
 
@@ -734,28 +734,28 @@ void do_list(CHAR_DATA* ch, const char* argument)
     for (obj = keeper->first_carrying; obj; obj = obj->next_content)
     {
       if (obj->wear_loc == WEAR_NONE
-	  && can_see_obj(ch, obj)
-	  && (cost = get_cost(ch, keeper, obj, TRUE)) > 0 && (arg[0] == '\0' || nifty_is_name(arg, obj->name)))
+          && can_see_obj(ch, obj)
+          && (cost = get_cost(ch, keeper, obj, TRUE)) > 0 && (arg[0] == '\0' || nifty_is_name(arg, obj->name)))
       {
-	if (!found)
-	{
-	  found = TRUE;
-	  send_to_pager("[Lv Price] Item\r\n", ch);
-	}
+        if (!found)
+        {
+          found = TRUE;
+          send_to_pager("[Lv Price] Item\r\n", ch);
+        }
 
-	if (obj->level <= upper)
-	{
-	  pager_printf(ch, "%s%2d%s\r\n", divleft, upper, divright);
-	  upper = -1;
-	}
+        if (obj->level <= upper)
+        {
+          pager_printf(ch, "%s%2d%s\r\n", divleft, upper, divright);
+          upper = -1;
+        }
 
-	if (obj->level < lower)
-	{
-	  pager_printf(ch, "%s%2d%s\r\n", divleft, lower, divright);
-	  lower = -1;
-	}
+        if (obj->level < lower)
+        {
+          pager_printf(ch, "%s%2d%s\r\n", divleft, lower, divright);
+          lower = -1;
+        }
 
-	pager_printf(ch, "[%2d %5d] %s.\r\n", obj->level, cost, capitalize(obj->short_descr));
+        pager_printf(ch, "[%2d %5d] %s.\r\n", obj->level, cost, capitalize(obj->short_descr));
       }
     }
 
@@ -767,9 +767,9 @@ void do_list(CHAR_DATA* ch, const char* argument)
     if (!found)
     {
       if (arg[0] == '\0')
-	send_to_char("You can't buy anything here.\r\n", ch);
+        send_to_char("You can't buy anything here.\r\n", ch);
       else
-	send_to_char("You can't buy that here.\r\n", ch);
+        send_to_char("You can't buy that here.\r\n", ch);
     }
     return;
   }
@@ -923,8 +923,8 @@ void repair_one_obj(CHAR_DATA * ch, CHAR_DATA * keeper, OBJ_DATA * obj,
   else if ((cost = strcmp("all", arg) ? cost : 11 * cost / 10) > ch->gold)
   {
     snprintf(buf, MAX_STRING_LENGTH,
-	      "$N tells you, 'It will cost %d piece%s of gold to %s %s...'", cost,
-	      cost == 1 ? "" : "s", fixstr, obj->short_descr);
+              "$N tells you, 'It will cost %d piece%s of gold to %s %s...'", cost,
+              cost == 1 ? "" : "s", fixstr, obj->short_descr);
     act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
     act(AT_TELL, "$N tells you, 'Which I see you can't afford.'", ch, NULL, keeper, TO_CHAR);
   }
@@ -1002,11 +1002,11 @@ void do_repair(CHAR_DATA* ch, const char* argument)
     for (obj = ch->first_carrying; obj; obj = obj->next_content)
     {
       if (obj->wear_loc == WEAR_NONE
-	  && can_see_obj(ch, obj)
-	  && can_see_obj(keeper, obj)
-	  && (obj->item_type == ITEM_ARMOR
-	       || obj->item_type == ITEM_WEAPON || obj->item_type == ITEM_WAND || obj->item_type == ITEM_STAFF))
-	repair_one_obj(ch, keeper, obj, argument, maxgold, fixstr, fixstr2);
+          && can_see_obj(ch, obj)
+          && can_see_obj(keeper, obj)
+          && (obj->item_type == ITEM_ARMOR
+               || obj->item_type == ITEM_WEAPON || obj->item_type == ITEM_WAND || obj->item_type == ITEM_STAFF))
+        repair_one_obj(ch, keeper, obj, argument, maxgold, fixstr, fixstr2);
     }
     return;
   }
@@ -1030,27 +1030,27 @@ void appraise_all(CHAR_DATA * ch, CHAR_DATA * keeper, const char *fixstr)
   for (obj = ch->first_carrying; obj != NULL; obj = obj->next_content)
   {
     if (obj->wear_loc == WEAR_NONE
-	&& can_see_obj(ch, obj)
-	&& (obj->item_type == ITEM_ARMOR
-	     || obj->item_type == ITEM_WEAPON || obj->item_type == ITEM_WAND || obj->item_type == ITEM_STAFF))
+        && can_see_obj(ch, obj)
+        && (obj->item_type == ITEM_ARMOR
+             || obj->item_type == ITEM_WEAPON || obj->item_type == ITEM_WAND || obj->item_type == ITEM_STAFF))
     {
 
       if (!can_drop_obj(ch, obj))
-	ch_printf(ch, "You can't let go of %s.\r\n", obj->short_descr);
+        ch_printf(ch, "You can't let go of %s.\r\n", obj->short_descr);
       else if ((cost = get_repaircost(keeper, obj)) < 0)
       {
-	if (cost != -2)
-	  act(AT_TELL, "$n tells you, 'Sorry, I can't do anything with $p.'", keeper, obj, ch, TO_VICT);
-	else
-	  act(AT_TELL, "$n tells you, '$p looks fine to me!'", keeper, obj, ch, TO_VICT);
+        if (cost != -2)
+          act(AT_TELL, "$n tells you, 'Sorry, I can't do anything with $p.'", keeper, obj, ch, TO_VICT);
+        else
+          act(AT_TELL, "$n tells you, '$p looks fine to me!'", keeper, obj, ch, TO_VICT);
       }
       else
       {
-	snprintf(buf, MAX_STRING_LENGTH,
-		  "$N tells you, 'It will cost %d piece%s of gold to %s %s'",
-		  cost, cost == 1 ? "" : "s", fixstr, obj->short_descr);
-	act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
-	total += cost;
+        snprintf(buf, MAX_STRING_LENGTH,
+                  "$N tells you, 'It will cost %d piece%s of gold to %s %s'",
+                  cost, cost == 1 ? "" : "s", fixstr, obj->short_descr);
+        act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
+        total += cost;
       }
     }
   }
@@ -1058,7 +1058,7 @@ void appraise_all(CHAR_DATA * ch, CHAR_DATA * keeper, const char *fixstr)
   {
     send_to_char("\r\n", ch);
     snprintf(buf, MAX_STRING_LENGTH, "$N tells you, 'It will cost %d piece%s of gold in total.'", total,
-	      cost == 1 ? "" : "s");
+              cost == 1 ? "" : "s");
     act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
     act(AT_TELL, "$N tells you, 'Remember there is a 10% surcharge for repair all.'", ch, NULL, keeper, TO_CHAR);
   }
@@ -1124,7 +1124,7 @@ void do_appraise(CHAR_DATA* ch, const char* argument)
   }
 
   snprintf(buf, MAX_STRING_LENGTH, "$N tells you, 'It will cost %d piece%s of gold to %s that...'", cost,
-	    cost == 1 ? "" : "s", fixstr);
+            cost == 1 ? "" : "s", fixstr);
   act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
   if (cost > ch->gold)
     act(AT_TELL, "$N tells you, 'Which I see you can't afford.'", ch, NULL, keeper, TO_CHAR);
@@ -1390,9 +1390,9 @@ void do_shopstat(CHAR_DATA* ch, const char* argument)
 
   ch_printf(ch, "Keeper: %d  %s\r\n", shop->keeper, mob->short_descr);
   ch_printf(ch, "buy0 [%s]  buy1 [%s]  buy2 [%s]  buy3 [%s]  buy4 [%s]\r\n",
-	     o_types[shop->buy_type[0]],
-	     o_types[shop->buy_type[1]],
-	     o_types[shop->buy_type[2]], o_types[shop->buy_type[3]], o_types[shop->buy_type[4]]);
+             o_types[shop->buy_type[0]],
+             o_types[shop->buy_type[1]],
+             o_types[shop->buy_type[2]], o_types[shop->buy_type[3]], o_types[shop->buy_type[4]]);
   ch_printf(ch, "Profit:  buy %3d%%  sell %3d%%\r\n", shop->profit_buy, shop->profit_sell);
   ch_printf(ch, "Hours:   open %2d  close %2d\r\n", shop->open_hour, shop->close_hour);
   return;
@@ -1412,9 +1412,9 @@ void do_shops(CHAR_DATA* ch, const char* argument)
   set_char_color(AT_NOTE, ch);
   for (shop = first_shop; shop; shop = shop->next)
     ch_printf(ch, "Keeper: %5d Buy: %3d Sell: %3d Open: %2d Close: %2d Buy: %2d %2d %2d %2d %2d\r\n",
-	       shop->keeper, shop->profit_buy, shop->profit_sell,
-	       shop->open_hour, shop->close_hour,
-	       shop->buy_type[0], shop->buy_type[1], shop->buy_type[2], shop->buy_type[3], shop->buy_type[4]);
+               shop->keeper, shop->profit_buy, shop->profit_sell,
+               shop->open_hour, shop->close_hour,
+               shop->buy_type[0], shop->buy_type[1], shop->buy_type[2], shop->buy_type[3], shop->buy_type[4]);
   return;
 }
 
@@ -1647,7 +1647,7 @@ void do_repairstat(CHAR_DATA* ch, const char* argument)
 
   ch_printf(ch, "Keeper: %d  %s\r\n", repair->keeper, mob->short_descr);
   ch_printf(ch, "fix0 [%s]  fix1 [%s]  fix2 [%s]\r\n",
-	     o_types[repair->fix_type[0]], o_types[repair->fix_type[1]], o_types[repair->fix_type[2]]);
+             o_types[repair->fix_type[0]], o_types[repair->fix_type[1]], o_types[repair->fix_type[2]]);
   ch_printf(ch, "Profit: %3d%%  Type: %d\r\n", repair->profit_fix, repair->shop_type);
   ch_printf(ch, "Hours:   open %2d  close %2d\r\n", repair->open_hour, repair->close_hour);
   return;
@@ -1666,7 +1666,7 @@ void do_repairshops(CHAR_DATA* ch, const char* argument)
   set_char_color(AT_NOTE, ch);
   for (repair = first_repair; repair; repair = repair->next)
     ch_printf(ch, "Keeper: %5d Profit: %3d Type: %d Open: %2d Close: %2d Fix: %2d %2d %2d\r\n",
-	       repair->keeper, repair->profit_fix, repair->shop_type,
-	       repair->open_hour, repair->close_hour, repair->fix_type[0], repair->fix_type[1], repair->fix_type[2]);
+               repair->keeper, repair->profit_fix, repair->shop_type,
+               repair->open_hour, repair->close_hour, repair->fix_type[0], repair->fix_type[1], repair->fix_type[2]);
   return;
 }

@@ -48,7 +48,7 @@ typedef unsigned char bool;
 typedef int ch_ret;
 typedef int obj_ret;
 
-#define args(list)			list
+#define args(list)                      list
 
 // The DO/SPEC/SPELL functions are dynamically loaded using dlsym or
 // GetProcAddress.  Unfortunately, C++ mangles its symbols, and therefore these
@@ -88,12 +88,12 @@ typedef int obj_ret;
 #define BERR 255
 #endif
 
-#define KEY(literal, field, value)		\
-  if (!str_cmp(word, (literal)))		\
-  {						\
-    (field) = (value);				\
-    fMatch = TRUE;				\
-    break;					\
+#define KEY(literal, field, value)              \
+  if (!str_cmp(word, (literal)))                \
+  {                                             \
+    (field) = (value);                          \
+    fMatch = TRUE;                              \
+    break;                                      \
   }
 
 /*
@@ -169,60 +169,60 @@ typedef void DO_FUN(CHAR_DATA * ch, const char *argument);
 typedef ch_ret SPELL_FUN(int sn, int level, CHAR_DATA * ch, void *vo);
 typedef bool SPEC_FUN(CHAR_DATA * ch);
 
-#define DUR_CONV	23.333333333333333333333333
-#define HIDDEN_TILDE	'*'
+#define DUR_CONV        23.333333333333333333333333
+#define HIDDEN_TILDE    '*'
 
 /* 32bit bitvector defines */
-#define BV00		(1 <<  0)
-#define BV01		(1 <<  1)
-#define BV02		(1 <<  2)
-#define BV03		(1 <<  3)
-#define BV04		(1 <<  4)
-#define BV05		(1 <<  5)
-#define BV06		(1 <<  6)
-#define BV07		(1 <<  7)
-#define BV08		(1 <<  8)
-#define BV09		(1 <<  9)
-#define BV10		(1 << 10)
-#define BV11		(1 << 11)
-#define BV12		(1 << 12)
-#define BV13		(1 << 13)
-#define BV14		(1 << 14)
-#define BV15		(1 << 15)
-#define BV16		(1 << 16)
-#define BV17		(1 << 17)
-#define BV18		(1 << 18)
-#define BV19		(1 << 19)
-#define BV20		(1 << 20)
-#define BV21		(1 << 21)
-#define BV22		(1 << 22)
-#define BV23		(1 << 23)
-#define BV24		(1 << 24)
-#define BV25		(1 << 25)
-#define BV26		(1 << 26)
-#define BV27		(1 << 27)
-#define BV28		(1 << 28)
-#define BV29		(1 << 29)
-#define BV30		(1 << 30)
-#define BV31		(1 << 31)
+#define BV00            (1 <<  0)
+#define BV01            (1 <<  1)
+#define BV02            (1 <<  2)
+#define BV03            (1 <<  3)
+#define BV04            (1 <<  4)
+#define BV05            (1 <<  5)
+#define BV06            (1 <<  6)
+#define BV07            (1 <<  7)
+#define BV08            (1 <<  8)
+#define BV09            (1 <<  9)
+#define BV10            (1 << 10)
+#define BV11            (1 << 11)
+#define BV12            (1 << 12)
+#define BV13            (1 << 13)
+#define BV14            (1 << 14)
+#define BV15            (1 << 15)
+#define BV16            (1 << 16)
+#define BV17            (1 << 17)
+#define BV18            (1 << 18)
+#define BV19            (1 << 19)
+#define BV20            (1 << 20)
+#define BV21            (1 << 21)
+#define BV22            (1 << 22)
+#define BV23            (1 << 23)
+#define BV24            (1 << 24)
+#define BV25            (1 << 25)
+#define BV26            (1 << 26)
+#define BV27            (1 << 27)
+#define BV28            (1 << 28)
+#define BV29            (1 << 29)
+#define BV30            (1 << 30)
+#define BV31            (1 << 31)
 /* 32 USED! DO NOT ADD MORE! SB */
 
 /*
  * String and memory management parameters.
  */
-#define MAX_KEY_HASH		 2048
-#define MAX_STRING_LENGTH	 4096 /* buf */
-#define MAX_INPUT_LENGTH	 1024 /* arg */
-#define MAX_INBUF_SIZE		 1024
+#define MAX_KEY_HASH             2048
+#define MAX_STRING_LENGTH        4096 /* buf */
+#define MAX_INPUT_LENGTH         1024 /* arg */
+#define MAX_INBUF_SIZE           1024
 #define MSL                    MAX_STRING_LENGTH 
 #define MIL                    MAX_INPUT_LENGTH
 
 #define HASHSTR   /* use string hashing */
 
-#define MAX_LAYERS		 8 /* maximum clothing layers */
-#define MAX_NEST	       100  /* maximum container nesting */
+#define MAX_LAYERS               8 /* maximum clothing layers */
+#define MAX_NEST               100  /* maximum container nesting */
 
-#define MAX_KILLTRACK		25 /* track mob vnums killed */
+#define MAX_KILLTRACK           25 /* track mob vnums killed */
 
 /*
  * Game parameters.
@@ -248,35 +248,35 @@ extern int MAX_PC_RACE;
 extern int MAX_PC_CLASS;
 extern bool mud_down;
 
-#define MAX_LEVEL		   65
-#define MAX_CLAN		   50
-#define MAX_DEITY		   50
-#define MAX_CPD			    4 /* Maximum council power level difference */
-#define MAX_HERB		   20
-#define MAX_DISEASE		   20
-#define MAX_PERSONAL		    5 /* Maximum personal skills */
+#define MAX_LEVEL                  65
+#define MAX_CLAN                   50
+#define MAX_DEITY                  50
+#define MAX_CPD                     4 /* Maximum council power level difference */
+#define MAX_HERB                   20
+#define MAX_DISEASE                20
+#define MAX_PERSONAL                5 /* Maximum personal skills */
 #define MAX_WHERE_NAME             29
-#define LEVEL_HERO		   (MAX_LEVEL - 15)
-#define LEVEL_IMMORTAL		   (MAX_LEVEL - 14)
-#define LEVEL_SUPREME		   MAX_LEVEL
-#define LEVEL_INFINITE		   (MAX_LEVEL - 1)
-#define LEVEL_ETERNAL		   (MAX_LEVEL - 2)
-#define LEVEL_IMPLEMENTOR	   (MAX_LEVEL - 3)
-#define LEVEL_SUB_IMPLEM	   (MAX_LEVEL - 4)
-#define LEVEL_ASCENDANT		   (MAX_LEVEL - 5)
-#define LEVEL_GREATER		   (MAX_LEVEL - 6)
-#define LEVEL_GOD		   (MAX_LEVEL - 7)
-#define LEVEL_LESSER		   (MAX_LEVEL - 8)
-#define LEVEL_TRUEIMM		   (MAX_LEVEL - 9)
-#define LEVEL_DEMI		   (MAX_LEVEL - 10)
-#define LEVEL_SAVIOR		   (MAX_LEVEL - 11)
-#define LEVEL_CREATOR		   (MAX_LEVEL - 12)
-#define LEVEL_ACOLYTE		   (MAX_LEVEL - 13)
-#define LEVEL_NEOPHYTE		   (MAX_LEVEL - 14)
-#define LEVEL_AVATAR		   (MAX_LEVEL - 15)
+#define LEVEL_HERO                 (MAX_LEVEL - 15)
+#define LEVEL_IMMORTAL             (MAX_LEVEL - 14)
+#define LEVEL_SUPREME              MAX_LEVEL
+#define LEVEL_INFINITE             (MAX_LEVEL - 1)
+#define LEVEL_ETERNAL              (MAX_LEVEL - 2)
+#define LEVEL_IMPLEMENTOR          (MAX_LEVEL - 3)
+#define LEVEL_SUB_IMPLEM           (MAX_LEVEL - 4)
+#define LEVEL_ASCENDANT            (MAX_LEVEL - 5)
+#define LEVEL_GREATER              (MAX_LEVEL - 6)
+#define LEVEL_GOD                  (MAX_LEVEL - 7)
+#define LEVEL_LESSER               (MAX_LEVEL - 8)
+#define LEVEL_TRUEIMM              (MAX_LEVEL - 9)
+#define LEVEL_DEMI                 (MAX_LEVEL - 10)
+#define LEVEL_SAVIOR               (MAX_LEVEL - 11)
+#define LEVEL_CREATOR              (MAX_LEVEL - 12)
+#define LEVEL_ACOLYTE              (MAX_LEVEL - 13)
+#define LEVEL_NEOPHYTE             (MAX_LEVEL - 14)
+#define LEVEL_AVATAR               (MAX_LEVEL - 15)
 
-#define LEVEL_LOG		    LEVEL_LESSER
-#define LEVEL_HIGOD		    LEVEL_GOD
+#define LEVEL_LOG                   LEVEL_LESSER
+#define LEVEL_HIGOD                 LEVEL_GOD
 
 /* This is to tell if act uses uppercasestring or not --Shaddai */
 extern bool DONT_UPPER;
@@ -354,23 +354,23 @@ typedef enum
 } ret_types;
 
 /* Echo types for echo_to_all */
-#define ECHOTAR_ALL	0
-#define ECHOTAR_PC	1
-#define ECHOTAR_IMM	2
-#define ECHOTAR_PK	3
+#define ECHOTAR_ALL     0
+#define ECHOTAR_PC      1
+#define ECHOTAR_IMM     2
+#define ECHOTAR_PK      3
 
 /* defines for new do_who */
-#define WT_MORTAL	0
-#define WT_DEADLY	1
-#define WT_IMM		2
-#define WT_GROUPED	3
-#define WT_GROUPWHO	4
+#define WT_MORTAL       0
+#define WT_DEADLY       1
+#define WT_IMM          2
+#define WT_GROUPED      3
+#define WT_GROUPWHO     4
 
 /*
  * Defines for extended bitvectors
  */
 #ifndef INTBITS
-#define INTBITS	32
+#define INTBITS 32
 #endif
 #define XBM       31 /* extended bitmask   (INTBITS - 1)  */
 #define RSV       5  /* right-shift value  (sqrt(XBM+1))  */
@@ -399,7 +399,7 @@ struct extended_bitvector
  * Structure for a morph -- Shaddai
  * Morph structs.
  */
-#define ONLY_PKILL  	1
+#define ONLY_PKILL      1
 #define ONLY_PEACEFULL  2
 
 struct char_morph
@@ -746,7 +746,7 @@ typedef enum
   CON_COPYOVER_RECOVER, CON_PLAYING = 0, CON_DELETE,
 
 /* Uncomment this if using Mudworld's Oasis OLC port */
-/* CON_OEDIT,		 CON_MEDIT,			CON_REDIT, */
+/* CON_OEDIT,            CON_MEDIT,                     CON_REDIT, */
 
 /* Uncomment this section if using Samson's Shell Code */
 /* CON_FORKED, CON_IAFORKED, */
@@ -861,7 +861,7 @@ typedef enum
 } race_types;
 
 /* npc races */
-#define	RACE_DRAGON	    32
+#define RACE_DRAGON         32
 
 #define CLASS_NONE     -1 /* For skill/spells according to guild */
 #define CLASS_MAGE      0
@@ -897,13 +897,13 @@ typedef enum
 #define LANG_GOD         BV15 /* Clerics possibly?  God creatures */
 #define LANG_ANCIENT     BV16 /* Prelude to a glyph read skill? */
 #define LANG_HALFLING    BV17 /* Halfling base language */
-#define LANG_CLAN	       BV18 /* Clan language */
-#define LANG_GITH	       BV19 /* Gith Language */
+#define LANG_CLAN              BV18 /* Clan language */
+#define LANG_GITH              BV19 /* Gith Language */
 #define LANG_GNOME       BV20
 #define LANG_UNKNOWN        0 /* Anything that doesnt fit a category */
 #define VALID_LANGS    (LANG_COMMON | LANG_ELVEN | LANG_DWARVEN | LANG_PIXIE \
-			 | LANG_OGRE | LANG_ORCISH | LANG_TROLLISH | LANG_GOBLIN \
-			 | LANG_HALFLING | LANG_GITH | LANG_GNOME)
+                         | LANG_OGRE | LANG_ORCISH | LANG_TROLLISH | LANG_GOBLIN \
+                         | LANG_HALFLING | LANG_GITH | LANG_GNOME)
 /* 19 Languages */
 
 /*
@@ -913,7 +913,7 @@ typedef enum
 { TO_ROOM, TO_NOTVICT, TO_VICT, TO_CHAR, TO_CANSEE } to_types;
 
 #define INIT_WEAPON_CONDITION    12
-#define MAX_ITEM_IMPACT		 30
+#define MAX_ITEM_IMPACT          30
 
 /*
  * Help table types.
@@ -930,7 +930,7 @@ struct help_data
 /*
  * Shop types.
  */
-#define MAX_TRADE	 5
+#define MAX_TRADE        5
 
 struct shop_data
 {
@@ -944,9 +944,9 @@ struct shop_data
   short close_hour; /* First closing hour      */
 };
 
-#define MAX_FIX		3
-#define SHOP_FIX	      1
-#define SHOP_RECHARGE	2
+#define MAX_FIX         3
+#define SHOP_FIX              1
+#define SHOP_RECHARGE   2
 
 struct repairshop_data
 {
@@ -1325,10 +1325,10 @@ struct smaug_affect
  * Well known mob virtual numbers.
  * Defined in #MOBILES.
  */
-#define MOB_VNUM_CITYGUARD	   3060
-#define MOB_VNUM_VAMPIRE	   80
+#define MOB_VNUM_CITYGUARD         3060
+#define MOB_VNUM_VAMPIRE           80
 #define MOB_VNUM_ANIMATED_CORPSE   5
-#define MOB_VNUM_DEITY		   17
+#define MOB_VNUM_DEITY             17
 #define MOB_VNUM_SUPERMOB 3
 
 /*
@@ -1389,28 +1389,28 @@ typedef enum
 /*
  * Resistant Immune Susceptible flags
  */
-#define RIS_FIRE		  BV00
-#define RIS_COLD		  BV01
-#define RIS_ELECTRICITY	  BV02
-#define RIS_ENERGY	  BV03
-#define RIS_BLUNT		  BV04
-#define RIS_PIERCE	  BV05
-#define RIS_SLASH		  BV06
-#define RIS_ACID		  BV07
-#define RIS_POISON	  BV08
-#define RIS_DRAIN		  BV09
-#define RIS_SLEEP		  BV10
-#define RIS_CHARM		  BV11
-#define RIS_HOLD		  BV12
-#define RIS_NONMAGIC	  BV13
-#define RIS_PLUS1		  BV14
-#define RIS_PLUS2		  BV15
-#define RIS_PLUS3		  BV16
-#define RIS_PLUS4		  BV17
-#define RIS_PLUS5		  BV18
-#define RIS_PLUS6		  BV19
-#define RIS_MAGIC		  BV20
-#define RIS_PARALYSIS	  BV21
+#define RIS_FIRE                  BV00
+#define RIS_COLD                  BV01
+#define RIS_ELECTRICITY   BV02
+#define RIS_ENERGY        BV03
+#define RIS_BLUNT                 BV04
+#define RIS_PIERCE        BV05
+#define RIS_SLASH                 BV06
+#define RIS_ACID                  BV07
+#define RIS_POISON        BV08
+#define RIS_DRAIN                 BV09
+#define RIS_SLEEP                 BV10
+#define RIS_CHARM                 BV11
+#define RIS_HOLD                  BV12
+#define RIS_NONMAGIC      BV13
+#define RIS_PLUS1                 BV14
+#define RIS_PLUS2                 BV15
+#define RIS_PLUS3                 BV16
+#define RIS_PLUS4                 BV17
+#define RIS_PLUS5                 BV18
+#define RIS_PLUS6                 BV19
+#define RIS_MAGIC                 BV20
+#define RIS_PARALYSIS     BV21
 /* 21 RIS's*/
 
 /* 
@@ -1443,71 +1443,71 @@ typedef enum
 /*
  * Body parts
  */
-#define PART_HEAD		  BV00
-#define PART_ARMS		  BV01
-#define PART_LEGS		  BV02
-#define PART_HEART	  BV03
-#define PART_BRAINS	  BV04
-#define PART_GUTS		  BV05
-#define PART_HANDS	  BV06
-#define PART_FEET		  BV07
-#define PART_FINGERS	  BV08
-#define PART_EAR		  BV09
-#define PART_EYE		  BV10
+#define PART_HEAD                 BV00
+#define PART_ARMS                 BV01
+#define PART_LEGS                 BV02
+#define PART_HEART        BV03
+#define PART_BRAINS       BV04
+#define PART_GUTS                 BV05
+#define PART_HANDS        BV06
+#define PART_FEET                 BV07
+#define PART_FINGERS      BV08
+#define PART_EAR                  BV09
+#define PART_EYE                  BV10
 #define PART_LONG_TONGUE  BV11
-#define PART_EYESTALKS	  BV12
-#define PART_TENTACLES	  BV13
-#define PART_FINS		  BV14
-#define PART_WINGS	  BV15
-#define PART_TAIL		  BV16
-#define PART_SCALES	  BV17
+#define PART_EYESTALKS    BV12
+#define PART_TENTACLES    BV13
+#define PART_FINS                 BV14
+#define PART_WINGS        BV15
+#define PART_TAIL                 BV16
+#define PART_SCALES       BV17
 /* for combat */
-#define PART_CLAWS	  BV18
-#define PART_FANGS	  BV19
-#define PART_HORNS	  BV20
-#define PART_TUSKS	  BV21
-#define PART_TAILATTACK	  BV22
+#define PART_CLAWS        BV18
+#define PART_FANGS        BV19
+#define PART_HORNS        BV20
+#define PART_TUSKS        BV21
+#define PART_TAILATTACK   BV22
 #define PART_SHARPSCALES  BV23
-#define PART_BEAK		  BV24
-#define PART_HAUNCH	  BV25
-#define PART_HOOVES	  BV26
-#define PART_PAWS		  BV27
-#define PART_FORELEGS	  BV28
-#define PART_FEATHERS	  BV29
-#define PART_HUSK_SHELL	  BV30
+#define PART_BEAK                 BV24
+#define PART_HAUNCH       BV25
+#define PART_HOOVES       BV26
+#define PART_PAWS                 BV27
+#define PART_FORELEGS     BV28
+#define PART_FEATHERS     BV29
+#define PART_HUSK_SHELL   BV30
 
 /*
  * Autosave flags
  */
-#define SV_DEATH		  BV00   /* Save on death */
-#define SV_KILL		  BV01   /* Save when kill made */
-#define SV_PASSCHG	  BV02   /* Save on password change */
-#define SV_DROP		  BV03   /* Save on drop */
-#define SV_PUT		  BV04   /* Save on put */
-#define SV_GIVE		  BV05   /* Save on give */
-#define SV_AUTO		  BV06   /* Auto save every x minutes (define in cset) */
-#define SV_ZAPDROP	  BV07   /* Save when eq zaps */
-#define SV_AUCTION	  BV08   /* Save on auction */
-#define SV_GET		  BV09   /* Save on get */
-#define SV_RECEIVE	  BV10   /* Save when receiving */
-#define SV_IDLE		  BV11   /* Save when char goes idle */
-#define SV_BACKUP		  BV12   /* Make backup of pfile on save */
-#define SV_QUITBACKUP	  BV13   /* Backup on quit only --Blod */
-#define SV_FILL		  BV14   /* Save on do_fill */
-#define SV_EMPTY		  BV15   /* Save on do_empty */
-#define SV_TMPSAVE		  BV16   /* Tmp file to save into */
+#define SV_DEATH                  BV00   /* Save on death */
+#define SV_KILL           BV01   /* Save when kill made */
+#define SV_PASSCHG        BV02   /* Save on password change */
+#define SV_DROP           BV03   /* Save on drop */
+#define SV_PUT            BV04   /* Save on put */
+#define SV_GIVE           BV05   /* Save on give */
+#define SV_AUTO           BV06   /* Auto save every x minutes (define in cset) */
+#define SV_ZAPDROP        BV07   /* Save when eq zaps */
+#define SV_AUCTION        BV08   /* Save on auction */
+#define SV_GET            BV09   /* Save on get */
+#define SV_RECEIVE        BV10   /* Save when receiving */
+#define SV_IDLE           BV11   /* Save when char goes idle */
+#define SV_BACKUP                 BV12   /* Make backup of pfile on save */
+#define SV_QUITBACKUP     BV13   /* Backup on quit only --Blod */
+#define SV_FILL           BV14   /* Save on do_fill */
+#define SV_EMPTY                  BV15   /* Save on do_empty */
+#define SV_TMPSAVE                BV16   /* Tmp file to save into */
 
 /*
  * Pipe flags
  */
-#define PIPE_TAMPED	  BV01
-#define PIPE_LIT		  BV02
-#define PIPE_HOT		  BV03
-#define PIPE_DIRTY	  BV04
-#define PIPE_FILTHY	  BV05
-#define PIPE_GOINGOUT	  BV06
-#define PIPE_BURNT	  BV07
-#define PIPE_FULLOFASH	  BV08
+#define PIPE_TAMPED       BV01
+#define PIPE_LIT                  BV02
+#define PIPE_HOT                  BV03
+#define PIPE_DIRTY        BV04
+#define PIPE_FILTHY       BV05
+#define PIPE_GOINGOUT     BV06
+#define PIPE_BURNT        BV07
+#define PIPE_FULLOFASH    BV08
 
 /*
  * Flags for act_string -- Shaddai
@@ -1518,46 +1518,46 @@ typedef enum
 /*
  * old flags for conversion purposes -- will not conflict with the flags below
  */
-#define OLD_SF_SAVE_HALF_DAMAGE	  BV18   /* old save for half damage */
-#define OLD_SF_SAVE_NEGATES	  BV19   /* old save negates affect  */
+#define OLD_SF_SAVE_HALF_DAMAGE   BV18   /* old save for half damage */
+#define OLD_SF_SAVE_NEGATES       BV19   /* old save negates affect  */
 
 /*
- * Skill/Spell flags	The minimum BV *MUST* be 11!
+ * Skill/Spell flags    The minimum BV *MUST* be 11!
  */
-#define SF_WATER		  BV00
-#define SF_EARTH		  BV01
-#define SF_AIR			  BV02
-#define SF_ASTRAL		  BV03
-#define SF_AREA			  BV04   /* is an area spell      */
-#define SF_DISTANT		  BV05   /* affects something far away  */
-#define SF_REVERSE		  BV06
-#define SF_NOSELF		  BV07   /* Can't target yourself!   */
-#define SF_UNUSED2		  BV08   /* free for use!      */
-#define SF_ACCUMULATIVE		  BV09   /* is accumulative    */
-#define SF_RECASTABLE		  BV10   /* can be refreshed      */
-#define SF_NOSCRIBE		  BV11   /* cannot be scribed     */
-#define SF_NOBREW		  BV12   /* cannot be brewed      */
-#define SF_GROUPSPELL		  BV13   /* only affects group members  */
-#define SF_OBJECT		  BV14   /* directed at an object   */
-#define SF_CHARACTER		  BV15   /* directed at a character  */
-#define SF_SECRETSKILL		  BV16   /* hidden unless learned   */
-#define SF_PKSENSITIVE		  BV17   /* much harder for plr vs. plr   */
-#define SF_STOPONFAIL		  BV18   /* stops spell on first failure */
-#define SF_NOFIGHT		  BV19   /* stops if char fighting       */
+#define SF_WATER                  BV00
+#define SF_EARTH                  BV01
+#define SF_AIR                    BV02
+#define SF_ASTRAL                 BV03
+#define SF_AREA                   BV04   /* is an area spell      */
+#define SF_DISTANT                BV05   /* affects something far away  */
+#define SF_REVERSE                BV06
+#define SF_NOSELF                 BV07   /* Can't target yourself!   */
+#define SF_UNUSED2                BV08   /* free for use!      */
+#define SF_ACCUMULATIVE           BV09   /* is accumulative    */
+#define SF_RECASTABLE             BV10   /* can be refreshed      */
+#define SF_NOSCRIBE               BV11   /* cannot be scribed     */
+#define SF_NOBREW                 BV12   /* cannot be brewed      */
+#define SF_GROUPSPELL             BV13   /* only affects group members  */
+#define SF_OBJECT                 BV14   /* directed at an object   */
+#define SF_CHARACTER              BV15   /* directed at a character  */
+#define SF_SECRETSKILL            BV16   /* hidden unless learned   */
+#define SF_PKSENSITIVE            BV17   /* much harder for plr vs. plr   */
+#define SF_STOPONFAIL             BV18   /* stops spell on first failure */
+#define SF_NOFIGHT                BV19   /* stops if char fighting       */
 #define SF_NODISPEL               BV20 /* stops spell from being dispelled */
-#define SF_RANDOMTARGET		  BV21   /* chooses a random target */
-#define SF_NOMOB		  BV22   /* cannot be cast on mobiles */
+#define SF_RANDOMTARGET           BV21   /* chooses a random target */
+#define SF_NOMOB                  BV22   /* cannot be cast on mobiles */
 typedef enum
 { SS_NONE, SS_POISON_DEATH, SS_ROD_WANDS, SS_PARA_PETRI,
   SS_BREATH, SS_SPELL_STAFF
 } save_types;
 
-#define ALL_BITS		INT_MAX
-#define SDAM_MASK		ALL_BITS & ~(BV00 | BV01 | BV02)
-#define SACT_MASK		ALL_BITS & ~(BV03 | BV04 | BV05)
-#define SCLA_MASK		ALL_BITS & ~(BV06 | BV07 | BV08)
-#define SPOW_MASK		ALL_BITS & ~(BV09 | BV10)
-#define SSAV_MASK		ALL_BITS & ~(BV11 | BV12 | BV13)
+#define ALL_BITS                INT_MAX
+#define SDAM_MASK               ALL_BITS & ~(BV00 | BV01 | BV02)
+#define SACT_MASK               ALL_BITS & ~(BV03 | BV04 | BV05)
+#define SCLA_MASK               ALL_BITS & ~(BV06 | BV07 | BV08)
+#define SPOW_MASK               ALL_BITS & ~(BV09 | BV10)
+#define SSAV_MASK               ALL_BITS & ~(BV11 | BV12 | BV13)
 
 typedef enum
 { SD_NONE, SD_FIRE, SD_COLD, SD_ELECTRICITY, SD_ENERGY, SD_ACID,
@@ -1598,76 +1598,76 @@ typedef enum
   TRAP_TYPE_SEX_CHANGE
 } trap_types;
 
-#define MAX_TRAPTYPE		   TRAP_TYPE_SEX_CHANGE
+#define MAX_TRAPTYPE               TRAP_TYPE_SEX_CHANGE
 
-#define TRAP_ROOM      	   BV00
-#define TRAP_OBJ	         BV01
-#define TRAP_ENTER_ROOM	   BV02
-#define TRAP_LEAVE_ROOM	   BV03
-#define TRAP_OPEN		   BV04
-#define TRAP_CLOSE	   BV05
-#define TRAP_GET		   BV06
-#define TRAP_PUT		   BV07
-#define TRAP_PICK		   BV08
-#define TRAP_UNLOCK	   BV09
-#define TRAP_N		   BV10
-#define TRAP_S		   BV11
-#define TRAP_E	         BV12
-#define TRAP_W	         BV13
-#define TRAP_U	         BV14
-#define TRAP_D	         BV15
-#define TRAP_EXAMINE	   BV16
-#define TRAP_NE		   BV17
-#define TRAP_NW		   BV18
-#define TRAP_SE		   BV19
-#define TRAP_SW		   BV20
+#define TRAP_ROOM          BV00
+#define TRAP_OBJ                 BV01
+#define TRAP_ENTER_ROOM    BV02
+#define TRAP_LEAVE_ROOM    BV03
+#define TRAP_OPEN                  BV04
+#define TRAP_CLOSE         BV05
+#define TRAP_GET                   BV06
+#define TRAP_PUT                   BV07
+#define TRAP_PICK                  BV08
+#define TRAP_UNLOCK        BV09
+#define TRAP_N             BV10
+#define TRAP_S             BV11
+#define TRAP_E           BV12
+#define TRAP_W           BV13
+#define TRAP_U           BV14
+#define TRAP_D           BV15
+#define TRAP_EXAMINE       BV16
+#define TRAP_NE            BV17
+#define TRAP_NW            BV18
+#define TRAP_SE            BV19
+#define TRAP_SW            BV20
 
 /*
  * Well known object virtual numbers.
  * Defined in #OBJECTS.
  */
-#define OBJ_VNUM_MONEY_ONE	      2
-#define OBJ_VNUM_MONEY_SOME	      3
+#define OBJ_VNUM_MONEY_ONE            2
+#define OBJ_VNUM_MONEY_SOME           3
 
-#define OBJ_VNUM_CORPSE_NPC	     10
-#define OBJ_VNUM_CORPSE_PC	     11
-#define OBJ_VNUM_SEVERED_HEAD	     12
-#define OBJ_VNUM_TORN_HEART	     13
-#define OBJ_VNUM_SLICED_ARM	     14
-#define OBJ_VNUM_SLICED_LEG	     15
-#define OBJ_VNUM_SPILLED_GUTS	     16
-#define OBJ_VNUM_BLOOD		     17
-#define OBJ_VNUM_BLOODSTAIN	     18
-#define OBJ_VNUM_SCRAPS		     19
+#define OBJ_VNUM_CORPSE_NPC          10
+#define OBJ_VNUM_CORPSE_PC           11
+#define OBJ_VNUM_SEVERED_HEAD        12
+#define OBJ_VNUM_TORN_HEART          13
+#define OBJ_VNUM_SLICED_ARM          14
+#define OBJ_VNUM_SLICED_LEG          15
+#define OBJ_VNUM_SPILLED_GUTS        16
+#define OBJ_VNUM_BLOOD               17
+#define OBJ_VNUM_BLOODSTAIN          18
+#define OBJ_VNUM_SCRAPS              19
 
-#define OBJ_VNUM_MUSHROOM	     20
-#define OBJ_VNUM_LIGHT_BALL	     21
-#define OBJ_VNUM_SPRING		     22
+#define OBJ_VNUM_MUSHROOM            20
+#define OBJ_VNUM_LIGHT_BALL          21
+#define OBJ_VNUM_SPRING              22
 
-#define OBJ_VNUM_SKIN		     23
-#define OBJ_VNUM_SLICE		     24
-#define OBJ_VNUM_SHOPPING_BAG	     25
+#define OBJ_VNUM_SKIN                23
+#define OBJ_VNUM_SLICE               24
+#define OBJ_VNUM_SHOPPING_BAG        25
 
-#define OBJ_VNUM_BLOODLET	     26
+#define OBJ_VNUM_BLOODLET            26
 
-#define OBJ_VNUM_FIRE		     30
-#define OBJ_VNUM_TRAP		     31
-#define OBJ_VNUM_PORTAL		     32
+#define OBJ_VNUM_FIRE                30
+#define OBJ_VNUM_TRAP                31
+#define OBJ_VNUM_PORTAL              32
 
-#define OBJ_VNUM_BLACK_POWDER	     33
+#define OBJ_VNUM_BLACK_POWDER        33
 #define OBJ_VNUM_SCROLL_SCRIBING     34
 #define OBJ_VNUM_FLASK_BREWING       35
-#define OBJ_VNUM_NOTE		     36
-#define OBJ_VNUM_DEITY		     64
+#define OBJ_VNUM_NOTE                36
+#define OBJ_VNUM_DEITY               64
 
-#define OBJ_VNUM_PUDDLE		     95
+#define OBJ_VNUM_PUDDLE              95
 
 /* Academy eq */
-#define OBJ_VNUM_SCHOOL_MACE	  10315
-#define OBJ_VNUM_SCHOOL_DAGGER	  10312
-#define OBJ_VNUM_SCHOOL_SWORD	  10313
-#define OBJ_VNUM_SCHOOL_VEST	  10308
-#define OBJ_VNUM_SCHOOL_SHIELD	  10310
+#define OBJ_VNUM_SCHOOL_MACE      10315
+#define OBJ_VNUM_SCHOOL_DAGGER    10312
+#define OBJ_VNUM_SCHOOL_SWORD     10313
+#define OBJ_VNUM_SCHOOL_VEST      10308
+#define OBJ_VNUM_SCHOOL_SHIELD    10310
 #define OBJ_VNUM_SCHOOL_BANNER    10311
 
 /*
@@ -1691,7 +1691,7 @@ typedef enum
   ITEM_CHANCE, ITEM_PIECE, ITEM_HOUSEKEY, ITEM_DRINK_MIX
 } item_types;
 
-#define MAX_ITEM_TYPE		     ITEM_DRINK_MIX
+#define MAX_ITEM_TYPE                ITEM_DRINK_MIX
 
 /*
  * Extra flags.
@@ -1721,68 +1721,68 @@ typedef enum
 #define ITEM_PKDISARMED       BV07  /* Maybe temporary, not a perma flag */
 
 /* Lever/dial/switch/button/pullchain flags */
-#define TRIG_UP			BV00
-#define TRIG_UNLOCK		BV01
-#define TRIG_LOCK		BV02
-#define TRIG_D_NORTH		BV03
-#define TRIG_D_SOUTH		BV04
-#define TRIG_D_EAST		BV05
-#define TRIG_D_WEST		BV06
-#define TRIG_D_UP		BV07
-#define TRIG_D_DOWN		BV08
-#define TRIG_DOOR		BV09
-#define TRIG_CONTAINER		BV10
-#define TRIG_OPEN		BV11
-#define TRIG_CLOSE		BV12
-#define TRIG_PASSAGE		BV13
-#define TRIG_OLOAD		BV14
-#define TRIG_MLOAD		BV15
-#define TRIG_TELEPORT		BV16
-#define TRIG_TELEPORTALL	BV17
-#define TRIG_TELEPORTPLUS	BV18
-#define TRIG_DEATH		BV19
-#define TRIG_CAST		BV20
-#define TRIG_FAKEBLADE		BV21
-#define TRIG_RAND4		BV22
-#define TRIG_RAND6		BV23
-#define TRIG_TRAPDOOR		BV24
-#define TRIG_ANOTHEROOM		BV25
-#define TRIG_USEDIAL		BV26
-#define TRIG_ABSOLUTEVNUM	BV27
-#define TRIG_SHOWROOMDESC	BV28
-#define TRIG_AUTORETURN		BV29
+#define TRIG_UP                 BV00
+#define TRIG_UNLOCK             BV01
+#define TRIG_LOCK               BV02
+#define TRIG_D_NORTH            BV03
+#define TRIG_D_SOUTH            BV04
+#define TRIG_D_EAST             BV05
+#define TRIG_D_WEST             BV06
+#define TRIG_D_UP               BV07
+#define TRIG_D_DOWN             BV08
+#define TRIG_DOOR               BV09
+#define TRIG_CONTAINER          BV10
+#define TRIG_OPEN               BV11
+#define TRIG_CLOSE              BV12
+#define TRIG_PASSAGE            BV13
+#define TRIG_OLOAD              BV14
+#define TRIG_MLOAD              BV15
+#define TRIG_TELEPORT           BV16
+#define TRIG_TELEPORTALL        BV17
+#define TRIG_TELEPORTPLUS       BV18
+#define TRIG_DEATH              BV19
+#define TRIG_CAST               BV20
+#define TRIG_FAKEBLADE          BV21
+#define TRIG_RAND4              BV22
+#define TRIG_RAND6              BV23
+#define TRIG_TRAPDOOR           BV24
+#define TRIG_ANOTHEROOM         BV25
+#define TRIG_USEDIAL            BV26
+#define TRIG_ABSOLUTEVNUM       BV27
+#define TRIG_SHOWROOMDESC       BV28
+#define TRIG_AUTORETURN         BV29
 
-#define TELE_SHOWDESC		BV00
-#define TELE_TRANSALL		BV01
-#define TELE_TRANSALLPLUS	BV02
+#define TELE_SHOWDESC           BV00
+#define TELE_TRANSALL           BV01
+#define TELE_TRANSALLPLUS       BV02
 
 /*
  * Wear flags.
  * Used in #OBJECTS.
  */
-#define ITEM_TAKE		BV00
-#define ITEM_WEAR_FINGER	BV01
-#define ITEM_WEAR_NECK		BV02
-#define ITEM_WEAR_BODY		BV03
-#define ITEM_WEAR_HEAD		BV04
-#define ITEM_WEAR_LEGS		BV05
-#define ITEM_WEAR_FEET		BV06
-#define ITEM_WEAR_HANDS		BV07
-#define ITEM_WEAR_ARMS		BV08
-#define ITEM_WEAR_SHIELD	BV09
-#define ITEM_WEAR_ABOUT		BV10
-#define ITEM_WEAR_WAIST		BV11
-#define ITEM_WEAR_WRIST		BV12
-#define ITEM_WIELD		BV13
-#define ITEM_HOLD		BV14
-#define ITEM_DUAL_WIELD		BV15
-#define ITEM_WEAR_EARS		BV16
-#define ITEM_WEAR_EYES		BV17
-#define ITEM_MISSILE_WIELD	BV18
-#define ITEM_WEAR_BACK		BV19
-#define ITEM_WEAR_FACE		BV20
-#define ITEM_WEAR_ANKLE		BV21
-#define ITEM_WEAR_MAX		21
+#define ITEM_TAKE               BV00
+#define ITEM_WEAR_FINGER        BV01
+#define ITEM_WEAR_NECK          BV02
+#define ITEM_WEAR_BODY          BV03
+#define ITEM_WEAR_HEAD          BV04
+#define ITEM_WEAR_LEGS          BV05
+#define ITEM_WEAR_FEET          BV06
+#define ITEM_WEAR_HANDS         BV07
+#define ITEM_WEAR_ARMS          BV08
+#define ITEM_WEAR_SHIELD        BV09
+#define ITEM_WEAR_ABOUT         BV10
+#define ITEM_WEAR_WAIST         BV11
+#define ITEM_WEAR_WRIST         BV12
+#define ITEM_WIELD              BV13
+#define ITEM_HOLD               BV14
+#define ITEM_DUAL_WIELD         BV15
+#define ITEM_WEAR_EARS          BV16
+#define ITEM_WEAR_EYES          BV17
+#define ITEM_MISSILE_WIELD      BV18
+#define ITEM_WEAR_BACK          BV19
+#define ITEM_WEAR_FACE          BV20
+#define ITEM_WEAR_ANKLE         BV21
+#define ITEM_WEAR_MAX           21
 
 /*
  * Apply types (for affects).
@@ -1808,58 +1808,58 @@ typedef enum
   APPLY_TELEDELAY, MAX_APPLY_TYPE
 } apply_types;
 
-#define REVERSE_APPLY		   1000
+#define REVERSE_APPLY              1000
 
 /*
  * Values for containers (value[1]).
  * Used in #OBJECTS.
  */
-#define CONT_CLOSEABLE		   BV00
-#define CONT_PICKPROOF		   BV01
-#define CONT_CLOSED		   BV02
-#define CONT_LOCKED		   BV03
-#define CONT_EATKEY		   BV04
+#define CONT_CLOSEABLE             BV00
+#define CONT_PICKPROOF             BV01
+#define CONT_CLOSED                BV02
+#define CONT_LOCKED                BV03
+#define CONT_EATKEY                BV04
 
 /*
  * Well known room virtual numbers.
  * Defined in #ROOMS.
  */
-#define ROOM_VNUM_LIMBO		      2
-#define ROOM_VNUM_POLY		      3
-#define ROOM_VNUM_CHAT		   1200
-#define ROOM_VNUM_TEMPLE	  21001
-#define ROOM_VNUM_ALTAR		  21194
-#define ROOM_VNUM_SCHOOL	  10300
-#define ROOM_AUTH_START		    100
+#define ROOM_VNUM_LIMBO               2
+#define ROOM_VNUM_POLY                3
+#define ROOM_VNUM_CHAT             1200
+#define ROOM_VNUM_TEMPLE          21001
+#define ROOM_VNUM_ALTAR           21194
+#define ROOM_VNUM_SCHOOL          10300
+#define ROOM_AUTH_START             100
 #define ROOM_VNUM_HALLOFFALLEN    21195
 #define ROOM_VNUM_DEADLY        3009
-#define ROOM_VNUM_HELL		6
+#define ROOM_VNUM_HELL          6
 
 /*
  * New bit values for sector types.  Code by Mystaric
  */
-#define BVSECT_INSIDE 			BV00
-#define BVSECT_CITY 			BV01
-#define BVSECT_FIELD 			BV02
-#define BVSECT_FOREST 			BV03
-#define BVSECT_HILLS 			BV04
-#define BVSECT_MOUNTAIN 		BV05
-#define BVSECT_WATER_SWIM 		BV06
-#define BVSECT_WATER_NOSWIM 		BV07
-#define BVSECT_UNDERWATER 		BV08
-#define BVSECT_AIR 			BV09
-#define BVSECT_DESERT 			BV10
-#define BVSECT_DUNNO 			BV11
-#define BVSECT_OCEANFLOOR 		BV12
-#define BVSECT_UNDERGROUND 		BV13
-#define BVSECT_LAVA			BV14
-#define BVSECT_SWAMP			BV15
-#define MAX_SECFLAG 			15
+#define BVSECT_INSIDE                   BV00
+#define BVSECT_CITY                     BV01
+#define BVSECT_FIELD                    BV02
+#define BVSECT_FOREST                   BV03
+#define BVSECT_HILLS                    BV04
+#define BVSECT_MOUNTAIN                 BV05
+#define BVSECT_WATER_SWIM               BV06
+#define BVSECT_WATER_NOSWIM             BV07
+#define BVSECT_UNDERWATER               BV08
+#define BVSECT_AIR                      BV09
+#define BVSECT_DESERT                   BV10
+#define BVSECT_DUNNO                    BV11
+#define BVSECT_OCEANFLOOR               BV12
+#define BVSECT_UNDERGROUND              BV13
+#define BVSECT_LAVA                     BV14
+#define BVSECT_SWAMP                    BV15
+#define MAX_SECFLAG                     15
 
 /*
  * Room flags.           Holy cow!  Talked about stripped away..
  * Used in #ROOMS.       Those merc guys know how to strip code down.
- *			 Lets put it all back... ;)
+ *                       Lets put it all back... ;)
  */
 typedef enum
 {
@@ -1881,13 +1881,13 @@ typedef enum
   DIR_NORTHEAST, DIR_NORTHWEST, DIR_SOUTHEAST, DIR_SOUTHWEST, DIR_SOMEWHERE
 } dir_types;
 
-#define PT_WATER	100
-#define PT_AIR	200
-#define PT_EARTH	300
-#define PT_FIRE	400
+#define PT_WATER        100
+#define PT_AIR  200
+#define PT_EARTH        300
+#define PT_FIRE 400
 
 /*
- * Push/pull types for exits					-Thoric
+ * Push/pull types for exits                                    -Thoric
  * To differentiate between the current of a river, or a strong gust of wind
  */
 typedef enum
@@ -1899,43 +1899,43 @@ typedef enum
   PULL_LAVA = PT_FIRE, PULL_HOTAIR
 } dir_pulltypes;
 
-#define MAX_DIR			DIR_SOUTHWEST  /* max for normal walking */
-#define DIR_PORTAL		DIR_SOMEWHERE  /* portal direction    */
+#define MAX_DIR                 DIR_SOUTHWEST  /* max for normal walking */
+#define DIR_PORTAL              DIR_SOMEWHERE  /* portal direction    */
 
 /*
- * Exit flags.			EX_RES# are reserved for use by the
- * Used in #ROOMS.		SMAUG development team
+ * Exit flags.                  EX_RES# are reserved for use by the
+ * Used in #ROOMS.              SMAUG development team
  */
-#define EX_ISDOOR		  BV00
-#define EX_CLOSED		  BV01
-#define EX_LOCKED		  BV02
-#define EX_SECRET		  BV03
-#define EX_SWIM			  BV04
-#define EX_PICKPROOF		  BV05
-#define EX_FLY			  BV06
-#define EX_CLIMB		  BV07
-#define EX_DIG			  BV08
-#define EX_EATKEY		  BV09
-#define EX_NOPASSDOOR		  BV10
-#define EX_HIDDEN		  BV11
-#define EX_PASSAGE		  BV12
-#define EX_PORTAL 		  BV13
-#define EX_RES1			  BV14
-#define EX_RES2			  BV15
-#define EX_xCLIMB		  BV16
-#define EX_xENTER		  BV17
-#define EX_xLEAVE		  BV18
-#define EX_xAUTO		  BV19
-#define EX_NOFLEE	  	  BV20
-#define EX_xSEARCHABLE		  BV21
+#define EX_ISDOOR                 BV00
+#define EX_CLOSED                 BV01
+#define EX_LOCKED                 BV02
+#define EX_SECRET                 BV03
+#define EX_SWIM                   BV04
+#define EX_PICKPROOF              BV05
+#define EX_FLY                    BV06
+#define EX_CLIMB                  BV07
+#define EX_DIG                    BV08
+#define EX_EATKEY                 BV09
+#define EX_NOPASSDOOR             BV10
+#define EX_HIDDEN                 BV11
+#define EX_PASSAGE                BV12
+#define EX_PORTAL                 BV13
+#define EX_RES1                   BV14
+#define EX_RES2                   BV15
+#define EX_xCLIMB                 BV16
+#define EX_xENTER                 BV17
+#define EX_xLEAVE                 BV18
+#define EX_xAUTO                  BV19
+#define EX_NOFLEE                 BV20
+#define EX_xSEARCHABLE            BV21
 #define EX_BASHED                 BV22
 #define EX_BASHPROOF              BV23
-#define EX_NOMOB		  BV24
-#define EX_WINDOW		  BV25
-#define EX_xLOOK		  BV26
-#define EX_ISBOLT		  BV27
-#define EX_BOLTED		  BV28
-#define MAX_EXFLAG		  28
+#define EX_NOMOB                  BV24
+#define EX_WINDOW                 BV25
+#define EX_xLOOK                  BV26
+#define EX_ISBOLT                 BV27
+#define EX_BOLTED                 BV28
+#define MAX_EXFLAG                28
 
 /*
  * Sector types.
@@ -1968,8 +1968,8 @@ typedef enum
 { BOARD_NOTE, BOARD_MAIL } board_types;
 
 /* Auth Flags */
-#define FLAG_WRAUTH		      1
-#define FLAG_AUTH		      2
+#define FLAG_WRAUTH                   1
+#define FLAG_AUTH                     2
 
 /***************************************************************************
  *                                                                         *
@@ -2357,7 +2357,7 @@ struct ignore_data
 };
 
 /* Max number of people you can ignore at once */
-#define MAX_IGN		6
+#define MAX_IGN         6
 
 /*
  * Data which only PC's have.
@@ -2589,16 +2589,16 @@ struct reset_data
 };
 
 /* Constants for arg2 of 'B' resets. */
-#define BIT_RESET_DOOR			0
-#define BIT_RESET_OBJECT		1
-#define BIT_RESET_MOBILE		2
-#define BIT_RESET_ROOM			3
-#define BIT_RESET_TYPE_MASK		0xFF  /* 256 should be enough */
-#define BIT_RESET_DOOR_THRESHOLD	8
-#define BIT_RESET_DOOR_MASK		0xFF00   /* 256 should be enough */
-#define BIT_RESET_SET			BV30
-#define BIT_RESET_TOGGLE		BV31
-#define BIT_RESET_FREEBITS	  0x3FFF0000   /* For reference */
+#define BIT_RESET_DOOR                  0
+#define BIT_RESET_OBJECT                1
+#define BIT_RESET_MOBILE                2
+#define BIT_RESET_ROOM                  3
+#define BIT_RESET_TYPE_MASK             0xFF  /* 256 should be enough */
+#define BIT_RESET_DOOR_THRESHOLD        8
+#define BIT_RESET_DOOR_MASK             0xFF00   /* 256 should be enough */
+#define BIT_RESET_SET                   BV30
+#define BIT_RESET_TOGGLE                BV31
+#define BIT_RESET_FREEBITS        0x3FFF0000   /* For reference */
 
 /*
  * Area definition.
@@ -2666,7 +2666,7 @@ struct godlist_data
 };
 
 /*
- * Used to keep track of system settings and statistics		-Thoric
+ * Used to keep track of system settings and statistics         -Thoric
  */
 struct system_data
 {
@@ -2825,10 +2825,10 @@ struct teleport_data
  */
 #define TYPE_UNDEFINED               -1
 #define TYPE_HIT                     1000 /* allows for 1000 skills/spells */
-#define TYPE_HERB		     2000   /* allows for 1000 attack types  */
-#define TYPE_PERSONAL		     3000   /* allows for 1000 herb types    */
-#define TYPE_RACIAL		     4000   /* allows for 1000 personal types */
-#define TYPE_DISEASE		     5000   /* allows for 1000 racial types  */
+#define TYPE_HERB                    2000   /* allows for 1000 attack types  */
+#define TYPE_PERSONAL                3000   /* allows for 1000 herb types    */
+#define TYPE_RACIAL                  4000   /* allows for 1000 personal types */
+#define TYPE_DISEASE                 5000   /* allows for 1000 racial types  */
 
 /*
  *  Target types.
@@ -3058,13 +3058,13 @@ int urange(int mincheck, int check, int maxcheck);
  *
  * The bit passed is the actual value of the bit (Use the BV## defines)
  */
-#define IS_SET(flag, bit)	((flag) & (bit))
-#define SET_BIT(var, bit)	((var) |= (bit))
-#define REMOVE_BIT(var, bit)	((var) &= ~(bit))
-#define TOGGLE_BIT(var, bit)	((var) ^= (bit))
+#define IS_SET(flag, bit)       ((flag) & (bit))
+#define SET_BIT(var, bit)       ((var) |= (bit))
+#define REMOVE_BIT(var, bit)    ((var) &= ~(bit))
+#define TOGGLE_BIT(var, bit)    ((var) ^= (bit))
 
 /*
- * Macros for accessing virtually unlimited bitvectors.		-Thoric
+ * Macros for accessing virtually unlimited bitvectors.         -Thoric
  *
  * Note that these macros use the bit number rather than the bit value
  * itself -- which means that you can only access _one_ bit at a time
@@ -3087,304 +3087,304 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 /*
  * Here are the extended bitvector macros:
  */
-#define xIS_SET(var, bit)	((var).bits[(bit) >> RSV] & 1 << ((bit) & XBM))
-#define xSET_BIT(var, bit)	((var).bits[(bit) >> RSV] |= 1 << ((bit) & XBM))
-#define xSET_BITS(var, bit)	(ext_set_bits(&(var), &(bit)))
-#define xREMOVE_BIT(var, bit)	((var).bits[(bit) >> RSV] &= ~(1 << ((bit) & XBM)))
-#define xREMOVE_BITS(var, bit)	(ext_remove_bits(&(var), &(bit)))
-#define xTOGGLE_BIT(var, bit)	((var).bits[(bit) >> RSV] ^= 1 << ((bit) & XBM))
-#define xTOGGLE_BITS(var, bit)	(ext_toggle_bits(&(var), &(bit)))
-#define xCLEAR_BITS(var)	(ext_clear_bits(&(var)))
-#define xIS_EMPTY(var)		(ext_is_empty(&(var)))
-#define xHAS_BITS(var, bit)	(ext_has_bits(&(var), &(bit)))
-#define xSAME_BITS(var, bit)	(ext_same_bits(&(var), &(bit)))
+#define xIS_SET(var, bit)       ((var).bits[(bit) >> RSV] & 1 << ((bit) & XBM))
+#define xSET_BIT(var, bit)      ((var).bits[(bit) >> RSV] |= 1 << ((bit) & XBM))
+#define xSET_BITS(var, bit)     (ext_set_bits(&(var), &(bit)))
+#define xREMOVE_BIT(var, bit)   ((var).bits[(bit) >> RSV] &= ~(1 << ((bit) & XBM)))
+#define xREMOVE_BITS(var, bit)  (ext_remove_bits(&(var), &(bit)))
+#define xTOGGLE_BIT(var, bit)   ((var).bits[(bit) >> RSV] ^= 1 << ((bit) & XBM))
+#define xTOGGLE_BITS(var, bit)  (ext_toggle_bits(&(var), &(bit)))
+#define xCLEAR_BITS(var)        (ext_clear_bits(&(var)))
+#define xIS_EMPTY(var)          (ext_is_empty(&(var)))
+#define xHAS_BITS(var, bit)     (ext_has_bits(&(var), &(bit)))
+#define xSAME_BITS(var, bit)    (ext_same_bits(&(var), &(bit)))
 
 /*
  * Memory allocation macros.
  */
 #define CREATE(result, type, number)                                    \
-  do									\
-  {									\
-    if (!((result) = (type *) calloc ((number), sizeof(type))))		\
-    {									\
+  do                                                                    \
+  {                                                                     \
+    if (!((result) = (type *) calloc ((number), sizeof(type))))         \
+    {                                                                   \
       perror("malloc failure");                                         \
       fprintf(stderr, "Malloc failure @ %s:%d\n", __FILE__, __LINE__); \
       abort();                                                          \
-    }									\
+    }                                                                   \
   } while (0)
 
 #define RECREATE(result,type,number)                                    \
-  do									\
-  {									\
+  do                                                                    \
+  {                                                                     \
     if (!((result) = (type *)realloc((result), sizeof(type) * (number)))) \
-    {									\
+    {                                                                   \
       perror("realloc failure");                                        \
       fprintf(stderr, "Realloc failure @ %s:%d\n", __FILE__, __LINE__); \
       abort();                                                          \
-    }									\
+    }                                                                   \
   } while (0)
 
 #if defined(__FreeBSD__)
-#define DISPOSE(point)				\
-  do						\
-  {						\
-    if ((point))				\
-    {						\
-      free((void*) (point));			\
-      (point) = NULL;				\
-    }						\
+#define DISPOSE(point)                          \
+  do                                            \
+  {                                             \
+    if ((point))                                \
+    {                                           \
+      free((void*) (point));                    \
+      (point) = NULL;                           \
+    }                                           \
   } while (0)
 #else
-#define DISPOSE(point)							\
-  do									\
-  {									\
-    if ((point))							\
-    {									\
+#define DISPOSE(point)                                                  \
+  do                                                                    \
+  {                                                                     \
+    if ((point))                                                        \
+    {                                                                   \
       if (typeid((point)) == typeid(char*) || typeid((point)) == typeid(const char*)) \
-      {									\
-	if (in_hash_table((char*)(point)))				\
-	{								\
-	  log_printf("&RDISPOSE called on STRALLOC pointer: %s, line %d\n", __FILE__, __LINE__); \
-	  log_string("Attempting to correct.");			\
-	  if (str_free((char*)(point)) == -1)			\
-	    log_printf("&RSTRFREEing bad pointer: %s, line %d\n", __FILE__, __LINE__); \
-	}								\
-	else								\
-	  free((void*) (point));					\
-      }									\
-      else								\
-	free((void*) (point));					\
-      (point) = NULL;							\
-    }									\
-    else								\
-      (point) = NULL;							\
+      {                                                                 \
+        if (in_hash_table((char*)(point)))                              \
+        {                                                               \
+          log_printf("&RDISPOSE called on STRALLOC pointer: %s, line %d\n", __FILE__, __LINE__); \
+          log_string("Attempting to correct.");                 \
+          if (str_free((char*)(point)) == -1)                   \
+            log_printf("&RSTRFREEing bad pointer: %s, line %d\n", __FILE__, __LINE__); \
+        }                                                               \
+        else                                                            \
+          free((void*) (point));                                        \
+      }                                                                 \
+      else                                                              \
+        free((void*) (point));                                  \
+      (point) = NULL;                                                   \
+    }                                                                   \
+    else                                                                \
+      (point) = NULL;                                                   \
   } while (0)
 #endif
 
-#define STRALLOC(point)		str_alloc((point))
-#define QUICKLINK(point)	quick_link((point))
+#define STRALLOC(point)         str_alloc((point))
+#define QUICKLINK(point)        quick_link((point))
 #if defined(__FreeBSD__)
-#define STRFREE(point)							\
-  do									\
-  {									\
-    if ((point))								\
-    {									\
-      if (str_free((point)) == -1)					\
-	bug("&RSTRFREEing bad pointer: %s, line %d", __FILE__, __LINE__); \
-      (point) = NULL;							\
-    }									\
+#define STRFREE(point)                                                  \
+  do                                                                    \
+  {                                                                     \
+    if ((point))                                                                \
+    {                                                                   \
+      if (str_free((point)) == -1)                                      \
+        bug("&RSTRFREEing bad pointer: %s, line %d", __FILE__, __LINE__); \
+      (point) = NULL;                                                   \
+    }                                                                   \
   } while (0)
 #else
-#define STRFREE(point)							\
-  do									\
-  {									\
-    if ((point))								\
-    {									\
-      if (!in_hash_table((point)))					\
-      {									\
-	log_printf("&RSTRFREE called on str_dup pointer: %s, line %d\n", __FILE__, __LINE__); \
-	log_string("Attempting to correct.");				\
-	free((void*) (point));					\
-      }									\
-      else if (str_free((point)) == -1)				\
-	log_printf("&RSTRFREEing bad pointer: %s, line %d\n", __FILE__, __LINE__); \
-      (point) = NULL;							\
-    }									\
-    else								\
-      (point) = NULL;							\
+#define STRFREE(point)                                                  \
+  do                                                                    \
+  {                                                                     \
+    if ((point))                                                                \
+    {                                                                   \
+      if (!in_hash_table((point)))                                      \
+      {                                                                 \
+        log_printf("&RSTRFREE called on str_dup pointer: %s, line %d\n", __FILE__, __LINE__); \
+        log_string("Attempting to correct.");                           \
+        free((void*) (point));                                  \
+      }                                                                 \
+      else if (str_free((point)) == -1)                         \
+        log_printf("&RSTRFREEing bad pointer: %s, line %d\n", __FILE__, __LINE__); \
+      (point) = NULL;                                                   \
+    }                                                                   \
+    else                                                                \
+      (point) = NULL;                                                   \
   } while (0)
 #endif
 
 /* double-linked list handling macros -Thoric */
 /* Updated by Scion 8/6/1999 */
-#define LINK(link, first, last, next, prev)	\
-  do						\
-  {						\
-    if (!(first))				\
-    {						\
-      (first) = (link);				\
-      (last) = (link);				\
-    }						\
-    else					\
-      (last)->next = (link);			\
-    (link)->next = NULL;			\
-    if ((first) == (link))			\
-      (link)->prev = NULL;			\
-    else					\
-      (link)->prev = (last);			\
-    (last) = (link);				\
+#define LINK(link, first, last, next, prev)     \
+  do                                            \
+  {                                             \
+    if (!(first))                               \
+    {                                           \
+      (first) = (link);                         \
+      (last) = (link);                          \
+    }                                           \
+    else                                        \
+      (last)->next = (link);                    \
+    (link)->next = NULL;                        \
+    if ((first) == (link))                      \
+      (link)->prev = NULL;                      \
+    else                                        \
+      (link)->prev = (last);                    \
+    (last) = (link);                            \
   } while (0)
 
 #define INSERT(link, insert, first, next, prev) \
-  do						\
-  {						\
-    (link)->prev = (insert)->prev;		\
-    if (!(insert)->prev)			\
+  do                                            \
+  {                                             \
+    (link)->prev = (insert)->prev;              \
+    if (!(insert)->prev)                        \
       (first) = (link);                         \
-    else					\
+    else                                        \
       (insert)->prev->next = (link);            \
-    (insert)->prev = (link);			\
-    (link)->next = (insert);			\
+    (insert)->prev = (link);                    \
+    (link)->next = (insert);                    \
   } while (0)
 
 #define UNLINK(link, first, last, next, prev)   \
-  do						\
-  {						\
-    if (!(link)->prev)			\
-    {						\
+  do                                            \
+  {                                             \
+    if (!(link)->prev)                  \
+    {                                           \
       (first) = (link)->next;                   \
       if ((first))                              \
-	(first)->prev = NULL;			\
-    }						\
-    else					\
-    {						\
+        (first)->prev = NULL;                   \
+    }                                           \
+    else                                        \
+    {                                           \
       (link)->prev->next = (link)->next;        \
-    }						\
-    if (!(link)->next)			\
-    {						\
+    }                                           \
+    if (!(link)->next)                  \
+    {                                           \
       (last) = (link)->prev;                    \
       if ((last))                                \
-	(last)->next = NULL;			\
-    }						\
-    else					\
-    {						\
+        (last)->next = NULL;                    \
+    }                                           \
+    else                                        \
+    {                                           \
       (link)->next->prev = (link)->prev;        \
-    }						\
+    }                                           \
   } while (0)
 
-#define ASSIGN_GSN(gsn, skill)					\
-  do								\
-  {								\
-    if (((gsn) = skill_lookup((skill))) == -1)		\
-      fprintf(stderr, "ASSIGN_GSN: Skill %s not found.\n",	\
-	       (skill));					\
+#define ASSIGN_GSN(gsn, skill)                                  \
+  do                                                            \
+  {                                                             \
+    if (((gsn) = skill_lookup((skill))) == -1)          \
+      fprintf(stderr, "ASSIGN_GSN: Skill %s not found.\n",      \
+               (skill));                                        \
   } while (0)
 
-#define CHECK_SUBRESTRICTED(ch)						\
-  do									\
-  {									\
-    if ((ch)->substate == SUB_RESTRICTED)				\
-    {									\
+#define CHECK_SUBRESTRICTED(ch)                                         \
+  do                                                                    \
+  {                                                                     \
+    if ((ch)->substate == SUB_RESTRICTED)                               \
+    {                                                                   \
       send_to_char("You cannot use this command from within another command.\r\n", ch); \
-      return;								\
-    }									\
+      return;                                                           \
+    }                                                                   \
   } while (0)
 
 /*
  * Character macros.
  */
-#define IS_NPC(ch)		(xIS_SET((ch)->act, ACT_IS_NPC))
-#define IS_IMMORTAL(ch)		(get_trust((ch)) >= LEVEL_IMMORTAL)
-#define IS_HERO(ch)		(get_trust((ch)) >= LEVEL_HERO)
-#define IS_AFFECTED(ch, sn)	(xIS_SET((ch)->affected_by, (sn)))
-#define HAS_BODYPART(ch, part)	((ch)->xflags == 0 || IS_SET((ch)->xflags, (part)))
+#define IS_NPC(ch)              (xIS_SET((ch)->act, ACT_IS_NPC))
+#define IS_IMMORTAL(ch)         (get_trust((ch)) >= LEVEL_IMMORTAL)
+#define IS_HERO(ch)             (get_trust((ch)) >= LEVEL_HERO)
+#define IS_AFFECTED(ch, sn)     (xIS_SET((ch)->affected_by, (sn)))
+#define HAS_BODYPART(ch, part)  ((ch)->xflags == 0 || IS_SET((ch)->xflags, (part)))
 #define GET_TIME_PLAYED(ch)     (((ch)->played + (current_time - (ch)->logon)) / 3600)
-#define CAN_CAST(ch)		((ch)->Class != 2 && (ch)->Class != 3)
+#define CAN_CAST(ch)            ((ch)->Class != 2 && (ch)->Class != 3)
 
-#define IS_VAMPIRE(ch)		(!IS_NPC(ch)				\
-				 && ((ch)->race==RACE_VAMPIRE		\
-				     ||  (ch)->Class==CLASS_VAMPIRE))
-#define IS_GOOD(ch)		((ch)->alignment >= 350)
-#define IS_EVIL(ch)		((ch)->alignment <= -350)
-#define IS_NEUTRAL(ch)		(!IS_GOOD(ch) && !IS_EVIL(ch))
+#define IS_VAMPIRE(ch)          (!IS_NPC(ch)                            \
+                                 && ((ch)->race==RACE_VAMPIRE           \
+                                     ||  (ch)->Class==CLASS_VAMPIRE))
+#define IS_GOOD(ch)             ((ch)->alignment >= 350)
+#define IS_EVIL(ch)             ((ch)->alignment <= -350)
+#define IS_NEUTRAL(ch)          (!IS_GOOD(ch) && !IS_EVIL(ch))
 
-#define IS_AWAKE(ch)		((ch)->position > POS_SLEEPING)
-#define GET_AC(ch)		((ch)->armor				\
-				 + (IS_AWAKE(ch)			\
-				     ? dex_app[get_curr_dex(ch)].defensive \
-				     : 0)				\
-				 + VAMP_AC(ch))
-#define GET_HITROLL(ch)		((ch)->hitroll				\
-				 +str_app[get_curr_str(ch)].tohit	\
-				 +(2-(abs((ch)->mental_state)/10)))
+#define IS_AWAKE(ch)            ((ch)->position > POS_SLEEPING)
+#define GET_AC(ch)              ((ch)->armor                            \
+                                 + (IS_AWAKE(ch)                        \
+                                     ? dex_app[get_curr_dex(ch)].defensive \
+                                     : 0)                               \
+                                 + VAMP_AC(ch))
+#define GET_HITROLL(ch)         ((ch)->hitroll                          \
+                                 +str_app[get_curr_str(ch)].tohit       \
+                                 +(2-(abs((ch)->mental_state)/10)))
 
 /* Thanks to Chriss Baeke for noticing damplus was unused */
-#define GET_DAMROLL(ch)		((ch)->damroll				\
-				 +(ch)->damplus				\
-				 +str_app[get_curr_str(ch)].todam	\
-				 +(((ch)->mental_state > 5		\
-				    &&(ch)->mental_state < 15) ? 1 : 0))
+#define GET_DAMROLL(ch)         ((ch)->damroll                          \
+                                 +(ch)->damplus                         \
+                                 +str_app[get_curr_str(ch)].todam       \
+                                 +(((ch)->mental_state > 5              \
+                                    &&(ch)->mental_state < 15) ? 1 : 0))
 
-#define IS_OUTSIDE(ch)		(!xIS_SET((ch)->in_room->room_flags, ROOM_INDOORS) \
-				 && !xIS_SET((ch)->in_room->room_flags, ROOM_TUNNEL))
+#define IS_OUTSIDE(ch)          (!xIS_SET((ch)->in_room->room_flags, ROOM_INDOORS) \
+                                 && !xIS_SET((ch)->in_room->room_flags, ROOM_TUNNEL))
 
-#define NO_WEATHER_SECT(sect)  ( sect == SECT_INSIDE ||	\
-				  sect == SECT_UNDERWATER ||	\
-                                  sect == SECT_OCEANFLOOR ||	\
+#define NO_WEATHER_SECT(sect)  ( sect == SECT_INSIDE || \
+                                  sect == SECT_UNDERWATER ||    \
+                                  sect == SECT_OCEANFLOOR ||    \
                                   sect == SECT_UNDERGROUND)
 
 #define IS_DRUNK(ch, drunk)     (number_percent() < ((ch)->pcdata->condition[COND_DRUNK] * 2 / (drunk)))
 
 #define IS_CHARMED(ch)      (IS_AFFECTED((ch),AFF_CHARM))
 
-#define IS_CLANNED(ch)		(!IS_NPC((ch))				\
-				 && (ch)->pcdata->clan			\
-				 && (ch)->pcdata->clan->clan_type != CLAN_ORDER	\
-				 && (ch)->pcdata->clan->clan_type != CLAN_GUILD)
+#define IS_CLANNED(ch)          (!IS_NPC((ch))                          \
+                                 && (ch)->pcdata->clan                  \
+                                 && (ch)->pcdata->clan->clan_type != CLAN_ORDER \
+                                 && (ch)->pcdata->clan->clan_type != CLAN_GUILD)
 
-#define IS_ORDERED(ch)		(!IS_NPC((ch))				\
-				 && (ch)->pcdata->clan			\
-				 && (ch)->pcdata->clan->clan_type == CLAN_ORDER)
+#define IS_ORDERED(ch)          (!IS_NPC((ch))                          \
+                                 && (ch)->pcdata->clan                  \
+                                 && (ch)->pcdata->clan->clan_type == CLAN_ORDER)
 
-#define IS_GUILDED(ch)		(!IS_NPC((ch))				\
-				 && (ch)->pcdata->clan			\
-				 && (ch)->pcdata->clan->clan_type == CLAN_GUILD)
+#define IS_GUILDED(ch)          (!IS_NPC((ch))                          \
+                                 && (ch)->pcdata->clan                  \
+                                 && (ch)->pcdata->clan->clan_type == CLAN_GUILD)
 
-#define IS_DEADLYCLAN(ch)    (!IS_NPC((ch))				\
-			      && (ch)->pcdata->clan			\
-			      && (ch)->pcdata->clan->clan_type != CLAN_NOKILL \
-			      && (ch)->pcdata->clan->clan_type != CLAN_ORDER \
-			      && (ch)->pcdata->clan->clan_type != CLAN_GUILD)
+#define IS_DEADLYCLAN(ch)    (!IS_NPC((ch))                             \
+                              && (ch)->pcdata->clan                     \
+                              && (ch)->pcdata->clan->clan_type != CLAN_NOKILL \
+                              && (ch)->pcdata->clan->clan_type != CLAN_ORDER \
+                              && (ch)->pcdata->clan->clan_type != CLAN_GUILD)
 
-#define IS_DEVOTED(ch)		(!IS_NPC((ch))			\
-				 && (ch)->pcdata->deity)
+#define IS_DEVOTED(ch)          (!IS_NPC((ch))                  \
+                                 && (ch)->pcdata->deity)
 
-#define IS_IDLE(ch)		((ch)->pcdata && IS_SET((ch)->pcdata->flags, PCFLAG_IDLE))
+#define IS_IDLE(ch)             ((ch)->pcdata && IS_SET((ch)->pcdata->flags, PCFLAG_IDLE))
 #define IS_PKILL(ch)            ((ch)->pcdata && IS_SET((ch)->pcdata->flags, PCFLAG_DEADLY))
 
 #define CAN_PKILL(ch)           (IS_PKILL((ch)) && (ch)->level >= 5 && calculate_age((ch)) >= 18)
 
 /* Addition to make people with nuisance flag have more wait */
 
-#define WAIT_STATE(ch, npulse) ((ch)->wait=(!IS_NPC(ch)&&ch->pcdata->nuisance&&	\
-					    (ch->pcdata->nuisance->flags>4))?UMAX((ch)->wait, \
-										  (npulse+((ch)->pcdata->nuisance->flags-4)+ \
-										   ch->pcdata->nuisance->power)): \
-				UMAX((ch)->wait, (npulse)))
+#define WAIT_STATE(ch, npulse) ((ch)->wait=(!IS_NPC(ch)&&ch->pcdata->nuisance&& \
+                                            (ch->pcdata->nuisance->flags>4))?UMAX((ch)->wait, \
+                                                                                  (npulse+((ch)->pcdata->nuisance->flags-4)+ \
+                                                                                   ch->pcdata->nuisance->power)): \
+                                UMAX((ch)->wait, (npulse)))
 
-#define EXIT(ch, door)		(get_exit((ch)->in_room, door))
+#define EXIT(ch, door)          (get_exit((ch)->in_room, door))
 
-#define CAN_GO(ch, door)	(EXIT((ch),(door))			\
-				 && (EXIT((ch),(door))->to_room != NULL) \
-				 && !IS_SET(EXIT((ch), (door))->exit_info, EX_CLOSED))
+#define CAN_GO(ch, door)        (EXIT((ch),(door))                      \
+                                 && (EXIT((ch),(door))->to_room != NULL) \
+                                 && !IS_SET(EXIT((ch), (door))->exit_info, EX_CLOSED))
 
-#define IS_FLOATING(ch)		(IS_AFFECTED((ch), AFF_FLYING) || IS_AFFECTED((ch), AFF_FLOATING))
+#define IS_FLOATING(ch)         (IS_AFFECTED((ch), AFF_FLYING) || IS_AFFECTED((ch), AFF_FLOATING))
 
-#define IS_VALID_SN(sn)		((sn) >=0 && (sn) < MAX_SKILL	\
-				  && skill_table[(sn)]		\
-				  && skill_table[(sn)]->name)
+#define IS_VALID_SN(sn)         ((sn) >=0 && (sn) < MAX_SKILL   \
+                                  && skill_table[(sn)]          \
+                                  && skill_table[(sn)]->name)
 
-#define IS_VALID_HERB(sn)	((sn) >=0 && (sn) < MAX_HERB	\
-				  && herb_table[(sn)]		\
-				  && herb_table[(sn)]->name)
+#define IS_VALID_HERB(sn)       ((sn) >=0 && (sn) < MAX_HERB    \
+                                  && herb_table[(sn)]           \
+                                  && herb_table[(sn)]->name)
 
-#define IS_VALID_DISEASE(sn)	((sn) >=0 && (sn) < MAX_DISEASE	\
-				  && disease_table[(sn)]		\
-				  && disease_table[(sn)]->name)
+#define IS_VALID_DISEASE(sn)    ((sn) >=0 && (sn) < MAX_DISEASE \
+                                  && disease_table[(sn)]                \
+                                  && disease_table[(sn)]->name)
 
-#define IS_PACIFIST(ch)		(IS_NPC(ch) && xIS_SET(ch->act, ACT_PACIFIST))
+#define IS_PACIFIST(ch)         (IS_NPC(ch) && xIS_SET(ch->act, ACT_PACIFIST))
 
-#define SPELL_FLAG(skill, flag)	(IS_SET((skill)->flags, (flag)))
-#define SPELL_DAMAGE(skill)	(((skill)->info     ) & 7)
-#define SPELL_ACTION(skill)	(((skill)->info >>  3) & 7)
-#define SPELL_CLASS(skill)	(((skill)->info >>  6) & 7)
-#define SPELL_POWER(skill)	(((skill)->info >>  9) & 3)
-#define SPELL_SAVE(skill)	(((skill)->info >> 11) & 7)
-#define SET_SDAM(skill, val)	((skill)->info =  ((skill)->info & SDAM_MASK) + ((val) & 7))
-#define SET_SACT(skill, val)	((skill)->info =  ((skill)->info & SACT_MASK) + (((val) & 7) << 3))
-#define SET_SCLA(skill, val)	((skill)->info =  ((skill)->info & SCLA_MASK) + (((val) & 7) << 6))
-#define SET_SPOW(skill, val)	((skill)->info =  ((skill)->info & SPOW_MASK) + (((val) & 3) << 9))
-#define SET_SSAV(skill, val)	((skill)->info =  ((skill)->info & SSAV_MASK) + (((val) & 7) << 11))
+#define SPELL_FLAG(skill, flag) (IS_SET((skill)->flags, (flag)))
+#define SPELL_DAMAGE(skill)     (((skill)->info     ) & 7)
+#define SPELL_ACTION(skill)     (((skill)->info >>  3) & 7)
+#define SPELL_CLASS(skill)      (((skill)->info >>  6) & 7)
+#define SPELL_POWER(skill)      (((skill)->info >>  9) & 3)
+#define SPELL_SAVE(skill)       (((skill)->info >> 11) & 7)
+#define SET_SDAM(skill, val)    ((skill)->info =  ((skill)->info & SDAM_MASK) + ((val) & 7))
+#define SET_SACT(skill, val)    ((skill)->info =  ((skill)->info & SACT_MASK) + (((val) & 7) << 3))
+#define SET_SCLA(skill, val)    ((skill)->info =  ((skill)->info & SCLA_MASK) + (((val) & 7) << 6))
+#define SET_SPOW(skill, val)    ((skill)->info =  ((skill)->info & SPOW_MASK) + (((val) & 3) << 9))
+#define SET_SSAV(skill, val)    ((skill)->info =  ((skill)->info & SSAV_MASK) + (((val) & 7) << 11))
 
 /* Retired and guest imms. */
 #define IS_RETIRED(ch) (ch->pcdata && IS_SET(ch->pcdata->flags,PCFLAG_RETIRED))
@@ -3393,55 +3393,55 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 /* RIS by gsn lookups. -- Altrag.
    Will need to add some || stuff for spells that need a special GSN. */
 
-#define IS_FIRE(dt)		(IS_VALID_SN(dt) &&			\
-				  SPELL_DAMAGE(skill_table[(dt)]) == SD_FIRE)
-#define IS_COLD(dt)		(IS_VALID_SN(dt) &&			\
-				  SPELL_DAMAGE(skill_table[(dt)]) == SD_COLD)
-#define IS_ACID(dt)		(IS_VALID_SN(dt) &&			\
-				  SPELL_DAMAGE(skill_table[(dt)]) == SD_ACID)
-#define IS_ELECTRICITY(dt)	(IS_VALID_SN(dt) &&			\
-				  SPELL_DAMAGE(skill_table[(dt)]) == SD_ELECTRICITY)
-#define IS_ENERGY(dt)		(IS_VALID_SN(dt) &&			\
-				  SPELL_DAMAGE(skill_table[(dt)]) == SD_ENERGY)
+#define IS_FIRE(dt)             (IS_VALID_SN(dt) &&                     \
+                                  SPELL_DAMAGE(skill_table[(dt)]) == SD_FIRE)
+#define IS_COLD(dt)             (IS_VALID_SN(dt) &&                     \
+                                  SPELL_DAMAGE(skill_table[(dt)]) == SD_COLD)
+#define IS_ACID(dt)             (IS_VALID_SN(dt) &&                     \
+                                  SPELL_DAMAGE(skill_table[(dt)]) == SD_ACID)
+#define IS_ELECTRICITY(dt)      (IS_VALID_SN(dt) &&                     \
+                                  SPELL_DAMAGE(skill_table[(dt)]) == SD_ELECTRICITY)
+#define IS_ENERGY(dt)           (IS_VALID_SN(dt) &&                     \
+                                  SPELL_DAMAGE(skill_table[(dt)]) == SD_ENERGY)
 
-#define IS_DRAIN(dt)		(IS_VALID_SN(dt) &&			\
-				  SPELL_DAMAGE(skill_table[(dt)]) == SD_DRAIN)
+#define IS_DRAIN(dt)            (IS_VALID_SN(dt) &&                     \
+                                  SPELL_DAMAGE(skill_table[(dt)]) == SD_DRAIN)
 
-#define IS_POISON(dt)		(IS_VALID_SN(dt) &&			\
-				  SPELL_DAMAGE(skill_table[(dt)]) == SD_POISON)
+#define IS_POISON(dt)           (IS_VALID_SN(dt) &&                     \
+                                  SPELL_DAMAGE(skill_table[(dt)]) == SD_POISON)
 
 
-#define NOT_AUTHED(ch)		(!IS_NPC(ch) && ch->pcdata->auth_state <= 3 \
-				 && IS_SET(ch->pcdata->flags, PCFLAG_UNAUTHED))
+#define NOT_AUTHED(ch)          (!IS_NPC(ch) && ch->pcdata->auth_state <= 3 \
+                                 && IS_SET(ch->pcdata->flags, PCFLAG_UNAUTHED))
 
-#define IS_WAITING_FOR_AUTH(ch) (!IS_NPC(ch) && ch->desc		\
-				 && ch->pcdata->auth_state == 1		\
-				 && IS_SET(ch->pcdata->flags, PCFLAG_UNAUTHED))
+#define IS_WAITING_FOR_AUTH(ch) (!IS_NPC(ch) && ch->desc                \
+                                 && ch->pcdata->auth_state == 1         \
+                                 && IS_SET(ch->pcdata->flags, PCFLAG_UNAUTHED))
 
 /*
  * Object macros.
  */
-#define CAN_WEAR(obj, part)	(IS_SET((obj)->wear_flags,  (part)))
-#define IS_OBJ_STAT(obj, stat)	(xIS_SET((obj)->extra_flags, (stat)))
+#define CAN_WEAR(obj, part)     (IS_SET((obj)->wear_flags,  (part)))
+#define IS_OBJ_STAT(obj, stat)  (xIS_SET((obj)->extra_flags, (stat)))
 
 /*
- * MudProg macros.						-Thoric
+ * MudProg macros.                                              -Thoric
  */
-#define HAS_PROG(what, prog)	(xIS_SET((what)->progtypes, (prog)))
+#define HAS_PROG(what, prog)    (xIS_SET((what)->progtypes, (prog)))
 
 /*
  * Description macros.
  */
-#define PERS(ch, looker)	(can_see((looker), (ch)) ?		\
-				  (IS_NPC(ch) ? (ch)->short_descr	\
-				    : (ch)->name) : "someone")
+#define PERS(ch, looker)        (can_see((looker), (ch)) ?              \
+                                  (IS_NPC(ch) ? (ch)->short_descr       \
+                                    : (ch)->name) : "someone")
 
 #define MORPHPERS(ch, looker)   (can_see((looker), (ch)) ?           \
-				  (ch)->morph->morph->short_desc	\
-				  : "someone")
+                                  (ch)->morph->morph->short_desc        \
+                                  : "someone")
 
-#define log_string(txt)		(log_string_plus((txt), LOG_NORMAL, LEVEL_LOG))
-#define dam_message(ch, victim, dam, dt)	(new_dam_message((ch), (victim), (dam), (dt), NULL))
+#define log_string(txt)         (log_string_plus((txt), LOG_NORMAL, LEVEL_LOG))
+#define dam_message(ch, victim, dam, dt)        (new_dam_message((ch), (victim), (dam), (dt), NULL))
 
 /*
  *  Defines for the command flags. --Shaddai
@@ -3789,7 +3789,7 @@ DECLARE_DO_FUN(do_enter);
 DECLARE_DO_FUN(do_equipment);
 DECLARE_DO_FUN(do_examine);
 DECLARE_DO_FUN(do_exits);
-DECLARE_DO_FUN(do_extinguish	);
+DECLARE_DO_FUN(do_extinguish    );
 DECLARE_DO_FUN(do_favor);
 DECLARE_DO_FUN(do_feed);
 DECLARE_DO_FUN(do_fill);
@@ -3878,7 +3878,7 @@ DECLARE_DO_FUN(do_makeshop);
 DECLARE_DO_FUN(do_makewizlist);
 DECLARE_DO_FUN(do_meditate);
 DECLARE_DO_FUN(do_memory);
-DECLARE_DO_FUN(do_message	);
+DECLARE_DO_FUN(do_message       );
 DECLARE_DO_FUN(do_mcreate);
 DECLARE_DO_FUN(do_mdelete);
 DECLARE_DO_FUN(do_mfind);
@@ -4360,21 +4360,21 @@ DECLARE_SPELL_FUN(spell_sacral_divinity);
  * Our function prototypes.
  * One big lump ... this is every function in Merc.
  */
-#define CD	CHAR_DATA
-#define MID	MOB_INDEX_DATA
-#define OD	OBJ_DATA
-#define OID	OBJ_INDEX_DATA
-#define RID	ROOM_INDEX_DATA
-#define SF	SPEC_FUN
-#define BD	BOARD_DATA
-#define CL	CLAN_DATA
-#define EDD	EXTRA_DESCR_DATA
-#define RD	RESET_DATA
-#define ED	EXIT_DATA
-#define	ST	SOCIALTYPE
-#define	CO	COUNCIL_DATA
-#define DE	DEITY_DATA
-#define SK	SKILLTYPE
+#define CD      CHAR_DATA
+#define MID     MOB_INDEX_DATA
+#define OD      OBJ_DATA
+#define OID     OBJ_INDEX_DATA
+#define RID     ROOM_INDEX_DATA
+#define SF      SPEC_FUN
+#define BD      BOARD_DATA
+#define CL      CLAN_DATA
+#define EDD     EXTRA_DESCR_DATA
+#define RD      RESET_DATA
+#define ED      EXIT_DATA
+#define ST      SOCIALTYPE
+#define CO      COUNCIL_DATA
+#define DE      DEITY_DATA
+#define SK      SKILLTYPE
 
 /* act_comm.c */
 bool circle_follow(CHAR_DATA * ch, CHAR_DATA * victim);
@@ -4600,9 +4600,9 @@ void delete_room args((ROOM_INDEX_DATA * room));
 void delete_obj args((OBJ_INDEX_DATA * obj));
 void delete_mob args((MOB_INDEX_DATA * mob));
 /* Functions to add to sorting lists. -- Altrag */
-/*void	mob_sort	args((MOB_INDEX_DATA *pMob));
-  void	obj_sort	args((OBJ_INDEX_DATA *pObj));
-  void	room_sort	args((ROOM_INDEX_DATA *pRoom));*/
+/*void  mob_sort        args((MOB_INDEX_DATA *pMob));
+  void  obj_sort        args((OBJ_INDEX_DATA *pObj));
+  void  room_sort       args((ROOM_INDEX_DATA *pRoom));*/
 void sort_area args((AREA_DATA * pArea, bool proto));
 void sort_area_by_name args((AREA_DATA * pArea)); /* Fireblade */
 void write_projects args((void));
@@ -4916,8 +4916,8 @@ ch_ret chain_spells(int sn, int level, CHAR_DATA * ch, void *vo, short chain);
 
 /* save.c */
 /* object saving defines for fread/write_obj. -- Altrag */
-#define OS_CARRY	0
-#define OS_CORPSE	1
+#define OS_CARRY        0
+#define OS_CORPSE       1
 #define OS_VAULT 2
 void save_char_obj args((CHAR_DATA * ch));
 bool load_char_obj args((DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover));
@@ -4988,39 +4988,39 @@ void hash_dump(int hash);
 void show_high_hash(int top);
 bool in_hash_table(const char *str);
 
-#undef	SK
-#undef	CO
-#undef	ST
-#undef	CD
-#undef	MID
-#undef	OD
-#undef	OID
-#undef	RID
-#undef	SF
-#undef	BD
-#undef	CL
-#undef	EDD
-#undef	RD
-#undef	ED
+#undef  SK
+#undef  CO
+#undef  ST
+#undef  CD
+#undef  MID
+#undef  OD
+#undef  OID
+#undef  RID
+#undef  SF
+#undef  BD
+#undef  CL
+#undef  EDD
+#undef  RD
+#undef  ED
 #undef      DE
 
 /*
  * defines for use with this get_affect function
  */
 
-#define RIS_000		BV00
-#define RIS_R00		BV01
-#define RIS_0I0		BV02
-#define RIS_RI0		BV03
-#define RIS_00S		BV04
-#define RIS_R0S		BV05
-#define RIS_0IS		BV06
-#define RIS_RIS		BV07
+#define RIS_000         BV00
+#define RIS_R00         BV01
+#define RIS_0I0         BV02
+#define RIS_RI0         BV03
+#define RIS_00S         BV04
+#define RIS_R0S         BV05
+#define RIS_0IS         BV06
+#define RIS_RIS         BV07
 
-#define GA_AFFECTED	BV09
-#define GA_RESISTANT	BV10
-#define GA_IMMUNE	BV11
-#define GA_SUSCEPTIBLE	BV12
+#define GA_AFFECTED     BV09
+#define GA_RESISTANT    BV10
+#define GA_IMMUNE       BV11
+#define GA_SUSCEPTIBLE  BV12
 #define GA_RIS          BV30
 
 /*
@@ -5094,7 +5094,7 @@ void oprog_act_trigger(const char *buf, OBJ_DATA * mobj, CHAR_DATA * ch, OBJ_DAT
 void rprog_act_trigger(const char *buf, ROOM_INDEX_DATA * room, CHAR_DATA * ch, OBJ_DATA * obj, CHAR_DATA * victim, OBJ_DATA * target);
 
 #define GET_ADEPT(ch,sn)    (IS_IMMORTAL(ch) ? 100 : skill_table[(sn)]->skill_adept[(ch)->Class])
-#define LEARNED(ch,sn)	    (IS_NPC(ch) ? 80 : URANGE(0, (ch)->pcdata->learned[(sn)], 101))
+#define LEARNED(ch,sn)      (IS_NPC(ch) ? 80 : URANGE(0, (ch)->pcdata->learned[(sn)], 101))
 
 /* List handling v2.0, expanded a bit - Luc 06/2007
    Whoa! Eight years since I wrote v1.0...  :(*/

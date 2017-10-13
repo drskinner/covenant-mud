@@ -230,13 +230,13 @@ void do_comment(CHAR_DATA* ch, const char* argument)
       vnum++;
       if (vnum == anum || fAll)
       {
-	ch_printf(ch, "[%3d] %s: %s\r\n%s\r\nTo: %s\r\n",
-		   vnum, pnote->sender, pnote->subject, pnote->date, pnote->to_list);
-	send_to_char(pnote->text, ch);
-	/*
-	 * act(AT_ACTION, "$n reads a note.", ch, NULL, NULL, TO_ROOM); 
-	 */
-	return;
+        ch_printf(ch, "[%3d] %s: %s\r\n%s\r\nTo: %s\r\n",
+                   vnum, pnote->sender, pnote->subject, pnote->date, pnote->to_list);
+        send_to_char(pnote->text, ch);
+        /*
+         * act(AT_ACTION, "$n reads a note.", ch, NULL, NULL, TO_ROOM); 
+         */
+        return;
       }
     }
 
@@ -396,9 +396,9 @@ void do_comment(CHAR_DATA* ch, const char* argument)
     {
       if (get_trust(ch) >= LEVEL_GOD && !(--anum))
       {
-	comment_remove(victim, pnote);
-	send_to_char("Ok.\r\n", ch);
-	return;
+        comment_remove(victim, pnote);
+        send_to_char("Ok.\r\n", ch);
+        return;
       }
     }
 
@@ -448,8 +448,8 @@ void fread_comment(CHAR_DATA * ch, FILE * fp)
       letter = getc(fp);
       if (feof(fp))
       {
-	fclose(fp);
-	return;
+        fclose(fp);
+        return;
       }
     }
     while (isspace(letter));

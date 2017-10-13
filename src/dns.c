@@ -51,7 +51,7 @@ void prune_dns(void)
      * Stay in cache for 14 days 
      */
     if (current_time - cache->time >= 1209600 || !str_cmp(cache->ip, "Unknown??")
-	|| !str_cmp(cache->name, "Unknown??"))
+        || !str_cmp(cache->name, "Unknown??"))
     {
       STRFREE(cache->ip);
       STRFREE(cache->name);
@@ -119,11 +119,11 @@ void fread_dns(DNS_DATA * cache, FILE * fp)
     case 'E':
       if (!str_cmp(word, "End"))
       {
-	if (!cache->ip)
-	  cache->ip = STRALLOC("Unknown??");
-	if (!cache->name)
-	  cache->name = STRALLOC("Unknown??");
-	return;
+        if (!cache->ip)
+          cache->ip = STRALLOC("Unknown??");
+        if (!cache->name)
+          cache->name = STRALLOC("Unknown??");
+        return;
       }
       break;
 
@@ -166,30 +166,30 @@ void load_dns(void)
       letter = fread_letter(fp);
       if (letter == '*')
       {
-	fread_to_eol(fp);
-	continue;
+        fread_to_eol(fp);
+        continue;
       }
 
       if (letter != '#')
       {
-	bug("%s: # not found.", __func__);
-	break;
+        bug("%s: # not found.", __func__);
+        break;
       }
 
       word = fread_word(fp);
       if (!str_cmp(word, "CACHE"))
       {
-	CREATE(cache, DNS_DATA, 1);
-	fread_dns(cache, fp);
-	LINK(cache, first_cache, last_cache, next, prev);
-	continue;
+        CREATE(cache, DNS_DATA, 1);
+        fread_dns(cache, fp);
+        LINK(cache, first_cache, last_cache, next, prev);
+        continue;
       }
       else if (!str_cmp(word, "END"))
-	break;
+        break;
       else
       {
-	bug("%s: bad section: %s.", __func__, word);
-	continue;
+        bug("%s: bad section: %s.", __func__, word);
+        continue;
       }
     }
     fclose(fp);
@@ -216,9 +216,9 @@ void save_dns(void)
     for (cache = first_cache; cache; cache = cache->next)
     {
       fprintf(fp, "#CACHE\n");
-      fprintf(fp, "IP		%s~\n", cache->ip);
-      fprintf(fp, "Name		%s~\n", cache->name);
-      fprintf(fp, "Time		%ld\n", cache->time);
+      fprintf(fp, "IP           %s~\n", cache->ip);
+      fprintf(fp, "Name         %s~\n", cache->name);
+      fprintf(fp, "Time         %ld\n", cache->time);
       fprintf(fp, "End\n\n");
     }
     fprintf(fp, "#END\n");
@@ -259,7 +259,7 @@ bool read_from_dns(int fd, char *buffer)
     {
       iStart += nRead;
       if (inbuf[iStart - 2] == '\n' || inbuf[iStart - 2] == '\r')
-	break;
+        break;
     }
     else if (nRead == 0)
     {

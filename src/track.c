@@ -18,9 +18,9 @@
 #include <stdio.h>
 #include "mud.h"
 
-#define BFS_ERROR	   -1
+#define BFS_ERROR          -1
 #define BFS_ALREADY_THERE  -2
-#define BFS_NO_PATH	   -3
+#define BFS_NO_PATH        -3
 #define BFS_MARK ROOM_TRACK
 
 #define TRACK_THROUGH_DOORS
@@ -43,9 +43,9 @@ struct bfs_queue_struct
 static BFS_DATA *queue_head = NULL, *queue_tail = NULL, *room_queue = NULL;
 
 /* Utility macros */
-#define MARK(room)	(xSET_BIT(	(room)->room_flags, BFS_MARK))
-#define UNMARK(room)	(xREMOVE_BIT(	(room)->room_flags, BFS_MARK))
-#define IS_MARKED(room)	(xIS_SET(	(room)->room_flags, BFS_MARK))
+#define MARK(room)      (xSET_BIT(      (room)->room_flags, BFS_MARK))
+#define UNMARK(room)    (xREMOVE_BIT(   (room)->room_flags, BFS_MARK))
+#define IS_MARKED(room) (xIS_SET(       (room)->room_flags, BFS_MARK))
 
 bool valid_edge(EXIT_DATA * pexit)
 {
@@ -172,13 +172,13 @@ int find_first_step(ROOM_INDEX_DATA * src, ROOM_INDEX_DATA * target, int maxdist
     else
     {
       for (pexit = queue_head->room->first_exit; pexit; pexit = pexit->next)
-	if (valid_edge(pexit))
-	{
-	  curr_dir = pexit->vdir;
-	  MARK(pexit->to_room);
-	  room_enqueue(pexit->to_room);
-	  bfs_enqueue(pexit->to_room, queue_head->dir);
-	}
+        if (valid_edge(pexit))
+        {
+          curr_dir = pexit->vdir;
+          MARK(pexit->to_room);
+          room_enqueue(pexit->to_room);
+          bfs_enqueue(pexit->to_room, queue_head->dir);
+        }
       bfs_dequeue();
     }
   }
@@ -399,9 +399,9 @@ void hunt_victim(CHAR_DATA * ch)
     {
       if (!ch->in_room)
       {
-	bug("Hunt_victim: no ch->in_room!  Mob #%d, name: %s.  Placing mob in limbo.", ch->pIndexData->vnum, ch->name);
-	char_to_room(ch, get_room_index(ROOM_VNUM_LIMBO));
-	return;
+        bug("Hunt_victim: no ch->in_room!  Mob #%d, name: %s.  Placing mob in limbo.", ch->pIndexData->vnum, ch->name);
+        char_to_room(ch, get_room_index(ROOM_VNUM_LIMBO));
+        return;
       }
       do_say(ch, "Damn!  Lost my prey!");
       return;
@@ -421,12 +421,12 @@ void hunt_victim(CHAR_DATA * ch)
        */
       if ((vch = scan_for_victim(ch, pexit, ch->hunting->name)) != NULL)
       {
-	if (!mob_fire(ch, ch->hunting->who->name))
-	{
-	  /*
-	   * ranged spell attacks go here 
-	   */
-	}
+        if (!mob_fire(ch, ch->hunting->who->name))
+        {
+          /*
+           * ranged spell attacks go here 
+           */
+        }
       }
     }
     return;

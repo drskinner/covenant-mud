@@ -21,7 +21,7 @@
  * Original Diku Mud copyright (C) 1990, 1991 by Sebastian Hammer,          *
  * Michael Seifert, Hans Henrik St{rfeldt, Tom Madsen, and Katja Nyboe.     *
  * ------------------------------------------------------------------------ *
- *	                     Weather System Header                             *
+ *                           Weather System Header                             *
  ****************************************************************************
  *     Base Weather Model Copyright (c) 2007 Chris Jacobson                 *
  ****************************************************************************/
@@ -60,8 +60,8 @@ const int MAX_CLIMATE         = 11;
 #define WEATHER_FILE "weathermap.dat"
 
 //So it can be utilized from other parts of the code
-extern struct WeatherCell	weatherMap[WEATHER_SIZE_X][WEATHER_SIZE_Y];
-extern struct WeatherCell	weatherDelta[WEATHER_SIZE_X][WEATHER_SIZE_Y];
+extern struct WeatherCell       weatherMap[WEATHER_SIZE_X][WEATHER_SIZE_Y];
+extern struct WeatherCell       weatherDelta[WEATHER_SIZE_X][WEATHER_SIZE_Y];
 
 //Defines
 void InitializeWeatherMap(void);

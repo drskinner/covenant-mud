@@ -29,9 +29,9 @@
 #define RESTORE_INTERVAL 21600
 
 const char *const save_flag[] = { "death", "kill", "passwd", "drop", "put", "give", "auto", "zap",
-				  "auction", "get", "receive", "idle", "backup", "quitbackup", "fill",
-				  "empty", "tmpsave", "r17", "r18", "r19", "r20", "r21", "r22", "r23", "r24",
-				  "r25", "r26", "r27", "r28", "r29", "r30", "r31"
+                                  "auction", "get", "receive", "idle", "backup", "quitbackup", "fill",
+                                  "empty", "tmpsave", "r17", "r18", "r19", "r20", "r21", "r22", "r23", "r24",
+                                  "r25", "r26", "r27", "r28", "r29", "r30", "r31"
 };
 
 void save_sysdata(SYSTEM_DATA sys);
@@ -218,16 +218,16 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     {
       if (++rec_count >= start)
       {
-	send_to_pager(s, ch);
-	disp_count++;
+        send_to_pager(s, ch);
+        disp_count++;
       }
       fgets(s, MAX_STRING_LENGTH, fp);
     }
     send_to_pager("\r\n", ch);
     if (disp_count >= MAX_DISPLAY_LINES)
       send_to_pager("Maximum display lines exceeded. List is terminated.\r\n"
-		     "Type 'help watch' to see how to print the rest of the list.\r\n\r\n"
-		     "Your watch file is large. Perhaps you should clear it?\r\n", ch);
+                     "Type 'help watch' to see how to print the rest of the list.\r\n\r\n"
+                     "Your watch file is large. Perhaps you should clear it?\r\n", ch);
 
     fclose(fp);
     return;
@@ -242,9 +242,9 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     pager_printf(ch, "%-12s %-14s %-15s\r\n", "Imm Name", "Player/Command", "Player Site");
     if (first_watch)
       for (pw = first_watch; pw; pw = pw->next)
-	if (get_trust(ch) >= pw->imm_level)
-	  pager_printf(ch, "%-14s %-12s %-15s\r\n", pw->imm_name, pw->target_name ? pw->target_name : " ",
-			pw->player_site ? pw->player_site : " ");
+        if (get_trust(ch) >= pw->imm_level)
+          pager_printf(ch, "%-14s %-12s %-15s\r\n", pw->imm_name, pw->target_name ? pw->target_name : " ",
+                        pw->player_site ? pw->player_site : " ");
     return;
   }
 
@@ -257,9 +257,9 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     pager_printf(ch, "%-3s %-12s %-14s %-15s\r\n", " ", "Imm Name", "Player/Command", "Player Site");
     if (first_watch)
       for (pw = first_watch; pw; pw = pw->next)
-	if (!str_cmp(ch->name, pw->imm_name))
-	  pager_printf(ch, "%3d %-12s %-14s %-15s\r\n", ++cou, pw->imm_name, pw->target_name ? pw->target_name : " ",
-			pw->player_site ? pw->player_site : " ");
+        if (!str_cmp(ch->name, pw->imm_name))
+          pager_printf(ch, "%3d %-12s %-14s %-15s\r\n", ++cou, pw->imm_name, pw->target_name ? pw->target_name : " ",
+                        pw->player_site ? pw->player_site : " ");
     return;
   }
 
@@ -275,25 +275,25 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     if (first_watch)
     {
       for (pw = first_watch; pw; pw = pw->next)
-	if (!str_cmp(ch->name, pw->imm_name))
-	  if (num == ++cou)
-	  {
-	    /*
-	     * Oops someone forgot to clear up the memory --Shaddai 
-	     */
-	    DISPOSE(pw->imm_name);
-	    DISPOSE(pw->player_site);
-	    DISPOSE(pw->target_name);
-	    /*
-	     * Now we can unlink and then clear up that final
-	     * * pointer -- Shaddai 
-	     */
-	    UNLINK(pw, first_watch, last_watch, next, prev);
-	    DISPOSE(pw);
-	    save_watchlist();
-	    send_to_pager("Deleted.\r\n", ch);
-	    return;
-	  }
+        if (!str_cmp(ch->name, pw->imm_name))
+          if (num == ++cou)
+          {
+            /*
+             * Oops someone forgot to clear up the memory --Shaddai 
+             */
+            DISPOSE(pw->imm_name);
+            DISPOSE(pw->player_site);
+            DISPOSE(pw->target_name);
+            /*
+             * Now we can unlink and then clear up that final
+             * * pointer -- Shaddai 
+             */
+            UNLINK(pw, first_watch, last_watch, next, prev);
+            DISPOSE(pw);
+            save_watchlist();
+            send_to_pager("Deleted.\r\n", ch);
+            return;
+          }
     }
     send_to_pager("Sorry. I found nothing to delete.\r\n", ch);
     return;
@@ -311,11 +311,11 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     if (first_watch) /* check for dups */
     {
       for (pw = first_watch; pw; pw = pw->next)
-	if (!str_cmp(ch->name, pw->imm_name) && pw->target_name && !str_cmp(arg2, pw->target_name))
-	{
-	  send_to_pager("You are already watching that player.\r\n", ch);
-	  return;
-	}
+        if (!str_cmp(ch->name, pw->imm_name) && pw->target_name && !str_cmp(arg2, pw->target_name))
+        {
+          send_to_pager("You are already watching that player.\r\n", ch);
+          return;
+        }
     }
 
     CREATE(pinsert, WATCH_DATA, 1);   /* create new watch */
@@ -334,18 +334,18 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_INPUT_LENGTH, "0.%s", arg2);
     if ((vic = get_char_world(ch, buf))) /* if vic is in game now */
       if ((!IS_NPC(vic)) && !str_cmp(arg2, vic->name))
-	SET_BIT(vic->pcdata->flags, PCFLAG_WATCH);
+        SET_BIT(vic->pcdata->flags, PCFLAG_WATCH);
 
     if (first_watch) /* ins new watch if app */
     {
       for (pw = first_watch; pw; pw = pw->next)
-	if (str_cmp(pinsert->imm_name, pw->imm_name))
-	{
-	  INSERT(pinsert, pw, first_watch, next, prev);
-	  save_watchlist();
-	  send_to_pager("Ok. That player will be watched.\r\n", ch);
-	  return;
-	}
+        if (str_cmp(pinsert->imm_name, pw->imm_name))
+        {
+          INSERT(pinsert, pw, first_watch, next, prev);
+          save_watchlist();
+          send_to_pager("Ok. That player will be watched.\r\n", ch);
+          return;
+        }
     }
 
     LINK(pinsert, first_watch, last_watch, next, prev); /* link new watch */
@@ -365,11 +365,11 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     if (first_watch) /* check for dups */
     {
       for (pw = first_watch; pw; pw = pw->next)
-	if (!str_cmp(ch->name, pw->imm_name) && pw->player_site && !str_cmp(arg2, pw->player_site))
-	{
-	  send_to_pager("You are already watching that site.\r\n", ch);
-	  return;
-	}
+        if (!str_cmp(ch->name, pw->imm_name) && pw->player_site && !str_cmp(arg2, pw->player_site))
+        {
+          send_to_pager("You are already watching that site.\r\n", ch);
+          return;
+        }
     }
     CREATE(pinsert, WATCH_DATA, 1);   /* create new watch */
     pinsert->imm_level = get_trust(ch);
@@ -379,19 +379,19 @@ void do_watch(CHAR_DATA* ch, const char* argument)
 
     for (vic = first_char; vic; vic = vic->next)
       if (!IS_NPC(vic) && vic->desc && *pinsert->player_site && !str_prefix(pinsert->player_site, vic->desc->host)
-	  && get_trust(vic) < pinsert->imm_level)
-	SET_BIT(vic->pcdata->flags, PCFLAG_WATCH);
+          && get_trust(vic) < pinsert->imm_level)
+        SET_BIT(vic->pcdata->flags, PCFLAG_WATCH);
 
     if (first_watch) /* ins new watch if app */
     {
       for (pw = first_watch; pw; pw = pw->next)
-	if (str_cmp(pinsert->imm_name, pw->imm_name))
-	{
-	  INSERT(pinsert, pw, first_watch, next, prev);
-	  save_watchlist();
-	  send_to_pager("Ok. That site will be watched.\r\n", ch);
-	  return;
-	}
+        if (str_cmp(pinsert->imm_name, pw->imm_name))
+        {
+          INSERT(pinsert, pw, first_watch, next, prev);
+          save_watchlist();
+          send_to_pager("Ok. That site will be watched.\r\n", ch);
+          return;
+        }
     }
     LINK(pinsert, first_watch, last_watch, next, prev);
     save_watchlist();
@@ -412,8 +412,8 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(ch->name, pw->imm_name) && pw->target_name && !str_cmp(arg2, pw->target_name))
       {
-	send_to_pager("You are already watching that command.\r\n", ch);
-	return;
+        send_to_pager("You are already watching that command.\r\n", ch);
+        return;
       }
     }
 
@@ -421,8 +421,8 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(arg2, cmd->name))
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
     }
 
@@ -444,10 +444,10 @@ void do_watch(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(pinsert->imm_name, pw->imm_name))
       {
-	INSERT(pinsert, pw, first_watch, next, prev);
-	save_watchlist();
-	send_to_pager("Ok, That command will be watched.\r\n", ch);
-	return;
+        INSERT(pinsert, pw, first_watch, next, prev);
+        save_watchlist();
+        send_to_pager("Ok, That command will be watched.\r\n", ch);
+        return;
       }
     }
 
@@ -472,9 +472,9 @@ void do_wizhelp(CHAR_DATA* ch, const char* argument)
     for (cmd = command_hash[hash]; cmd; cmd = cmd->next)
       if (cmd->level >= LEVEL_HERO && cmd->level <= get_trust(ch))
       {
-	pager_printf(ch, "%-12s", cmd->name);
-	if (++col % 6 == 0)
-	  send_to_pager("\r\n", ch);
+        pager_printf(ch, "%-12s", cmd->name);
+        if (++col % 6 == 0)
+          send_to_pager("\r\n", ch);
       }
 
   if (col % 6 != 0)
@@ -525,7 +525,7 @@ void do_restrict(CHAR_DATA* ch, const char* argument)
     {
       snprintf(buf, MAX_STRING_LENGTH, "%s show", cmd->name);
       do_cedit(ch, buf);
-/*    		ch_printf(ch, "%s is at level %d.\r\n", cmd->name, cmd->level);*/
+/*              ch_printf(ch, "%s is at level %d.\r\n", cmd->name, cmd->level);*/
       return;
     }
     cmd->level = level;
@@ -554,8 +554,8 @@ CHAR_DATA *get_waiting_desc(CHAR_DATA * ch, char *name)
     {
       if (++number_of_hits > 1)
       {
-	ch_printf(ch, "%s does not uniquely identify a char.\r\n", name);
-	return NULL;
+        ch_printf(ch, "%s does not uniquely identify a char.\r\n", name);
+        return NULL;
       }
       ret_char = d->character;   /* return current char on exit */
     }
@@ -590,11 +590,11 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
     send_to_char("---------------------------------------------\r\n", ch);
     for (d = first_descriptor; d; d = d->next)
       if ((victim = d->character) != NULL && IS_WAITING_FOR_AUTH(victim))
-	ch_printf(ch, " %s@%s new %s %s (%s)...\r\n",
-		   victim->name,
-		   victim->desc->host,
-		   race_table[victim->race]->race_name,
-		   class_table[victim->Class]->who_name, IS_PKILL(victim) ? "Deadly" : "Peaceful");
+        ch_printf(ch, " %s@%s new %s %s (%s)...\r\n",
+                   victim->name,
+                   victim->desc->host,
+                   race_table[victim->race]->race_name,
+                   class_table[victim->Class]->who_name, IS_PKILL(victim) ? "Deadly" : "Peaceful");
     return;
   }
 
@@ -617,8 +617,8 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
      * Below sends a message to player when name is accepted - Brittany 
      */
     ch_printf_color(victim,
-		     "\r\n&GThe MUD Administrators have accepted the name %s.\r\n"
-		     "You are authorized to enter the Realms at the end of " "this area.\r\n", victim->name);
+                     "\r\n&GThe MUD Administrators have accepted the name %s.\r\n"
+                     "You are authorized to enter the Realms at the end of " "this area.\r\n", victim->name);
     return;
   }
 
@@ -628,7 +628,7 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s: name denied - similar to Imm name", victim->name);
     to_channel(buf, CHANNEL_AUTH, "Auth", LEVEL_NEOPHYTE);
     send_to_char_color("&RThe name you have chosen is too similar to that of a current immortal. \r\n"
-			"We ask you to please choose another name using the name command.\r\n", victim);
+                        "We ask you to please choose another name using the name command.\r\n", victim);
     ch_printf(ch, "You requested %s change names.\r\n", victim->name);
     return;
   }
@@ -639,9 +639,9 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s: name denied - similar to mob name", victim->name);
     to_channel(buf, CHANNEL_AUTH, "Auth", LEVEL_NEOPHYTE);
     send_to_char_color("&RThe name you have chosen is too similar to that of certain\r\n"
-			"monsters in the game, in the long run this could cause problems\r\n"
-			"and therefore we are unable to authorize them.  Please choose\r\n"
-			"another name using the name command.\r\n", victim);
+                        "monsters in the game, in the long run this could cause problems\r\n"
+                        "and therefore we are unable to authorize them.  Please choose\r\n"
+                        "another name using the name command.\r\n", victim);
     ch_printf(ch, "You requested %s change names.\r\n", victim->name);
     return;
   }
@@ -652,7 +652,7 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s: name denied - profanity", victim->name);
     to_channel(buf, CHANNEL_AUTH, "Auth", LEVEL_NEOPHYTE);
     send_to_char_color("&RWe will not authorize names containing profanity, in any language.\r\n"
-			"Please choose another name using the name command.\r\n", victim);
+                        "Please choose another name using the name command.\r\n", victim);
     ch_printf(ch, "You requested %s change names.\r\n", victim->name);
     return;
   }
@@ -663,7 +663,7 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s: name denied", victim->name);
     to_channel(buf, CHANNEL_AUTH, "Auth", LEVEL_NEOPHYTE);
     send_to_char_color("&RWe would ask you to please attempt to choose a name that is more\r\n"
-			"medieval in nature.  Please choose another name using the name\r\n" "command.\r\n", victim);
+                        "medieval in nature.  Please choose another name using the name\r\n" "command.\r\n", victim);
     ch_printf(ch, "You requested %s change names.\r\n", victim->name);
     return;
   }
@@ -674,7 +674,7 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s: name denied - unpronouncable", victim->name);
     to_channel(buf, CHANNEL_AUTH, "Auth", LEVEL_NEOPHYTE);
     send_to_char_color("&RThe name you have chosen is unpronouncable.\r\n"
-			"Please choose another name using the name\r\n" "command.\r\n", victim);
+                        "Please choose another name using the name\r\n" "command.\r\n", victim);
     ch_printf(ch, "You requested %s change names.\r\n", victim->name);
     return;
   }
@@ -682,9 +682,9 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
   else if (!str_cmp(arg2, "no") || !str_cmp(arg2, "deny"))
   {
     send_to_char_color("&RThe name you have chosen and/or the actions you have taken have\r\n"
-			"been deemed grossly unacceptable to the administration of this mud.\r\n"
-			"We ask you to discontinue such behaviour, or suffer possible banishmemt\r\n"
-			"from this mud.\r\n", victim);
+                        "been deemed grossly unacceptable to the administration of this mud.\r\n"
+                        "We ask you to discontinue such behaviour, or suffer possible banishmemt\r\n"
+                        "from this mud.\r\n", victim);
     snprintf(buf, MAX_STRING_LENGTH, "%s: denied authorization", victim->name);
     to_channel(buf, CHANNEL_AUTH, "Auth", LEVEL_NEOPHYTE);
     ch_printf(ch, "You have denied %s.\r\n", victim->name);
@@ -697,13 +697,13 @@ void do_authorize(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "%s: name denied", victim->name);
     to_channel(buf, CHANNEL_AUTH, "Auth", LEVEL_NEOPHYTE);
     ch_printf_color(victim,
-		     "&R\r\nThe MUD Administrators have found the name %s "
-		     "to be unacceptable.\r\n"
-		     "You may choose a new name when you reach "
-		     "the end of this area.\r\n"
-		     "The name you choose must be medieval and original.\r\n"
-		     "No titles, descriptive words, or names close to any existing "
-		     "Immortal's name.\r\n", victim->name);
+                     "&R\r\nThe MUD Administrators have found the name %s "
+                     "to be unacceptable.\r\n"
+                     "You may choose a new name when you reach "
+                     "the end of this area.\r\n"
+                     "The name you choose must be medieval and original.\r\n"
+                     "No titles, descriptive words, or names close to any existing "
+                     "Immortal's name.\r\n", victim->name);
     ch_printf(ch, "You requested %s change names.\r\n", victim->name);
     return;
   }
@@ -1019,8 +1019,8 @@ void do_forceclose(CHAR_DATA* ch, const char* argument)
     {
       if (d->character && get_trust(d->character) >= get_trust(ch))
       {
-	send_to_char("They might not like that...\r\n", ch);
-	return;
+        send_to_char("They might not like that...\r\n", ch);
+        return;
       }
       close_socket(d, FALSE);
       send_to_char("Ok.\r\n", ch);
@@ -1113,11 +1113,11 @@ void echo_to_all(short AT_COLOR, const char *argument, short tar)
        * This one is kinda useless except for switched.. 
        */
       if (tar == ECHOTAR_PC && IS_NPC(d->character))
-	continue;
+        continue;
       else if (tar == ECHOTAR_IMM && !IS_IMMORTAL(d->character))
-	continue;
+        continue;
       else if (tar == ECHOTAR_PK && !IS_PKILL(d->character))
-	continue;
+        continue;
       set_char_color(AT_COLOR, d->character);
       send_to_char(argument, d->character);
       send_to_char("\r\n", d->character);
@@ -1156,15 +1156,15 @@ void do_aecho(CHAR_DATA *ch, const char *argument)
     {
       if (color)
       {
-	set_char_color(color, vch),
-	  send_to_char(argument, vch),
-	  send_to_char("\r\n",   vch);
+        set_char_color(color, vch),
+          send_to_char(argument, vch),
+          send_to_char("\r\n",   vch);
       }
       else
       {
-	set_char_color(AT_IMMORT, vch),
-	  send_to_char(argument, vch),
-	  send_to_char("\r\n",   vch);
+        set_char_color(AT_IMMORT, vch),
+          send_to_char(argument, vch),
+          send_to_char("\r\n",   vch);
       }
     }
   }
@@ -1369,7 +1369,7 @@ void do_transfer(CHAR_DATA* ch, const char* argument)
     for (d = first_descriptor; d; d = d->next)
     {
       if (d->connected == CON_PLAYING && d->character && d->character != ch && d->character->in_room)
-	transfer_char(ch, d->character, location);
+        transfer_char(ch, d->character, location);
     }
     return;
   }
@@ -1387,7 +1387,7 @@ void do_transfer(CHAR_DATA* ch, const char* argument)
   if (!IS_NPC(victim) && get_trust(ch) < get_trust(victim)
       && victim->desc
       && (victim->desc->connected == CON_PLAYING
-	   || victim->desc->connected == CON_EDITING) && IS_SET(victim->pcdata->flags, PCFLAG_DND))
+           || victim->desc->connected == CON_EDITING) && IS_SET(victim->pcdata->flags, PCFLAG_DND))
   {
     ch_printf(ch, "Sorry. %s does not wish to be disturbed.\r\n", victim->name);
     ch_printf(victim, "Your DND flag just foiled %s's transfer command.\r\n", ch->name);
@@ -1638,17 +1638,17 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
     ch_printf_color(ch, "&cExits for room '&W%s&c'  Vnum &W%d\r\n", location->name, location->vnum);
     for (cnt = 0, pexit = location->first_exit; pexit; pexit = pexit->next)
       ch_printf_color(ch,
-		       "&W%2d) &w%2s to %-5d  &cKey: &w%d  &cFlags: &w%d  &cKeywords: '&w%s&c'\r\n     Exdesc: &w%s     &cBack link: &w%d  &cVnum: &w%d  &cDistance: &w%d  &cPulltype: &w%s  &cPull: &w%d\r\n",
-		       ++cnt,
-		       dir_text[pexit->vdir],
-		       pexit->to_room ? pexit->to_room->vnum : 0,
-		       pexit->key,
-		       pexit->exit_info,
-		       pexit->keyword,
-		       pexit->description[0] != '\0'
-		       ? pexit->description : "(none).\r\n",
-		       pexit->rexit ? pexit->rexit->vnum : 0,
-		       pexit->rvnum, pexit->distance, pull_type_name(pexit->pulltype), pexit->pull);
+                       "&W%2d) &w%2s to %-5d  &cKey: &w%d  &cFlags: &w%d  &cKeywords: '&w%s&c'\r\n     Exdesc: &w%s     &cBack link: &w%d  &cVnum: &w%d  &cDistance: &w%d  &cPulltype: &w%s  &cPull: &w%d\r\n",
+                       ++cnt,
+                       dir_text[pexit->vdir],
+                       pexit->to_room ? pexit->to_room->vnum : 0,
+                       pexit->key,
+                       pexit->exit_info,
+                       pexit->keyword,
+                       pexit->description[0] != '\0'
+                       ? pexit->description : "(none).\r\n",
+                       pexit->rexit ? pexit->rexit->vnum : 0,
+                       pexit->rvnum, pexit->distance, pull_type_name(pexit->pulltype), pexit->pull);
     return;
   }
   location = (arg[0] == '\0') ? ch->in_room : find_location(ch, arg);
@@ -1670,9 +1670,9 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
   }
 
   ch_printf_color(ch, "&cName: &w%s\r\n&cArea: &w%s  &cFilename: &w%s\r\n",
-		   location->name,
-		   location->area ? location->area->name : "None????",
-		   location->area ? location->area->filename : "None????");
+                   location->name,
+                   location->area ? location->area->name : "None????",
+                   location->area ? location->area->filename : "None????");
 
   switch (ch->in_room->sector_type)
   {
@@ -1727,7 +1727,7 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
   }
 
   ch_printf_color(ch, "&cVnum: &w%d   &cSector: &w%d (%s)   &cLight: &w%d",
-		   location->vnum, location->sector_type, sect, location->light);
+                   location->vnum, location->sector_type, sect, location->light);
   if (location->tunnel > 0)
     ch_printf_color(ch, "   &cTunnel: &W%d", location->tunnel);
   send_to_char("\r\n", ch);
@@ -1745,7 +1745,7 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
     {
       send_to_char(ed->keyword, ch);
       if (ed->next)
-	send_to_char(", ", ch);
+        send_to_char(", ", ch);
     }
     send_to_char("'\r\n", ch);
   }
@@ -1787,11 +1787,11 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
     send_to_char_color("&c------------------- &wEXITS &c-------------------\r\n", ch);
   for (cnt = 0, pexit = location->first_exit; pexit; pexit = pexit->next)
     ch_printf(ch,
-	       "%2d) %-2s to %-5d.  Key: %d  Flags: %d  Keywords: %s.\r\n",
-	       ++cnt,
-	       dir_text[pexit->vdir],
-	       pexit->to_room ? pexit->to_room->vnum : 0,
-	       pexit->key, pexit->exit_info, pexit->keyword[0] != '\0' ? pexit->keyword : "(none)");
+               "%2d) %-2s to %-5d.  Key: %d  Flags: %d  Keywords: %s.\r\n",
+               ++cnt,
+               dir_text[pexit->vdir],
+               pexit->to_room ? pexit->to_room->vnum : 0,
+               pexit->key, pexit->exit_info, pexit->keyword[0] != '\0' ? pexit->keyword : "(none)");
   return;
 }
 
@@ -1855,11 +1855,11 @@ void do_ostat(CHAR_DATA* ch, const char* argument)
   ch_printf_color(ch, "&cIn object: &w%s  ", obj->in_obj == NULL ? "(none)" : obj->in_obj->short_descr);
   ch_printf_color(ch, "&cCarried by: &C%s\r\n", obj->carried_by == NULL ? "(none)" : obj->carried_by->name);
   ch_printf_color(ch, "&cIndex Values : &w%d %d %d %d %d %d.\r\n",
-		   obj->pIndexData->value[0], obj->pIndexData->value[1],
-		   obj->pIndexData->value[2], obj->pIndexData->value[3],
-		   obj->pIndexData->value[4], obj->pIndexData->value[5]);
+                   obj->pIndexData->value[0], obj->pIndexData->value[1],
+                   obj->pIndexData->value[2], obj->pIndexData->value[3],
+                   obj->pIndexData->value[4], obj->pIndexData->value[5]);
   ch_printf_color(ch, "&cObject Values: &w%d %d %d %d %d %d.\r\n",
-		   obj->value[0], obj->value[1], obj->value[2], obj->value[3], obj->value[4], obj->value[5]);
+                   obj->value[0], obj->value[1], obj->value[2], obj->value[3], obj->value[4], obj->value[5]);
   if (obj->pIndexData->first_extradesc)
   {
     EXTRA_DESCR_DATA *ed;
@@ -1868,7 +1868,7 @@ void do_ostat(CHAR_DATA* ch, const char* argument)
     {
       send_to_char(ed->keyword, ch);
       if (ed->next)
-	send_to_char(", ", ch);
+        send_to_char(", ", ch);
     }
     send_to_char("'\r\n", ch);
   }
@@ -1880,7 +1880,7 @@ void do_ostat(CHAR_DATA* ch, const char* argument)
     {
       send_to_char(ed->keyword, ch);
       if (ed->next)
-	send_to_char(", ", ch);
+        send_to_char(", ", ch);
     }
     send_to_char("'\r\n", ch);
   }
@@ -1921,7 +1921,7 @@ void do_vstat(CHAR_DATA* ch, const char* argument)
   }
 
   pager_printf(ch, "\r\n&cName: &C%-20s &cRoom : &w%-10d", victim->name,
-		victim->in_room == NULL ? 0 : victim->in_room->vnum);
+                victim->in_room == NULL ? 0 : victim->in_room->vnum);
   pager_printf(ch, "\r\n&cVariables:\r\n");
 
   /*
@@ -1939,37 +1939,37 @@ void do_vstat(CHAR_DATA* ch, const char* argument)
       switch (vd->type)
       {
       case vtSTR:
-	if (vd->data)
-	  pager_printf(ch, "&CString     &cData: &W%s", (char *)vd->data);
-	break;
+        if (vd->data)
+          pager_printf(ch, "&CString     &cData: &W%s", (char *)vd->data);
+        break;
 
       case vtINT:
-	if (vd->data)
-	  pager_printf(ch, "&CInteger    &cData: &W%ld", (long)vd->data);
-	break;
+        if (vd->data)
+          pager_printf(ch, "&CInteger    &cData: &W%ld", (long)vd->data);
+        break;
 
       case vtXBIT:
-	if (vd->data)
-	{
-	  char buf[MAX_STRING_LENGTH];
-	  int started = 0;
-	  int x;
+        if (vd->data)
+        {
+          char buf[MAX_STRING_LENGTH];
+          int started = 0;
+          int x;
 
-	  buf[0] = '\0';
-	  for (x = MAX_BITS; x > 0; --x)
-	  {
-	    if (!started && xIS_SET(*(EXT_BV *) vd->data, x))
-	      started = x;
-	  }
+          buf[0] = '\0';
+          for (x = MAX_BITS; x > 0; --x)
+          {
+            if (!started && xIS_SET(*(EXT_BV *) vd->data, x))
+              started = x;
+          }
 
-	  for (x = 1; x <= started; x++)
-	    strcat(buf, xIS_SET(*(EXT_BV *) vd->data, x) ? "1 " : "0 ");
+          for (x = 1; x <= started; x++)
+            strcat(buf, xIS_SET(*(EXT_BV *) vd->data, x) ? "1 " : "0 ");
 
-	  if (buf[0] != '\0')
-	    buf[strlen(buf) - 1] = '\0';
-	  pager_printf(ch, "&CXBIT       &cData: &w[&W%s&w]", buf);
-	}
-	break;
+          if (buf[0] != '\0')
+            buf[strlen(buf) - 1] = '\0';
+          pager_printf(ch, "&CXBIT       &cData: &w[&W%s&w]", buf);
+        }
+        break;
       }
     }
     else
@@ -2025,56 +2025,56 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
   pager_printf_color(ch, "\r\n&c%s: &C%-20s", IS_NPC(victim) ? "Mobile name" : "Name", victim->name);
   if (!IS_NPC(victim))
     pager_printf_color(ch, "&cStatus : &w%-10s", CAN_PKILL(victim) ? "Deadly" :
-			IS_PKILL(victim) ? "Pre-Deadly" : "Non-Deadly");
+                        IS_PKILL(victim) ? "Pre-Deadly" : "Non-Deadly");
   if (!IS_NPC(victim) && victim->pcdata->clan)
     pager_printf_color(ch, "   &c%s: &w%s",
-			victim->pcdata->clan->clan_type == CLAN_ORDER ? "Order" :
-			victim->pcdata->clan->clan_type == CLAN_GUILD ? "Guild" : "Clan", victim->pcdata->clan->name);
+                        victim->pcdata->clan->clan_type == CLAN_ORDER ? "Order" :
+                        victim->pcdata->clan->clan_type == CLAN_GUILD ? "Guild" : "Clan", victim->pcdata->clan->name);
   send_to_pager("\r\n", ch);
   if (get_trust(ch) >= LEVEL_GOD && !IS_NPC(victim) && victim->desc)
     pager_printf_color(ch, "&cHost: &w%s   Descriptor: %d  &cTrust: &w%d  &cAuthBy: &w%s\r\n",
-			victim->desc->host, victim->desc->descriptor,
-			victim->trust, victim->pcdata->authed_by[0] != '\0' ? victim->pcdata->authed_by : "(unknown)");
+                        victim->desc->host, victim->desc->descriptor,
+                        victim->trust, victim->pcdata->authed_by[0] != '\0' ? victim->pcdata->authed_by : "(unknown)");
   if (!IS_NPC(victim))
   {
     pager_printf_color(ch, "&cRecent IP: &w%-15s", victim->pcdata->recent_site ?
-			victim->pcdata->recent_site : "Unknown");
+                        victim->pcdata->recent_site : "Unknown");
     pager_printf_color(ch, "&cPrevious IP: &w%-15s", victim->pcdata->prev_site ?
-			victim->pcdata->prev_site : "Unknown");
+                        victim->pcdata->prev_site : "Unknown");
     pager_printf_color(ch, "&cRank: &w%s\n\r",
-			str_cmp(victim->pcdata->rank, "") ? victim->pcdata->rank : "(default)");
+                        str_cmp(victim->pcdata->rank, "") ? victim->pcdata->rank : "(default)");
   }
   if (!IS_NPC(victim) && victim->pcdata->release_date != 0)
     pager_printf_color(ch, "&cHelled until %24.24s by %s.\r\n",
-			ctime(&victim->pcdata->release_date), victim->pcdata->helled_by);
+                        ctime(&victim->pcdata->release_date), victim->pcdata->helled_by);
   pager_printf_color(ch, "&cVnum: &w%-5d    &cSex: &w%-6s    &cRoom: &w%-5d    &cCount: &w%d   &cKilled: &w%d\r\n",
-		      IS_NPC(victim) ? victim->pIndexData->vnum : 0,
-		      victim->sex == SEX_MALE ? "male" :
-		      victim->sex == SEX_FEMALE ? "female" : "neutral",
-		      victim->in_room == NULL ? 0 : victim->in_room->vnum,
-		      IS_NPC(victim) ? victim->pIndexData->count : 1,
-		      IS_NPC(victim) ? victim->pIndexData->killed : victim->pcdata->mdeaths + victim->pcdata->pdeaths);
+                      IS_NPC(victim) ? victim->pIndexData->vnum : 0,
+                      victim->sex == SEX_MALE ? "male" :
+                      victim->sex == SEX_FEMALE ? "female" : "neutral",
+                      victim->in_room == NULL ? 0 : victim->in_room->vnum,
+                      IS_NPC(victim) ? victim->pIndexData->count : 1,
+                      IS_NPC(victim) ? victim->pIndexData->killed : victim->pcdata->mdeaths + victim->pcdata->pdeaths);
   pager_printf_color(ch,
-		      "&cStr: &C%2d&c)(Int: &C%2d&c)(Wis: &C%2d&c)(Dex: &C%2d&c)(Con: &C%2d&c)(Cha: &C%2d&c)(Lck: &C%2d&c\r\n",
-		      get_curr_str(victim), get_curr_int(victim), get_curr_wis(victim), get_curr_dex(victim),
-		      get_curr_con(victim), get_curr_cha(victim), get_curr_lck(victim));
+                      "&cStr: &C%2d&c)(Int: &C%2d&c)(Wis: &C%2d&c)(Dex: &C%2d&c)(Con: &C%2d&c)(Cha: &C%2d&c)(Lck: &C%2d&c\r\n",
+                      get_curr_str(victim), get_curr_int(victim), get_curr_wis(victim), get_curr_dex(victim),
+                      get_curr_con(victim), get_curr_cha(victim), get_curr_lck(victim));
   pager_printf_color(ch, "&cLevel   : &P%-2d              ", victim->level);
   if (IS_NPC(victim))
     pager_printf_color(ch, "&c(&w%-2.2d&c)         ", victim->pIndexData->level);
   else                  
     pager_printf_color(ch, "             ");
   pager_printf_color(ch, "&cclass  : &w%-2.2d/%-10s   &cRace      : &w%-2.2d/%-10s\r\n",
-		      victim->Class,
-		      IS_NPC(victim) ? victim->Class < MAX_NPC_CLASS && victim->Class >= 0 ?
-		      npc_class[victim->Class] : "unknown" : victim->Class < MAX_PC_CLASS &&
-		      class_table[victim->Class]->who_name &&
-		      class_table[victim->Class]->who_name[0] != '\0' ?
-		      class_table[victim->Class]->who_name : "unknown",
-		      victim->race,
-		      IS_NPC(victim) ? victim->race < MAX_NPC_RACE && victim->race >= 0 ?
-		      npc_race[victim->race] : "unknown" : victim->race < MAX_PC_RACE &&
-		      race_table[victim->race]->race_name &&
-		      race_table[victim->race]->race_name[0] != '\0' ? race_table[victim->race]->race_name : "unknown");
+                      victim->Class,
+                      IS_NPC(victim) ? victim->Class < MAX_NPC_CLASS && victim->Class >= 0 ?
+                      npc_class[victim->Class] : "unknown" : victim->Class < MAX_PC_CLASS &&
+                      class_table[victim->Class]->who_name &&
+                      class_table[victim->Class]->who_name[0] != '\0' ?
+                      class_table[victim->Class]->who_name : "unknown",
+                      victim->race,
+                      IS_NPC(victim) ? victim->race < MAX_NPC_RACE && victim->race >= 0 ?
+                      npc_race[victim->race] : "unknown" : victim->race < MAX_PC_RACE &&
+                      race_table[victim->race]->race_name &&
+                      race_table[victim->race]->race_name[0] != '\0' ? race_table[victim->race]->race_name : "unknown");
   snprintf(hpbuf, MAX_STRING_LENGTH, "%d/%d", victim->hit, victim->max_hit);
   snprintf(mnbuf, MAX_STRING_LENGTH, "%d/%d", victim->mana, victim->max_mana);
   snprintf(mvbuf, MAX_STRING_LENGTH, "%d/%d", victim->move, victim->max_move);
@@ -2082,50 +2082,50 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
   {
     snprintf(bdbuf, MAX_STRING_LENGTH, "%d/%d", victim->pcdata->condition[COND_BLOODTHIRST], 10 + victim->level);
     pager_printf_color(ch, "&cHps     : &w%-12s    &cBlood  : &w%-12s    &cMove      : &w%-12s\r\n",
-			hpbuf, bdbuf, mvbuf);
+                        hpbuf, bdbuf, mvbuf);
   }
   else
     pager_printf_color(ch, "&cHps     : &w%-12s    &cMana   : &w%-12s    &cMove      : &w%-12s\r\n",
-			hpbuf, mnbuf, mvbuf);
+                        hpbuf, mnbuf, mvbuf);
   pager_printf_color(ch, "&cHitroll : &C%-5d           &cAlign  : &w%-5d           &cArmorclass: &w%d\r\n",
-		      GET_HITROLL(victim), victim->alignment, GET_AC(victim));
+                      GET_HITROLL(victim), victim->alignment, GET_AC(victim));
   pager_printf_color(ch, "&cDamroll : &C%-5d           &cWimpy  : &w%-5d           &cPosition  : &w%d\r\n",
-		      GET_DAMROLL(victim), victim->wimpy, victim->position);
+                      GET_DAMROLL(victim), victim->wimpy, victim->position);
   pager_printf_color(ch, "&cFighting: &w%-13s   &cMaster : &w%-13s   &cLeader    : &w%s\r\n",
-		      victim->fighting ? victim->fighting->who->name : "(none)",
-		      victim->master ? victim->master->name : "(none)", victim->leader ? victim->leader->name : "(none)");
+                      victim->fighting ? victim->fighting->who->name : "(none)",
+                      victim->master ? victim->master->name : "(none)", victim->leader ? victim->leader->name : "(none)");
   if (IS_NPC(victim))
     pager_printf_color(ch, "&cHating  : &w%-13s   &cHunting: &w%-13s   &cFearing   : &w%s\r\n",
-			victim->hating ? victim->hating->name : "(none)",
-			victim->hunting ? victim->hunting->name : "(none)",
-			victim->fearing ? victim->fearing->name : "(none)");
+                        victim->hating ? victim->hating->name : "(none)",
+                        victim->hunting ? victim->hunting->name : "(none)",
+                        victim->fearing ? victim->fearing->name : "(none)");
   else
     pager_printf_color(ch, "&cDeity   : &w%-13s&w   &cFavor  : &w%-5d           &cGlory     : &w%-d (%d)\r\n",
-			victim->pcdata->deity ? victim->pcdata->deity->name : "(none)",
-			victim->pcdata->favor, victim->pcdata->quest_curr, victim->pcdata->quest_accum);
+                        victim->pcdata->deity ? victim->pcdata->deity->name : "(none)",
+                        victim->pcdata->favor, victim->pcdata->quest_curr, victim->pcdata->quest_accum);
   if (IS_NPC(victim))
     pager_printf_color(ch,
-			"&cMob hitdie : &C%dd%d+%d    &cMob damdie : &C%dd%d+%3d    &cIndex damdie : &C%dd%d+%3d\r\n&cNumAttacks : &C%d\r\n",
-			victim->pIndexData->hitnodice, victim->pIndexData->hitsizedice, victim->pIndexData->hitplus,
-			victim->barenumdie, victim->baresizedie, victim->damplus, victim->pIndexData->damnodice,
-			victim->pIndexData->damsizedice, victim->pIndexData->damplus, victim->numattacks);
+                        "&cMob hitdie : &C%dd%d+%d    &cMob damdie : &C%dd%d+%3d    &cIndex damdie : &C%dd%d+%3d\r\n&cNumAttacks : &C%d\r\n",
+                        victim->pIndexData->hitnodice, victim->pIndexData->hitsizedice, victim->pIndexData->hitplus,
+                        victim->barenumdie, victim->baresizedie, victim->damplus, victim->pIndexData->damnodice,
+                        victim->pIndexData->damsizedice, victim->pIndexData->damplus, victim->numattacks);
   pager_printf_color(ch, "&cMentalState: &w%-3d   &cEmotionalState: &w%-3d   ", victim->mental_state,
-		      victim->emotional_state);
+                      victim->emotional_state);
   if (!IS_NPC(victim))
     pager_printf_color(ch, "&cThirst: &w%d   &cFull: &w%d   &cDrunk: &w%d\r\n",
-			victim->pcdata->condition[COND_THIRST],
-			victim->pcdata->condition[COND_FULL], victim->pcdata->condition[COND_DRUNK]);
+                        victim->pcdata->condition[COND_THIRST],
+                        victim->pcdata->condition[COND_FULL], victim->pcdata->condition[COND_DRUNK]);
   else
     send_to_pager("\r\n", ch);
   pager_printf_color(ch, "&cSave versus: &w%d %d %d %d %d       &cItems: &w(%d/%d)  &cWeight &w(%d/%d)\r\n",
-		      victim->saving_poison_death,
-		      victim->saving_wand,
-		      victim->saving_para_petri,
-		      victim->saving_breath,
-		      victim->saving_spell_staff,
-		      victim->carry_number, can_carry_n(victim), victim->carry_weight, can_carry_w(victim));
+                      victim->saving_poison_death,
+                      victim->saving_wand,
+                      victim->saving_para_petri,
+                      victim->saving_breath,
+                      victim->saving_spell_staff,
+                      victim->carry_number, can_carry_n(victim), victim->carry_weight, can_carry_w(victim));
   pager_printf_color(ch, "&cYear: &w%-5d  &cSecs: &w%d  &cTimer: &w%d  &cGold: &Y%d\r\n",
-		      calculate_age(victim), (int)victim->played, victim->timer, victim->gold);
+                      calculate_age(victim), (int)victim->played, victim->timer, victim->gold);
   if (get_timer(victim, TIMER_PKILLED))
     pager_printf_color(ch, "&cTimerPkilled:  &R%d\r\n", get_timer(victim, TIMER_PKILLED));
   if (get_timer(victim, TIMER_RECENTFIGHT))
@@ -2141,21 +2141,21 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
     if (victim->pcdata->nuisance)
     {
       pager_printf_color(ch, "&RNuisance   &cStage: (&R%d&c/%d)  Power:  &w%d  &cTime:  &w%s.\r\n",
-			  victim->pcdata->nuisance->flags, MAX_NUISANCE_STAGE, victim->pcdata->nuisance->power,
-			  ctime(&victim->pcdata->nuisance->set_time));
+                          victim->pcdata->nuisance->flags, MAX_NUISANCE_STAGE, victim->pcdata->nuisance->power,
+                          ctime(&victim->pcdata->nuisance->set_time));
     }
   }
   if (victim->morph)
   {
     if (victim->morph->morph)
       pager_printf_color(ch, "&cMorphed as : (&C%d&c) &C%s    &cTimer: &C%d\r\n",
-			  victim->morph->morph->vnum, victim->morph->morph->short_desc, victim->morph->timer);
+                          victim->morph->morph->vnum, victim->morph->morph->short_desc, victim->morph->timer);
     else
       pager_printf_color(ch, "&cMorphed as: Morph was deleted.\r\n");
   }
   pager_printf_color(ch, "&cAffected by: &C%s\r\n", affect_bit_name(&victim->affected_by));
   pager_printf_color(ch, "&cSpeaks: &w%d   &cSpeaking: &w%d   &cExperience: &w%d",
-		      victim->speaks, victim->speaking, victim->exp);
+                      victim->speaks, victim->speaking, victim->exp);
   if (!IS_NPC(victim) && victim->wait)
     pager_printf_color(ch, "   &cWaitState: &R%d\r\n", victim->wait / 12);
   else
@@ -2165,7 +2165,7 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
     if (knows_language(victim, lang_array[x], victim) || (IS_NPC(victim) && victim->speaks == 0))
     {
       if (IS_SET(lang_array[x], victim->speaking) || (IS_NPC(victim) && !victim->speaking))
-	set_pager_color(AT_RED, ch);
+        set_pager_color(AT_RED, ch);
       send_to_pager(lang_names[x], ch);
       send_to_pager(" ", ch);
       set_pager_color(AT_PLAIN, ch);
@@ -2182,8 +2182,8 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
     pager_printf_color(ch, "&cBestowments: &w%s\r\n", victim->pcdata->bestowments);
   if (IS_NPC(victim))
     pager_printf_color(ch, "&cShortdesc  : &w%s\r\n&cLongdesc   : &w%s",
-			victim->short_descr[0] != '\0' ? victim->short_descr : "(none set)",
-			victim->long_descr[0] != '\0' ? victim->long_descr : "(none set)\r\n");
+                        victim->short_descr[0] != '\0' ? victim->short_descr : "(none set)",
+                        victim->long_descr[0] != '\0' ? victim->long_descr : "(none set)\r\n");
   else
   {
     if (victim->short_descr[0] != '\0')
@@ -2211,11 +2211,11 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
   {
     if ((skill = get_skilltype(paf->type)) != NULL)
       pager_printf_color(ch,
-			  "&c%s: &w'%s' mods %s by %d for %d rnds with bits %s.",
-			  skill_tname[skill->type],
-			  skill->name,
-			  affect_loc_name(paf->location),
-			  paf->modifier, paf->duration, affect_bit_name(&paf->bitvector));
+                          "&c%s: &w'%s' mods %s by %d for %d rnds with bits %s.",
+                          skill_tname[skill->type],
+                          skill->name,
+                          affect_loc_name(paf->location),
+                          paf->modifier, paf->duration, affect_bit_name(&paf->bitvector));
     send_to_pager("\r\n", ch);
   }
 
@@ -2228,38 +2228,38 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
       switch (vd->type)
       {
       case vtSTR:
-	if (vd->data)
-	  pager_printf(ch, "=%s", (char *)vd->data);
-	break;
+        if (vd->data)
+          pager_printf(ch, "=%s", (char *)vd->data);
+        break;
 
       case vtINT:
-	if (vd->data)
-	  pager_printf(ch, "=%ld", (long)vd->data);
-	break;
+        if (vd->data)
+          pager_printf(ch, "=%ld", (long)vd->data);
+        break;
 
       case vtXBIT:
-	if (vd->data)
-	{
-	  char buf[MAX_STRING_LENGTH];
-	  int started = 0;
+        if (vd->data)
+        {
+          char buf[MAX_STRING_LENGTH];
+          int started = 0;
 
-	  buf[0] = '\0';
-	  for (x = MAX_BITS; x > 0; --x)
-	  {
-	    if (!started && xIS_SET(*(EXT_BV *) vd->data, x))
-	      started = x;
-	  }
+          buf[0] = '\0';
+          for (x = MAX_BITS; x > 0; --x)
+          {
+            if (!started && xIS_SET(*(EXT_BV *) vd->data, x))
+              started = x;
+          }
 
-	  for (x = 1; x <= started; x++)
-	    strcat(buf, xIS_SET(*(EXT_BV *) vd->data, x) ? "1 " : "0 ");
+          for (x = 1; x <= started; x++)
+            strcat(buf, xIS_SET(*(EXT_BV *) vd->data, x) ? "1 " : "0 ");
 
-	  if (buf[0] != '\0')
-	    buf[strlen(buf) - 1] = '\0';
-	  pager_printf(ch, "=[%s]", buf);
-	}
+          if (buf[0] != '\0')
+            buf[strlen(buf) - 1] = '\0';
+          pager_printf(ch, "=[%s]", buf);
+        }
       }
       if (vd->next)
-	send_to_pager("  ", ch);
+        send_to_pager("  ", ch);
     }
     send_to_pager("\r\n", ch);
   }
@@ -2301,8 +2301,8 @@ void do_mfind(CHAR_DATA* ch, const char* argument)
     for (pMobIndex = mob_index_hash[hash]; pMobIndex; pMobIndex = pMobIndex->next)
       if (fAll || nifty_is_name(arg, pMobIndex->player_name))
       {
-	nMatch++;
-	pager_printf(ch, "[%5d] %s\r\n", pMobIndex->vnum, capitalize(pMobIndex->short_descr));
+        nMatch++;
+        pager_printf(ch, "[%5d] %s\r\n", pMobIndex->vnum, capitalize(pMobIndex->short_descr));
       }
 
   if (nMatch)
@@ -2347,8 +2347,8 @@ void do_ofind(CHAR_DATA* ch, const char* argument)
     for (pObjIndex = obj_index_hash[hash]; pObjIndex; pObjIndex = pObjIndex->next)
       if (fAll || nifty_is_name(arg, pObjIndex->name))
       {
-	nMatch++;
-	pager_printf(ch, "[%5d] %s\r\n", pObjIndex->vnum, capitalize(pObjIndex->short_descr));
+        nMatch++;
+        pager_printf(ch, "[%5d] %s\r\n", pObjIndex->vnum, capitalize(pObjIndex->short_descr));
       }
 
   if (nMatch)
@@ -2380,7 +2380,7 @@ void do_mwhere(CHAR_DATA* ch, const char* argument)
     {
       found = TRUE;
       pager_printf(ch, "[%5d] %-28s [%5d] %s\r\n",
-		    victim->pIndexData->vnum, victim->short_descr, victim->in_room->vnum, victim->in_room->name);
+                    victim->pIndexData->vnum, victim->short_descr, victim->in_room->vnum, victim->in_room->name);
     }
   }
 
@@ -2425,13 +2425,13 @@ void do_gwhere(CHAR_DATA* ch, const char* argument)
   {
     for (d = first_descriptor; d; d = d->next)
       if ((d->connected == CON_PLAYING || d->connected == CON_EDITING)
-	  && (victim = d->character) != NULL && !IS_NPC(victim) && victim->in_room
-	  && can_see(ch, victim) && victim->level >= low && victim->level <= high)
+          && (victim = d->character) != NULL && !IS_NPC(victim) && victim->in_room
+          && can_see(ch, victim) && victim->level >= low && victim->level <= high)
       {
-	pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
-			    victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
-			    victim->in_room->name);
-	count++;
+        pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
+                            victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
+                            victim->in_room->name);
+        count++;
       }
   }
   else
@@ -2439,10 +2439,10 @@ void do_gwhere(CHAR_DATA* ch, const char* argument)
     for (victim = first_char; victim; victim = victim->next)
       if (IS_NPC(victim) && victim->in_room && can_see(ch, victim) && victim->level >= low && victim->level <= high)
       {
-	pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
-			    victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
-			    victim->in_room->name);
-	count++;
+        pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
+                            victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
+                            victim->in_room->name);
+        count++;
       }
   }
   pager_printf_color(ch, "&c%d %s found.\r\n", count, pmobs ? "mobs" : "characters");
@@ -2489,59 +2489,59 @@ void do_gfighting(CHAR_DATA* ch, const char* argument)
   {
     for (d = first_descriptor; d; d = d->next)
       if ((d->connected == CON_PLAYING || d->connected == CON_EDITING)
-	  && (victim = d->character) != NULL && !IS_NPC(victim) && victim->in_room
-	  && can_see(ch, victim) && victim->fighting && victim->level >= low && victim->level <= high)
+          && (victim = d->character) != NULL && !IS_NPC(victim) && victim->in_room
+          && can_see(ch, victim) && victim->fighting && victim->level >= low && victim->level <= high)
       {
-	pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
-			    victim->name, victim->level, victim->fighting->who->level,
-			    IS_NPC(victim->fighting->who) ? victim->fighting->who->short_descr : victim->fighting->
-			    who->name, IS_NPC(victim->fighting->who) ? victim->fighting->who->pIndexData->vnum : 0,
-			    victim->in_room->area->name, victim->in_room == NULL ? 0 : victim->in_room->vnum);
-	count++;
+        pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
+                            victim->name, victim->level, victim->fighting->who->level,
+                            IS_NPC(victim->fighting->who) ? victim->fighting->who->short_descr : victim->fighting->
+                            who->name, IS_NPC(victim->fighting->who) ? victim->fighting->who->pIndexData->vnum : 0,
+                            victim->in_room->area->name, victim->in_room == NULL ? 0 : victim->in_room->vnum);
+        count++;
       }
   }
   else if (!phating && !phunting)
   {
     for (victim = first_char; victim; victim = victim->next)
       if (IS_NPC(victim)
-	  && victim->in_room && can_see(ch, victim)
-	  && victim->fighting && victim->level >= low && victim->level <= high)
+          && victim->in_room && can_see(ch, victim)
+          && victim->fighting && victim->level >= low && victim->level <= high)
       {
-	pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
-			    victim->name, victim->level, victim->fighting->who->level,
-			    IS_NPC(victim->fighting->who) ? victim->fighting->who->short_descr : victim->fighting->
-			    who->name, IS_NPC(victim->fighting->who) ? victim->fighting->who->pIndexData->vnum : 0,
-			    victim->in_room->area->name, victim->in_room == NULL ? 0 : victim->in_room->vnum);
-	count++;
+        pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
+                            victim->name, victim->level, victim->fighting->who->level,
+                            IS_NPC(victim->fighting->who) ? victim->fighting->who->short_descr : victim->fighting->
+                            who->name, IS_NPC(victim->fighting->who) ? victim->fighting->who->pIndexData->vnum : 0,
+                            victim->in_room->area->name, victim->in_room == NULL ? 0 : victim->in_room->vnum);
+        count++;
       }
   }
   else if (!phunting && phating)
   {
     for (victim = first_char; victim; victim = victim->next)
       if (IS_NPC(victim)
-	  && victim->in_room && can_see(ch, victim) && victim->hating && victim->level >= low && victim->level <= high)
+          && victim->in_room && can_see(ch, victim) && victim->hating && victim->level >= low && victim->level <= high)
       {
-	pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
-			    victim->name, victim->level, victim->hating->who->level, IS_NPC(victim->hating->who) ?
-			    victim->hating->who->short_descr : victim->hating->who->name, IS_NPC(victim->hating->who) ?
-			    victim->hating->who->pIndexData->vnum : 0, victim->in_room->area->name,
-			    victim->in_room == NULL ? 0 : victim->in_room->vnum);
-	count++;
+        pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
+                            victim->name, victim->level, victim->hating->who->level, IS_NPC(victim->hating->who) ?
+                            victim->hating->who->short_descr : victim->hating->who->name, IS_NPC(victim->hating->who) ?
+                            victim->hating->who->pIndexData->vnum : 0, victim->in_room->area->name,
+                            victim->in_room == NULL ? 0 : victim->in_room->vnum);
+        count++;
       }
   }
   else if (phunting)
   {
     for (victim = first_char; victim; victim = victim->next)
       if (IS_NPC(victim)
-	  && victim->in_room && can_see(ch, victim)
-	  && victim->hunting && victim->level >= low && victim->level <= high)
+          && victim->in_room && can_see(ch, victim)
+          && victim->hunting && victim->level >= low && victim->level <= high)
       {
-	pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
-			    victim->name, victim->level, victim->hunting->who->level, IS_NPC(victim->hunting->who) ?
-			    victim->hunting->who->short_descr : victim->hunting->who->name,
-			    IS_NPC(victim->hunting->who) ? victim->hunting->who->pIndexData->vnum : 0,
-			    victim->in_room->area->name, victim->in_room == NULL ? 0 : victim->in_room->vnum);
-	count++;
+        pager_printf_color(ch, "&w%-12.12s &C|%2d &wvs &C%2d| &w%-16.16s [%5d]  &c%-20.20s [%5d]\r\n",
+                            victim->name, victim->level, victim->hunting->who->level, IS_NPC(victim->hunting->who) ?
+                            victim->hunting->who->short_descr : victim->hunting->who->name,
+                            IS_NPC(victim->hunting->who) ? victim->hunting->who->pIndexData->vnum : 0,
+                            victim->in_room->area->name, victim->in_room == NULL ? 0 : victim->in_room->vnum);
+        count++;
       }
   }
   pager_printf_color(ch, "&c%d %s conflicts located.\r\n", count, pmobs ? "mob" : "character");
@@ -2586,19 +2586,19 @@ void do_bodybag(CHAR_DATA* ch, const char* argument)
       send_to_pager("\r\n", ch);
       found = TRUE;
       pager_printf_color(ch, "&P%s:  %s%-12.12s %s  &PIn:  &w%-22.22s  &P[&w%5d&P]   &PTimer:  %s%2d",
-			  bag ? "Bagging" : "Corpse",
-			  bag ? "&Y" : "&w",
-			  capitalize(arg1),
-			  IS_OBJ_STAT(obj, ITEM_CLANCORPSE) ? "&RPK" : "&R  ",
-			  obj->in_room->area->name,
-			  obj->in_room->vnum,
-			  obj->timer < 1 ? "&w" : obj->timer < 5 ? "&R" : obj->timer < 10 ? "&Y" : "&w", obj->timer);
+                          bag ? "Bagging" : "Corpse",
+                          bag ? "&Y" : "&w",
+                          capitalize(arg1),
+                          IS_OBJ_STAT(obj, ITEM_CLANCORPSE) ? "&RPK" : "&R  ",
+                          obj->in_room->area->name,
+                          obj->in_room->vnum,
+                          obj->timer < 1 ? "&w" : obj->timer < 5 ? "&R" : obj->timer < 10 ? "&Y" : "&w", obj->timer);
       if (bag)
       {
-	obj_from_room(obj);
-	obj = obj_to_char(obj, ch);
-	obj->timer = -1;
-	save_char_obj(ch);
+        obj_from_room(obj);
+        obj = obj_to_char(obj, ch);
+        obj->timer = -1;
+        save_char_obj(ch);
       }
     }
   }
@@ -2622,8 +2622,8 @@ void do_bodybag(CHAR_DATA* ch, const char* argument)
   }
   if (owner->pcdata->deity)
     pager_printf_color(ch, "&P%s (%d) has %d favor with %s (needed to supplicate: %d)\r\n",
-			owner->name,
-			owner->level, owner->pcdata->favor, owner->pcdata->deity->name, owner->pcdata->deity->scorpse);
+                        owner->name,
+                        owner->level, owner->pcdata->favor, owner->pcdata->deity->name, owner->pcdata->deity->scorpse);
   else
     pager_printf_color(ch, "&P%s (%d) has no deity.\r\n", owner->name, owner->level);
   return;
@@ -2662,16 +2662,16 @@ void do_owhere(CHAR_DATA* ch, const char* argument)
     for (; obj->in_obj; obj = obj->in_obj)
     {
       pager_printf(ch, "[%5d] %-28s in object [%5d] %s\r\n",
-		    obj->pIndexData->vnum, obj_short(obj), obj->in_obj->pIndexData->vnum, obj->in_obj->short_descr);
+                    obj->pIndexData->vnum, obj_short(obj), obj->in_obj->pIndexData->vnum, obj->in_obj->short_descr);
       ++icnt;
     }
     snprintf(buf, MAX_STRING_LENGTH, "[%5d] %-28s in ", obj->pIndexData->vnum, obj_short(obj));
     if (obj->carried_by)
       snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "invent [%5d] %s\r\n",
-		(IS_NPC(obj->carried_by) ? obj->carried_by->pIndexData->vnum : 0), PERS(obj->carried_by, ch));
+                (IS_NPC(obj->carried_by) ? obj->carried_by->pIndexData->vnum : 0), PERS(obj->carried_by, ch));
     else if (obj->in_room)
       snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "room   [%5d] %s\r\n", obj->in_room->vnum,
-		obj->in_room->name);
+                obj->in_room->name);
     else if (obj->in_obj)
     {
       bug("%s", "do_owhere: obj->in_obj after NULL!");
@@ -2698,13 +2698,13 @@ void do_owhere(CHAR_DATA* ch, const char* argument)
     snprintf(buf, MAX_STRING_LENGTH, "(%3d) [%5d] %-28s in ", ++icnt, obj->pIndexData->vnum, obj_short(obj));
     if (obj->carried_by)
       snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "invent [%5d] %s\r\n",
-		(IS_NPC(obj->carried_by) ? obj->carried_by->pIndexData->vnum : 0), PERS(obj->carried_by, ch));
+                (IS_NPC(obj->carried_by) ? obj->carried_by->pIndexData->vnum : 0), PERS(obj->carried_by, ch));
     else if (obj->in_room)
       snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "room   [%5d] %s\r\n", obj->in_room->vnum,
-		obj->in_room->name);
+                obj->in_room->name);
     else if (obj->in_obj)
       snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "object [%5d] %s\r\n",
-		obj->in_obj->pIndexData->vnum, obj_short(obj->in_obj));
+                obj->in_obj->pIndexData->vnum, obj_short(obj->in_obj));
     else
     {
       bug("%s", "do_owhere: object doesnt have location!");
@@ -2723,7 +2723,7 @@ void do_owhere(CHAR_DATA* ch, const char* argument)
 /*
  * "Claim" an object.  Will allow an immortal to "grab" an object no matter
  * where it is hiding.  ie: from a player's inventory, from deep inside
- * a container, from a mobile, from anywhere.			-Thoric
+ * a container, from a mobile, from anywhere.                   -Thoric
  */
 void do_oclaim(CHAR_DATA* ch, const char* argument)
 {
@@ -2754,9 +2754,9 @@ void do_oclaim(CHAR_DATA* ch, const char* argument)
     if (arg2[0] != '\0')
     {
       if (!str_cmp(arg2, "+silent"))
-	silently = TRUE;
+        silently = TRUE;
       else
-	who = arg2;
+        who = arg2;
     }
   }
   else
@@ -2789,11 +2789,11 @@ void do_oclaim(CHAR_DATA* ch, const char* argument)
   for (obj = first_object; obj; obj = obj->next)
   {
     if (can_see_obj(ch, obj)
-	&& (obj->pIndexData->vnum == vnum || nifty_is_name(arg1, obj->name)) && (!vch || vch == carried_by(obj)))
+        && (obj->pIndexData->vnum == vnum || nifty_is_name(arg1, obj->name)) && (!vch || vch == carried_by(obj)))
       if ((count += obj->count) >= number)
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
   }
   if (!found && vnum != -1)
@@ -2806,12 +2806,12 @@ void do_oclaim(CHAR_DATA* ch, const char* argument)
   for (obj = first_object; obj; obj = obj->next)
   {
     if (can_see_obj(ch, obj)
-	&& (obj->pIndexData->vnum == vnum || nifty_is_name_prefix(arg1, obj->name))
-	&& (!vch || vch == carried_by(obj)))
+        && (obj->pIndexData->vnum == vnum || nifty_is_name_prefix(arg1, obj->name))
+        && (!vch || vch == carried_by(obj)))
       if ((count += obj->count) >= number)
       {
-	found = TRUE;
-	break;
+        found = TRUE;
+        break;
       }
   }
 
@@ -2904,7 +2904,7 @@ void do_reboot(CHAR_DATA* ch, const char* argument)
   if (str_cmp(argument, "nosave"))
     for (vch = first_char; vch; vch = vch->next)
       if (!IS_NPC(vch))
-	save_char_obj(vch);
+        save_char_obj(vch);
 
   mud_down = TRUE;
   return;
@@ -2942,7 +2942,7 @@ void do_shutdown(CHAR_DATA* ch, const char* argument)
   if (str_cmp(argument, "nosave"))
     for (vch = first_char; vch; vch = vch->next)
       if (!IS_NPC(vch))
-	save_char_obj(vch);
+        save_char_obj(vch);
   mud_down = TRUE;
   return;
 }
@@ -2976,7 +2976,7 @@ void do_snoop(CHAR_DATA* ch, const char* argument)
     send_to_char("Cancelling all snoops.\r\n", ch);
     for (d = first_descriptor; d; d = d->next)
       if (d->snoop_by == ch->desc)
-	d->snoop_by = NULL;
+        d->snoop_by = NULL;
     return;
   }
   if (victim->desc->snoop_by)
@@ -3000,8 +3000,8 @@ void do_snoop(CHAR_DATA* ch, const char* argument)
     for (d = ch->desc->snoop_by; d; d = d->snoop_by)
       if (d->character == victim || d->original == victim)
       {
-	send_to_char("No snoop loops.\r\n", ch);
-	return;
+        send_to_char("No snoop loops.\r\n", ch);
+        return;
       }
   }
 
@@ -3181,11 +3181,11 @@ void do_minvoke(CHAR_DATA* ch, const char* argument)
     vnum = -1;
     for (hash = cnt = 0; hash < MAX_KEY_HASH; hash++)
       for (pMobIndex = mob_index_hash[hash]; pMobIndex; pMobIndex = pMobIndex->next)
-	if (nifty_is_name(arg2, pMobIndex->player_name) && ++cnt == count)
-	{
-	  vnum = pMobIndex->vnum;
-	  break;
-	}
+        if (nifty_is_name(arg2, pMobIndex->player_name) && ++cnt == count)
+        {
+          vnum = pMobIndex->vnum;
+          break;
+        }
     if (vnum == -1)
     {
       send_to_char("No such mobile exists.\r\n", ch);
@@ -3228,7 +3228,7 @@ void do_minvoke(CHAR_DATA* ch, const char* argument)
    * How about seeing what we're invoking for a change. -Blodkai
    */
   ch_printf_color(ch, "&YYou invoke %s (&W#%d &Y- &W%s &Y- &Wlvl %d&Y)\r\n",
-		   pMobIndex->short_descr, pMobIndex->vnum, pMobIndex->player_name, victim->level);
+                   pMobIndex->short_descr, pMobIndex->vnum, pMobIndex->player_name, victim->level);
   return;
 }
 
@@ -3294,11 +3294,11 @@ void do_oinvoke(CHAR_DATA* ch, const char* argument)
     vnum = -1;
     for (hash = cnt = 0; hash < MAX_KEY_HASH; hash++)
       for (pObjIndex = obj_index_hash[hash]; pObjIndex; pObjIndex = pObjIndex->next)
-	if (nifty_is_name(arg, pObjIndex->name) && ++cnt == count)
-	{
-	  vnum = pObjIndex->vnum;
-	  break;
-	}
+        if (nifty_is_name(arg, pObjIndex->name) && ++cnt == count)
+        {
+          vnum = pObjIndex->vnum;
+          break;
+        }
     if (vnum == -1)
     {
       send_to_char("No such object exists.\r\n", ch);
@@ -3370,7 +3370,7 @@ void do_oinvoke(CHAR_DATA* ch, const char* argument)
    * I invoked what? --Blodkai 
    */
   ch_printf_color(ch, "&YYou invoke %s (&W#%d &Y- &W%s &Y- &Wlvl %d &Y- &Wqty %d&Y)\r\n",
-		   pObjIndex->short_descr, pObjIndex->vnum, pObjIndex->name, obj->level, quantity);
+                   pObjIndex->short_descr, pObjIndex->vnum, pObjIndex->name, obj->level, quantity);
   return;
 }
 
@@ -3395,7 +3395,7 @@ void do_purge(CHAR_DATA* ch, const char* argument)
     {
       vnext = victim->next_in_room;
       if (IS_NPC(victim) && victim != ch)
-	extract_char(victim, TRUE);
+        extract_char(victim, TRUE);
     }
 
     for (obj = ch->in_room->first_content; obj; obj = obj_next)
@@ -3418,8 +3418,8 @@ void do_purge(CHAR_DATA* ch, const char* argument)
       VAULT_DATA *vault;
 
       for (vault = first_vault; vault; vault = vault->next)
-	if (vault->vnum == ch->in_room->vnum)
-	  save_storeroom(ch, vault->vnum);
+        if (vault->vnum == ch->in_room->vnum)
+          save_storeroom(ch, vault->vnum);
     }
     return;
   }
@@ -3458,8 +3458,8 @@ void do_purge(CHAR_DATA* ch, const char* argument)
       VAULT_DATA *vault;
 
       for (vault = first_vault; vault; vault = vault->next)
-	if (vault->vnum == ch->in_room->vnum)
-	  save_storeroom(ch, vault->vnum);
+        if (vault->vnum == ch->in_room->vnum)
+          save_storeroom(ch, vault->vnum);
     }
     return;
   }
@@ -3522,8 +3522,8 @@ void do_low_purge(CHAR_DATA* ch, const char* argument)
       VAULT_DATA *vault;
 
       for (vault = first_vault; vault; vault = vault->next)
-	if (vault->vnum == ch->in_room->vnum)
-	  save_storeroom(ch, vault->vnum);
+        if (vault->vnum == ch->in_room->vnum)
+          save_storeroom(ch, vault->vnum);
     }
     return;
   }
@@ -3599,12 +3599,12 @@ void do_loop(CHAR_DATA *ch, const char *argument)
   }
 
   ch_printf(ch, "Beginning loop for %s command, vnums %d to %d (%s).\r\n",
-	     arg1, startvnum, endvnum, argument);
+             arg1, startvnum, endvnum, argument);
 
   for (i = startvnum; i <= endvnum; i++)
   {
     snprintf(buf, MAX_STRING_LENGTH, "%s %d %s", arg1, i,
-	      (!str_cmp(arg1,"mstat") || !str_cmp(arg1, "ostat")) ? "\b" : argument);
+              (!str_cmp(arg1,"mstat") || !str_cmp(arg1, "ostat")) ? "\b" : argument);
     interpret(ch, buf);
   }
 
@@ -3684,17 +3684,17 @@ void do_balzhur(CHAR_DATA* ch, const char* argument)
     {
       snprintf(buf, MAX_STRING_LENGTH, "%s%s", BUILD_DIR, buf2);
       if (IS_SET(pArea->status, AREA_LOADED))
-	fold_area(pArea, buf, FALSE);
+        fold_area(pArea, buf, FALSE);
       close_area(pArea);
       snprintf(buf2, MAX_STRING_LENGTH, "%s.bak", buf);
       set_char_color(AT_RED, ch); /* Log message changes colors */
       if (!rename(buf, buf2))
-	send_to_char("Player's area data destroyed.  Area saved as backup.\r\n", ch);
+        send_to_char("Player's area data destroyed.  Area saved as backup.\r\n", ch);
       else if (errno != ENOENT)
       {
-	ch_printf(ch, "Unknown error #%d - %s (area data). Report to www.smaugmuds.org\r\n", errno, strerror(errno));
-	snprintf(buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf);
-	perror(buf2);
+        ch_printf(ch, "Unknown error #%d - %s (area data). Report to www.smaugmuds.org\r\n", errno, strerror(errno));
+        snprintf(buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf);
+        perror(buf2);
       }
       break;
     }
@@ -3770,22 +3770,22 @@ void do_advance(CHAR_DATA* ch, const char* argument)
     if (victim->level >= LEVEL_AVATAR && IS_IMMORTAL(victim))
     {
       if (victim->pcdata->bestowments)
-	DISPOSE(victim->pcdata->bestowments);
+        DISPOSE(victim->pcdata->bestowments);
       victim->pcdata->bestowments = str_dup("");
       xREMOVE_BIT(victim->act, PLR_HOLYLIGHT);
       if (!IS_RETIRED(victim))
       {
-	/*
-	 * Fixed bug here, was removing the immortal data of the person
-	 * who used advance - Orion Elder
-	 */
-	snprintf(buf, MAX_INPUT_LENGTH, "%s%s", GOD_DIR, capitalize(victim->name));
+        /*
+         * Fixed bug here, was removing the immortal data of the person
+         * who used advance - Orion Elder
+         */
+        snprintf(buf, MAX_INPUT_LENGTH, "%s%s", GOD_DIR, capitalize(victim->name));
 
-	/*
-	 * Added to notify of removal of Immortal data. - Orion Elder 
-	 */
-	if (!remove(buf))
-	  send_to_char("Player's immortal data destroyed.\r\n", ch);
+        /*
+         * Added to notify of removal of Immortal data. - Orion Elder 
+         */
+        if (!remove(buf))
+          send_to_char("Player's immortal data destroyed.\r\n", ch);
       }
     }
 
@@ -3840,9 +3840,9 @@ void do_advance(CHAR_DATA* ch, const char* argument)
     {
       set_char_color(AT_IMMORT, victim);
       act(AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s finger at you!",
-	   ch, NULL, victim, TO_VICT);
+           ch, NULL, victim, TO_VICT);
       act(AT_IMMORT, "$n makes some arcane gestures with $s hands, then points $s finger at $N!",
-	   ch, NULL, victim, TO_NOTVICT);
+           ch, NULL, victim, TO_NOTVICT);
       set_char_color(AT_WHITE, victim);
       send_to_char("You suddenly feel very strange...\r\n\r\n", victim);
       set_char_color(AT_LBLUE, victim);
@@ -3857,7 +3857,7 @@ void do_advance(CHAR_DATA* ch, const char* argument)
       set_char_color(AT_WHITE, victim);
       send_to_char("You awake... all your possessions are gone.\r\n", victim);
       while (victim->first_carrying)
-	extract_obj(victim->first_carrying);
+        extract_obj(victim->first_carrying);
       break;
     case LEVEL_ACOLYTE:
       do_help(victim, "M_GODLVL2_");
@@ -4036,8 +4036,8 @@ void do_immortalize(CHAR_DATA* ch, const char* argument)
       int sn;
 
       for (sn = 0; sn < num_skills; ++sn)
-	if (skill_table[sn]->guild == victim->pcdata->clan->Class && skill_table[sn]->name != NULL)
-	  victim->pcdata->learned[sn] = 0;
+        if (skill_table[sn]->guild == victim->pcdata->clan->Class && skill_table[sn]->name != NULL)
+          victim->pcdata->learned[sn] = 0;
     }
     if (victim->speaking & LANG_CLAN)
       victim->speaking = LANG_COMMON;
@@ -4225,9 +4225,9 @@ void do_scatter(CHAR_DATA* ch, const char* argument)
     pRoomIndex = get_room_index(number_range(0, MAX_VNUM));
     if (pRoomIndex)
       if (!xIS_SET(pRoomIndex->room_flags, ROOM_PRIVATE)
-	  && !xIS_SET(pRoomIndex->room_flags, ROOM_SOLITARY)
-	  && !xIS_SET(pRoomIndex->room_flags, ROOM_NO_ASTRAL) && !xIS_SET(pRoomIndex->room_flags, ROOM_PROTOTYPE))
-	break;
+          && !xIS_SET(pRoomIndex->room_flags, ROOM_SOLITARY)
+          && !xIS_SET(pRoomIndex->room_flags, ROOM_NO_ASTRAL) && !xIS_SET(pRoomIndex->room_flags, ROOM_PROTOTYPE))
+        break;
   }
   if (victim->fighting)
     stop_fighting(victim, TRUE);
@@ -4293,9 +4293,9 @@ void do_strew(CHAR_DATA* ch, const char* argument)
     pRoomIndex = get_room_index(number_range(0, MAX_VNUM));
     if (pRoomIndex)
       if (!xIS_SET(pRoomIndex->room_flags, ROOM_PRIVATE)
-	  && !xIS_SET(pRoomIndex->room_flags, ROOM_SOLITARY)
-	  && !xIS_SET(pRoomIndex->room_flags, ROOM_NO_ASTRAL) && !xIS_SET(pRoomIndex->room_flags, ROOM_PROTOTYPE))
-	break;
+          && !xIS_SET(pRoomIndex->room_flags, ROOM_SOLITARY)
+          && !xIS_SET(pRoomIndex->room_flags, ROOM_NO_ASTRAL) && !xIS_SET(pRoomIndex->room_flags, ROOM_PROTOTYPE))
+        break;
   }
   if (!str_cmp(arg2, "inventory"))
   {
@@ -4403,20 +4403,20 @@ void do_restore(CHAR_DATA* ch, const char* argument)
     {
       if (IS_NPC(ch))
       {
-	send_to_char("You can't do that.\r\n", ch);
-	return;
+        send_to_char("You can't do that.\r\n", ch);
+        return;
       }
       else
       {
-	/*
-	 * Check if the player did a restore all within the last 18 hours. 
-	 */
-	if (current_time - last_restore_all_time < RESTORE_INTERVAL)
-	{
-	  send_to_char("Sorry, you can't do a restore all yet.\r\n", ch);
-	  do_restoretime(ch, "");
-	  return;
-	}
+        /*
+         * Check if the player did a restore all within the last 18 hours. 
+         */
+        if (current_time - last_restore_all_time < RESTORE_INTERVAL)
+        {
+          send_to_char("Sorry, you can't do a restore all yet.\r\n", ch);
+          do_restoretime(ch, "");
+          return;
+        }
       }
     }
     last_restore_all_time = current_time;
@@ -4429,18 +4429,18 @@ void do_restore(CHAR_DATA* ch, const char* argument)
 
       if (!IS_NPC(vch) && !IS_IMMORTAL(vch) && !CAN_PKILL(vch) && !in_arena(vch))
       {
-	if (deity && vch->pcdata->deity != deity)
-	  continue;
+        if (deity && vch->pcdata->deity != deity)
+          continue;
 
-	if (boost)
-	  vch->hit = (short)(vch->max_hit * 1.5);
-	else
-	  vch->hit = vch->max_hit;
-	vch->mana = vch->max_mana;
-	vch->move = vch->max_move;
-	vch->pcdata->condition[COND_BLOODTHIRST] = (10 + vch->level);
-	update_pos(vch);
-	act(AT_IMMORT, "$n has restored you.", ch, NULL, vch, TO_VICT);
+        if (boost)
+          vch->hit = (short)(vch->max_hit * 1.5);
+        else
+          vch->hit = vch->max_hit;
+        vch->mana = vch->max_mana;
+        vch->move = vch->max_move;
+        vch->pcdata->condition[COND_BLOODTHIRST] = (10 + vch->level);
+        update_pos(vch);
+        act(AT_IMMORT, "$n has restored you.", ch, NULL, vch, TO_VICT);
       }
     }
     send_to_char("Restored.\r\n", ch);
@@ -5051,7 +5051,7 @@ void do_notitle(CHAR_DATA* ch, const char* argument)
   {
     SET_BIT(victim->pcdata->flags, PCFLAG_NOTITLE);
     snprintf(buf, MAX_STRING_LENGTH, "the %s",
-	      title_table[victim->Class][victim->level][victim->sex == SEX_FEMALE ? 1 : 0]);
+              title_table[victim->Class][victim->level][victim->sex == SEX_FEMALE ? 1 : 0]);
     set_title(victim, buf);
     if (!victim->desc)
       add_loginmsg(victim->name, 8, NULL);
@@ -5219,7 +5219,7 @@ void save_watchlist(void)
 
   for (pwatch = first_watch; pwatch; pwatch = pwatch->next)
     fprintf(fp, "%d %s~%s~%s~\n", pwatch->imm_level, pwatch->imm_name,
-	     pwatch->target_name ? pwatch->target_name : " ", pwatch->player_site ? pwatch->player_site : " ");
+             pwatch->target_name ? pwatch->target_name : " ", pwatch->player_site ? pwatch->player_site : " ");
   fprintf(fp, "-1\n");
   fclose(fp);
   return;
@@ -5305,19 +5305,19 @@ void do_users(CHAR_DATA* ch, const char* argument)
     {
       if (get_trust(ch) >= LEVEL_ASCENDANT || (d->character && can_see(ch, d->character)))
       {
-	count++;
-	pager_printf(ch, " %3d| %-17s |%4d| %-12s | %s \r\n", d->descriptor, st, d->idle / 4,
-		      d->original ? d->original->name : d->character ? d->character->name : "(None!)", d->host);
+        count++;
+        pager_printf(ch, " %3d| %-17s |%4d| %-12s | %s \r\n", d->descriptor, st, d->idle / 4,
+                      d->original ? d->original->name : d->character ? d->character->name : "(None!)", d->host);
       }
     }
     else
     {
       if ((get_trust(ch) >= LEVEL_SUPREME || (d->character && can_see(ch, d->character)))
-	  && (!str_prefix(argument, d->host) || (d->character && !str_prefix(argument, d->character->name))))
+          && (!str_prefix(argument, d->host) || (d->character && !str_prefix(argument, d->character->name))))
       {
-	count++;
-	pager_printf(ch, " %3d| %2d|%4d| %-12s | %s \r\n", d->descriptor, d->connected, d->idle / 4,
-		      d->original ? d->original->name : d->character ? d->character->name : "(None!)", d->host);
+        count++;
+        pager_printf(ch, " %3d| %2d|%4d| %-12s | %s \r\n", d->descriptor, d->connected, d->idle / 4,
+                      d->original ? d->original->name : d->character ? d->character->name : "(None!)", d->host);
       }
     }
   }
@@ -5361,8 +5361,8 @@ void do_force(CHAR_DATA* ch, const char* argument)
 
       if (!IS_NPC(vch) && get_trust(vch) < get_trust(ch))
       {
-	act(AT_IMMORT, "$n forces you to '$t'.", ch, argument, vch, TO_VICT);
-	interpret(vch, argument);
+        act(AT_IMMORT, "$n forces you to '$t'.", ch, argument, vch, TO_VICT);
+        interpret(vch, argument);
       }
     }
   }
@@ -5498,10 +5498,10 @@ void do_cmdtable(CHAR_DATA* ch, const char* argument)
     for (cnt = hash = 0; hash < 126; hash++)
       for (cmd = command_hash[hash]; cmd; cmd = cmd->next)
       {
-	if ((++cnt) % 4)
-	  pager_printf(ch, "%-6.6s %4d\t", cmd->name, cmd->userec.num_uses);
-	else
-	  pager_printf(ch, "%-6.6s %4d\r\n", cmd->name, cmd->userec.num_uses);
+        if ((++cnt) % 4)
+          pager_printf(ch, "%-6.6s %4d\t", cmd->name, cmd->userec.num_uses);
+        else
+          pager_printf(ch, "%-6.6s %4d\r\n", cmd->name, cmd->userec.num_uses);
       }
     send_to_char("\r\n", ch);
   }
@@ -5513,12 +5513,12 @@ void do_cmdtable(CHAR_DATA* ch, const char* argument)
     for (cnt = hash = 0; hash < 126; hash++)
       for (cmd = command_hash[hash]; cmd; cmd = cmd->next)
       {
-	if (!cmd->lag_count)
-	  continue;
-	else if ((++cnt) % 4)
-	  pager_printf(ch, "%-6.6s %4d\t", cmd->name, cmd->lag_count);
-	else
-	  pager_printf(ch, "%-6.6s %4d\r\n", cmd->name, cmd->lag_count);
+        if (!cmd->lag_count)
+          continue;
+        else if ((++cnt) % 4)
+          pager_printf(ch, "%-6.6s %4d\t", cmd->name, cmd->lag_count);
+        else
+          pager_printf(ch, "%-6.6s %4d\r\n", cmd->name, cmd->lag_count);
       }
     send_to_char("\r\n", ch);
   }
@@ -5575,12 +5575,12 @@ void do_mortalize(CHAR_DATA * ch, const char *argument)
       char_to_room(d->character, ch->in_room);
       if (get_trust(d->character) >= get_trust(ch))
       {
-	do_say(d->character, "Do *NOT* disturb me again!");
-	send_to_char("I think you'd better leave that player alone!\r\n", ch);
-	d->character->desc = NULL;
-	if (loaded)
-	  do_quit(d->character, "");
-	return;
+        do_say(d->character, "Do *NOT* disturb me again!");
+        send_to_char("I think you'd better leave that player alone!\r\n", ch);
+        d->character->desc = NULL;
+        if (loaded)
+          do_quit(d->character, "");
+        return;
       }
       d->character->desc = NULL;
       victim = d->character;
@@ -5596,7 +5596,7 @@ void do_mortalize(CHAR_DATA * ch, const char *argument)
     {
       send_to_char("You failed!\r\n", ch);
       if (loaded)
-	do_quit(victim, "");
+        do_quit(victim, "");
       return;
     }
     victim->level = LEVEL_AVATAR;
@@ -5634,20 +5634,20 @@ void do_mortalize(CHAR_DATA * ch, const char *argument)
     for (pArea = first_build; pArea; pArea = pArea->next)
       if (!strcmp(pArea->filename, buf2))
       {
-	snprintf(buf, MAX_STRING_LENGTH, "%s%s", BUILD_DIR, buf2);
-	if (IS_SET(pArea->status, AREA_LOADED))
-	  fold_area(pArea, buf, FALSE);
-	close_area(pArea);
-	snprintf(buf2, MAX_STRING_LENGTH, "%s.bak", buf);
-	set_char_color(AT_RED, ch);
-	if (!rename(buf, buf2))
-	  send_to_char("Player's area data destroyed.  Area saved as backup.\r\n", ch);
-	else if (errno != ENOENT)
-	{
-	  ch_printf(ch, "Unknown error #%d - %s (area data).  Report to Thoric.\r\n", errno, strerror(errno));
-	  snprintf(buf2, MAX_STRING_LENGTH, "%s mortalizing %s", ch->name, buf);
-	  perror(buf2);
-	}
+        snprintf(buf, MAX_STRING_LENGTH, "%s%s", BUILD_DIR, buf2);
+        if (IS_SET(pArea->status, AREA_LOADED))
+          fold_area(pArea, buf, FALSE);
+        close_area(pArea);
+        snprintf(buf2, MAX_STRING_LENGTH, "%s.bak", buf);
+        set_char_color(AT_RED, ch);
+        if (!rename(buf, buf2))
+          send_to_char("Player's area data destroyed.  Area saved as backup.\r\n", ch);
+        else if (errno != ENOENT)
+        {
+          ch_printf(ch, "Unknown error #%d - %s (area data).  Report to Thoric.\r\n", errno, strerror(errno));
+          snprintf(buf2, MAX_STRING_LENGTH, "%s mortalizing %s", ch->name, buf);
+          perror(buf2);
+        }
       }
     while (victim->first_carrying)
       extract_obj(victim->first_carrying);
@@ -5733,7 +5733,7 @@ void do_loadup(CHAR_DATA* ch, const char* argument)
       send_to_char("I think you'd better leave that player alone!\r\n", ch);
       d->character->desc = NULL;
       if (loaded)
-	do_quit(d->character, "");
+        do_quit(d->character, "");
       return;
     }
     d->character->desc = NULL;
@@ -5776,17 +5776,17 @@ void do_fixchar(CHAR_DATA* ch, const char* argument)
     return;
   }
   fix_char(victim);
-/*  victim->armor	= 100;
-    victim->mod_str	= 0;
-    victim->mod_dex	= 0;
-    victim->mod_wis	= 0;
-    victim->mod_int	= 0;
-    victim->mod_con	= 0;
-    victim->mod_cha	= 0;
-    victim->mod_lck	= 0;
-    victim->damroll	= 0;
-    victim->hitroll	= 0;
-    victim->alignment	= URANGE(-1000, victim->alignment, 1000);
+/*  victim->armor       = 100;
+    victim->mod_str     = 0;
+    victim->mod_dex     = 0;
+    victim->mod_wis     = 0;
+    victim->mod_int     = 0;
+    victim->mod_con     = 0;
+    victim->mod_cha     = 0;
+    victim->mod_lck     = 0;
+    victim->damroll     = 0;
+    victim->hitroll     = 0;
+    victim->alignment   = URANGE(-1000, victim->alignment, 1000);
     victim->saving_spell_staff = 0; */
   send_to_char("Done.\r\n", ch);
 }
@@ -5895,7 +5895,7 @@ void extract_area_names(const char *inp, char *out)
     if ((len = strlen(buf)) >= 5 && !strcmp(".are", pbuf + len - 4))
     {
       if (*out)
-	mudstrlcat(out, " ", MAX_INPUT_LENGTH);
+        mudstrlcat(out, " ", MAX_INPUT_LENGTH);
       mudstrlcat(out, buf, MAX_INPUT_LENGTH);
     }
   }
@@ -5918,7 +5918,7 @@ void remove_area_names(const char *inp, char *out)
     if ((len = strlen(buf)) < 5 || strcmp(".are", pbuf + len - 4))
     {
       if (*out)
-	mudstrlcat(out, " ", MAX_INPUT_LENGTH);
+        mudstrlcat(out, " ", MAX_INPUT_LENGTH);
       mudstrlcat(out, buf, MAX_INPUT_LENGTH);
     }
   }
@@ -5942,10 +5942,10 @@ void do_bestowarea(CHAR_DATA* ch, const char* argument)
   if (!*arg)
   {
     send_to_char("Syntax:\r\n"
-		  "bestowarea <victim> <filename>.are\r\n"
-		  "bestowarea <victim> none             removes bestowed areas\r\n"
-		  "bestowarea <victim> list             lists bestowed areas\r\n"
-		  "bestowarea <victim>                  lists bestowed areas\r\n", ch);
+                  "bestowarea <victim> <filename>.are\r\n"
+                  "bestowarea <victim> none             removes bestowed areas\r\n"
+                  "bestowarea <victim> list             lists bestowed areas\r\n"
+                  "bestowarea <victim>                  lists bestowed areas\r\n", ch);
     return;
   }
 
@@ -6074,11 +6074,11 @@ void do_bestow(CHAR_DATA* ch, const char* argument)
     {
       for (int count = 0; count < numExceptions; count++)
       {
-	if (!str_cmp(arg, bestow_exceptions[count]))
-	{
-	  isException = TRUE;
-	  break;
-	}
+        if (!str_cmp(arg, bestow_exceptions[count]))
+        {
+          isException = TRUE;
+          break;
+        }
       }  
     }
 
@@ -6101,8 +6101,8 @@ void do_bestow(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(cmd_tmp, arg))
       {
-	cFound = TRUE;
-	break;
+        cFound = TRUE;
+        break;
       }
       cmd_buf = one_argument(cmd_buf, cmd_tmp);
     }
@@ -6193,24 +6193,24 @@ void do_set_boot_time(CHAR_DATA* ch, const char* argument)
     {
       if ((now_time->tm_mday = atoi(arg)) < 1 || now_time->tm_mday > 31)
       {
-	send_to_char("Valid range for day is 1 to 31.\r\n", ch);
-	return;
+        send_to_char("Valid range for day is 1 to 31.\r\n", ch);
+        return;
       }
       argument = one_argument(argument, arg);
       if (*arg != '\0' && is_number(arg))
       {
-	if ((now_time->tm_mon = atoi(arg)) < 1 || now_time->tm_mon > 12)
-	{
-	  send_to_char("Valid range for month is 1 to 12.\r\n", ch);
-	  return;
-	}
-	now_time->tm_mon--;
-	argument = one_argument(argument, arg);
-	if ((now_time->tm_year = atoi(arg) - 1900) < 0 || now_time->tm_year > 199)
-	{
-	  send_to_char("Valid range for year is 1900 to 2099.\r\n", ch);
-	  return;
-	}
+        if ((now_time->tm_mon = atoi(arg)) < 1 || now_time->tm_mon > 12)
+        {
+          send_to_char("Valid range for month is 1 to 12.\r\n", ch);
+          return;
+        }
+        now_time->tm_mon--;
+        argument = one_argument(argument, arg);
+        if ((now_time->tm_year = atoi(arg) - 1900) < 0 || now_time->tm_year > 199)
+        {
+          send_to_char("Valid range for year is 1900 to 2099.\r\n", ch);
+          return;
+        }
       }
     }
 
@@ -6358,8 +6358,8 @@ void close_area(AREA_DATA * pArea)
        * if mob is in area, or part of area. 
        */
       if (URANGE(pArea->low_m_vnum, ech->pIndexData->vnum, pArea->hi_m_vnum) == ech->pIndexData->vnum
-	  || (ech->in_room && ech->in_room->area == pArea))
-	extract_char(ech, TRUE);
+          || (ech->in_room && ech->in_room->area == pArea))
+        extract_char(ech, TRUE);
       continue;
     }
     if (ech->in_room && ech->in_room->area == pArea)
@@ -6373,7 +6373,7 @@ void close_area(AREA_DATA * pArea)
      * if obj is in area, or part of area. 
      */
     if (URANGE(pArea->low_o_vnum, eobj->pIndexData->vnum, pArea->hi_o_vnum) == eobj->pIndexData->vnum
-	|| (eobj->in_room && eobj->in_room->area == pArea))
+        || (eobj->in_room && eobj->in_room->area == pArea))
       extract_obj(eobj);
   }
 
@@ -6384,7 +6384,7 @@ void close_area(AREA_DATA * pArea)
       rid_next = rid->next;
 
       if (rid->area != pArea)
-	continue;
+        continue;
       delete_room(rid);
     }
     pArea->first_room = pArea->last_room = NULL;
@@ -6394,7 +6394,7 @@ void close_area(AREA_DATA * pArea)
       mid_next = mid->next;
 
       if (mid->vnum < pArea->low_m_vnum || mid->vnum > pArea->hi_m_vnum)
-	continue;
+        continue;
       delete_mob(mid);
     }
 
@@ -6403,7 +6403,7 @@ void close_area(AREA_DATA * pArea)
       oid_next = oid->next;
 
       if (oid->vnum < pArea->low_o_vnum || oid->vnum > pArea->hi_o_vnum)
-	continue;
+        continue;
       delete_obj(oid);
     }
   }
@@ -6491,7 +6491,7 @@ void do_destroy(CHAR_DATA* ch, const char* argument)
      */
     for (d = first_descriptor; d; d = d->next)
       if ((victim = d->character) && !IS_NPC(victim) && !str_cmp(victim->name, arg))
-	break;
+        break;
     if (d)
       close_socket(d, TRUE);
   }
@@ -6505,7 +6505,7 @@ void do_destroy(CHAR_DATA* ch, const char* argument)
     extract_char(victim, TRUE);
     for (x = 0; x < MAX_WEAR; x++)
       for (y = 0; y < MAX_LAYERS; y++)
-	save_equipment[x][y] = NULL;
+        save_equipment[x][y] = NULL;
   }
 
   if (!rename(buf, buf2))
@@ -6529,7 +6529,7 @@ void do_destroy(CHAR_DATA* ch, const char* argument)
     else if (errno != ENOENT)
     {
       ch_printf(ch, "Unknown error #%d - %s (immortal data). Report to www.smaugmuds.org\r\n", errno,
-		 strerror(errno));
+                 strerror(errno));
       snprintf(buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf);
       perror(buf2);
     }
@@ -6538,22 +6538,22 @@ void do_destroy(CHAR_DATA* ch, const char* argument)
     for (pArea = first_build; pArea; pArea = pArea->next)
       if (!str_cmp(pArea->filename, buf2))
       {
-	snprintf(buf, MAX_STRING_LENGTH, "%s%s", BUILD_DIR, buf2);
-	if (IS_SET(pArea->status, AREA_LOADED))
-	  fold_area(pArea, buf, FALSE);
-	close_area(pArea);
-	snprintf(buf2, MAX_STRING_LENGTH, "%s.bak", buf);
-	set_char_color(AT_RED, ch); /* Log message changes colors */
-	if (!rename(buf, buf2))
-	  send_to_char("Player's area data destroyed.  Area saved as backup.\r\n", ch);
-	else if (errno != ENOENT)
-	{
-	  ch_printf(ch, "Unknown error #%d - %s (area data). Report to www.smaugmuds.org\r\n", errno,
-		     strerror(errno));
-	  snprintf(buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf);
-	  perror(buf2);
-	}
-	break;
+        snprintf(buf, MAX_STRING_LENGTH, "%s%s", BUILD_DIR, buf2);
+        if (IS_SET(pArea->status, AREA_LOADED))
+          fold_area(pArea, buf, FALSE);
+        close_area(pArea);
+        snprintf(buf2, MAX_STRING_LENGTH, "%s.bak", buf);
+        set_char_color(AT_RED, ch); /* Log message changes colors */
+        if (!rename(buf, buf2))
+          send_to_char("Player's area data destroyed.  Area saved as backup.\r\n", ch);
+        else if (errno != ENOENT)
+        {
+          ch_printf(ch, "Unknown error #%d - %s (area data). Report to www.smaugmuds.org\r\n", errno,
+                     strerror(errno));
+          snprintf(buf2, MAX_STRING_LENGTH, "%s destroying %s", ch->name, buf);
+          perror(buf2);
+        }
+        break;
       }
   }
   else if (errno == ENOENT)
@@ -6706,49 +6706,49 @@ void do_for (CHAR_DATA* ch, const char* argument)
       found = FALSE;
 
       if (!(p->in_room) || room_is_private(p->in_room) || (p == ch))
-	continue;
+        continue;
 
       if (IS_NPC(p) && fMobs)
-	found = TRUE;
+        found = TRUE;
       else if (!IS_NPC(p) && p->level >= LEVEL_IMMORTAL && fGods)
-	found = TRUE;
+        found = TRUE;
       else if (!IS_NPC(p) && p->level < LEVEL_IMMORTAL && fMortals)
-	found = TRUE;
+        found = TRUE;
 
       /*
        * It looks ugly to me.. but it works :) 
        */
       if (found) /* p is 'appropriate' */
       {
-	const char *pSource = argument;  /* head of buffer to be parsed */
-	char *pDest = buf;   /* parse into this */
+        const char *pSource = argument;  /* head of buffer to be parsed */
+        char *pDest = buf;   /* parse into this */
 
-	while (*pSource)
-	{
-	  if (*pSource == '#')   /* Replace # with name of target */
-	  {
-	    const char *namebuf = name_expand(p);
+        while (*pSource)
+        {
+          if (*pSource == '#')   /* Replace # with name of target */
+          {
+            const char *namebuf = name_expand(p);
 
-	    if (namebuf)  /* in case there is no mob name ?? */
-	      while (*namebuf) /* copy name over */
-		*(pDest++) = *(namebuf++);
+            if (namebuf)  /* in case there is no mob name ?? */
+              while (*namebuf) /* copy name over */
+                *(pDest++) = *(namebuf++);
 
-	    pSource++;
-	  }
-	  else
-	    *(pDest++) = *(pSource++);
-	}  /* while */
-	*pDest = '\0'; /* Terminate */
+            pSource++;
+          }
+          else
+            *(pDest++) = *(pSource++);
+        }  /* while */
+        *pDest = '\0'; /* Terminate */
 
-	/*
-	 * Execute 
-	 */
-	old_room = ch->in_room;
-	char_from_room(ch);
-	char_to_room(ch, p->in_room);
-	interpret(ch, buf);
-	char_from_room(ch);
-	char_to_room(ch, old_room);
+        /*
+         * Execute 
+         */
+        old_room = ch->in_room;
+        char_from_room(ch);
+        char_to_room(ch, p->in_room);
+        interpret(ch, buf);
+        char_from_room(ch);
+        char_to_room(ch, old_room);
 
       }  /* if found */
     }  /* for every char */
@@ -6758,57 +6758,57 @@ void do_for (CHAR_DATA* ch, const char* argument)
     for (i = 0; i < MAX_KEY_HASH; i++) /* run through all the buckets */
       for (room = room_index_hash[i]; room; room = room->next)
       {
-	found = FALSE;
+        found = FALSE;
 
-	/*
-	 * Anyone in here at all? 
-	 */
-	if (fEverywhere) /* Everywhere executes always */
-	  found = TRUE;
-	else if (!room->first_person)   /* Skip it if room is empty */
-	  continue;
-	/*
-	 * ->people changed to first_person -- TRI 
-	 */
+        /*
+         * Anyone in here at all? 
+         */
+        if (fEverywhere) /* Everywhere executes always */
+          found = TRUE;
+        else if (!room->first_person)   /* Skip it if room is empty */
+          continue;
+        /*
+         * ->people changed to first_person -- TRI 
+         */
 
-	/*
-	 * Check if there is anyone here of the requried type 
-	 */
-	/*
-	 * Stop as soon as a match is found or there are no more ppl in room 
-	 */
-	/*
-	 * ->people to ->first_person -- TRI 
-	 */
-	for (p = room->first_person; p && !found; p = p->next_in_room)
-	{
+        /*
+         * Check if there is anyone here of the requried type 
+         */
+        /*
+         * Stop as soon as a match is found or there are no more ppl in room 
+         */
+        /*
+         * ->people to ->first_person -- TRI 
+         */
+        for (p = room->first_person; p && !found; p = p->next_in_room)
+        {
 
-	  if (p == ch)  /* do not execute on oneself */
-	    continue;
+          if (p == ch)  /* do not execute on oneself */
+            continue;
 
-	  if (IS_NPC(p) && fMobs)
-	    found = TRUE;
-	  else if (!IS_NPC(p) && (p->level >= LEVEL_IMMORTAL) && fGods)
-	    found = TRUE;
-	  else if (!IS_NPC(p) && (p->level <= LEVEL_IMMORTAL) && fMortals)
-	    found = TRUE;
-	}  /* for everyone inside the room */
+          if (IS_NPC(p) && fMobs)
+            found = TRUE;
+          else if (!IS_NPC(p) && (p->level >= LEVEL_IMMORTAL) && fGods)
+            found = TRUE;
+          else if (!IS_NPC(p) && (p->level <= LEVEL_IMMORTAL) && fMortals)
+            found = TRUE;
+        }  /* for everyone inside the room */
 
-	if (found && !room_is_private(room))   /* Any of the required type here AND room not private? */
-	{
-	  /*
-	   * This may be ineffective. Consider moving character out of old_room
-	   * once at beginning of command then moving back at the end.
-	   * This however, is more safe?
-	   */
+        if (found && !room_is_private(room))   /* Any of the required type here AND room not private? */
+        {
+          /*
+           * This may be ineffective. Consider moving character out of old_room
+           * once at beginning of command then moving back at the end.
+           * This however, is more safe?
+           */
 
-	  old_room = ch->in_room;
-	  char_from_room(ch);
-	  char_to_room(ch, room);
-	  interpret(ch, argument);
-	  char_from_room(ch);
-	  char_to_room(ch, old_room);
-	}  /* if found */
+          old_room = ch->in_room;
+          char_from_room(ch);
+          char_to_room(ch, room);
+          interpret(ch, argument);
+          char_from_room(ch);
+          char_to_room(ch, old_room);
+        }  /* if found */
       }  /* for every room in a bucket */
   }  /* if strchr */
 }  /* do_for */
@@ -6846,19 +6846,19 @@ void do_cset(CHAR_DATA* ch, const char* argument)
     pager_printf_color(ch, "\r\n&WPort_name: %s", sysdata.port_name);
     pager_printf_color(ch, "\r\n&WAdmin_Email: %s", sysdata.admin_email);
     pager_printf_color(ch, "\r\n&WMail:\r\n  &wRead all mail: &W%d  &wRead mail for free: &W%d  &wWrite mail for free: &W%d\r\n",
-			sysdata.read_all_mail, sysdata.read_mail_free, sysdata.write_mail_free);
+                        sysdata.read_all_mail, sysdata.read_mail_free, sysdata.write_mail_free);
     pager_printf_color(ch, "  &wTake all mail: &W%d\r\n", sysdata.take_others_mail);
     pager_printf_color(ch, "&WChannels:\r\n  &wMuse: &W%d   &wThink: &W%d   &wLog: &W%d   &wBuild: &W%d\r\n",
-			sysdata.muse_level, sysdata.think_level, sysdata.log_level, sysdata.build_level);
+                        sysdata.muse_level, sysdata.think_level, sysdata.log_level, sysdata.build_level);
     pager_printf_color(ch, "&WBuilding:\r\n  &wPrototype modification: &W%d  &wPlayer msetting: &W%d\r\n",
-			sysdata.level_modify_proto, sysdata.level_mset_player);
+                        sysdata.level_modify_proto, sysdata.level_mset_player);
     pager_printf_color(ch, "&WGuilds:\r\n  &wOverseer: &W%s   &wAdvisor: &W%s\r\n",
-			sysdata.guild_overseer, sysdata.guild_advisor);
+                        sysdata.guild_overseer, sysdata.guild_advisor);
     pager_printf_color(ch, "&WBan Data:\r\n  &wBan Site Level: &W%d   &wBan class Level: &W%d   ",
-			sysdata.ban_site_level, sysdata.ban_class_level);
+                        sysdata.ban_site_level, sysdata.ban_class_level);
     pager_printf_color(ch, "&wBan Race Level: &W%d\r\n", sysdata.ban_race_level);
     pager_printf_color(ch, "&WDefenses:\r\n  &wDodge_mod: &W%d    &wParry_mod: &W%d    &wTumble_mod: &W%d    &wTumble_pk:  &W%d\r\n",
-		       sysdata.dodge_mod, sysdata.parry_mod, sysdata.tumble_mod, sysdata.tumble_pk);
+                       sysdata.dodge_mod, sysdata.parry_mod, sysdata.tumble_mod, sysdata.tumble_pk);
     pager_printf_color(ch, "&WOther:\r\n  &wForce on players:             &W%-2d     ", sysdata.level_forcepc);
     pager_printf_color(ch, "&wPrivate room override:         &W%-2d\r\n", sysdata.level_override_private);
     pager_printf_color(ch, "  &wPenalty to bash plr vs. plr:  &W%-7d", sysdata.bash_plr_vs_plr);
@@ -6889,9 +6889,9 @@ void do_cset(CHAR_DATA* ch, const char* argument)
     pager_printf_color(ch, "&WCalendar:\r\n");
     pager_printf_color(ch, "  &wSeconds per tick: &W%d   &wPulse per second: &W%d\n\r", sysdata.secpertick, sysdata.pulsepersec);
     pager_printf_color(ch, "  &wHours per day: &W%d &wDays per week: &W%d &wDays per month: &W%d &wMonths per year: &W%d &wDays per year: &W%d\r\n",
-			sysdata.hoursperday, sysdata.daysperweek, sysdata.dayspermonth, sysdata.monthsperyear, sysdata.daysperyear);
+                        sysdata.hoursperday, sysdata.daysperweek, sysdata.dayspermonth, sysdata.monthsperyear, sysdata.daysperyear);
     pager_printf_color(ch, "  &wPULSE_TICK: &W%d &wPULSE_VIOLENCE: &W%d &wPULSE_MOBILE: &W%d &wPULSE_CALENDAR: &W%d\r\n",
-			sysdata.pulsetick, sysdata.pulseviolence, sysdata.pulsemobile, sysdata.pulsecalendar);
+                        sysdata.pulsetick, sysdata.pulseviolence, sysdata.pulsemobile, sysdata.pulsecalendar);
     return;
   }
 
@@ -7330,7 +7330,7 @@ void do_hell(CHAR_DATA* ch, const char* argument)
   if (victim->pcdata->release_date != 0)
   {
     ch_printf(ch, "They are already in hell until %24.24s, by %s.\r\n",
-	       ctime(&victim->pcdata->release_date), victim->pcdata->helled_by);
+               ctime(&victim->pcdata->release_date), victim->pcdata->helled_by);
     return;
   }
 
@@ -7379,7 +7379,7 @@ void do_hell(CHAR_DATA* ch, const char* argument)
     add_loginmsg(victim->name, 10, NULL);
   else
     ch_printf(victim, "The immortals are not pleased with your actions.\r\n"
-	       "You shall remain in hell for %d %s%s.\r\n", htime, (h_d ? "hour" : "day"), (htime == 1 ? "" : "s"));
+               "You shall remain in hell for %d %s%s.\r\n", htime, (h_d ? "hour" : "day"), (htime == 1 ? "" : "s"));
   save_char_obj(victim);   /* used to save ch, fixed by Thoric 09/17/96 */
   return;
 }
@@ -7431,7 +7431,7 @@ void do_unhell(CHAR_DATA* ch, const char* argument)
   {
     if (str_cmp(ch->name, victim->pcdata->helled_by))
       ch_printf(ch, "(You should probably write a note to %s, explaining the early release.)\r\n",
-		 victim->pcdata->helled_by);
+                 victim->pcdata->helled_by);
     STRFREE(victim->pcdata->helled_by);
     victim->pcdata->helled_by = NULL;
   }
@@ -7478,11 +7478,11 @@ void do_vsearch(CHAR_DATA* ch, const char* argument)
 
     if (in_obj->carried_by != NULL)
       pager_printf(ch, "[%2d] Level %d %s carried by %s.\r\n",
-		    obj_counter, obj->level, obj_short(obj), PERS(in_obj->carried_by, ch));
+                    obj_counter, obj->level, obj_short(obj), PERS(in_obj->carried_by, ch));
     else
       pager_printf(ch, "[%2d] [%-5d] %s in %s.\r\n", obj_counter,
-		    ((in_obj->in_room) ? in_obj->in_room->vnum : 0),
-		    obj_short(obj), (in_obj->in_room == NULL) ? "somewhere" : in_obj->in_room->name);
+                    ((in_obj->in_room) ? in_obj->in_room->vnum : 0),
+                    obj_short(obj), (in_obj->in_room == NULL) ? "somewhere" : in_obj->in_room->name);
 
     obj_counter++;
   }
@@ -7526,7 +7526,7 @@ void do_sober(CHAR_DATA* ch, const char* argument)
 }
 
 /*
- * Free a social structure					-Thoric
+ * Free a social structure                                      -Thoric
  */
 void free_social(SOCIALTYPE * social)
 {
@@ -7566,7 +7566,7 @@ void free_socials(void)
 }
 
 /*
- * Remove a social from it's hash index				-Thoric
+ * Remove a social from it's hash index                         -Thoric
  */
 void unlink_social(SOCIALTYPE * social)
 {
@@ -7601,7 +7601,7 @@ void unlink_social(SOCIALTYPE * social)
 }
 
 /*
- * Add a social to the social index table			-Thoric
+ * Add a social to the social index table                       -Thoric
  * Hashed and insert sorted
  */
 void add_social(SOCIALTYPE * social)
@@ -7658,9 +7658,9 @@ void add_social(SOCIALTYPE * social)
     {
       if (tmp == social_index[hash])
       {
-	social->next = social_index[hash];
-	social_index[hash] = social;
-	return;
+        social->next = social_index[hash];
+        social_index[hash] = social;
+        return;
       }
       prev->next = social;
       social->next = tmp;
@@ -7678,7 +7678,7 @@ void add_social(SOCIALTYPE * social)
 }
 
 /*
- * Social editor/displayer/save/delete				-Thoric
+ * Social editor/displayer/save/delete                          -Thoric
  */
 void do_sedit(CHAR_DATA* ch, const char* argument)
 {
@@ -7738,13 +7738,13 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
   {
     ch_printf(ch, "Social: %s\r\n\r\nCNoArg: %s\r\n", social->name, social->char_no_arg);
     ch_printf(ch, "ONoArg: %s\r\nCFound: %s\r\nOFound: %s\r\n",
-	       social->others_no_arg ? social->others_no_arg : "(not set)",
-	       social->char_found ? social->char_found : "(not set)",
-	       social->others_found ? social->others_found : "(not set)");
+               social->others_no_arg ? social->others_no_arg : "(not set)",
+               social->char_found ? social->char_found : "(not set)",
+               social->others_found ? social->others_found : "(not set)");
     ch_printf(ch, "VFound: %s\r\nCAuto : %s\r\nOAuto : %s\r\n",
-	       social->vict_found ? social->vict_found : "(not set)",
-	       social->char_auto ? social->char_auto : "(not set)",
-	       social->others_auto ? social->others_auto : "(not set)");
+               social->vict_found ? social->vict_found : "(not set)",
+               social->char_auto ? social->char_auto : "(not set)",
+               social->others_auto ? social->others_auto : "(not set)");
     return;
   }
 
@@ -7869,7 +7869,7 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
 }
 
 /*
- * Free a command structure					-Thoric
+ * Free a command structure                                     -Thoric
  */
 void free_command(CMDTYPE * command)
 {
@@ -7899,7 +7899,7 @@ void free_commands(void)
 }
 
 /*
- * Remove a command from it's hash index			-Thoric
+ * Remove a command from it's hash index                        -Thoric
  */
 void unlink_command(CMDTYPE * command)
 {
@@ -7931,7 +7931,7 @@ void unlink_command(CMDTYPE * command)
 }
 
 /*
- * Add a command to the command hash table			-Thoric
+ * Add a command to the command hash table                      -Thoric
  */
 void add_command(CMDTYPE * command)
 {
@@ -7985,7 +7985,7 @@ void add_command(CMDTYPE * command)
 }
 
 /*
- * Command editor/displayer/save/delete				-Thoric
+ * Command editor/displayer/save/delete                         -Thoric
  * Added support for interpret flags                            -Shaddai
  */
 void do_cedit(CHAR_DATA* ch, const char* argument)
@@ -8063,8 +8063,8 @@ void do_cedit(CHAR_DATA* ch, const char* argument)
   if (arg2[0] == '\0' || !str_cmp(arg2, "show"))
   {
     ch_printf(ch, "Command:  %s\r\nLevel:    %d\r\nPosition: %d\r\nLog:      %d\r\nCode:     %s\r\nFlags:  %s\r\n",
-	       command->name, command->level, command->position, command->log,
-	       command->fun_name, flag_string(command->flags, cmd_flags));
+               command->name, command->level, command->position, command->log,
+               command->fun_name, flag_string(command->flags, cmd_flags));
     if (command->userec.num_uses)
       send_timer(&command->userec, ch);
     return;
@@ -8100,11 +8100,11 @@ void do_cedit(CHAR_DATA* ch, const char* argument)
       tmp_next = tmp->next;
       if (tmp_next->next == command)
       {
-	tmp->next = command;
-	tmp_next->next = command->next;
-	command->next = tmp_next;
-	ch_printf(ch, "Moved %s above %s.\r\n", command->name, command->next->name);
-	return;
+        tmp->next = command;
+        tmp_next->next = command->next;
+        command->next = tmp_next;
+        ch_printf(ch, "Moved %s above %s.\r\n", command->name, command->next->name);
+        return;
       }
     }
     send_to_char("ERROR -- Not Found!\r\n", ch);
@@ -8136,13 +8136,13 @@ void do_cedit(CHAR_DATA* ch, const char* argument)
     {
       if (tmp->next == command)
       {
-	tmp_next = command->next;
-	tmp->next = tmp_next;
-	command->next = tmp_next->next;
-	tmp_next->next = command;
+        tmp_next = command->next;
+        tmp->next = tmp_next;
+        command->next = tmp_next->next;
+        tmp_next->next = command;
 
-	ch_printf(ch, "Moved %s below %s.\r\n", command->name, tmp_next->name);
-	return;
+        ch_printf(ch, "Moved %s below %s.\r\n", command->name, tmp_next->name);
+        return;
       }
     }
     send_to_char("ERROR -- Not Found!\r\n", ch);
@@ -8158,9 +8158,9 @@ void do_cedit(CHAR_DATA* ch, const char* argument)
     for (tmp = command_hash[hash]; tmp; tmp = tmp->next)
     {
       if (tmp == command)
-	set_pager_color(AT_GREEN, ch);
+        set_pager_color(AT_GREEN, ch);
       else
-	set_pager_color(AT_PLAIN, ch);
+        set_pager_color(AT_PLAIN, ch);
       pager_printf(ch, "  %s\r\n", tmp->name);
     }
     return;
@@ -8249,9 +8249,9 @@ void do_cedit(CHAR_DATA* ch, const char* argument)
     if (flag < 0 || flag >= 32)
     {
       if (is_number(argument))
-	ch_printf(ch, "Invalid flag: range is from 0 to 31.\n");
+        ch_printf(ch, "Invalid flag: range is from 0 to 31.\n");
       else
-	ch_printf(ch, "Unknown flag %s.\n", argument);
+        ch_printf(ch, "Unknown flag %s.\n", argument);
       return;
     }
 
@@ -8299,7 +8299,7 @@ void do_cedit(CHAR_DATA* ch, const char* argument)
 }
 
 /*
- * Display class information					-Thoric
+ * Display class information                                    -Thoric
  */
 void do_showclass(CHAR_DATA* ch, const char* argument)
 {
@@ -8325,8 +8325,8 @@ void do_showclass(CHAR_DATA* ch, const char* argument)
     for (cl = 0; cl < MAX_CLASS && class_table[cl]; cl++)
       if (!str_cmp(class_table[cl]->who_name, arg1))
       {
-	Class = class_table[cl];
-	break;
+        Class = class_table[cl];
+        break;
       }
   }
   if (!Class)
@@ -8335,13 +8335,13 @@ void do_showclass(CHAR_DATA* ch, const char* argument)
     return;
   }
   pager_printf_color(ch, "&wCLASS: &W%s\r\n&wPrime Attribute: &W%-14s  &wWeapon: &W%-5d      &wGuild: &W%-5d\r\n",
-		      Class->who_name, affect_loc_name(Class->attr_prime), Class->weapon, Class->guild);
+                      Class->who_name, affect_loc_name(Class->attr_prime), Class->weapon, Class->guild);
   pager_printf_color(ch, "&wSecond Attribute:  &W%-14s  &wDeficient Attribute:  &W%-14s\r\n",
-		      affect_loc_name(Class->attr_second), affect_loc_name(Class->attr_deficient));
+                      affect_loc_name(Class->attr_second), affect_loc_name(Class->attr_deficient));
   pager_printf_color(ch, "&wMax Skill Adept: &W%-3d             &wThac0 : &W%-5d     &wThac32: &W%d\r\n",
-		      Class->skill_adept, Class->thac0_00, Class->thac0_32);
+                      Class->skill_adept, Class->thac0_00, Class->thac0_32);
   pager_printf_color(ch, "&wHp Min/Hp Max  : &W%-2d/%-2d           &wMana  : &W%-3s      &wExpBase: &W%d\r\n",
-		      Class->hp_min, Class->hp_max, Class->fMana ? "yes" : "no ", Class->exp_base);
+                      Class->hp_min, Class->hp_max, Class->fMana ? "yes" : "no ", Class->exp_base);
   pager_printf_color(ch, "&wAffected by:  &W%s\r\n", affect_bit_name(&Class->affected));
   pager_printf_color(ch, "&wResistant to: &W%s\r\n", flag_string(Class->resist, ris_flags));
   pager_printf_color(ch, "&wSusceptible to: &W%s\r\n", flag_string(Class->suscept, ris_flags));
@@ -8358,22 +8358,22 @@ void do_showclass(CHAR_DATA* ch, const char* argument)
       cnt = 0;
       set_pager_color(AT_BLUE, ch);
       for (y = 0; y < num_skills; ++y)
-	if (skill_table[y]->skill_level[cl] == x)
-	{
-	  pager_printf(ch, "  %-7s %-19s%3d     ",
-			skill_tname[skill_table[y]->type], skill_table[y]->name, skill_table[y]->skill_adept[cl]);
-	  if (++cnt % 2 == 0)
-	    send_to_pager("\r\n", ch);
-	}
+        if (skill_table[y]->skill_level[cl] == x)
+        {
+          pager_printf(ch, "  %-7s %-19s%3d     ",
+                        skill_tname[skill_table[y]->type], skill_table[y]->name, skill_table[y]->skill_adept[cl]);
+          if (++cnt % 2 == 0)
+            send_to_pager("\r\n", ch);
+        }
       if (cnt % 2 != 0)
-	send_to_pager("\r\n", ch);
+        send_to_pager("\r\n", ch);
       send_to_pager("\r\n", ch);
     }
   }
 }
 
 /*
- * Create a new class online.				    	-Shaddai
+ * Create a new class online.                                   -Shaddai
  */
 bool create_new_class(int rcindex, const char *argument)
 {
@@ -8420,7 +8420,7 @@ bool create_new_class(int rcindex, const char *argument)
 }
 
 /*
- * Edit class information					-Thoric
+ * Edit class information                                       -Thoric
  */
 void do_setclass(CHAR_DATA* ch, const char* argument)
 {
@@ -8453,11 +8453,11 @@ void do_setclass(CHAR_DATA* ch, const char* argument)
     for (cl = 0; cl < MAX_CLASS && class_table[cl]; cl++)
     {
       if (!class_table[cl]->who_name)
-	continue;
+        continue;
       if (!str_cmp(class_table[cl]->who_name, arg1))
       {
-	Class = class_table[cl];
-	break;
+        Class = class_table[cl];
+        break;
       }
     }
   }
@@ -8560,12 +8560,12 @@ void do_setclass(CHAR_DATA* ch, const char* argument)
     for (i = 0; i < MAX_PC_CLASS && class_table[i]; ++i)
     {
       if (!class_table[i]->who_name)
-	continue;
+        continue;
 
       if (!str_cmp(class_table[i]->who_name, arg1))
       {
-	ccheck = class_table[i];
-	break;
+        ccheck = class_table[i];
+        break;
       }
     }
     if (ccheck != NULL)
@@ -8610,9 +8610,9 @@ void do_setclass(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg2);
       value = get_aflag(arg2);
       if (value < 0 || value >= MAX_BITS)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg2);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg2);
       else
-	xTOGGLE_BIT(Class->affected, value);
+        xTOGGLE_BIT(Class->affected, value);
     }
     send_to_char("Done.\r\n", ch);
     write_class_file(cl);
@@ -8631,9 +8631,9 @@ void do_setclass(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg2);
       value = get_risflag(arg2);
       if (value < 0 || value > 31)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg2);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg2);
       else
-	TOGGLE_BIT(Class->resist, 1 << value);
+        TOGGLE_BIT(Class->resist, 1 << value);
     }
     send_to_char("Done.\r\n", ch);
     write_class_file(cl);
@@ -8652,9 +8652,9 @@ void do_setclass(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg2);
       value = get_risflag(arg2);
       if (value < 0 || value > 31)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg2);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg2);
       else
-	TOGGLE_BIT(Class->suscept, 1 << value);
+        TOGGLE_BIT(Class->suscept, 1 << value);
     }
     send_to_char("Done.\r\n", ch);
     write_class_file(cl);
@@ -8821,7 +8821,7 @@ void do_setclass(CHAR_DATA* ch, const char* argument)
 }
 
 /*
- * Create an instance of a new race.			-Shaddai
+ * Create an instance of a new race.                    -Shaddai
  */
 
 bool create_new_race(int rcindex, char *argument)
@@ -8883,7 +8883,7 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
   if (arg1[0] == '\0' || arg2[0] == '\0')
   {
     send_to_char("Syntax: setrace <race> <field> <value>\r\n", ch);
-    send_to_char("Syntax: setrace <race> create	     \r\n", ch);
+    send_to_char("Syntax: setrace <race> create      \r\n", ch);
     send_to_char("\r\nField being one of:\r\n", ch);
     send_to_char("  name classes strplus dexplus wisplus\r\n", ch);
     send_to_char("  intplus conplus chaplus lckplus hit\r\n", ch);
@@ -8905,12 +8905,12 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
     for (ra = 0; ra < MAX_RACE && race_table[ra]; ra++)
     {
       if (!race_table[ra]->race_name)
-	continue;
+        continue;
 
       if (!str_cmp(race_table[ra]->race_name, arg1))
       {
-	race = race_table[ra];
-	break;
+        race = race_table[ra];
+        break;
       }
     }
   }
@@ -8981,12 +8981,12 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
     for (i = 0; i < MAX_PC_RACE && race_table[i]; ++i)
     {
       if (!race_table[i]->race_name)
-	continue;
+        continue;
 
       if (!str_cmp(race_table[i]->race_name, arg1))
       {
-	rcheck = race_table[i];
-	break;
+        rcheck = race_table[i];
+        break;
       }
     }
     if (rcheck != NULL)
@@ -9084,9 +9084,9 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_aflag(arg3);
       if (value < 0 || value >= MAX_BITS)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg3);
       else
-	xTOGGLE_BIT(race->affected, value);
+        xTOGGLE_BIT(race->affected, value);
     }
     write_race_file(ra);
     send_to_char("Racial affects set.\r\n", ch);
@@ -9105,9 +9105,9 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_risflag(arg3);
       if (value < 0 || value > 31)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg3);
       else
-	TOGGLE_BIT(race->resist, 1 << value);
+        TOGGLE_BIT(race->resist, 1 << value);
     }
     write_race_file(ra);
     send_to_char("Racial resistances set.\r\n", ch);
@@ -9126,9 +9126,9 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_risflag(arg3);
       if (value < 0 || value > 31)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg3);
       else
-	TOGGLE_BIT(race->suscept, 1 << value);
+        TOGGLE_BIT(race->suscept, 1 << value);
     }
     write_race_file(ra);
     send_to_char("Racial susceptabilities set.\r\n", ch);
@@ -9143,7 +9143,7 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
     else
     {
       if (!(value &= VALID_LANGS))
-	ch_printf(ch, "Player races may not speak %s.\r\n", arg3);
+        ch_printf(ch, "Player races may not speak %s.\r\n", arg3);
     }
 
     v2 = get_langnum(arg3);
@@ -9163,10 +9163,10 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
     {
       if (!str_cmp(argument, class_table[i]->who_name))
       {
-	TOGGLE_BIT(race->class_restriction, 1 << i);  /* k, that's boggling */
-	write_race_file(ra);
-	send_to_char("classes set.\r\n", ch);
-	return;
+        TOGGLE_BIT(race->class_restriction, 1 << i);  /* k, that's boggling */
+        write_race_file(ra);
+        send_to_char("classes set.\r\n", ch);
+        return;
       }
     }
     send_to_char("No such class.\r\n", ch);
@@ -9204,9 +9204,9 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_defenseflag(arg3);
       if (value < 0 || value >= MAX_BITS)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg3);
       else
-	xTOGGLE_BIT(race->defenses, value);
+        xTOGGLE_BIT(race->defenses, value);
     }
     write_race_file(ra);
     return;
@@ -9227,9 +9227,9 @@ void do_setrace(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg3);
       value = get_attackflag(arg3);
       if (value < 0 || value >= MAX_BITS)
-	ch_printf(ch, "Unknown flag: %s\r\n", arg3);
+        ch_printf(ch, "Unknown flag: %s\r\n", arg3);
       else
-	xTOGGLE_BIT(race->attacks, value);
+        xTOGGLE_BIT(race->attacks, value);
     }
     write_race_file(ra);
     return;
@@ -9385,7 +9385,7 @@ void do_showrace(CHAR_DATA* ch, const char* argument)
       ++ct;
       pager_printf(ch, "%2d> %-11s", i, race_table[i]->race_name);
       if (ct % 5 == 0)
-	send_to_pager("\r\n", ch);
+        send_to_pager("\r\n", ch);
     }
 
     send_to_pager("\r\n", ch);
@@ -9400,8 +9400,8 @@ void do_showrace(CHAR_DATA* ch, const char* argument)
     for (ra = 0; ra < MAX_RACE && race_table[ra]; ra++)
       if (!str_cmp(race_table[ra]->race_name, arg1))
       {
-	race = race_table[ra];
-	break;
+        race = race_table[ra];
+        break;
       }
   }
   if (!race)
@@ -9420,7 +9420,7 @@ void do_showrace(CHAR_DATA* ch, const char* argument)
       ct++;
       ch_printf(ch, "%s ", class_table[i]->who_name);
       if (ct % 6 == 0)
-	send_to_char("\r\n", ch);
+        send_to_char("\r\n", ch);
     }
   }
   if ((ct % 6 != 0) || (ct == 0))
@@ -9435,21 +9435,21 @@ void do_showrace(CHAR_DATA* ch, const char* argument)
       ct++;
       ch_printf(ch, "%s ", class_table[i]->who_name);
       if (ct % 6 == 0)
-	send_to_char("\r\n", ch);
+        send_to_char("\r\n", ch);
     }
   }
   if ((ct % 6 != 0) || (ct == 0))
     send_to_char("\r\n", ch);
 
   ch_printf(ch, "Str Plus: %-3d\tDex Plus: %-3d\tWis Plus: %-3d\tInt Plus: %-3d\t\r\n",
-	     race->str_plus, race->dex_plus, race->wis_plus, race->int_plus);
+             race->str_plus, race->dex_plus, race->wis_plus, race->int_plus);
   ch_printf(ch, "Con Plus: %-3d\tCha Plus: %-3d\tLck Plus: %-3d\r\n", race->con_plus, race->cha_plus, race->lck_plus);
   ch_printf(ch, "Hit Pts:  %-3d\tMana: %-3d\tAlign: %-4d\tAC: %-d\r\n",
-	     race->hit, race->mana, race->alignment, race->ac_plus);
+             race->hit, race->mana, race->alignment, race->ac_plus);
   ch_printf(ch, "Min Align: %d\tMax Align: %-d\t\tXP Mult: %-d%%\r\n",
-	     race->minalign, race->maxalign, race->exp_multiplier);
+             race->minalign, race->maxalign, race->exp_multiplier);
   ch_printf(ch, "Height: %3d in.\t\tWeight: %4d lbs.\tHungerMod: %d\tThirstMod: %d\r\n",
-	     race->height, race->weight, race->hunger_mod, race->thirst_mod);
+             race->height, race->weight, race->hunger_mod, race->thirst_mod);
 
   ch_printf(ch, "Spoken Languages: %s", flag_string(race->language, lang_names));
   send_to_char("\r\n", ch);
@@ -9467,8 +9467,8 @@ void do_showrace(CHAR_DATA* ch, const char* argument)
   send_to_char("\r\n", ch);
 
   ch_printf(ch, "Saves: (P/D) %d (W) %d (P/P) %d (B) %d (S/S) %d\r\n",
-	     race->saving_poison_death,
-	     race->saving_wand, race->saving_para_petri, race->saving_breath, race->saving_spell_staff);
+             race->saving_poison_death,
+             race->saving_wand, race->saving_para_petri, race->saving_breath, race->saving_spell_staff);
 
   send_to_char("Innate Attacks: ", ch);
   send_to_char(ext_flag_string(&race->attacks, attack_flags), ch);
@@ -9598,7 +9598,7 @@ void do_qpstat(CHAR_DATA* ch, const char* argument)
     return;
   }
   ch_printf(ch, "%s has %d glory, out of a lifetime total of %d.\r\n",
-	     victim->name, victim->pcdata->quest_curr, victim->pcdata->quest_accum);
+             victim->name, victim->pcdata->quest_curr, victim->pcdata->quest_accum);
   return;
 }
 
@@ -9634,8 +9634,8 @@ void do_fixed(CHAR_DATA* ch, const char* argument)
   else
   {
     snprintf(buf, MAX_STRING_LENGTH, "&g|&G%-2.2d/%-2.2d &g| &G%5d&g|  %s:  &G%s",
-	      t->tm_mon + 1, t->tm_mday, ch->in_room ? ch->in_room->vnum : 0,
-	      IS_NPC(ch) ? ch->short_descr : ch->name, argument);
+              t->tm_mon + 1, t->tm_mday, ch->in_room ? ch->in_room->vnum : 0,
+              IS_NPC(ch) ? ch->short_descr : ch->name, argument);
     append_to_file(FIXED_FILE, buf);
     send_to_char("Thanks, your modification has been logged.\r\n", ch);
   }
@@ -9723,7 +9723,7 @@ void do_reserve(CHAR_DATA* ch, const char* argument)
     {
       ch_printf(ch, "%c%-17s ", (*res->name == '*' ? '*' : ' '), (*res->name == '*' ? res->name + 1 : res->name));
       if (++wid % 4 == 0)
-	send_to_char("\r\n", ch);
+        send_to_char("\r\n", ch);
     }
     if (wid % 4 != 0)
       send_to_char("\r\n", ch);
@@ -9877,9 +9877,9 @@ void do_project(CHAR_DATA* ch, const char* argument)
     {
       pcount++;
       if ((pproject->status && str_cmp(pproject->status, "approved")) || pproject->coder != NULL)
-	continue;
+        continue;
       pager_printf(ch, "%2d | %-11s | %-20s |\r\n",
-		    pcount, pproject->owner ? pproject->owner : "(None)", pproject->name);
+                    pcount, pproject->owner ? pproject->owner : "(None)", pproject->name);
     }
     return;
   }
@@ -9901,19 +9901,19 @@ void do_project(CHAR_DATA* ch, const char* argument)
     {
       pcount++;
       if (MINE && (!pproject->owner || str_cmp(ch->name, pproject->owner))
-	  && (!pproject->coder || str_cmp(ch->name, pproject->coder)))
-	continue;
+          && (!pproject->coder || str_cmp(ch->name, pproject->coder)))
+        continue;
       else if (!MINE && pproject->status && !str_cmp("Done", pproject->status))
-	continue;
+        continue;
       num_logs = 0;
       for (nlog = pproject->first_log; nlog; nlog = nlog->next)
-	num_logs++;
+        num_logs++;
       pager_printf(ch, "%2d | %-11s | %-20s | %-13s | %-10s | %3d\r\n",
-		    pcount,
-		    pproject->owner ? pproject->owner : "(None)",
-		    pproject->name,
-		    pproject->coder ? pproject->coder : "(None)",
-		    pproject->status ? pproject->status : "(None)", num_logs);
+                    pcount,
+                    pproject->owner ? pproject->owner : "(None)",
+                    pproject->name,
+                    pproject->coder ? pproject->coder : "(None)",
+                    pproject->status ? pproject->status : "(None)", num_logs);
     }
     return;
   }
@@ -9942,17 +9942,17 @@ void do_project(CHAR_DATA* ch, const char* argument)
     {
       pcount++;
       if (pproject->status && !str_cmp("Done", pproject->status))
-	continue;
+        continue;
       if (!aflag)
-	pager_printf(ch, "%2d | %-11s | %-20s | %-24s | %-10s\r\n",
-		      pcount,
-		      pproject->owner ? pproject->owner : "(None)",
-		      pproject->name, pproject->date, pproject->status ? pproject->status : "(None)");
+        pager_printf(ch, "%2d | %-11s | %-20s | %-24s | %-10s\r\n",
+                      pcount,
+                      pproject->owner ? pproject->owner : "(None)",
+                      pproject->name, pproject->date, pproject->status ? pproject->status : "(None)");
       else if (!pproject->taken)
       {
-	if (!projects_available)
-	  projects_available = TRUE;
-	pager_printf(ch, "%2d | %-20s | %s\r\n", pcount, pproject->name, pproject->date);
+        if (!projects_available)
+          projects_available = TRUE;
+        pager_printf(ch, "%2d | %-20s | %s\r\n", pcount, pproject->name, pproject->date);
       }
     }
     if (pcount == 0)
@@ -9979,7 +9979,7 @@ void do_project(CHAR_DATA* ch, const char* argument)
     arg1[0] = UPPER(arg1[0]);
 
     if (str_cmp(ch->pcdata->council_name, "Code Council")
-	&& get_trust(ch) < LEVEL_ASCENDANT && str_cmp(arg1, "none") && str_cmp(arg1, "(none)"))
+        && get_trust(ch) < LEVEL_ASCENDANT && str_cmp(arg1, "none") && str_cmp(arg1, "(none)"))
     {
       ch_printf(ch,"You are not high enough level to view %s's projects.\r\n", arg1);
       return;
@@ -9994,15 +9994,15 @@ void do_project(CHAR_DATA* ch, const char* argument)
       pcount++;
 
       if (str_cmp(arg1, pproject->owner))
-	continue;
+        continue;
       num_logs = 0;
 
       for (log = pproject->first_log; log; log = log->next)
-	num_logs++;
+        num_logs++;
 
       pager_printf(ch, "%2d | %-11s | %-20s | %-13s | %-10s | %3d\r\n",
-		    pcount, pproject->owner, pproject->name, pproject->coder ? pproject->coder : "(None)",
-		    pproject->status ? pproject->status : "(None)", num_logs);
+                    pcount, pproject->owner, pproject->name, pproject->coder ? pproject->coder : "(None)",
+                    pproject->status ? pproject->status : "(None)", num_logs);
     }
     return;
   }
@@ -10192,8 +10192,8 @@ void do_project(CHAR_DATA* ch, const char* argument)
   if (!str_cmp(arg1, "status"))
   {
     if (pproject->owner && str_cmp(pproject->owner, ch->name) &&
-	get_trust(ch) < LEVEL_GREATER
-	&& pproject->coder && str_cmp(pproject->coder, ch->name) && str_cmp(ch->pcdata->council_name, "Code Council"))
+        get_trust(ch) < LEVEL_GREATER
+        && pproject->coder && str_cmp(pproject->coder, ch->name) && str_cmp(ch->pcdata->council_name, "Code Council"))
     {
       ch_printf(ch, "This is not your project!\r\n");
       return;
@@ -10243,23 +10243,23 @@ void do_project(CHAR_DATA* ch, const char* argument)
       char *strtime;
 
       if (pproject->owner && str_cmp(ch->name, pproject->owner) &&
-	  pproject->coder && str_cmp(ch->name, pproject->coder) &&
-	  get_trust(ch) < LEVEL_GREATER && str_cmp(ch->pcdata->council_name, "Code Council"))
+          pproject->coder && str_cmp(ch->name, pproject->coder) &&
+          get_trust(ch) < LEVEL_GREATER && str_cmp(ch->pcdata->council_name, "Code Council"))
       {
-	ch_printf(ch, "This is not your project!\r\n");
-	return;
+        ch_printf(ch, "This is not your project!\r\n");
+        return;
       }
 
       if (!ch->pnote)
       {
-	ch_printf(ch, "You have no log in progress.\r\n");
-	return;
+        ch_printf(ch, "You have no log in progress.\r\n");
+        return;
       }
 
       if (!ch->pnote->subject)
       {
-	ch_printf(ch, "Your log has no subject.\r\n");
-	return;
+        ch_printf(ch, "Your log has no subject.\r\n");
+        return;
       }
 
       strtime = ctime(&current_time);
@@ -10278,11 +10278,11 @@ void do_project(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(arg2, "list"))
     {
       if (pproject->owner && pproject->coder &&
-	  str_cmp(ch->name, pproject->owner) && get_trust(ch) < LEVEL_SAVIOR
-	  && str_cmp(ch->name, pproject->coder) && str_cmp(ch->pcdata->council_name, "Code Council"))
+          str_cmp(ch->name, pproject->owner) && get_trust(ch) < LEVEL_SAVIOR
+          && str_cmp(ch->name, pproject->coder) && str_cmp(ch->pcdata->council_name, "Code Council"))
       {
-	ch_printf(ch, "This is not your project!\r\n");
-	return;
+        ch_printf(ch, "This is not your project!\r\n");
+        return;
       }
 
       pcount = 0;
@@ -10290,11 +10290,11 @@ void do_project(CHAR_DATA* ch, const char* argument)
 
       for (plog = pproject->first_log; plog; plog = plog->next)
       {
-	pcount++;
-	pager_printf(ch, "%2d) %-12s: %s\r\n", pcount, plog->sender, plog->subject);
+        pcount++;
+        pager_printf(ch, "%2d) %-12s: %s\r\n", pcount, plog->sender, plog->subject);
       }
       if (pcount == 0)
-	ch_printf(ch, "No logs available.\r\n");
+        ch_printf(ch, "No logs available.\r\n");
       return;
     }
 
@@ -10317,11 +10317,11 @@ void do_project(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(argument, "delete"))
     {
       if (pproject->owner && str_cmp(ch->name, pproject->owner) &&
-	  get_trust(ch) < LEVEL_ASCENDANT &&
-	  pproject->coder && str_cmp(ch->name, pproject->coder) && str_cmp(ch->pcdata->council_name, "Code Council"))
+          get_trust(ch) < LEVEL_ASCENDANT &&
+          pproject->coder && str_cmp(ch->name, pproject->coder) && str_cmp(ch->pcdata->council_name, "Code Council"))
       {
-	ch_printf(ch, "This is not your project!\r\n");
-	return;
+        ch_printf(ch, "This is not your project!\r\n");
+        return;
       }
 
       UNLINK(plog, pproject->first_log, pproject->last_log, next, prev);
@@ -10334,11 +10334,11 @@ void do_project(CHAR_DATA* ch, const char* argument)
     if (!str_cmp(argument, "read"))
     {
       if (pproject->owner && pproject->coder &&
-	  str_cmp(ch->name, pproject->owner) && get_trust(ch) < LEVEL_SAVIOR
-	  && str_cmp(ch->name, pproject->coder) && str_cmp(ch->pcdata->council_name, "Code Council"))
+          str_cmp(ch->name, pproject->owner) && get_trust(ch) < LEVEL_SAVIOR
+          && str_cmp(ch->name, pproject->coder) && str_cmp(ch->pcdata->council_name, "Code Council"))
       {
-	ch_printf(ch, "This is not your project!\r\n");
-	return;
+        ch_printf(ch, "This is not your project!\r\n");
+        return;
       }
 
       pager_printf(ch, "[%3d] %s: %s\r\n%s\r\n%s", pnum, plog->sender, plog->subject, plog->date, plog->text);
@@ -10442,15 +10442,15 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
     {
       fMatch = FALSE;
       for (hmm = first_ip; hmm; hmm = hmm->next)
-	if (!str_cmp(hmm->host, d->host))
-	  fMatch = TRUE;
+        if (!str_cmp(hmm->host, d->host))
+          fMatch = TRUE;
       if (!fMatch)
       {
-	IPCOMPARE_DATA *temp;
-	CREATE(temp, IPCOMPARE_DATA, 1);
-	temp->host = str_dup(d->host);
-	LINK(temp, first_ip, last_ip, next, prev);
-	count++;
+        IPCOMPARE_DATA *temp;
+        CREATE(temp, IPCOMPARE_DATA, 1);
+        temp->host = str_dup(d->host);
+        LINK(temp, first_ip, last_ip, next, prev);
+        count++;
       }
     }
     for (hmm = first_ip; hmm; hmm = hmm_next)
@@ -10458,7 +10458,7 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
       hmm_next = hmm->next;
       UNLINK(hmm, first_ip, last_ip, next, prev);
       if (hmm->host)
-	DISPOSE(hmm->host);
+        DISPOSE(hmm->host);
       DISPOSE(hmm);
     }
     ch_printf(ch, "There were %d unique ip addresses found.\r\n", count);
@@ -10486,8 +10486,8 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
       IPCOMPARE_DATA *temp;
 
       if ((d->connected != CON_PLAYING && d->connected != CON_EDITING)
-	  || d->character == NULL || !CAN_PKILL(d->character) || !can_see(ch, d->character))
-	continue;
+          || d->character == NULL || !CAN_PKILL(d->character) || !can_see(ch, d->character))
+        continue;
       CREATE(temp, IPCOMPARE_DATA, 1);
       temp->host = str_dup(d->host);
       temp->descriptor = d->descriptor;
@@ -10495,7 +10495,7 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
       temp->idle = d->idle;
       temp->port = d->port;
       temp->name = (d->original ? str_dup(d->original->name) :
-		     d->character ? str_dup(d->character->name) : str_dup("(none)"));
+                     d->character ? str_dup(d->character->name) : str_dup("(none)"));
       temp->count = 0;
       temp->printed = FALSE;
       LINK(temp, first_ip, last_ip, next, prev);
@@ -10505,39 +10505,39 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
     {
       fMatch = FALSE;
       if ((d->connected != CON_PLAYING && d->connected != CON_EDITING)
-	  || d->character == NULL || !can_see(ch, d->character))
-	continue;
+          || d->character == NULL || !can_see(ch, d->character))
+        continue;
       for (hmm = first_ip; hmm; hmm = hmm->next)
       {
-	if (!str_cmp(hmm->host, d->host) &&
-	    str_cmp(hmm->name, (d->original ? d->original->name : d->character ? d->character->name : "(none)")))
-	{
-	  fMatch = TRUE;
-	  break;
-	}
+        if (!str_cmp(hmm->host, d->host) &&
+            str_cmp(hmm->name, (d->original ? d->original->name : d->character ? d->character->name : "(none)")))
+        {
+          fMatch = TRUE;
+          break;
+        }
       }
       if (fMatch && hmm)
       {
-	hmm->count++;
-	if (!hmm->printed && hmm->count > 0)
-	{
-	  snprintf(buf, MAX_STRING_LENGTH,
-		    " %3d| %2d|%4d|%6d| %-12s", hmm->descriptor, hmm->connected, hmm->idle / 4, hmm->port, hmm->name);
-	  if (get_trust(ch) >= LEVEL_SAVIOR)
-	    snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "@%-16s ", hmm->host);
-	  mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	  send_to_pager(buf, ch);
-	  hmm->printed = TRUE;
-	}
-	snprintf(buf, MAX_STRING_LENGTH,
-		  " %3d| %2d|%4d|%6d| %-12s",
-		  d->descriptor,
-		  d->connected,
-		  d->idle / 4, d->port, d->original ? d->original->name : d->character ? d->character->name : "(none)");
-	if (get_trust(ch) >= LEVEL_SAVIOR)
-	  snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "@%-16s ", d->host);
-	mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-	send_to_pager(buf, ch);
+        hmm->count++;
+        if (!hmm->printed && hmm->count > 0)
+        {
+          snprintf(buf, MAX_STRING_LENGTH,
+                    " %3d| %2d|%4d|%6d| %-12s", hmm->descriptor, hmm->connected, hmm->idle / 4, hmm->port, hmm->name);
+          if (get_trust(ch) >= LEVEL_SAVIOR)
+            snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "@%-16s ", hmm->host);
+          mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
+          send_to_pager(buf, ch);
+          hmm->printed = TRUE;
+        }
+        snprintf(buf, MAX_STRING_LENGTH,
+                  " %3d| %2d|%4d|%6d| %-12s",
+                  d->descriptor,
+                  d->connected,
+                  d->idle / 4, d->port, d->original ? d->original->name : d->character ? d->character->name : "(none)");
+        if (get_trust(ch) >= LEVEL_SAVIOR)
+          snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "@%-16s ", d->host);
+        mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
+        send_to_pager(buf, ch);
       }
     }
     for (hmm = first_ip; hmm; hmm = hmm_next)
@@ -10545,9 +10545,9 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
       hmm_next = hmm->next;
       UNLINK(hmm, first_ip, last_ip, next, prev);
       if (hmm->name)
-	DISPOSE(hmm->name);
+        DISPOSE(hmm->name);
       if (hmm->host)
-	DISPOSE(hmm->host);
+        DISPOSE(hmm->host);
       DISPOSE(hmm);
     }
     return;
@@ -10559,18 +10559,18 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
     else
     {
       if (!str_cmp(arg1, "room"))
-	inroom = TRUE;
+        inroom = TRUE;
       else if (!str_cmp(arg1, "area"))
-	inarea = TRUE;
+        inarea = TRUE;
     }
     if (arg2[0] != '\0')
     {
       if (is_number(arg2))
-	times = atoi(arg2);
+        times = atoi(arg2);
       else
       {
-	send_to_char("Please see help ipcompare for more info.\r\n", ch);
-	return;
+        send_to_char("Please see help ipcompare for more info.\r\n", ch);
+        return;
       }
     }
   }
@@ -10638,12 +10638,12 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
     {
       count++;
       snprintf(buf, MAX_STRING_LENGTH,
-		" %3d| %2d|%4d|%6d| %-12s",
-		d->descriptor,
-		d->connected,
-		d->idle / 4, d->port, d->original ? d->original->name : d->character ? d->character->name : "(none)");
+                " %3d| %2d|%4d|%6d| %-12s",
+                d->descriptor,
+                d->connected,
+                d->idle / 4, d->port, d->original ? d->original->name : d->character ? d->character->name : "(none)");
       if (get_trust(ch) >= LEVEL_SAVIOR)
-	snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "@%-16s ", d->host);
+        snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "@%-16s ", d->host);
       mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
       send_to_pager(buf, ch);
     }
@@ -10717,13 +10717,13 @@ void do_nuisance(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg1);
       if (arg1[0] == '\0' || !is_number(arg1))
       {
-	send_to_char("Power option syntax: power <number>\r\n", ch);
-	return;
+        send_to_char("Power option syntax: power <number>\r\n", ch);
+        return;
       }
       if ((power = atoi(arg1)) < 1 || power > 10)
       {
-	send_to_char("Power must be 1 - 10.\r\n", ch);
-	return;
+        send_to_char("Power must be 1 - 10.\r\n", ch);
+        return;
       }
     }
     else if (!str_cmp(arg1, "time"))
@@ -10731,13 +10731,13 @@ void do_nuisance(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg1);
       if (arg1[0] == '\0' || !is_number(arg1))
       {
-	send_to_char("Time option syntax: time <number> (In days)\r\n", ch);
-	return;
+        send_to_char("Time option syntax: time <number> (In days)\r\n", ch);
+        return;
       }
       if ((sttime = atoi(arg1)) < 1)
       {
-	send_to_char("Time must be a positive number.\r\n", ch);
-	return;
+        send_to_char("Time must be a positive number.\r\n", ch);
+        return;
       }
     }
     else if (!str_cmp(arg1, "maxtime"))
@@ -10746,20 +10746,20 @@ void do_nuisance(CHAR_DATA* ch, const char* argument)
       argument = one_argument(argument, arg2);
       if (arg1[0] == '\0' || arg2[0] == '\0' || !is_number(arg1))
       {
-	send_to_char("Maxtime option syntax: maxtime <number> <minute|day|hour>\r\n", ch);
-	return;
+        send_to_char("Maxtime option syntax: maxtime <number> <minute|day|hour>\r\n", ch);
+        return;
       }
       if ((max_time = atoi(arg1)) < 1)
       {
-	send_to_char("Maxtime must be a positive number.\r\n", ch);
-	return;
+        send_to_char("Maxtime must be a positive number.\r\n", ch);
+        return;
       }
       if (!str_cmp(arg2, "minutes"))
-	minute = TRUE;
+        minute = TRUE;
       else if (!str_cmp(arg2, "hours"))
-	hour = TRUE;
+        hour = TRUE;
       else if (!str_cmp(arg2, "days"))
-	day = TRUE;
+        day = TRUE;
     }
     else
     {
@@ -10909,9 +10909,9 @@ void do_pcrename(CHAR_DATA* ch, const char* argument)
   }
   snprintf(newname, MAX_STRING_LENGTH, "%s%c/%s", PLAYER_DIR, tolower(arg2[0]), capitalize(arg2));
   snprintf(oldname, MAX_STRING_LENGTH, "%s%c/%s", PLAYER_DIR, tolower(victim->pcdata->filename[0]),
-	    capitalize(victim->pcdata->filename));
+            capitalize(victim->pcdata->filename));
   snprintf(backname, MAX_STRING_LENGTH, "%s%c/%s", BACKUP_DIR, tolower(victim->pcdata->filename[0]),
-	    capitalize(victim->pcdata->filename));
+            capitalize(victim->pcdata->filename));
   if (access(newname, F_OK) == 0)
   {
     send_to_char("That name already exists.\r\n", ch);
@@ -11282,7 +11282,7 @@ void do_message(CHAR_DATA *ch, const char *argument)
       ch_printf_color(ch, "&CName: &c%-20s &CType: &c%d\r\n", capitalize(lmsg->name), lmsg->type);
 
       if (lmsg->text)
-	ch_printf_color(ch, "&CText:\r\n  &c%s\r\n", lmsg->text);
+        ch_printf_color(ch, "&CText:\r\n  &c%s\r\n", lmsg->text);
 
       send_to_char("\r\n", ch);
     }
@@ -11299,12 +11299,12 @@ void do_message(CHAR_DATA *ch, const char *argument)
     for (temp = first_char; temp; temp = temp->next)
     {
       if (IS_NPC(temp))
-	continue;
+        continue;
 
       if (!str_cmp(name, temp->name) && temp->desc)
       {
-	send_to_char("They are online, wouldn't tells be just as easy?\r\n", ch);
-	return;
+        send_to_char("They are online, wouldn't tells be just as easy?\r\n", ch);
+        return;
       }
     }
 
@@ -11312,19 +11312,19 @@ void do_message(CHAR_DATA *ch, const char *argument)
     {
       if (is_number(arg2))
       {
-	type = atoi(arg2);
+        type = atoi(arg2);
 
-	if (type > MAX_MSG)
-	{
-	  send_to_char("Invalid login message.\r\n", ch);
-	  return;
-	}
-	argument = NULL;
+        if (type > MAX_MSG)
+        {
+          send_to_char("Invalid login message.\r\n", ch);
+          return;
+        }
+        argument = NULL;
       }
       else
       {
-	send_to_char("Which type?\r\n", ch);
-	return;
+        send_to_char("Which type?\r\n", ch);
+        return;
       }
     }
 
