@@ -1505,7 +1505,7 @@ char *print_bitvector(EXT_BV * bits)
       break;
   for (x = 0; x <= cnt; x++)
   {
-    snprintf(p, (XBI * 12) - (p - buf), "%ud", bits->bits[x]);
+    snprintf(p, (XBI * 12) - (p - buf), "%u", bits->bits[x]);
     p += strlen(p);
     if (x < cnt)
       *p++ = '&';
