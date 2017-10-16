@@ -2469,7 +2469,7 @@ void do_enter(CHAR_DATA* ch, const char* argument)
     if (ch->in_room->sector_type != SECT_INSIDE && IS_OUTSIDE(ch))
       for (pexit = ch->in_room->first_exit; pexit; pexit = pexit->next)
         if (pexit->to_room && (pexit->to_room->sector_type == SECT_INSIDE
-                                || xIS_SET(pexit->to_room->room_flags, ROOM_INDOORS)))
+                                || xIS_SET(pexit->to_room->room_flags, ROOM_ROOF)))
         {
           move_char(ch, pexit, 0);
           return;
@@ -2505,7 +2505,7 @@ void do_leave(CHAR_DATA* ch, const char* argument)
     if (ch->in_room->sector_type == SECT_INSIDE || !IS_OUTSIDE(ch))
       for (pexit = ch->in_room->first_exit; pexit; pexit = pexit->next)
         if (pexit->to_room && pexit->to_room->sector_type != SECT_INSIDE
-            && !xIS_SET(pexit->to_room->room_flags, ROOM_INDOORS))
+            && !xIS_SET(pexit->to_room->room_flags, ROOM_ROOF))
         {
           move_char(ch, pexit, 0);
           return;

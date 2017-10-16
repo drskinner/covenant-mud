@@ -64,7 +64,7 @@ const char *const sec_flags[] = {
 };
 
 const char *const r_flags[] = {
-  "dark", "death", "nomob", "indoors", "house", "neutral", "chaotic",
+  "dark", "death", "nomob", "roof", "house", "neutral", "chaotic",
   "nomagic", "tunnel", "private", "safe", "solitary", "petshop", "norecall",
   "donation", "nodropall", "silence", "logspeech", "nodrop", "clanstoreroom",
   "nosummon", "noastral", "teleport", "teleshowdesc", "nofloor",

@@ -233,7 +233,7 @@ bool set_house(CHAR_DATA * ch, int vnum, bool apartment)
   location->max_weight = 2000;
   xSET_BIT(location->room_flags, ROOM_NO_SUMMON);
   xSET_BIT(location->room_flags, ROOM_NO_ASTRAL);
-  xSET_BIT(location->room_flags, ROOM_INDOORS);
+  xSET_BIT(location->room_flags, ROOM_ROOF);
   xSET_BIT(location->room_flags, ROOM_HOUSE);
   xREMOVE_BIT(location->room_flags, ROOM_PROTOTYPE);
 
@@ -369,7 +369,7 @@ bool remove_house(CHAR_DATA * ch)
 
   xREMOVE_BIT(location->room_flags, ROOM_NO_SUMMON);
   xREMOVE_BIT(location->room_flags, ROOM_NO_ASTRAL);
-  xREMOVE_BIT(location->room_flags, ROOM_INDOORS);
+  xREMOVE_BIT(location->room_flags, ROOM_ROOF);
   xREMOVE_BIT(location->room_flags, ROOM_HOUSE);
   xSET_BIT(location->room_flags, ROOM_PROTOTYPE);
 
@@ -478,7 +478,7 @@ bool add_room(HOME_DATA * home, ROOM_INDEX_DATA * location, const char *argument
   addloc->max_weight = 2000;
   xSET_BIT(addloc->room_flags, ROOM_NO_SUMMON);
   xSET_BIT(addloc->room_flags, ROOM_NO_ASTRAL);
-  xSET_BIT(addloc->room_flags, ROOM_INDOORS);
+  xSET_BIT(addloc->room_flags, ROOM_ROOF);
   xSET_BIT(addloc->room_flags, ROOM_HOUSE);
   xREMOVE_BIT(addloc->room_flags, ROOM_PROTOTYPE);
 
