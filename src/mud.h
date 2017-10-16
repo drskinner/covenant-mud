@@ -1863,7 +1863,7 @@ typedef enum
  */
 typedef enum
 {
-  ROOM_DARK, ROOM_DEATH, ROOM_NO_MOB, ROOM_INDOORS, ROOM_HOUSE, ROOM_NEUTRAL, ROOM_CHAOTIC,
+  ROOM_DARK, ROOM_DEATH, ROOM_NO_MOB, ROOM_ROOF, ROOM_HOUSE, ROOM_NEUTRAL, ROOM_CHAOTIC,
   ROOM_NO_MAGIC, ROOM_TUNNEL, ROOM_PRIVATE, ROOM_SAFE, ROOM_SOLITARY, ROOM_PET_SHOP,
   ROOM_NO_RECALL, ROOM_DONATION, ROOM_NODROPALL, ROOM_SILENCE, ROOM_LOGSPEECH, ROOM_NODROP,
   ROOM_CLANSTOREROOM, ROOM_NO_SUMMON, ROOM_NO_ASTRAL, ROOM_TELEPORT, ROOM_TELESHOWDESC,
@@ -3306,7 +3306,7 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
                                  +(((ch)->mental_state > 5              \
                                     &&(ch)->mental_state < 15) ? 1 : 0))
 
-#define IS_OUTSIDE(ch)          (!xIS_SET((ch)->in_room->room_flags, ROOM_INDOORS) \
+#define IS_OUTSIDE(ch)          (!xIS_SET((ch)->in_room->room_flags, ROOM_ROOF) \
                                  && !xIS_SET((ch)->in_room->room_flags, ROOM_TUNNEL))
 
 #define NO_WEATHER_SECT(sect)  ( sect == SECT_INSIDE || \
