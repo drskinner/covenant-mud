@@ -2573,7 +2573,7 @@ void do_hlist(CHAR_DATA* ch, const char* argument)
 }
 
 /* 
- * New do_who with WHO REQUEST, clan, race and homepage support.  -Thoric
+ * New do_who with WHO REQUEST, clan, race and website support.  -Thoric
  *
  * Latest version of do_who eliminates redundant code by using linked lists.
  * Shows imms separately, indicates guest and retired immortals.
@@ -2739,7 +2739,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
   bool fImmortalOnly;
   bool fLeader;
   bool fPkill;
-  bool fShowHomepage;
+  bool fShowWebsite;
   bool fClanMatch;  /* SB who clan (order),who guild, and who council */
   bool fCouncilMatch;
   bool fDeityMatch;
@@ -2773,7 +2773,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
   fRaceRestrict = FALSE;
   fImmortalOnly = FALSE;
   fPkill = FALSE;
-  fShowHomepage = FALSE;
+  fShowWebsite = FALSE;
   fClanMatch = FALSE;  /* SB who clan (order), who guild, who council */
   fCouncilMatch = FALSE;
   fDeityMatch = FALSE;
@@ -2843,7 +2843,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
       else if (!str_cmp(arg, "leader"))
         fLeader = TRUE;
       else if (!str_cmp(arg, "www"))
-        fShowHomepage = TRUE;
+        fShowWebsite = TRUE;
       else if (!str_cmp(arg, "group") && ch)
         fGroup = TRUE;
       else /* SB who clan (order), guild, council */ if ((pClan = get_clan(arg)))
@@ -2895,7 +2895,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
     set_pager_color(AT_GREEN, ch);
   else
   {
-    if (fShowHomepage)
+    if (fShowWebsite)
       whoout = fopen(WEBWHO_FILE, "w");
     else
       whoout = fopen(WHO_FILE, "w");
@@ -2952,8 +2952,8 @@ void do_who(CHAR_DATA* ch, const char* argument)
 
     nMatch++;
 
-    if (fShowHomepage && wch->pcdata->homepage && wch->pcdata->homepage[0] != '\0')
-      snprintf(char_name, MAX_INPUT_LENGTH, "<A HREF=\"%s\">%s</A>", show_tilde(wch->pcdata->homepage), wch->name);
+    if (fShowWebsite && wch->pcdata->website && wch->pcdata->website[0] != '\0')
+      snprintf(char_name, MAX_INPUT_LENGTH, "<A HREF=\"%s\">%s</A>", show_tilde(wch->pcdata->website), wch->name);
     else
       mudstrlcpy(char_name, wch->name, MAX_INPUT_LENGTH);
 
@@ -4328,8 +4328,8 @@ void do_config(CHAR_DATA* ch, const char* argument)
                " A proven thief, you will be hunted by the authorities.\r\n" : "",
                xIS_SET(ch->act, PLR_KILLER) ?
                " For the crime of murder you are sentenced to death...\r\n" : "",
-               IS_SET(ch->pcdata->flags, PCFLAG_NOHOMEPAGE) ?
-               " You are not permitted to set your homepage.\r\n" : "",
+               IS_SET(ch->pcdata->flags, PCFLAG_NOWEBSITE) ?
+               " You are not permitted to set your website.\r\n" : "",
                IS_SET(ch->pcdata->flags, PCFLAG_NODESC) ? " You are not permitted to set your description.\r\n" : "");
   }
   else
@@ -4835,10 +4835,10 @@ void do_whois(CHAR_DATA* ch, const char* argument)
     pager_printf(ch, " %s has found succor in the deity %s.\r\n",
                   victim->sex == SEX_MALE ? "He" : victim->sex == SEX_FEMALE ? "She" : "It", victim->pcdata->deity->name);
 
-  if (victim->pcdata->homepage && victim->pcdata->homepage[0] != '\0')
-    pager_printf(ch, " %s homepage can be found at %s\r\n",
+  if (victim->pcdata->website && victim->pcdata->website[0] != '\0')
+    pager_printf(ch, " %s website can be found at %s\r\n",
                   victim->sex == SEX_MALE ? "His" :
-                  victim->sex == SEX_FEMALE ? "Her" : "Its", show_tilde(victim->pcdata->homepage));
+                  victim->sex == SEX_FEMALE ? "Her" : "Its", show_tilde(victim->pcdata->website));
 
   if (victim->pcdata->bio && victim->pcdata->bio[0] != '\0')
     pager_printf(ch, " %s's personal bio:\r\n%s", victim->name, victim->pcdata->bio);
@@ -4885,7 +4885,7 @@ void do_whois(CHAR_DATA* ch, const char* argument)
     if (xIS_SET(victim->act, PLR_SILENCE) || xIS_SET(victim->act, PLR_FREEZE) || xIS_SET(victim->act, PLR_NO_EMOTE)
         || xIS_SET(victim->act, PLR_NO_TELL) || IS_SET(victim->pcdata->flags, PCFLAG_NOBECKON) || IS_SET(victim->pcdata->flags, PCFLAG_NOTITLE)
         || xIS_SET(victim->act, PLR_THIEF) || xIS_SET(victim->act, PLR_KILLER) || xIS_SET(victim->act, PLR_LITTERBUG)
-        || IS_SET(victim->pcdata->flags, PCFLAG_NODESC) || IS_SET(victim->pcdata->flags, PCFLAG_NOBIO) || IS_SET(victim->pcdata->flags, PCFLAG_NOHOMEPAGE))
+        || IS_SET(victim->pcdata->flags, PCFLAG_NODESC) || IS_SET(victim->pcdata->flags, PCFLAG_NOBIO) || IS_SET(victim->pcdata->flags, PCFLAG_NOWEBSITE))
     {
       mudstrlcat(buf2, "&GThis player has the following sanctions: &Y", MAX_STRING_LENGTH);
       if (xIS_SET(victim->act, PLR_SILENCE))
@@ -4910,8 +4910,8 @@ void do_whois(CHAR_DATA* ch, const char* argument)
         mudstrlcat(buf2, " killer", MAX_STRING_LENGTH);
       if (xIS_SET(victim->act, PLR_LITTERBUG))
         mudstrlcat(buf2, " litterbug", MAX_STRING_LENGTH);
-      if (IS_SET(victim->pcdata->flags, PCFLAG_NOHOMEPAGE))
-        mudstrlcat(buf2, " nohomepage", MAX_STRING_LENGTH);
+      if (IS_SET(victim->pcdata->flags, PCFLAG_NOWEBSITE))
+        mudstrlcat(buf2, " nowebsite", MAX_STRING_LENGTH);
       mudstrlcat(buf2, ".\r\n", MAX_STRING_LENGTH);
       send_to_pager(buf2, ch);
     }

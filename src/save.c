@@ -388,10 +388,14 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   fprintf(fp, "Languages    %d %d\n", ch->speaks, ch->speaking);
   fprintf(fp, "Level        %d\n", ch->level);
   fprintf(fp, "Played       %d\n", ch->played + (int)(current_time - ch->logon));
-  fprintf(fp, "Room         %d\n",
-           (ch->in_room == get_room_index(ROOM_VNUM_LIMBO)
+  if (ch->in_room) {
+    fprintf(fp, "Room         %d\n",
+            (ch->in_room == get_room_index(ROOM_VNUM_LIMBO)
              && ch->was_in_room) ? ch->was_in_room->vnum : ch->in_room->vnum);
-
+  } else {
+    fprintf(fp, "Room         %d\n", ch->pcdata->home_room);
+  }
+  fprintf(fp, "Homeroom     %d\n", ch->pcdata->home_room);
   fprintf(fp, "HpManaMove   %d %d %d %d %d %d\n", ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move);
   fprintf(fp, "Gold         %d\n", ch->gold);
   fprintf(fp, "Exp          %d\n", ch->exp);
@@ -456,8 +460,8 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   if (ch->pcdata->bestowments && ch->pcdata->bestowments[0] != '\0')
     fprintf(fp, "Bestowments  %s~\n", ch->pcdata->bestowments);
   fprintf(fp, "Title        %s~\n", ch->pcdata->title);
-  if (ch->pcdata->homepage && ch->pcdata->homepage[0] != '\0')
-    fprintf(fp, "Homepage     %s~\n", ch->pcdata->homepage);
+  if (ch->pcdata->website && ch->pcdata->website[0] != '\0')
+    fprintf(fp, "Website     %s~\n", ch->pcdata->website);
   if (ch->pcdata->bio && ch->pcdata->bio[0] != '\0')
     fprintf(fp, "Bio          %s~\n", ch->pcdata->bio);
   if (ch->pcdata->authed_by && ch->pcdata->authed_by[0] != '\0')
@@ -835,6 +839,7 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
   ch->pcdata->condition[COND_BLOODTHIRST] = 10;
   ch->pcdata->nuisance = NULL;
   ch->pcdata->wizinvis = 0;
+  ch->pcdata->home_room = 10223;
   ch->pcdata->charmies = 0;
   ch->mental_state = -10;
   ch->mobinvis = 0;
@@ -973,7 +978,7 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
     ch->pcdata->rank = str_dup("");
     ch->pcdata->bestowments = str_dup("");
     ch->pcdata->title = STRALLOC("");
-    ch->pcdata->homepage = str_dup("");
+    ch->pcdata->website = str_dup("");
     ch->pcdata->bio = STRALLOC("");
     ch->pcdata->authed_by = STRALLOC("");
     ch->pcdata->prompt = STRALLOC("");
@@ -1370,7 +1375,7 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       }
 
       KEY("Hitroll", ch->hitroll, fread_number(fp));
-      KEY("Homepage", ch->pcdata->homepage, fread_string_nohash(fp));
+      KEY("Homeroom", ch->pcdata->home_room, fread_number(fp));
 
       if (!strcmp(word, "Homeowner"))
       {
@@ -1796,8 +1801,8 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
           ch->pcdata->bestowments = str_dup("");
         if (!ch->pcdata->title)
           ch->pcdata->title = STRALLOC("");
-        if (!ch->pcdata->homepage)
-          ch->pcdata->homepage = str_dup("");
+        if (!ch->pcdata->website)
+          ch->pcdata->website = str_dup("");
         if (!ch->pcdata->authed_by)
           ch->pcdata->authed_by = STRALLOC("");
         if (!ch->pcdata->prompt)
@@ -1933,6 +1938,7 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
         }
         break;
       }
+      KEY("Website", ch->pcdata->website, fread_string_nohash(fp));
       KEY("Wimpy", ch->wimpy, fread_number(fp));
       KEY("WizInvis", ch->pcdata->wizinvis, fread_number(fp));
       break;

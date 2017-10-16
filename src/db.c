@@ -3120,7 +3120,7 @@ void free_char(CHAR_DATA * ch)
     STRFREE(ch->pcdata->title);
     STRFREE(ch->pcdata->bio);
     DISPOSE(ch->pcdata->bestowments); /* no hash */
-    DISPOSE(ch->pcdata->homepage); /* no hash */
+    DISPOSE(ch->pcdata->website); /* no hash */
     STRFREE(ch->pcdata->authed_by);
     STRFREE(ch->pcdata->prompt);
     STRFREE(ch->pcdata->fprompt);
@@ -9536,7 +9536,7 @@ const char *const login_msg[] = {
   "sentence is up.  Contact an immortal if you wish to discuss your sentence.\r\n",
   /*11*/ "\r\n&RYou have lost your ability to set your own description.  Contact an\r\n"
   "immortal if you wish to discuss your sentence.\r\n",
-  /*12*/ "\r\n&RYou have lost your ability to set your homepage address.  Contact an\r\n"
+  /*12*/ "\r\n&RYou have lost your ability to set your website address.  Contact an\r\n"
   "immortal if you wish to discuss your sentence.\r\n",
   /*13*/ "\r\n&RYou have lost your ability to \"beckon\" other players.  Contact an\r\n"
   "immortal if you wish to discuss your sentence.\r\n",

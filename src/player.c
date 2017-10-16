@@ -1050,33 +1050,33 @@ void do_title(CHAR_DATA* ch, const char* argument)
   send_to_char("Ok.\r\n", ch);
 }
 
-void do_homepage(CHAR_DATA* ch, const char* argument)
+void do_website(CHAR_DATA* ch, const char* argument)
 {
   char buf[MAX_STRING_LENGTH];
 
   if (IS_NPC(ch))
     return;
 
-  if (IS_SET(ch->pcdata->flags, PCFLAG_NOHOMEPAGE))
+  if (IS_SET(ch->pcdata->flags, PCFLAG_NOWEBSITE))
   {
-    send_to_char("The Gods prohibit you from changing your homepage.\r\n", ch);
+    send_to_char("The Gods prohibit you from changing your website.\r\n", ch);
     return;
   }
 
   if (argument[0] == '\0')
   {
-    if (!ch->pcdata->homepage)
-      ch->pcdata->homepage = str_dup("");
-    ch_printf(ch, "Your homepage is: %s\r\n", show_tilde(ch->pcdata->homepage));
+    if (!ch->pcdata->website)
+      ch->pcdata->website = str_dup("");
+    ch_printf(ch, "Your website is: %s\r\n", show_tilde(ch->pcdata->website));
     return;
   }
 
   if (!str_cmp(argument, "clear"))
   {
-    if (ch->pcdata->homepage)
-      DISPOSE(ch->pcdata->homepage);
-    ch->pcdata->homepage = str_dup("");
-    send_to_char("Homepage cleared.\r\n", ch);
+    if (ch->pcdata->website)
+      DISPOSE(ch->pcdata->website);
+    ch->pcdata->website = str_dup("");
+    send_to_char("Website cleared.\r\n", ch);
     return;
   }
 
@@ -1088,10 +1088,10 @@ void do_homepage(CHAR_DATA* ch, const char* argument)
     buf[70] = '\0';
 
   hide_tilde(buf);
-  if (ch->pcdata->homepage)
-    DISPOSE(ch->pcdata->homepage);
-  ch->pcdata->homepage = str_dup(buf);
-  send_to_char("Homepage set.\r\n", ch);
+  if (ch->pcdata->website)
+    DISPOSE(ch->pcdata->website);
+  ch->pcdata->website = str_dup(buf);
+  send_to_char("Website set.\r\n", ch);
 }
 
 /*

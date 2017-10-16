@@ -2034,7 +2034,7 @@ typedef enum
 #define PCFLAG_NOBECKON       BV20 /* Cannot beckon/beep */
 #define PCFLAG_NODESC         BV21 /* Cannot set a description */
 #define PCFLAG_NOBIO          BV22 /* Cannot set a bio */
-#define PCFLAG_NOHOMEPAGE     BV23 /* Cannot set a homepage */
+#define PCFLAG_NOWEBSITE     BV23 /* Cannot set a website */
 
 typedef enum
 {
@@ -2372,7 +2372,7 @@ struct pc_data
   GAME_BOARD_DATA *game_board;
   NUISANCE_DATA *nuisance;   /* New Nuisance structure */
   KILLED_DATA killed[MAX_KILLTRACK];
-  const char *homepage;
+  const char *website;
   const char *pointing;
   const char *clan_name;
   const char *council_name;
@@ -2394,6 +2394,7 @@ struct pc_data
   int mkills; /* Number of mobs killed         */
   int mdeaths;   /* Number of deaths due to mobs       */
   int illegal_pk;   /* Number of illegal pk's committed   */
+  int home_room; /* Where is my office? */
   int r_range_lo;   /* room range */
   int r_range_hi;
   int m_range_lo;   /* mob range  */
@@ -3829,7 +3830,8 @@ DECLARE_DO_FUN(do_hitall);
 DECLARE_DO_FUN(do_hl);
 DECLARE_DO_FUN(do_hlist);
 DECLARE_DO_FUN(do_holylight);
-DECLARE_DO_FUN(do_homepage);
+DECLARE_DO_FUN(do_home);
+
 DECLARE_DO_FUN(do_hset);
 DECLARE_DO_FUN(do_ide);
 DECLARE_DO_FUN(do_idea);
@@ -3878,7 +3880,7 @@ DECLARE_DO_FUN(do_makeshop);
 DECLARE_DO_FUN(do_makewizlist);
 DECLARE_DO_FUN(do_meditate);
 DECLARE_DO_FUN(do_memory);
-DECLARE_DO_FUN(do_message       );
+DECLARE_DO_FUN(do_message);
 DECLARE_DO_FUN(do_mcreate);
 DECLARE_DO_FUN(do_mdelete);
 DECLARE_DO_FUN(do_mfind);
@@ -3910,7 +3912,7 @@ DECLARE_DO_FUN(do_nobeckon);
 DECLARE_DO_FUN(do_nobio);
 DECLARE_DO_FUN(do_nodesc);
 DECLARE_DO_FUN(do_noemote);
-DECLARE_DO_FUN(do_nohomepage);
+DECLARE_DO_FUN(do_nowebsite);
 DECLARE_DO_FUN(do_noresolve);
 DECLARE_DO_FUN(do_north);
 DECLARE_DO_FUN(do_northeast);
@@ -4108,6 +4110,7 @@ DECLARE_DO_FUN(do_warn);
 DECLARE_DO_FUN(do_wartalk);
 DECLARE_DO_FUN(do_wear);
 DECLARE_DO_FUN(do_weather);
+DECLARE_DO_FUN(do_website);
 DECLARE_DO_FUN(do_west);
 DECLARE_DO_FUN(do_where);
 DECLARE_DO_FUN(do_whisper);
