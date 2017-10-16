@@ -1273,6 +1273,41 @@ ROOM_INDEX_DATA *find_location(CHAR_DATA * ch, const char *arg)
   return NULL;
 }
 
+void do_home(CHAR_DATA * ch, const char *argument)
+{
+  char arg[MAX_INPUT_LENGTH];
+  int vnum;
+  
+  if (IS_NPC(ch)) {
+    send_to_char("You're a mob--you don't have a home.\r\n", ch);
+    return;
+  }
+
+  if (ch->level <= 50) {
+    send_to_char("You close your eyes for a moment and think of home.\r\n",
+		 ch);
+    return;
+  }
+
+  one_argument(argument, arg);
+
+  if (arg[0] == '\0') {
+    sprintf(arg, "%d", ch->pcdata->home_room);
+    do_goto(ch, arg);
+    return;
+  } else {
+    vnum = atoi(arg);
+    if ((vnum < 0) || (get_room_index(vnum) == NULL)) {
+      send_to_char("You cannot find that room.\r\n", ch);
+      return;
+    }
+    ch_printf(ch, "You set your home to %d.\r\n", vnum);
+    ch->pcdata->home_room = vnum;
+  }
+
+  return;
+}
+
 /* This function shared by do_transfer and do_mptransfer
  *
  * Immortals bypass most restrictions on where to transfer victims.
@@ -4510,7 +4545,7 @@ void do_restoretime(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-void do_nohomepage(CHAR_DATA *ch, const char *argument)
+void do_nowebsite(CHAR_DATA *ch, const char *argument)
 {
   char arg[MAX_INPUT_LENGTH];
   CHAR_DATA *victim;
@@ -4520,7 +4555,7 @@ void do_nohomepage(CHAR_DATA *ch, const char *argument)
   argument = one_argument(argument, arg);
   if (arg[0] == '\0')
   {
-    send_to_char("Nohomepage whom?\r\n", ch);
+    send_to_char("Nowebsite whom?\r\n", ch);
     return;
   }
 
@@ -4543,22 +4578,22 @@ void do_nohomepage(CHAR_DATA *ch, const char *argument)
   }
 
   set_char_color(AT_IMMORT, victim);
-  if (IS_SET(victim->pcdata->flags, PCFLAG_NOHOMEPAGE))
+  if (IS_SET(victim->pcdata->flags, PCFLAG_NOWEBSITE))
   {
-    REMOVE_BIT(victim->pcdata->flags, PCFLAG_NOHOMEPAGE);
-    send_to_char("You can set your own homepage again.\r\n", victim);
-    ch_printf(ch, "NOHOMEPAGE removed from %s.\r\n", victim->name);
+    REMOVE_BIT(victim->pcdata->flags, PCFLAG_NOWEBSITE);
+    send_to_char("You can set your own website again.\r\n", victim);
+    ch_printf(ch, "NOWEBSITE removed from %s.\r\n", victim->name);
   }
   else
   {
-    SET_BIT(victim->pcdata->flags, PCFLAG_NOHOMEPAGE);
-    STRFREE(victim->pcdata->homepage);
-    victim->pcdata->homepage = STRALLOC("");
+    SET_BIT(victim->pcdata->flags, PCFLAG_NOWEBSITE);
+    STRFREE(victim->pcdata->website);
+    victim->pcdata->website = STRALLOC("");
     if (!victim->desc)
       add_loginmsg(victim->name, 12, NULL);
     else
-      send_to_char("You can't set your own homepage!\r\n", victim);
-    ch_printf(ch, "NOHOMEPAGE set on %s.\r\n", victim->name);
+      send_to_char("You can't set your own website!\r\n", victim);
+    ch_printf(ch, "NOWEBSITE set on %s.\r\n", victim->name);
   }
   save_char_obj(victim);
   return;
