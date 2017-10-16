@@ -1279,12 +1279,12 @@ void do_home(CHAR_DATA * ch, const char *argument)
   int vnum;
   
   if (IS_NPC(ch)) {
-    send_to_char("You're a mob--you don't have a home.\n\r", ch);
+    send_to_char("You're a mob--you don't have a home.\r\n", ch);
     return;
   }
 
   if (ch->level <= 50) {
-    send_to_char("You close your eyes for a moment and think of home.\n\r",
+    send_to_char("You close your eyes for a moment and think of home.\r\n",
 		 ch);
     return;
   }
