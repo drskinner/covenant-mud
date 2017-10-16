@@ -68,7 +68,7 @@ const char *const r_flags[] = {
   "nomagic", "tunnel", "private", "safe", "solitary", "petshop", "norecall",
   "donation", "nodropall", "silence", "logspeech", "nodrop", "clanstoreroom",
   "nosummon", "noastral", "teleport", "teleshowdesc", "nofloor",
-  "nosupplicate", "arena", "nomissile", "noyell", "noquit", "prototype", "dnd",
+  "nogoto", "arena", "nomissile", "noyell", "noquit", "prototype", "dnd",
   "_track_", "nowhere", "notrack"
 };
 
