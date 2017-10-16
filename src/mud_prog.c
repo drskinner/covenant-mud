@@ -1036,6 +1036,10 @@ doneargs:
     {
       return ((IS_OUTSIDE(chkchar) && chkchar->in_room->sector_type != SECT_INSIDE) ? FALSE : TRUE);
     }
+    if (!str_cmp(chck, "nogoto"))
+    {
+      return xIS_SET(chkchar->in_room->room_flags, ROOM_NOGOTO) ? TRUE : FALSE;
+    }
     if (!str_cmp(chck, "nomagic"))
     {
       return xIS_SET(chkchar->in_room->room_flags, ROOM_NO_MAGIC) ? TRUE : FALSE;
@@ -1051,10 +1055,6 @@ doneargs:
     if (!str_cmp(chck, "noastral"))
     {
       return xIS_SET(chkchar->in_room->room_flags, ROOM_NO_ASTRAL) ? TRUE : FALSE;
-    }
-    if (!str_cmp(chck, "nosupplicate"))
-    {
-      return xIS_SET(chkchar->in_room->room_flags, ROOM_NOSUPPLICATE) ? TRUE : FALSE;
     }
     if (!str_cmp(chck, "norecall"))
     {

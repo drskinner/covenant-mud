@@ -1201,12 +1201,6 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
           return;
         }
 
-        if (xIS_SET(obj->in_room->room_flags, ROOM_NOSUPPLICATE))
-        {
-          act(AT_MAGIC, "The image of your corpse appears, but suddenly wavers away.", ch, NULL, NULL, TO_CHAR);
-          return;
-        }
-
         act(AT_MAGIC, "Your corpse appears suddenly, surrounded by a divine presence...", ch, NULL, NULL, TO_CHAR);
         act(AT_MAGIC, "$n's corpse appears suddenly, surrounded by a divine force...", ch, NULL, NULL, TO_ROOM);
         obj_from_room(obj);
@@ -1380,12 +1374,6 @@ void do_supplicate(CHAR_DATA* ch, const char* argument)
     if (ch->pcdata->favor < ch->pcdata->deity->srecall)
     {
       send_to_char("Your favor is inadequate for such a supplication.\r\n", ch);
-      return;
-    }
-
-    if (xIS_SET(ch->in_room->room_flags, ROOM_NOSUPPLICATE))
-    {
-      send_to_char("You have been forsaken!\r\n", ch);
       return;
     }
 
