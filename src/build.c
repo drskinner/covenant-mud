@@ -1047,6 +1047,15 @@ void do_goto(CHAR_DATA* ch, const char* argument)
       send_to_char("Overriding private flag!\r\n", ch);
   }
 
+  if (xIS_SET(location->room_flags, ROOM_NOGOTO)) {
+    if (get_trust(ch) <= LEVEL_IMPLEMENTOR) {
+      send_to_char("That room is not a suitable target for goto.\r\n", ch);
+      return;
+    } else {
+      send_to_char("Overriding nogoto flag!\r\n\r\n", ch);
+    }
+  }
+
   in_room = ch->in_room;
   if (ch->fighting)
     stop_fighting(ch, TRUE);
@@ -1056,7 +1065,11 @@ void do_goto(CHAR_DATA* ch, const char* argument)
          (ch->pcdata
            && ch->pcdata->bamfout[0] != '\0') ? ch->pcdata->bamfout : (char *)"leaves in a swirling mist.", TO_ROOM);
 
-  ch->regoto = ch->in_room->vnum;
+  /* need to be ready for hexes! */
+  if (ch->in_room) {
+    ch->regoto = ch->in_room->vnum;
+  }
+
   char_from_room(ch);
   if (ch->mount)
   {
@@ -1082,7 +1095,7 @@ void do_goto(CHAR_DATA* ch, const char* argument)
       act(AT_ACTION, "You follow $N.", fch, NULL, ch, TO_CHAR);
       do_goto(fch, argument);
     }
-/* Experimental change by Gorog so imm's personal mobs follow them */
+    /* Experimental change by Gorog so imm's personal mobs follow them */
     else if (IS_NPC(fch) && fch->master == ch)
     {
       char_from_room(fch);

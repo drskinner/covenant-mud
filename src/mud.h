@@ -3831,7 +3831,6 @@ DECLARE_DO_FUN(do_hl);
 DECLARE_DO_FUN(do_hlist);
 DECLARE_DO_FUN(do_holylight);
 DECLARE_DO_FUN(do_home);
-
 DECLARE_DO_FUN(do_hset);
 DECLARE_DO_FUN(do_ide);
 DECLARE_DO_FUN(do_idea);
