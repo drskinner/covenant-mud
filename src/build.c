@@ -1047,7 +1047,7 @@ void do_goto(CHAR_DATA* ch, const char* argument)
       send_to_char("Overriding private flag!\r\n", ch);
   }
 
-  if (xIS_SET(location->room_flags, ROOM_PRIVATE)) {
+  if (xIS_SET(location->room_flags, ROOM_NOGOTO)) {
     if (get_trust(ch) <= LEVEL_IMPLEMENTOR) {
       send_to_char("That room is not a suitable target for goto.\r\n", ch);
       return;
