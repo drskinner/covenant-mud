@@ -25,7 +25,6 @@ const char *const sector_name[SECT_MAX] = {
   "Underground", "In the Air", "Fire", "Smoke", "Unknown", "&RERROR!&w"
 };
 
-
 const char *const npc_race[MAX_NPC_RACE] = {
   // Playable races - MAX_RACE in mud.h must be raised before more can be added after r9.
   "human", "elf", "dwarf", "halfling", "pixie", "vampire", "half-ogre",       // 6 (start from 0)
