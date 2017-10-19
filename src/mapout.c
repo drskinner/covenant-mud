@@ -373,13 +373,13 @@ int add_new_room_to_map(CHAR_DATA * ch, char code)
       else if (code == 'f')
         location->sector_type = SECT_FIELD;
       else if (code == 'F')
-        location->sector_type = SECT_FOREST;
+        location->sector_type = SECT_LIGHT_WOODS;
       else if (code == 'H')
         location->sector_type = SECT_HILLS;
       else if (code == 'M')
         location->sector_type = SECT_MOUNTAIN;
       else if (code == 's')
-        location->sector_type = SECT_WATER_SWIM;
+        location->sector_type = SECT_FRESH_WATER;
       else if (code == 'S')
         location->sector_type = SECT_WATER_NOSWIM;
       else if (code == 'A')
@@ -393,11 +393,11 @@ int add_new_room_to_map(CHAR_DATA * ch, char code)
       else if (code == 'U')
         location->sector_type = SECT_UNDERWATER;
       else if (code == 'L')
-        location->sector_type = SECT_LAVA;
+        location->sector_type = SECT_FIRE;
       else if (code == 'W')
         location->sector_type = SECT_SWAMP;
       else
-        location->sector_type = SECT_DUNNO;
+        location->sector_type = SECT_UNKNOWN;
       return i;
     }
   }

@@ -77,10 +77,8 @@ void do_eat(CHAR_DATA* ch, const char* argument)
   }
   if (ch->fighting && number_percent() > (get_curr_dex(ch) * 2 + 47))
   {
-    snprintf(buf, MAX_STRING_LENGTH, "%s",
-              (ch->in_room->sector_type == SECT_UNDERWATER ||
-                ch->in_room->sector_type == SECT_WATER_SWIM ||
-                ch->in_room->sector_type == SECT_WATER_NOSWIM) ? "dissolves in the water" :
+    snprintf(buf, MAX_STRING_LENGTH, "%s", 
+             IS_WATER_SECT(ch->in_room->sector_type) ? "dissolves in the water" :
               (ch->in_room->sector_type == SECT_AIR ||
                 xIS_SET(ch->in_room->room_flags, ROOM_NOFLOOR)) ? "falls far below" : "is trampled underfoot");
     act(AT_MAGIC, "$n drops $p, and it $T.", ch, obj, buf, TO_ROOM);

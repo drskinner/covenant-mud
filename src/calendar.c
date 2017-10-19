@@ -539,7 +539,8 @@ void start_winter(void)
     {
       switch (room->sector_type)
       {
-      case SECT_WATER_SWIM:
+      case SECT_FRESH_WATER:
+      case SECT_SALT_WATER:
       case SECT_WATER_NOSWIM:
         room->winter_sector = room->sector_type;
         room->sector_type = SECT_ICE;
@@ -613,7 +614,8 @@ void season_update(void)
       {
         switch (room->sector_type)
         {
-        case SECT_WATER_SWIM:
+        case SECT_FRESH_WATER:
+        case SECT_SALT_WATER:
         case SECT_WATER_NOSWIM:
           room->winter_sector = room->sector_type;
           room->sector_type = SECT_ICE;

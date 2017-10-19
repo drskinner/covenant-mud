@@ -2269,13 +2269,14 @@ void do_bury(CHAR_DATA* ch, const char* argument)
   case SECT_INSIDE:
     send_to_char("The floor is too hard to dig through.\r\n", ch);
     return;
-  case SECT_WATER_SWIM:
+  case SECT_FRESH_WATER:
+  case SECT_SALT_WATER:
   case SECT_WATER_NOSWIM:
   case SECT_UNDERWATER:
     send_to_char("You cannot bury something here.\r\n", ch);
     return;
   case SECT_AIR:
-    send_to_char("What?  In the air?!\r\n", ch);
+    send_to_char("What? In the air?!\r\n", ch);
     return;
   }
 

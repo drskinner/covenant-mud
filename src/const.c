@@ -18,6 +18,14 @@
 #include <stdio.h>
 #include "mud.h"
 
+const char *const sector_name[SECT_MAX] = {
+  "Inside", "City", "Wall", "Bridge", "Field", "Light Woods", "Heavy Woods",
+  "Desert", "Hills", "Rough", "Mountain", "Snow", "Ice", "Swamp",
+  "Fresh Water", "Salt Water", "Water No Swim", "Underwater", "Ocean Floor",
+  "Underground", "In the Air", "Fire", "Smoke", "Unknown", "&RERROR!&w"
+};
+
+
 const char *const npc_race[MAX_NPC_RACE] = {
   // Playable races - MAX_RACE in mud.h must be raised before more can be added after r9.
   "human", "elf", "dwarf", "halfling", "pixie", "vampire", "half-ogre",       // 6 (start from 0)

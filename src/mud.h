@@ -1840,21 +1840,30 @@ typedef enum
  */
 #define BVSECT_INSIDE                   BV00
 #define BVSECT_CITY                     BV01
-#define BVSECT_FIELD                    BV02
-#define BVSECT_FOREST                   BV03
-#define BVSECT_HILLS                    BV04
-#define BVSECT_MOUNTAIN                 BV05
-#define BVSECT_WATER_SWIM               BV06
-#define BVSECT_WATER_NOSWIM             BV07
-#define BVSECT_UNDERWATER               BV08
-#define BVSECT_AIR                      BV09
-#define BVSECT_DESERT                   BV10
-#define BVSECT_DUNNO                    BV11
-#define BVSECT_OCEANFLOOR               BV12
-#define BVSECT_UNDERGROUND              BV13
-#define BVSECT_LAVA                     BV14
-#define BVSECT_SWAMP                    BV15
-#define MAX_SECFLAG                     15
+#define BVSECT_WALL                     BV02
+#define BVSECT_BRIDGE                   BV03
+#define BVSECT_FIELD                    BV04
+#define BVSECT_LIGHT_WOODS              BV05
+#define BVSECT_HEAVY_WOODS              BV06
+#define BVSECT_DESERT                   BV07
+#define BVSECT_HILLS                    BV08
+#define BVSECT_ROUGH                    BV09
+#define BVSECT_MOUNTAIN                 BV10
+#define BVSECT_SNOW                     BV11
+#define BVSECT_ICE                      BV12
+#define BVSECT_SWAMP                    BV13
+#define BVSECT_FRESH_WATER              BV14
+#define BVSECT_SALT_WATER               BV15
+#define BVSECT_WATER_NOSWIM             BV16
+#define BVSECT_UNDERWATER               BV17
+#define BVSECT_OCEANFLOOR               BV18
+#define BVSECT_UNDERGROUND              BV19
+#define BVSECT_AIR                      BV20
+#define BVSECT_FIRE                     BV21
+#define BVSECT_SMOKE                    BV22
+#define BVSECT_UNKNOWN                  BV23
+#define BVSECT_ERROR                    BV24
+#define MAX_SECFLAG                     24
 
 /*
  * Room flags.           Holy cow!  Talked about stripped away..
@@ -1943,10 +1952,11 @@ typedef enum
  */
 typedef enum
 {
-  SECT_INSIDE, SECT_CITY, SECT_FIELD, SECT_FOREST, SECT_HILLS, SECT_MOUNTAIN,
-  SECT_WATER_SWIM, SECT_WATER_NOSWIM, SECT_UNDERWATER, SECT_AIR, SECT_DESERT,
-  SECT_DUNNO, SECT_OCEANFLOOR, SECT_UNDERGROUND, SECT_LAVA, SECT_SWAMP, SECT_ICE,
-  SECT_MAX
+  SECT_INSIDE, SECT_CITY, SECT_WALL, SECT_BRIDGE, SECT_FIELD, SECT_LIGHT_WOODS,
+  SECT_HEAVY_WOODS, SECT_DESERT, SECT_HILLS, SECT_ROUGH, SECT_MOUNTAIN,
+  SECT_SNOW, SECT_ICE, SECT_SWAMP, SECT_FRESH_WATER, SECT_SALT_WATER,
+  SECT_WATER_NOSWIM, SECT_UNDERWATER, SECT_OCEANFLOOR, SECT_UNDERGROUND,
+  SECT_AIR, SECT_FIRE, SECT_SMOKE, SECT_UNKNOWN, SECT_ERROR, SECT_MAX
 } sector_types;
 
 /*
@@ -3314,6 +3324,21 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
                                   sect == SECT_OCEANFLOOR ||    \
                                   sect == SECT_UNDERGROUND)
 
+/* My special map macros -- Shamus */
+
+#define IS_WATER_SECT(sect)   ((sect) == SECT_FRESH_WATER  || \
+                               (sect) == SECT_SALT_WATER   || \
+                               (sect) == SECT_WATER_NOSWIM || \
+                               (sect) == SECT_UNDERWATER   || \
+                               (sect) == SECT_OCEANFLOOR)
+
+#define IS_WET_SECT(sect)     ((sect) == SECT_FRESH_WATER  || \
+                               (sect) == SECT_SALT_WATER   || \
+                               (sect) == SECT_SWAMP        || \
+                               (sect) == SECT_WATER_NOSWIM || \
+                               (sect) == SECT_UNDERWATER   || \
+                               (sect) == SECT_OCEANFLOOR)
+
 #define IS_DRUNK(ch, drunk)     (number_percent() < ((ch)->pcdata->condition[COND_DRUNK] * 2 / (drunk)))
 
 #define IS_CHARMED(ch)      (IS_AFFECTED((ch),AFF_CHARM))
@@ -3544,6 +3569,7 @@ extern const char *const ex_pwater[];
 extern const char *const ex_pair[];
 extern const char *const ex_pearth[];
 extern const char *const ex_pfire[];
+extern const char *const sector_name[];
 
 extern int const lang_array[];
 extern const char *const lang_names[];

@@ -253,7 +253,8 @@ void map_exits(CHAR_DATA * ch, ROOM_INDEX_DATA * pRoom, int x, int y, int depth)
     break;
 
   case SECT_FIELD:
-  case SECT_FOREST:
+  case SECT_LIGHT_WOODS:
+  case SECT_HEAVY_WOODS:
   case SECT_HILLS:
     dmap[x][y].tegn = '*';
     break;
@@ -262,7 +263,8 @@ void map_exits(CHAR_DATA * ch, ROOM_INDEX_DATA * pRoom, int x, int y, int depth)
     dmap[x][y].tegn = '@';
     break;
 
-  case SECT_WATER_SWIM:
+  case SECT_FRESH_WATER:
+  case SECT_SALT_WATER:
   case SECT_WATER_NOSWIM:
     dmap[x][y].tegn = '=';
     break;

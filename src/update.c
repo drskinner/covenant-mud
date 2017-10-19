@@ -1597,7 +1597,8 @@ void char_check(void)
         continue;
 
       if (ch->in_room
-          && ((ch->in_room->sector_type == SECT_WATER_NOSWIM) || (ch->in_room->sector_type == SECT_WATER_SWIM)))
+          && ((ch->in_room->sector_type == SECT_WATER_NOSWIM) || (ch->in_room->sector_type == SECT_FRESH_WATER) ||
+              (ch->in_room->sector_type == SECT_SALT_WATER)))
       {
         if (!IS_AFFECTED(ch, AFF_FLYING)
             && !IS_AFFECTED(ch, AFF_FLOATING) && !IS_AFFECTED(ch, AFF_AQUA_BREATH) && !ch->mount)

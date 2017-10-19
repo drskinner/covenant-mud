@@ -3443,9 +3443,7 @@ OBJ_DATA *raw_kill(CHAR_DATA * ch, CHAR_DATA * victim)
     return NULL;
 
   corpse_to_return = make_corpse(victim, ch);
-  if (victim->in_room->sector_type == SECT_OCEANFLOOR
-      || victim->in_room->sector_type == SECT_UNDERWATER
-      || victim->in_room->sector_type == SECT_WATER_SWIM || victim->in_room->sector_type == SECT_WATER_NOSWIM)
+  if (IS_WATER_SECT(victim->in_room->sector_type))
     act(AT_BLOOD, "$n's blood slowly clouds the surrounding water.", victim, NULL, NULL, TO_ROOM);
   else if (victim->in_room->sector_type == SECT_AIR)
     act(AT_BLOOD, "$n's blood sprays wildly through the air.", victim, NULL, NULL, TO_ROOM);
