@@ -1706,59 +1706,13 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
 
   ch_printf_color(ch, "&cName: &w%s\r\n&cArea: &w%s  &cFilename: &w%s\r\n",
                    location->name,
-                   location->area ? location->area->name : "None????",
-                   location->area ? location->area->filename : "None????");
+                   location->area ? location->area->name : "&RNone?&w",
+                   location->area ? location->area->filename : "&RNone?&w");
 
-  switch (ch->in_room->sector_type)
-  {
-  default:
-    sect = "?!";
-    break;
-  case SECT_INSIDE:
-    sect = "Inside";
-    break;
-  case SECT_CITY:
-    sect = "City";
-    break;
-  case SECT_FIELD:
-    sect = "Field";
-    break;
-  case SECT_FOREST:
-    sect = "Forest";
-    break;
-  case SECT_HILLS:
-    sect = "Hills";
-    break;
-  case SECT_MOUNTAIN:
-    sect = "Mountains";
-    break;
-  case SECT_WATER_SWIM:
-    sect = "Swim";
-    break;
-  case SECT_WATER_NOSWIM:
-    sect = "Noswim";
-    break;
-  case SECT_UNDERWATER:
-    sect = "Underwater";
-    break;
-  case SECT_AIR:
-    sect = "Air";
-    break;
-  case SECT_DESERT:
-    sect = "Desert";
-    break;
-  case SECT_OCEANFLOOR:
-    sect = "Oceanfloor";
-    break;
-  case SECT_UNDERGROUND:
-    sect = "Underground";
-    break;
-  case SECT_LAVA:
-    sect = "Lava";
-    break;
-  case SECT_SWAMP:
-    sect = "Swamp";
-    break;
+  if ((location->sector_type >= 0) && (location->sector_type < SECT_MAX)) {
+    sect = sector_name[location->sector_type];
+  } else {
+    sect = "&RError!&w";
   }
 
   ch_printf_color(ch, "&cVnum: &w%d   &cSector: &w%d (%s)   &cLight: &w%d",
@@ -1766,6 +1720,7 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
   if (location->tunnel > 0)
     ch_printf_color(ch, "   &cTunnel: &W%d", location->tunnel);
   send_to_char("\r\n", ch);
+
   ch_printf_color(ch, "&cRoom Weight: &W%d   &cRoom Max Weight: &R%d\r\n", location->weight, location->max_weight);
   if (location->tele_delay > 0 || location->tele_vnum > 0)
     ch_printf_color(ch, "&cTeleDelay: &R%d   &cTeleVnum: &R%d\r\n", location->tele_delay, location->tele_vnum);

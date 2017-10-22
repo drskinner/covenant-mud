@@ -2341,7 +2341,8 @@ void do_dig(CHAR_DATA* ch, const char* argument)
         send_to_char("The floor is too hard to dig through.\r\n", ch);
         return;
 
-      case SECT_WATER_SWIM:
+      case SECT_FRESH_WATER:
+      case SECT_SALT_WATER:
       case SECT_WATER_NOSWIM:
       case SECT_UNDERWATER:
         send_to_char("You cannot dig here.\r\n", ch);
@@ -3101,14 +3102,15 @@ void do_meditate(CHAR_DATA * ch, const char *argument)
   switch (ch->in_room->sector_type)
   {
   case SECT_INSIDE:
-  case SECT_DUNNO:
+  case SECT_UNKNOWN:
   case SECT_UNDERGROUND:
   default:
     break;
 
   case SECT_FIELD:
   case SECT_HILLS:
-  case SECT_FOREST:
+  case SECT_LIGHT_WOODS:
+  case SECT_HEAVY_WOODS:
   case SECT_MOUNTAIN:
     if (ch->Class == CLASS_DRUID)
       managain = 24;
@@ -3116,7 +3118,8 @@ void do_meditate(CHAR_DATA * ch, const char *argument)
       managain += 2;
     break;
 
-  case SECT_WATER_SWIM:
+  case SECT_FRESH_WATER:
+  case SECT_SALT_WATER:
   case SECT_WATER_NOSWIM:
   case SECT_UNDERWATER:
   case SECT_OCEANFLOOR:
@@ -3134,7 +3137,7 @@ void do_meditate(CHAR_DATA * ch, const char *argument)
     break;
 
   case SECT_DESERT:
-  case SECT_LAVA:
+  case SECT_FIRE:
   case SECT_SWAMP:
     managain -= 2;
     break;
@@ -3207,7 +3210,7 @@ void do_trance(CHAR_DATA * ch, const char *argument)
 
   switch (ch->in_room->sector_type)
   {
-  case SECT_DUNNO:
+  case SECT_UNKNOWN:
   case SECT_UNDERGROUND:
   default:
     break;
@@ -3215,7 +3218,8 @@ void do_trance(CHAR_DATA * ch, const char *argument)
   case SECT_INSIDE:
   case SECT_FIELD:
   case SECT_HILLS:
-  case SECT_FOREST:
+  case SECT_LIGHT_WOODS:
+  case SECT_HEAVY_WOODS:
   case SECT_MOUNTAIN:
     if (ch->Class == CLASS_DRUID)
       managain = 50;
@@ -3223,7 +3227,8 @@ void do_trance(CHAR_DATA * ch, const char *argument)
       managain += 2;
     break;
 
-  case SECT_WATER_SWIM:
+  case SECT_FRESH_WATER:
+  case SECT_SALT_WATER:
   case SECT_WATER_NOSWIM:
   case SECT_UNDERWATER:
   case SECT_OCEANFLOOR:
@@ -3241,7 +3246,7 @@ void do_trance(CHAR_DATA * ch, const char *argument)
     break;
 
   case SECT_DESERT:
-  case SECT_LAVA:
+  case SECT_FIRE:
   case SECT_SWAMP:
     managain -= 2;
     break;
@@ -5424,13 +5429,15 @@ void do_scan(CHAR_DATA* ch, const char* argument)
     case SECT_UNDERGROUND:
       dist++;
       break;
-    case SECT_FOREST:
+    case SECT_LIGHT_WOODS:
+    case SECT_HEAVY_WOODS:
     case SECT_CITY:
     case SECT_DESERT:
     case SECT_HILLS:
       dist += 2;
       break;
-    case SECT_WATER_SWIM:
+    case SECT_FRESH_WATER:
+    case SECT_SALT_WATER:
     case SECT_WATER_NOSWIM:
       dist += 3;
       break;
@@ -5518,13 +5525,15 @@ CHAR_DATA *scan_for_victim(CHAR_DATA * ch, EXIT_DATA * pexit, const char *name)
     case SECT_UNDERGROUND:
       dist++;
       break;
-    case SECT_FOREST:
+    case SECT_LIGHT_WOODS:
+    case SECT_HEAVY_WOODS:
     case SECT_CITY:
     case SECT_DESERT:
     case SECT_HILLS:
       dist += 2;
       break;
-    case SECT_WATER_SWIM:
+    case SECT_FRESH_WATER:
+    case SECT_SALT_WATER:
     case SECT_WATER_NOSWIM:
       dist += 3;
       break;

@@ -4794,9 +4794,9 @@ ch_ret spell_plant_pass(int sn, int level, CHAR_DATA * ch, void *vo)
       || xIS_SET(victim->in_room->room_flags, ROOM_PROTOTYPE)
       || IS_SET(victim->in_room->area->flags, AFLAG_NOASTRAL)
       || IS_SET(ch->in_room->area->flags, AFLAG_NOASTRAL)
-      || (victim->in_room->sector_type != SECT_FOREST
+      || (victim->in_room->sector_type != SECT_LIGHT_WOODS
            && victim->in_room->sector_type != SECT_FIELD)
-      || (ch->in_room->sector_type != SECT_FOREST
+      || (ch->in_room->sector_type != SECT_LIGHT_WOODS
            && ch->in_room->sector_type != SECT_FIELD)
       || xIS_SET(ch->in_room->room_flags, ROOM_NO_RECALL)
       || victim->level >= level + 15
@@ -4810,13 +4810,13 @@ ch_ret spell_plant_pass(int sn, int level, CHAR_DATA * ch, void *vo)
     return rSPELL_FAILED;
   }
 
-  if (ch->in_room->sector_type == SECT_FOREST)
+  if (ch->in_room->sector_type == SECT_LIGHT_WOODS)
     act(AT_MAGIC, "$n melds into a nearby tree!", ch, NULL, NULL, TO_ROOM);
   else
     act(AT_MAGIC, "$n melds into the grass!", ch, NULL, NULL, TO_ROOM);
   char_from_room(ch);
   char_to_room(ch, victim->in_room);
-  if (ch->in_room->sector_type == SECT_FOREST)
+  if (ch->in_room->sector_type == SECT_LIGHT_WOODS)
     act(AT_MAGIC, "$n appears from behind a nearby tree!", ch, NULL, NULL, TO_ROOM);
   else
     act(AT_MAGIC, "$n grows up from the grass!", ch, NULL, NULL, TO_ROOM);

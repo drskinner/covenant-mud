@@ -674,9 +674,7 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
   if (!pexit || (to_room = pexit->to_room) == NULL)
   {
     if (drunk && ch->position != POS_MOUNTED
-        && ch->in_room->sector_type != SECT_WATER_SWIM
-        && ch->in_room->sector_type != SECT_WATER_NOSWIM
-        && ch->in_room->sector_type != SECT_UNDERWATER && ch->in_room->sector_type != SECT_OCEANFLOOR)
+	&& !(IS_WATER_SECT(ch->in_room->sector_type)))
     {
       switch (number_bits(4))
       {
@@ -2636,7 +2634,8 @@ ch_ret pullcheck(CHAR_DATA * ch, int pulse)
     default:
       if (xit->pulltype == PULL_CURRENT)
         break;
-    case SECT_WATER_SWIM:
+    case SECT_FRESH_WATER:
+    case SECT_SALT_WATER:
     case SECT_WATER_NOSWIM:
       if ((ch->mount && !IS_FLOATING(ch->mount)) || (!ch->mount && !IS_FLOATING(ch)))
         move = TRUE;
