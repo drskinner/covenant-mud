@@ -2836,7 +2836,7 @@ void do_defeats(CHAR_DATA * ch, const char *argument)
     else
     {
       send_to_pager("\r\nLVL  Character                LVL  Character\r\n", ch);
-      show_file(ch, filename);
+      show_file(ch, filename, FALSE);
       return;
     }
   }
@@ -2871,7 +2871,7 @@ void do_victories(CHAR_DATA* ch, const char* argument)
     else
     {
       send_to_pager("\r\nLVL  Character       LVL  Character\r\n", ch);
-      show_file(ch, filename);
+      show_file(ch, filename, FALSE);
       return;
     }
   }

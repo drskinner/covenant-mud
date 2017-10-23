@@ -100,6 +100,40 @@ void do_dnd(CHAR_DATA* ch, const char* argument)
     send_to_char("huh?\r\n", ch);
 }
 
+/* View files on line. Added 2000.05.20 -- Shamus */
+
+void do_view(CHAR_DATA* ch, const char *argument)
+{
+  char arg[MAX_INPUT_LENGTH];
+
+  one_argument(argument, arg);
+
+  if(arg[0] == '\0') {
+    ch_printf(ch, "Syntax: view {bootlog|bug|help|idea|typo}\r\n");
+    return;
+  }
+
+  set_pager_color(AT_PLAIN, ch);
+
+  if (!str_cmp(arg, "bootlog"))
+    show_file(ch, BOOTLOG_FILE, FALSE);
+  else if (!str_cmp(arg, "bug"))
+    show_file(ch, PBUG_FILE, TRUE);
+  else if (!str_cmp(arg, "help"))
+    show_file(ch, HELPLOG_FILE, TRUE);
+  else if (!str_cmp(arg, "idea"))
+    show_file(ch, IDEA_FILE, TRUE);
+  else if (!str_cmp(arg, "typo"))
+    show_file(ch, TYPO_FILE, TRUE);
+  else {
+    ch_printf(ch, "File not found. Filenames must be exact matches.\r\n");
+    ch_printf(ch, "Check your spelling and try again.\r\n");
+    ch_printf(ch, "Valid file names are: bootlog bug help idea typo\r\n");
+  }
+
+  return;
+}
+
 /*
  * The "watch" facility allows imms to specify the name of a player or
  * the name of a site to be watched. It is like "logging" a player except
@@ -9619,7 +9653,7 @@ void do_fixed(CHAR_DATA* ch, const char* argument)
   if (!str_cmp(argument, "list"))
   {
     send_to_char_color("\r\n&g[&GDate  &g|  &GVnum&g]\r\n", ch);
-    show_file(ch, FIXED_FILE);
+    show_file(ch, FIXED_FILE, FALSE);
   }
   else
   {
@@ -9648,7 +9682,7 @@ void do_fshow(CHAR_DATA* ch, const char* argument)
   {
     set_char_color(AT_LOG, ch);
     send_to_char("\r\n[Date_|_Time]  Current moblog:\r\n", ch);
-    show_file(ch, MOBLOG_FILE);
+    show_file(ch, MOBLOG_FILE, FALSE);
     return;
   }
   send_to_char("No such file.\r\n", ch);

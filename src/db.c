@@ -4361,10 +4361,10 @@ void boot_log(const char *str, ...)
   return;
 }
 
-/*
- * Dump a text file to a player, a line at a time               -Thoric
- */
-void show_file(CHAR_DATA * ch, const char *filename)
+/* Dump a text file to a player, a line at a time -- Thoric */
+/* Word wrapping capability added 2000.05.20 -- Shamus */
+
+void show_file(CHAR_DATA * ch, const char *filename, bool wrap)
 {
   FILE *fp;
   char buf[MAX_STRING_LENGTH];
@@ -4384,13 +4384,17 @@ void show_file(CHAR_DATA * ch, const char *filename)
       buf[num++] = '\r';
       buf[num++] = '\n';
       buf[num] = '\0';
-      send_to_pager_color(buf, ch);
+
+      if (wrap)
+        send_to_pager_color(wordwrap(buf, 78), ch);
+      else
+        send_to_pager_color(buf, ch);
       num = 0;
     }
-    /*
-     * Thanks to stu <sprice@ihug.co.nz> from the mailing list in pointing
-     * *  This out. 
-     */
+
+    /* Thanks to stu <sprice@ihug.co.nz> from the mailing list in pointing
+     * this out. */
+
     fclose(fp);
     fp = NULL;
   }
@@ -4439,7 +4443,7 @@ void show_file_vnum(CHAR_DATA *ch, const char *filename, int lo, int hi)
 void do_dmesg(CHAR_DATA* ch, const char* argument)
 {
   set_pager_color(AT_LOG, ch);
-  show_file(ch, BOOTLOG_FILE);
+  show_file(ch, BOOTLOG_FILE, FALSE);
 }
 
 /*

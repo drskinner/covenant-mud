@@ -4126,6 +4126,7 @@ DECLARE_DO_FUN(do_value);
 DECLARE_DO_FUN(do_vassign);
 DECLARE_DO_FUN(do_version);
 DECLARE_DO_FUN(do_victories);
+DECLARE_DO_FUN(do_view);
 DECLARE_DO_FUN(do_visible);
 DECLARE_DO_FUN(do_vnums);
 DECLARE_DO_FUN(do_vsearch);
@@ -4362,10 +4363,14 @@ DECLARE_SPELL_FUN(spell_sacral_divinity);
 #define RIPTITLE_FILE   SYSTEM_DIR "mudtitle.rip"
 #define ANSITITLE_FILE  SYSTEM_DIR "mudtitle.ans"
 #define ASCTITLE_FILE   SYSTEM_DIR "mudtitle.asc"
+
 #define BOOTLOG_FILE    SYSTEM_DIR "boot.txt"     /* Boot up error file  */
+#define BUG_FILE        SYSTEM_DIR "bugs.txt"     /* For bug()           */
 #define PBUG_FILE       SYSTEM_DIR "pbugs.txt"    /* For 'bug' command   */
-#define IDEA_FILE       SYSTEM_DIR "ideas.txt"    /* For 'idea'       */
-#define TYPO_FILE       SYSTEM_DIR "typos.txt"    /* For 'typo'       */
+#define IDEA_FILE       SYSTEM_DIR "ideas.txt"    /* For 'idea'          */
+#define TYPO_FILE       SYSTEM_DIR "typos.txt"    /* For 'typo'          */
+#define HELPLOG_FILE    SYSTEM_DIR "helplog.txt"  /* Tracking help reqs. */
+
 #define FIXED_FILE      SYSTEM_DIR "fixed.txt"    /* For 'fixed' command */
 #define LOG_FILE        SYSTEM_DIR "log.txt"      /* For talking in logged rooms */
 #define MOBLOG_FILE     SYSTEM_DIR "moblog.txt"   /* For mplog messages  */
@@ -4552,6 +4557,8 @@ void pager_printf(CHAR_DATA * ch, const char *fmt, ...) __attribute__ ((format(p
 void pager_printf_color(CHAR_DATA * ch, const char *fmt, ...) __attribute__ ((format(printf, 2, 3)));
 void act(short AType, const char *format, CHAR_DATA * ch, const void *arg1, const void *arg2, int type);
 const char *myobj(OBJ_DATA * obj);
+char *strip_trailing_spaces args((char *arg));
+char *wordwrap args((char *txt, short wrap));
 
 /* reset.c */
 RD *make_reset(char letter, int extra, int arg1, int arg2, int arg3);
@@ -4561,7 +4568,7 @@ void reset_area(AREA_DATA * pArea);
 /* db.c */
 void add_loginmsg(const char *name, short type, const char *argument);
 void check_loginmsg(CHAR_DATA * ch);
-void show_file(CHAR_DATA * ch, const char *filename);
+void show_file(CHAR_DATA * ch, const char *filename, bool wrap);
 void show_file_vnum(CHAR_DATA *ch, const char *filename, int lo, int hi);
 char *str_dup(char const *str);
 void boot_db(bool fCopyOver);
