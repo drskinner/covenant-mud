@@ -2199,70 +2199,17 @@ void do_emote(CHAR_DATA* ch, const char* argument)
 void do_bug(CHAR_DATA *ch, const char *argument)
 {
   char buf[MAX_STRING_LENGTH];
-  char arg[MAX_INPUT_LENGTH];
-  char arg2[MAX_INPUT_LENGTH];
   struct  tm *t = localtime(&current_time);
 
   set_char_color(AT_PLAIN, ch);
-  if (argument[0] == '\0')
-  {
-    send_to_char("Usage:  'bug <message>'  (your location is automatically recorded)\r\n", ch);
+  if (argument[0] == '\0') {
+    send_to_char("Syntax: bug <message>\r\n(your location is automatically recorded)\r\n", ch);
     return;
   }
 
-  if (get_trust(ch) >= LEVEL_ASCENDANT || is_name("bug", ch->pcdata->bestowments))
-  {
-    argument = one_argument(argument, arg);
-    if (arg[0] == '\0')
-    {
-      do_bug(ch, "");
-      return;
-    }
-
-    if (!str_cmp(arg, "clear") && get_trust(ch) >= LEVEL_ASCENDANT)
-    {
-      if (argument[0] == '\0' || str_cmp(argument, "now"))
-      {
-        send_to_char("Must specify 'clear now' to clear bug file.\r\n", ch);
-        return;
-      }
-      else
-      {
-        FILE *fp = fopen(PBUG_FILE, "w");
-
-        if (fp)
-        {
-          fclose(fp);
-          fp = NULL;
-        }
-        send_to_char("Bug file cleared.\r\n", ch);
-        return;
-      }
-    }
-
-    if (!str_cmp(arg, "list"))
-    {
-      int lo = -1, hi = -1;
-
-      argument = one_argument(argument, arg2);
-      if (is_number(arg2))
-      {
-        lo = atoi(arg2);
-
-        if (is_number(argument))
-          hi = atoi(argument);
-      }
-      send_to_pager("\r\n VNUM \r\n.......\r\n", ch);
-      show_file_vnum(ch, PBUG_FILE, lo, hi);
-      return;
-    }
-  }
-  else
-  {
-    sprintf(buf, "(%-2.2d/%-2.2d):  %s", t->tm_mon + 1, t->tm_mday, argument);
-    append_file(ch, PBUG_FILE, buf);
-    send_to_char("Thanks, your bug notice has been recorded.\r\n", ch);
-  }
+  snprintf(buf, MAX_STRING_LENGTH, "(%-2.2d/%-2.2d): %s", t->tm_mon + 1, t->tm_mday, argument);
+  append_file(ch, PBUG_FILE, strip_trailing_spaces(buf));
+  send_to_char("Thanks, your bug notice has been recorded.\r\n", ch);
 }
 
 void do_ide(CHAR_DATA* ch, const char* argument)
@@ -2275,48 +2222,34 @@ void do_ide(CHAR_DATA* ch, const char* argument)
 
 void do_idea(CHAR_DATA* ch, const char* argument)
 {
+  char buf[MAX_STRING_LENGTH];
+
   set_char_color(AT_PLAIN, ch);
-  if (argument[0] == '\0')
-  {
-    send_to_char("\r\nUsage:  'idea <message>'\r\n", ch);
+  if (argument[0] == '\0') {
+    send_to_char("Syntax: idea <message>\r\n", ch);
     return;
   }
-  append_file(ch, IDEA_FILE, argument);
+
+  snprintf(buf, MAX_STRING_LENGTH, "%s", argument);
+  append_file(ch, IDEA_FILE, strip_trailing_spaces(buf));
   send_to_char("Thanks, your idea has been recorded.\r\n", ch);
   return;
 }
 
 void do_typo(CHAR_DATA* ch, const char* argument)
 {
+  char buf[MAX_STRING_LENGTH];
+
   set_char_color(AT_PLAIN, ch);
-  if (argument[0] == '\0')
-  {
-    send_to_char("\r\nUsage:  'typo <message>'  (your location is automatically recorded)\r\n", ch);
-    if (get_trust(ch) >= LEVEL_ASCENDANT)
-      send_to_char("Usage:  'typo list' or 'typo clear now'\r\n", ch);
+  if (argument[0] == '\0') {
+    send_to_char("Syntax: typo <message>\r\n(your location is automatically recorded)\r\n", ch);
     return;
   }
-  if (!str_cmp(argument, "clear now") && get_trust(ch) >= LEVEL_ASCENDANT)
-  {
-    FILE *fp = fopen(TYPO_FILE, "w");
-    if (fp)
-    {
-      fclose(fp);
-      fp = NULL;
-    }
-    send_to_char("Typo file cleared.\r\n", ch);
-    return;
-  }
-  if (!str_cmp(argument, "list") && get_trust(ch) >= LEVEL_ASCENDANT)
-  {
-    send_to_char("\r\n VNUM \r\n.......\r\n", ch);
-    show_file(ch, TYPO_FILE);
-  }
-  else
-  {
-    append_file(ch, TYPO_FILE, argument);
-    send_to_char("Thanks, your typo notice has been recorded.\r\n", ch);
-  }
+
+  snprintf(buf, MAX_STRING_LENGTH, "%s", argument);
+  append_file(ch, TYPO_FILE, strip_trailing_spaces(buf));
+  send_to_char("Thanks, your typo notice has been recorded.\r\n", ch);
+
   return;
 }
 

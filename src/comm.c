@@ -3959,7 +3959,7 @@ bool pager_output(DESCRIPTOR_DATA * d)
   }
   d->pagecmd = -1;
   if (xIS_SET(ch->act, PLR_ANSI))
-    if (write_to_descriptor(d, ANSI_BLUE, 0) == FALSE)
+    if (write_to_descriptor(d, ANSI_GREEN, 0) == FALSE)
       return FALSE;
   if ((ret = write_to_descriptor(d, "(C)ontinue, (N)on-stop, (R)efresh, (B)ack, (Q)uit: [C] ", 0)) == FALSE)
     return FALSE;
@@ -3971,6 +3971,102 @@ bool pager_output(DESCRIPTOR_DATA * d)
     ret = write_to_descriptor(d, buf, 0);
   }
   return ret;
+}
+
+char *strip_trailing_spaces(char *arg)
+{
+  int length;
+
+  length = strlen(arg) - 1;
+
+  while (isspace(arg[length])) {
+    arg[length] = '\0';
+    length--;
+  }
+
+  return arg;
+}
+
+char *grab_word(char *argument, char *arg_first)
+{
+  char cEnd;
+  short count;
+
+  count = 0;
+
+  while (isspace(*argument))
+    argument++;
+
+  cEnd = ' ';
+  if (*argument == '\'' || *argument == '"')
+    cEnd = *argument++;
+
+  while (*argument != '\0' || ++count >= 255)
+  {
+    if (*argument == cEnd)
+    {
+      argument++;
+      break;
+    }
+    *arg_first++ = *argument++;
+  }
+  *arg_first = '\0';
+
+  while (isspace(*argument))
+    argument++;
+
+  return argument;
+}
+
+char *wordwrap(char *txt, short wrap)
+{
+  static char buf[MAX_STRING_LENGTH];
+  char *bufp;
+
+  buf[0] = '\0';
+  bufp = buf;
+  if (txt != NULL)
+  {
+    char line[MAX_STRING_LENGTH];
+    char temp[MAX_STRING_LENGTH];
+    char *ptr, *p;
+    int ln, x;
+
+    ++bufp;
+    line[0] = '\0';
+    ptr = txt;
+    while (*ptr)
+    {
+      ptr = grab_word(ptr, temp);
+      ln = strlen(line);
+      x = strlen(temp);
+      if ((ln + x + 1) < wrap)
+      {
+        if (ln > 0 && line[ln - 1] == '.')
+          mudstrlcat(line, "  ", MAX_STRING_LENGTH);
+        else
+          mudstrlcat(line, " ", MAX_STRING_LENGTH);
+        mudstrlcat(line, temp, MAX_STRING_LENGTH);
+        p = strchr(line, '\n');
+        if (!p)
+          p = strchr(line, '\r');
+        if (p)
+        {
+          mudstrlcat(buf, line, MAX_STRING_LENGTH);
+          line[0] = '\0';
+        }
+      }
+      else
+      {
+        mudstrlcat(line, "\r\n", MAX_STRING_LENGTH);
+        mudstrlcat(buf, line, MAX_STRING_LENGTH);
+        mudstrlcpy(line, temp, MAX_STRING_LENGTH);
+      }
+    }
+    if (line[0] != '\0')
+      mudstrlcat(buf, line, MAX_STRING_LENGTH);
+  }
+  return bufp;
 }
 
 #ifdef WIN32
