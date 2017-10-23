@@ -1509,7 +1509,6 @@ bool flush_buffer(DESCRIPTOR_DATA * d, bool fPrompt)
 
     if (ch && !IS_NPC(ch) && xIS_SET(ch->act, PLR_ANSI))
     {
-      write_to_buffer(d, ANSI_RESET, 0);
       d->prevcolor = 0x08;
     }
 
@@ -3493,14 +3492,8 @@ char *default_fprompt(CHAR_DATA * ch)
 {
   static char buf[60];
 
-  mudstrlcpy(buf, "&w<&Y%hhp ", 60);
-  if (IS_VAMPIRE(ch))
-    mudstrlcat(buf, "&R%bbp", 60);
-  else
-    mudstrlcat(buf, "&C%mm", 60);
-  mudstrlcat(buf, " &G%vmv&w> ", 60);
-  if (IS_NPC(ch) || IS_IMMORTAL(ch))
-    mudstrlcat(buf, "%i%R", 60);
+  mudstrlcpy(buf, "&gH: &R%h&g/%H  M: &R%m&g/%M  V: &R%v&g/%V>&w ", 60);
+
   return buf;
 }
 
@@ -3508,14 +3501,11 @@ char *default_prompt(CHAR_DATA * ch)
 {
   static char buf[60];
 
-  mudstrlcpy(buf, "&w<&Y%hhp ", 60);
-  if (IS_VAMPIRE(ch))
-    mudstrlcat(buf, "&R%bbp", 60);
-  else
-    mudstrlcat(buf, "&C%mm", 60);
-  mudstrlcat(buf, " &G%vmv&w> ", 60);
   if (IS_NPC(ch) || IS_IMMORTAL(ch))
-    mudstrlcat(buf, "%i%R", 60);
+    mudstrlcpy(buf, "&gRoom Number: %r  Invis. Level: %I>&w ", 60);
+  else
+    mudstrlcpy(buf, "&gH:%h M:%m V:%v $%g %X>&w ", 60);
+
   return buf;
 }
 
