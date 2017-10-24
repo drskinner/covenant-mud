@@ -15,7 +15,7 @@
  * ------------------------------------------------------------------------ *
  *                           Main mud header file                           *
  ****************************************************************************/
-/* testing a simple commit */
+
 #include <stdlib.h>
 #include <limits.h>
 #if defined(__CYGWIN__) || defined(__FreeBSD__)
