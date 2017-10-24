@@ -62,7 +62,7 @@ MIX_TABLE *first_mixture;
 MIX_TABLE *last_mixture;
 
 const char *const liquid_types[LIQTYPE_TOP] = {
-  "Beverage", "Alcohol", "Poison", "Blood"
+  "Beverage", "Alcohol", "Caffeine", "Poison", "Salty", "Solution"
 };
 
 const char *const mod_types[MAX_CONDS] = {
