@@ -3788,8 +3788,8 @@ const char *extra_bit_name(EXT_BV * extra_flags)
     mudstrlcat(buf, " hum", 512);
   if (xIS_SET(*extra_flags, ITEM_DARK))
     mudstrlcat(buf, " dark", 512);
-  if (xIS_SET(*extra_flags, ITEM_LOYAL))
-    mudstrlcat(buf, " loyal", 512);
+  if (xIS_SET(*extra_flags, ITEM_NOLONGDESC))
+    mudstrlcat(buf, " nolongdesc", 512);
   if (xIS_SET(*extra_flags, ITEM_EVIL))
     mudstrlcat(buf, " evil", 512);
   if (xIS_SET(*extra_flags, ITEM_INVIS))

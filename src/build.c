@@ -73,7 +73,7 @@ const char *const r_flags[] = {
 };
 
 const char *const o_flags[] = {
-  "glow", "hum", "dark", "loyal", "evil", "invis", "magic", "nodrop", "bless",
+  "glow", "hum", "dark", "nolongdesc", "evil", "invis", "magic", "nodrop", "bless",
   "antigood", "antievil", "antineutral", "noremove", "inventory",
   "antimage", "antithief", "antiwarrior", "anticleric", "organic", "metal",
   "donation", "clanobject", "clancorpse", "antivampire", "antidruid",
