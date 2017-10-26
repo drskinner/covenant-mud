@@ -1699,7 +1699,7 @@ typedef enum
  */
 typedef enum
 {
-  ITEM_GLOW, ITEM_HUM, ITEM_DARK, ITEM_LOYAL, ITEM_EVIL, ITEM_INVIS, ITEM_MAGIC,
+  ITEM_GLOW, ITEM_HUM, ITEM_DARK, ITEM_NOLONGDESC, ITEM_EVIL, ITEM_INVIS, ITEM_MAGIC,
   ITEM_NODROP, ITEM_BLESS, ITEM_ANTI_GOOD, ITEM_ANTI_EVIL, ITEM_ANTI_NEUTRAL,
   ITEM_NOREMOVE, ITEM_INVENTORY, ITEM_ANTI_MAGE, ITEM_ANTI_THIEF,
   ITEM_ANTI_WARRIOR, ITEM_ANTI_CLERIC, ITEM_ORGANIC, ITEM_METAL, ITEM_DONATION,
@@ -3286,6 +3286,7 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
  */
 #define IS_NPC(ch)              (xIS_SET((ch)->act, ACT_IS_NPC))
 #define IS_IMMORTAL(ch)         (get_trust((ch)) >= LEVEL_IMMORTAL)
+#define IS_BUILDER(ch)          (get_trust((ch)) >= LEVEL_CREATOR)
 #define IS_HERO(ch)             (get_trust((ch)) >= LEVEL_HERO)
 #define IS_AFFECTED(ch, sn)     (xIS_SET((ch)->affected_by, (sn)))
 #define HAS_BODYPART(ch, part)  ((ch)->xflags == 0 || IS_SET((ch)->xflags, (part)))

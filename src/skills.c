@@ -3742,7 +3742,6 @@ void do_feed(CHAR_DATA* ch, const char* argument)
 /*
  * Disarm a creature.
  * Caller must check for successful attack.
- * Check for loyalty flag (weapon disarms to inventory) for pkillers -Blodkai
  */
 void disarm(CHAR_DATA * ch, CHAR_DATA * victim)
 {
@@ -3791,7 +3790,7 @@ void disarm(CHAR_DATA * ch, CHAR_DATA * victim)
     obj->action_desc = STRALLOC(buf);
   }
 
-  if (IS_NPC(victim) || (IS_OBJ_STAT(obj, ITEM_LOYAL) && IS_PKILL(victim) && !IS_NPC(ch)))
+  if (IS_NPC(victim) || (IS_PKILL(victim) && !IS_NPC(ch)))
   {
     obj_to_char(obj, victim);
     STRFREE(obj->action_desc);  /* Rather do this kludgy stuff than try to test all circumstances */

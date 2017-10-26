@@ -303,8 +303,14 @@ char *format_obj_to_char(OBJ_DATA * obj, CHAR_DATA * ch, bool fShort)
     mudstrlcat(buf, "(Hidden) ", MAX_STRING_LENGTH);
   if (IS_OBJ_STAT(obj, ITEM_BURIED))
     mudstrlcat(buf, "(Buried) ", MAX_STRING_LENGTH);
-  if (IS_IMMORTAL(ch) && IS_OBJ_STAT(obj, ITEM_PROTOTYPE))
-    mudstrlcat(buf, "(PROTO) ", MAX_STRING_LENGTH);
+
+  if (IS_IMMORTAL(ch)) {
+    if (IS_OBJ_STAT(obj, ITEM_PROTOTYPE))
+      mudstrlcat(buf, "(PROTO) ", MAX_STRING_LENGTH);
+    if (IS_OBJ_STAT(obj, ITEM_NOLONGDESC))
+      mudstrlcat(buf, "(No Long) ", MAX_STRING_LENGTH);
+  }
+
   if ((IS_AFFECTED(ch, AFF_DETECTTRAPS) || xIS_SET(ch->act, PLR_HOLYLIGHT)) && is_trapped(obj))
     mudstrlcat(buf, "(Trap) ", MAX_STRING_LENGTH);
 
@@ -544,8 +550,12 @@ void show_list_to_char(OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShowN
       nShow++;
       --tmp;
     }
-    if (obj->wear_loc == WEAR_NONE
-        && can_see_obj(ch, obj) && (obj->item_type != ITEM_TRAP || IS_AFFECTED(ch, AFF_DETECTTRAPS)))
+
+    if ((obj->wear_loc == WEAR_NONE)
+        && (can_see_obj(ch, obj))
+        && (obj->item_type != ITEM_TRAP || IS_AFFECTED(ch, AFF_DETECTTRAPS))
+        && (!IS_OBJ_STAT(obj, ITEM_NOLONGDESC) || IS_BUILDER(ch))
+       )
     {
       pstrShow = format_obj_to_char(obj, ch, fShort);
       fCombine = FALSE;
