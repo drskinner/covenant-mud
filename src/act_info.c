@@ -550,8 +550,12 @@ void show_list_to_char(OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShowN
       nShow++;
       --tmp;
     }
-    if (obj->wear_loc == WEAR_NONE
-        && can_see_obj(ch, obj) && (obj->item_type != ITEM_TRAP || IS_AFFECTED(ch, AFF_DETECTTRAPS)))
+
+    if ((obj->wear_loc == WEAR_NONE)
+        && (can_see_obj(ch, obj))
+        && (obj->item_type != ITEM_TRAP || IS_AFFECTED(ch, AFF_DETECTTRAPS))
+        && (!IS_OBJ_STAT(obj, ITEM_NOLONGDESC) || IS_BUILDER(ch))
+       )
     {
       pstrShow = format_obj_to_char(obj, ch, fShort);
       fCombine = FALSE;

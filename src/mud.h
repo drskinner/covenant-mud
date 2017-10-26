@@ -3286,6 +3286,7 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
  */
 #define IS_NPC(ch)              (xIS_SET((ch)->act, ACT_IS_NPC))
 #define IS_IMMORTAL(ch)         (get_trust((ch)) >= LEVEL_IMMORTAL)
+#define IS_BUILDER(ch)          (get_trust((ch)) >= LEVEL_CREATOR)
 #define IS_HERO(ch)             (get_trust((ch)) >= LEVEL_HERO)
 #define IS_AFFECTED(ch, sn)     (xIS_SET((ch)->affected_by, (sn)))
 #define HAS_BODYPART(ch, part)  ((ch)->xflags == 0 || IS_SET((ch)->xflags, (part)))
