@@ -1,6 +1,6 @@
 Name        Human~
 Race        0
-Classes     512
+Classes     0
 Str_Plus    0
 Dex_Plus    0
 Wis_Plus    0
@@ -18,11 +18,11 @@ Align       0
 Min_Align  -1000
 Max_Align	1000
 AC_Plus    0
-Exp_Mult   100
 Attacks    0
 Defenses   0
 Height     66
-Weight     150
+Weight     155
+BMI        23
 Hunger_Mod  0
 Thirst_mod  0
 Mana_Regen  0
@@ -50,11 +50,8 @@ WhereName  <dual wielded>      ~
 WhereName  <worn on ears>      ~
 WhereName  <worn on eyes>      ~
 WhereName  <missile wielded>   ~
-WhereName  <worn on back>  ~
-WhereName  <worn over face>  ~
-WhereName  <worn around ankle>  ~
-WhereName  <worn around ankle>  ~
-WhereName  <BUG Inform Nivek>  ~
-WhereName  <BUG Inform Nivek>  ~
-WhereName  <BUG Inform Nivek>  ~
+WhereName  <worn on back>      ~
+WhereName  <worn on face>      ~
+WhereName  <worn on ankle>     ~
+WhereName  <worn on ankle>     ~
 End

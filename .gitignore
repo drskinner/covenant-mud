@@ -20,6 +20,7 @@ corpses/*
 deleted/*
 gods/*
 player/*
+races/*.race
 system/*.txt
 src/nohup.out
 vault/*
