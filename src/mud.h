@@ -240,8 +240,8 @@ typedef bool SPEC_FUN(CHAR_DATA * ch);
 #define SPELL_SILENT_MARKER   "silent" /* No OK. or Failed. */
 #define MAX_CLASS             20
 #define MAX_NPC_CLASS         26
-#define MAX_RACE              20
-#define MAX_NPC_RACE          91
+#define MAX_RACE              7
+#define MAX_NPC_RACE          90
 #define MAX_MSG               18
 #define MAX_OINVOKE_QUANTITY  20
 extern int MAX_PC_RACE;
@@ -855,9 +855,8 @@ struct lck_app_type
 /* the races */
 typedef enum
 {
-  RACE_HUMAN, RACE_ELF, RACE_DWARF, RACE_HALFLING, RACE_PIXIE, RACE_VAMPIRE,
-  RACE_HALF_OGRE, RACE_HALF_ORC, RACE_HALF_TROLL, RACE_HALF_ELF, RACE_GITH,
-  RACE_DROW, RACE_SEA_ELF, RACE_LIZARDMAN, RACE_GNOME
+  RACE_HUMAN, RACE_ARIAL, RACE_GURI, RACE_FERYL, RACE_FLINT, RACE_KILGAR,
+  RACE_FAHRIN, RACE_UNKNOWN
 } race_types;
 
 /* npc races */
@@ -3293,9 +3292,7 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 #define GET_TIME_PLAYED(ch)     (((ch)->played + (current_time - (ch)->logon)) / 3600)
 #define CAN_CAST(ch)            ((ch)->Class != 2 && (ch)->Class != 3)
 
-#define IS_VAMPIRE(ch)          (!IS_NPC(ch)                            \
-                                 && ((ch)->race==RACE_VAMPIRE           \
-                                     ||  (ch)->Class==CLASS_VAMPIRE))
+#define IS_VAMPIRE(ch)          (!IS_NPC(ch) && (ch)->Class==CLASS_VAMPIRE)
 #define IS_GOOD(ch)             ((ch)->alignment >= 350)
 #define IS_EVIL(ch)             ((ch)->alignment <= -350)
 #define IS_NEUTRAL(ch)          (!IS_GOOD(ch) && !IS_EVIL(ch))

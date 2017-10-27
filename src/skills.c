@@ -3123,16 +3123,12 @@ void do_meditate(CHAR_DATA * ch, const char *argument)
   case SECT_WATER_NOSWIM:
   case SECT_UNDERWATER:
   case SECT_OCEANFLOOR:
-    if (ch->race == RACE_SEA_ELF)
-      managain += 3;
-    else if (!IS_AFFECTED(ch, AFF_AQUA_BREATH))
+    if (!IS_AFFECTED(ch, AFF_AQUA_BREATH))
       managain -= 2;
     break;
 
   case SECT_AIR:
-    if (ch->race == RACE_PIXIE)
-      managain += 3;
-    else if (!IS_AFFECTED(ch, AFF_FLYING))
+    if (!IS_AFFECTED(ch, AFF_FLYING))
       managain -= 2;
     break;
 
@@ -3232,16 +3228,12 @@ void do_trance(CHAR_DATA * ch, const char *argument)
   case SECT_WATER_NOSWIM:
   case SECT_UNDERWATER:
   case SECT_OCEANFLOOR:
-    if (ch->race == RACE_SEA_ELF)
-      managain += 3;
-    else if (!IS_AFFECTED(ch, AFF_AQUA_BREATH))
+    if (!IS_AFFECTED(ch, AFF_AQUA_BREATH))
       managain -= 2;
     break;
 
   case SECT_AIR:
-    if (ch->race == RACE_PIXIE)
-      managain += 3;
-    else if (!IS_AFFECTED(ch, AFF_FLYING))
+    if (!IS_AFFECTED(ch, AFF_FLYING))
       managain -= 2;
     break;
 

@@ -2275,8 +2275,7 @@ void nanny_get_new_class(DESCRIPTOR_DATA * d, const char *argument)
   buf[0] = '\0';
   for (iRace = 0; iRace < MAX_PC_RACE; iRace++)
   {
-    if (iRace != RACE_VAMPIRE
-        && race_table[iRace]->race_name && race_table[iRace]->race_name[0] != '\0'
+    if (race_table[iRace]->race_name && race_table[iRace]->race_name[0] != '\0'
         && !IS_SET(race_table[iRace]->class_restriction, 1 << ch->Class)
         && str_cmp(race_table[iRace]->race_name, "unused"))
     {
@@ -2336,11 +2335,10 @@ void nanny_get_new_race(DESCRIPTOR_DATA * d, const char *argument)
 
   if (iRace == MAX_PC_RACE
       || !race_table[iRace]->race_name || race_table[iRace]->race_name[0] == '\0'
-      || iRace == RACE_VAMPIRE
       || IS_SET(race_table[iRace]->class_restriction, 1 << ch->Class)
       || !str_cmp(race_table[iRace]->race_name, "unused"))
   {
-    write_to_buffer(d, "That's not a race.\r\nWhat IS your race? ", 0);
+    write_to_buffer(d, "That's not a valid race.\r\nWhat IS your race? ", 0);
     return;
   }
 
@@ -3700,17 +3698,11 @@ void display_prompt(DESCRIPTOR_DATA * d)
         break;
 
       case 'm':
-        if (IS_VAMPIRE(ch))
-          pstat = 0;
-        else
-          pstat = ch->mana;
+        pstat = ch->mana;
         break;
 
       case 'M':
-        if (IS_VAMPIRE(ch))
-          pstat = 0;
-        else
-          pstat = ch->max_mana;
+        pstat = ch->max_mana;
         break;
 
       case 'N':  /* Tank */
@@ -3756,20 +3748,6 @@ void display_prompt(DESCRIPTOR_DATA * d)
           mudstrlcpy(pbuf, "dusk", MAX_STRING_LENGTH);
         else
           mudstrlcpy(pbuf, "night", MAX_STRING_LENGTH);
-        break;
-
-      case 'b':
-        if (IS_VAMPIRE(ch))
-          pstat = ch->pcdata->condition[COND_BLOODTHIRST];
-        else
-          pstat = 0;
-        break;
-
-      case 'B':
-        if (IS_VAMPIRE(ch))
-          pstat = ch->level + 10;
-        else
-          pstat = 0;
         break;
 
       case 'u':

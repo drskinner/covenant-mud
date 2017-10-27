@@ -3023,46 +3023,22 @@ void do_shove(CHAR_DATA* ch, const char* argument)
   schance += (ch->level - victim->level);
 
 /* Check for race, adjust percentage based on that. */
-  if (ch->race == RACE_ELF)
+  if (ch->race == RACE_ARIAL)
     race_bonus = -3;
 
-  if (ch->race == RACE_DWARF)
+  if (ch->race == RACE_GURI)
     race_bonus = 3;
 
-  if (ch->race == RACE_HALFLING)
+  if (ch->race == RACE_FERYL)
     race_bonus = -5;
 
-  if (ch->race == RACE_PIXIE)
-    race_bonus = -7;
-
-  if (ch->race == RACE_HALF_OGRE)
+  if (ch->race == RACE_KILGAR)
     race_bonus = 5;
 
-  if (ch->race == RACE_HALF_ORC)
+  if (ch->race == RACE_FLINT)
     race_bonus = 7;
 
-  if (ch->race == RACE_HALF_TROLL)
-    race_bonus = 10;
-
-  if (ch->race == RACE_HALF_ELF)
-    race_bonus = -2;
-
-  if (ch->race == RACE_GITH)
-    race_bonus = -2;
-
-  if (ch->race == RACE_PIXIE)
-    race_bonus = -7;
-
-  if (ch->race == RACE_DROW)
-    race_bonus = 1;
-
-  if (ch->race == RACE_SEA_ELF)
-    race_bonus = -1;
-
-  if (ch->race == RACE_LIZARDMAN)
-    race_bonus = 4;
-
-  if (ch->race == RACE_GNOME)
+  if (ch->race == RACE_FAHRIN)
     race_bonus = -2;
 
   schance += race_bonus;

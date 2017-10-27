@@ -26,23 +26,17 @@ const char *const sector_name[SECT_MAX] = {
 };
 
 const char *const npc_race[MAX_NPC_RACE] = {
-  // Playable races - MAX_RACE in mud.h must be raised before more can be added after r9.
-  "human", "elf", "dwarf", "halfling", "pixie", "vampire", "half-ogre",       // 6 (start from 0)
-  "half-orc", "half-troll", "half-elf", "gith", "drow", "sea-elf",            // 12
-  "lizardman", "gnome", "r5", "r6", "r7", "r8", "r9",                         // 19
-
-  // NPCs only
-  "troll", "ant", "ape", "baboon", "bat", "bear", "bee",                      // 26
-  "beetle", "boar", "bugbear", "cat", "dog", "dragon", "ferret", "fly",       // 34
-  "gargoyle", "gelatin", "ghoul", "gnoll", "goblin", "golem",                 // 40
-  "gorgon", "harpy", "hobgoblin", "kobold", "locust",                         // 45
-  "lycanthrope", "minotaur", "mold", "mule", "neanderthal", "ooze", "orc",    // 52
-  "rat", "rustmonster", "shadow", "shapeshifter", "shrew", "shrieker",        // 58
-  "skeleton", "slime", "snake", "spider", "stirge", "thoul", "troglodyte",    // 65
-  "undead", "wight", "wolf", "worm", "zombie", "bovine", "canine", "feline",  // 73
-  "porcine", "mammal", "rodent", "avis", "reptile", "amphibian", "fish",      // 80
-  "crustacean", "insect", "spirit", "magical", "horse", "animal", "humanoid", // 87
-  "monster", "god", "???"                                                     // 90
+  "human", "arial", "guri", "feryl", "flint", "kilgahari", "fahrin",          // 6
+  "insectivore", "bat", "lagomorph", "rodent", "feline", "canine", "mustelid", 
+  "bear", "cetacean", "pinniped", "pig", "deer", "horse", "bovine", "primate", 
+  "mammal", "bird", "reptile", "amphibian", "fish", "insect", "crustacean", 
+  "millipede", "centipede", "arachnid", "bivalve", "gastropod", "annelid", 
+  "invertebrate", "plant", "fungus", "mold", "monster", // 39
+  "r40", "r41", "r42", "r43", "r44", "r45", "r46", "r47", "r48", "r49", 
+  "r50", "r51", "r52", "r53", "r54", "r55", "r56", "r57", "r58", "r59", 
+  "r60", "r61", "r62", "r63", "r64", "r65", "r66", "r67", "r68", "r69", 
+  "r70", "r71", "r72", "r73", "r74", "r75", "r76", "r77", "r78", "r79",
+  "r80", "r81", "r82", "r83", "r84", "r85", "r86", "r87", "r88", "r89"
 };
 
 const char *const npc_class[MAX_NPC_CLASS] = {
