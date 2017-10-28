@@ -493,6 +493,10 @@ bool load_race_file(const char *fname)
       KEY("Attacks", race->attacks, fread_bitvector(fp));
       break;
 
+    case 'B':
+      KEY("BMI", race->bmi, fread_number(fp));
+      break;
+
     case 'C':
       KEY("Con_Plus", race->con_plus, fread_number(fp));
       KEY("Cha_Plus", race->cha_plus, fread_number(fp));

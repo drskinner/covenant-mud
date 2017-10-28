@@ -2436,6 +2436,7 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
   {
     OBJ_DATA *obj;
     int iLang, uLang;
+    int my_bmi;
 
     ch->pcdata->clan = NULL;
     switch (class_table[ch->Class]->attr_prime)
@@ -2484,8 +2485,14 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
 
     ch->height =
       number_range((int)(race_table[ch->race]->height * .9), (int)(race_table[ch->race]->height * 1.1));
-    ch->weight =
-      number_range((int)(race_table[ch->race]->weight * .9), (int)(race_table[ch->race]->weight * 1.1));
+
+    /* weight calculation, based on a range of racial BMI values */
+    my_bmi = number_range(race_table[ch->race]->bmi - 2,
+                          race_table[ch->race]->bmi + 3);
+/*    my_bmi += class_table[ch->Class]->physique; */
+    if (ch->sex == SEX_FEMALE)
+      my_bmi -= 1;
+    ch->weight = (int)((ch->height * ch->height * my_bmi) / 703);
 
     if (ch->Class == CLASS_PALADIN)
       ch->alignment = 1000;

@@ -1084,6 +1084,7 @@ struct race_type
   short exp_multiplier;
   short height;
   short weight;
+  short bmi;
   short hunger_mod;
   short thirst_mod;
   short saving_poison_death;
