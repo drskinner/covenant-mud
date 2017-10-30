@@ -2913,9 +2913,7 @@ void do_group(CHAR_DATA* ch, const char* argument)
         else
           set_char_color(AT_LBLUE, ch);
         if (gch->Class != CLASS_WARRIOR)
-          ch_printf(ch, "%5d/%-5d ",
-                     IS_VAMPIRE(gch) ? gch->pcdata->condition[COND_BLOODTHIRST] : gch->mana,
-                     IS_VAMPIRE(gch) ? 10 + gch->level : gch->max_mana);
+          ch_printf(ch, "%5d/%-5d ", gch->mana, gch->max_mana);
         else
           send_to_char("            ", ch);
         if (gch->mental_state < -25 || gch->mental_state > 25)

@@ -347,11 +347,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
                 IS_SET(ch->pcdata->flags, PCFLAG_PAGERON) ? 'X' : ' ',
                 ch->pcdata->pagerlen, xIS_SET(ch->act, PLR_AUTOEXIT) ? 'X' : ' ');
 
-  if (IS_VAMPIRE(ch))
-    pager_printf(ch, "XP   : %-9d       Blood: %-5d of %5d   MKills:  %-5.5d    AutoLoot(%c)\r\n",
-                  ch->exp, ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->pcdata->mkills,
-                  xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
-  else if (ch->Class == CLASS_WARRIOR)
+  if (ch->Class == CLASS_WARRIOR)
     pager_printf(ch, "XP   : %-9d                               MKills:  %-5.5d    AutoLoot(%c)\r\n",
                   ch->exp, ch->pcdata->mkills, xIS_SET(ch->act, PLR_AUTOLOOT) ? 'X' : ' ');
   else
@@ -745,8 +741,8 @@ const char *tiny_affect_loc_name(int location)
     return " THIRST";
   case APPLY_DRUNK:
     return " DRUNK ";
-  case APPLY_BLOOD:
-    return " BLOOD ";
+  case APPLY_WIRED:
+    return " WIRED ";
   case APPLY_COOK:
     return " COOK  ";
   case APPLY_RECURRINGSPELL:
@@ -1201,24 +1197,11 @@ void do_statreport(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (IS_VAMPIRE(ch))
-  {
-    ch_printf(ch, "You report: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-               ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
-               10 + ch->level, ch->move, ch->max_move, ch->exp);
-    snprintf(buf, MAX_STRING_LENGTH, "$n reports: %d/%d hp %d/%d blood %d/%d mv %d xp.",
-              ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
-              10 + ch->level, ch->move, ch->max_move, ch->exp);
-    act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
-  }
-  else
-  {
-    ch_printf(ch, "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
-               ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
-    snprintf(buf, MAX_STRING_LENGTH, "$n reports: %d/%d hp %d/%d mana %d/%d mv %d xp.",
-              ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
-    act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
-  }
+  ch_printf(ch, "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
+             ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+  snprintf(buf, MAX_STRING_LENGTH, "$n reports: %d/%d hp %d/%d mana %d/%d mv %d xp.",
+            ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+  act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);
 
   ch_printf(ch, "Your base stats:    %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.\r\n",
              ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
@@ -1244,13 +1227,8 @@ void do_stat(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (IS_VAMPIRE(ch))
-    ch_printf(ch, "You report: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-               ch->hit, ch->max_hit, ch->pcdata->condition[COND_BLOODTHIRST],
-               10 + ch->level, ch->move, ch->max_move, ch->exp);
-  else
-    ch_printf(ch, "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
-               ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+  ch_printf(ch, "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
+             ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
 
   ch_printf(ch, "Your base stats:    %-2d str %-2d wis %-2d int %-2d dex %-2d con %-2d cha %-2d lck.\r\n",
              ch->perm_str, ch->perm_wis, ch->perm_int, ch->perm_dex, ch->perm_con, ch->perm_cha, ch->perm_lck);
@@ -1275,22 +1253,11 @@ void do_report(CHAR_DATA* ch, const char* argument)
   }
 
 
-  if (IS_VAMPIRE(ch))
-    ch_printf(ch,
-               "You report: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-               ch->hit, ch->max_hit,
-               ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->move, ch->max_move, ch->exp);
-  else
-    ch_printf(ch,
-               "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
-               ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
+  ch_printf(ch,
+             "You report: %d/%d hp %d/%d mana %d/%d mv %d xp.\r\n",
+             ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
 
-  if (IS_VAMPIRE(ch))
-    snprintf(buf, MAX_INPUT_LENGTH, "$n reports: %d/%d hp %d/%d blood %d/%d mv %d xp.\r\n",
-              ch->hit, ch->max_hit,
-              ch->pcdata->condition[COND_BLOODTHIRST], 10 + ch->level, ch->move, ch->max_move, ch->exp);
-  else
-    snprintf(buf, MAX_INPUT_LENGTH, "$n reports: %d/%d hp %d/%d mana %d/%d mv %d xp.",
+  snprintf(buf, MAX_INPUT_LENGTH, "$n reports: %d/%d hp %d/%d mana %d/%d mv %d xp.",
               ch->hit, ch->max_hit, ch->mana, ch->max_mana, ch->move, ch->max_move, ch->exp);
 
   act(AT_REPORT, buf, ch, NULL, NULL, TO_ROOM);

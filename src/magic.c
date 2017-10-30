@@ -1572,20 +1572,7 @@ void do_cast(CHAR_DATA* ch, const char* argument)
       return;
     }
 
-    /*
-     * Vampire spell casting            -Thoric
-     */
-    blood = UMAX(1, (mana + 4) / 8);   /* NPCs don't have PCDatas. -- Altrag */
-    if (IS_VAMPIRE(ch))
-    {
-      if (ch->pcdata->condition[COND_BLOODTHIRST] < blood)
-      {
-        send_to_char("You don't have enough blood power.\r\n", ch);
-        return;
-      }
-    }
-    else if (!IS_NPC(ch) && ch->mana < mana)
-    {
+    if (!IS_NPC(ch) && ch->mana < mana) {
       send_to_char("You don't have enough mana.\r\n", ch);
       return;
     }
@@ -1615,9 +1602,7 @@ void do_cast(CHAR_DATA* ch, const char* argument)
       }
       mana = IS_NPC(ch) ? 0 : UMAX(skill->min_mana, 100 / (2 + ch->level - skill->skill_level[ch->Class]));
       blood = UMAX(1, (mana + 4) / 8);
-      if (IS_VAMPIRE(ch))
-        gain_condition(ch, COND_BLOODTHIRST, -UMAX(1, blood / 3));
-      else if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
+      if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
         ch->mana -= mana / 3;
     }
     set_char_color(AT_MAGIC, ch);
@@ -1671,10 +1656,7 @@ void do_cast(CHAR_DATA* ch, const char* argument)
             act(AT_MAGIC, "$N channels $S energy into you!", ch, NULL, tmp, TO_CHAR);
             act(AT_MAGIC, "$N channels $S energy into $n!", ch, NULL, tmp, TO_NOTVICT);
             learn_from_success(tmp, sn);
-            if (IS_VAMPIRE(ch))
-              gain_condition(tmp, COND_BLOODTHIRST, -blood);
-            else
-              tmp->mana -= mana;
+            tmp->mana -= mana;
             tmp->substate = SUB_NONE;
             tmp->tempnum = -1;
             DISPOSE(tmp->alloc_ptr);
@@ -1689,9 +1671,7 @@ void do_cast(CHAR_DATA* ch, const char* argument)
       {
         set_char_color(AT_MAGIC, ch);
         send_to_char("There was not enough power for the spell to succeed...\r\n", ch);
-        if (IS_VAMPIRE(ch))
-          gain_condition(ch, COND_BLOODTHIRST, -UMAX(1, blood / 2));
-        else if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
+        if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
           ch->mana -= mana / 2;
         learn_from_failure(ch, sn);
         return;
@@ -1713,9 +1693,7 @@ void do_cast(CHAR_DATA* ch, const char* argument)
    */
   if (!process_spell_components(ch, sn))
   {
-    if (IS_VAMPIRE(ch))
-      gain_condition(ch, COND_BLOODTHIRST, -UMAX(1, blood / 2));
-    else if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
+    if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
       ch->mana -= mana / 2;
     learn_from_failure(ch, sn);
     return;
@@ -1766,19 +1744,14 @@ void do_cast(CHAR_DATA* ch, const char* argument)
       send_to_char("You get a mental block mid-way through the casting.\r\n", ch);
       break;
     }
-    if (IS_VAMPIRE(ch))
-      gain_condition(ch, COND_BLOODTHIRST, -UMAX(1, blood / 2));
-    else if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
+    if (ch->level < LEVEL_IMMORTAL)  /* so imms dont lose mana */
       ch->mana -= mana / 2;
     learn_from_failure(ch, sn);
     return;
   }
   else
   {
-    if (IS_VAMPIRE(ch))
-      gain_condition(ch, COND_BLOODTHIRST, -blood);
-    else
-      ch->mana -= mana;
+    ch->mana -= mana;
 
     /*
      * check for immunity to magic if victim is known...
@@ -4842,10 +4815,7 @@ ch_ret spell_mist_walk(int sn, int level, CHAR_DATA * ch, void *vo)
     return rSPELL_FAILED;
   }
 
-  if (IS_PKILL(ch) && ch->pcdata->condition[COND_BLOODTHIRST] > 22)
-    allowday = TRUE;
-  else
-    allowday = FALSE;
+  allowday = FALSE;
 
   if ((time_info.hour < 21 && time_info.hour > 5 && !allowday)
       || !victim->in_room
@@ -4868,12 +4838,6 @@ ch_ret spell_mist_walk(int sn, int level, CHAR_DATA * ch, void *vo)
     send_to_char("You cannot sense your victim...", ch);
     return rSPELL_FAILED;
   }
-
-  /*
-   * Subtract 22 extra bp for mist walk from 0500 to 2100 SB 
-   */
-  if (time_info.hour < 21 && time_info.hour > 5 && !IS_NPC(ch))
-    gain_condition(ch, COND_BLOODTHIRST, -22);
 
   act(AT_DGREEN, "$n dissolves into a cloud of glowing mist, then vanishes!", ch, NULL, NULL, TO_ROOM);
   char_from_room(ch);
@@ -5074,16 +5038,7 @@ ch_ret spell_animate_dead(int sn, int level, CHAR_DATA * ch, void *vo)
 
   if (!IS_NPC(ch))
   {
-    if (IS_VAMPIRE(ch))
-    {
-      if (!IS_IMMORTAL(ch) && ch->pcdata->condition[COND_BLOODTHIRST] - (pMobIndex->level / 3) < 0)
-      {
-        send_to_char("You do not have enough blood power to reanimate this" " corpse.\r\n", ch);
-        return rSPELL_FAILED;
-      }
-      gain_condition(ch, COND_BLOODTHIRST, pMobIndex->level / 3);
-    }
-    else if (ch->mana - (pMobIndex->level * 4) < 0)
+    if (ch->mana - (pMobIndex->level * 4) < 0)
     {
       send_to_char("You do not have enough mana to reanimate this " "corpse.\r\n", ch);
       return rSPELL_FAILED;

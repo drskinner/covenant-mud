@@ -836,7 +836,7 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
   xCLEAR_BITS(ch->no_affected_by);
   ch->pcdata->condition[COND_THIRST] = 48;
   ch->pcdata->condition[COND_FULL] = 48;
-  ch->pcdata->condition[COND_BLOODTHIRST] = 10;
+  ch->pcdata->condition[COND_WIRED] = 0;
   ch->pcdata->nuisance = NULL;
   ch->pcdata->wizinvis = 0;
   ch->pcdata->home_room = 10223;

@@ -137,7 +137,6 @@ short gsn_hitall;
 short gsn_tumble;
 
 /* vampire */
-short gsn_feed;
 short gsn_bloodlet;
 short gsn_broach;
 short gsn_mistwalk;
@@ -607,7 +606,6 @@ void boot_db(bool fCopyOver)
     ASSIGN_GSN(gsn_grip, "grip");
     ASSIGN_GSN(gsn_berserk, "berserk");
     ASSIGN_GSN(gsn_hitall, "hitall");
-    ASSIGN_GSN(gsn_feed, "feed");
     ASSIGN_GSN(gsn_bloodlet, "bloodlet");
     ASSIGN_GSN(gsn_cleave, "cleave");
     ASSIGN_GSN(gsn_pounce, "pounce");

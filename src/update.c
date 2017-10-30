@@ -242,27 +242,6 @@ int hit_gain(CHAR_DATA * ch)
       break;
     }
 
-    if (IS_VAMPIRE(ch))
-    {
-      if (ch->pcdata->condition[COND_BLOODTHIRST] <= 1)
-        gain /= 2;
-      else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (8 + ch->level))
-        gain *= 2;
-      if (IS_OUTSIDE(ch))
-      {
-        switch (time_info.sunlight)
-        {
-        case SUN_RISE:
-        case SUN_SET:
-          gain /= 2;
-          break;
-        case SUN_LIGHT:
-          gain /= 4;
-          break;
-        }
-      }
-    }
-
     if (ch->pcdata->condition[COND_FULL] == 0)
       gain /= 2;
 
@@ -345,27 +324,6 @@ int move_gain(CHAR_DATA * ch)
       break;
     }
 
-    if (IS_VAMPIRE(ch))
-    {
-      if (ch->pcdata->condition[COND_BLOODTHIRST] <= 1)
-        gain /= 2;
-      else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (8 + ch->level))
-        gain *= 2;
-      if (IS_OUTSIDE(ch))
-      {
-        switch (time_info.sunlight)
-        {
-        case SUN_RISE:
-        case SUN_SET:
-          gain /= 2;
-          break;
-        case SUN_LIGHT:
-          gain /= 4;
-          break;
-        }
-      }
-    }
-
     if (ch->pcdata->condition[COND_FULL] == 0)
       gain /= 2;
 
@@ -388,7 +346,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
     return;
 
   condition = ch->pcdata->condition[iCond];
-  if (iCond == COND_BLOODTHIRST)
+  if (iCond == COND_WIRED)
     ch->pcdata->condition[iCond] = URANGE(0, condition + value, 10 + ch->level);
   else
     ch->pcdata->condition[iCond] = URANGE(0, condition + value, 48);
@@ -420,16 +378,6 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       }
       break;
 
-    case COND_BLOODTHIRST:
-      if (ch->level < LEVEL_AVATAR)
-      {
-        set_char_color(AT_BLOOD, ch);
-        send_to_char("You are starved to feast on blood!\r\n", ch);
-        act(AT_BLOOD, "$n is suffering from lack of blood!", ch, NULL, NULL, TO_ROOM);
-        worsen_mental_state(ch, 2);
-        retcode = damage(ch, ch, ch->max_hit / 20, TYPE_UNDEFINED);
-      }
-      break;
     case COND_DRUNK:
       if (condition != 0)
       {
@@ -473,15 +421,6 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       }
       break;
 
-    case COND_BLOODTHIRST:
-      if (ch->level < LEVEL_AVATAR)
-      {
-        set_char_color(AT_BLOOD, ch);
-        send_to_char("You have a growing need to feast on blood!\r\n", ch);
-        act(AT_BLOOD, "$n gets a strange look in $s eyes...", ch, NULL, NULL, TO_ROOM);
-        worsen_mental_state(ch, 1);
-      }
-      break;
     case COND_DRUNK:
       if (condition != 0)
       {
@@ -512,13 +451,6 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       }
       break;
 
-    case COND_BLOODTHIRST:
-      if (ch->level < LEVEL_AVATAR)
-      {
-        set_char_color(AT_BLOOD, ch);
-        send_to_char("You feel an urgent need for blood.\r\n", ch);
-      }
-      break;
     }
   }
 
@@ -542,13 +474,6 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       }
       break;
 
-    case COND_BLOODTHIRST:
-      if (ch->level < LEVEL_AVATAR)
-      {
-        set_char_color(AT_BLOOD, ch);
-        send_to_char("You feel an aching in your fangs.\r\n", ch);
-      }
-      break;
     }
   }
 }
@@ -1083,11 +1008,7 @@ void char_update(void)
       gain_condition(ch, COND_DRUNK, -1);
       gain_condition(ch, COND_FULL, -1 + race_table[ch->race]->hunger_mod);
 
-      if (ch->Class == CLASS_VAMPIRE && ch->level >= 10)
-      {
-        if (time_info.hour < 21 && time_info.hour > 5)
-          gain_condition(ch, COND_BLOODTHIRST, -1);
-      }
+      gain_condition(ch, COND_WIRED, -1);
 
       if (CAN_PKILL(ch) && ch->pcdata->condition[COND_THIRST] - 9 > 10)
         gain_condition(ch, COND_THIRST, -9);

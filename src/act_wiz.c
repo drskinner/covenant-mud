@@ -2010,7 +2010,6 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
   char hpbuf[MAX_STRING_LENGTH];
   char mnbuf[MAX_STRING_LENGTH];
   char mvbuf[MAX_STRING_LENGTH];
-  char bdbuf[MAX_STRING_LENGTH];
   AFFECT_DATA *paf;
   CHAR_DATA *victim;
   SKILLTYPE *skill;
@@ -2102,14 +2101,7 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
   snprintf(hpbuf, MAX_STRING_LENGTH, "%d/%d", victim->hit, victim->max_hit);
   snprintf(mnbuf, MAX_STRING_LENGTH, "%d/%d", victim->mana, victim->max_mana);
   snprintf(mvbuf, MAX_STRING_LENGTH, "%d/%d", victim->move, victim->max_move);
-  if (IS_VAMPIRE(victim) && !IS_NPC(victim))
-  {
-    snprintf(bdbuf, MAX_STRING_LENGTH, "%d/%d", victim->pcdata->condition[COND_BLOODTHIRST], 10 + victim->level);
-    pager_printf_color(ch, "&cHps     : &w%-12s    &cBlood  : &w%-12s    &cMove      : &w%-12s\r\n",
-                        hpbuf, bdbuf, mvbuf);
-  }
-  else
-    pager_printf_color(ch, "&cHps     : &w%-12s    &cMana   : &w%-12s    &cMove      : &w%-12s\r\n",
+  pager_printf_color(ch, "&cHps     : &w%-12s    &cMana   : &w%-12s    &cMove      : &w%-12s\r\n",
                         hpbuf, mnbuf, mvbuf);
   pager_printf_color(ch, "&cHitroll : &C%-5d           &cAlign  : &w%-5d           &cArmorclass: &w%d\r\n",
                       GET_HITROLL(victim), victim->alignment, GET_AC(victim));
@@ -4462,7 +4454,7 @@ void do_restore(CHAR_DATA* ch, const char* argument)
           vch->hit = vch->max_hit;
         vch->mana = vch->max_mana;
         vch->move = vch->max_move;
-        vch->pcdata->condition[COND_BLOODTHIRST] = (10 + vch->level);
+        vch->pcdata->condition[COND_WIRED] = 0;
         update_pos(vch);
         act(AT_IMMORT, "$n has restored you.", ch, NULL, vch, TO_VICT);
       }
@@ -4492,7 +4484,7 @@ void do_restore(CHAR_DATA* ch, const char* argument)
     victim->mana = victim->max_mana;
     victim->move = victim->max_move;
     if (victim->pcdata)
-      victim->pcdata->condition[COND_BLOODTHIRST] = (10 + victim->level);
+      victim->pcdata->condition[COND_WIRED] = 0;
     update_pos(victim);
     if (ch != victim)
       act(AT_IMMORT, "$n has restored you.", ch, NULL, victim, TO_VICT);
