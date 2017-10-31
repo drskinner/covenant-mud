@@ -218,7 +218,7 @@ const char *const part_flags[] = {
 
 const char *const attack_flags[] = {
   "bite", "claws", "tail", "sting", "punch", "kick", "trip", "bash", "stun",
-  "gouge", "backstab", "feed", "drain", "firebreath", "frostbreath",
+  "gouge", "backstab", "a11", "drain", "firebreath", "frostbreath",
   "acidbreath", "lightnbreath", "gasbreath", "poison", "nastypoison", "gaze",
   "blindness", "causeserious", "earthquake", "causecritical", "curse",
   "flamestrike", "harm", "fireball", "colorspray", "weaken", "spiralblast"
@@ -1931,7 +1931,7 @@ void do_mset(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "blood"))
+  if (!str_cmp(arg2, "wired"))
   {
     if (IS_NPC(victim))
     {
@@ -1941,11 +1941,11 @@ void do_mset(CHAR_DATA* ch, const char* argument)
 
     if (value < 0 || value > MAX_LEVEL + 10)
     {
-      ch_printf(ch, "Blood range is 0 to %d.\r\n", MAX_LEVEL + 10);
+      ch_printf(ch, "Wired range is 0 to %d.\r\n", MAX_LEVEL + 10);
       return;
     }
 
-    victim->pcdata->condition[COND_BLOODTHIRST] = value;
+    victim->pcdata->condition[COND_WIRED] = value;
     return;
   }
 

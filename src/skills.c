@@ -263,17 +263,7 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
     mana =
       IS_NPC(ch) ? 0 : UMAX(skill_table[sn]->min_mana,
                                100 / (2 + ch->level - skill_table[sn]->race_level[ch->race]));
-    blood = (mana / 2);
-    if (IS_VAMPIRE(ch))
-    {
-      if (ch->pcdata->condition[COND_BLOODTHIRST] < blood)
-      {
-        send_to_char("You don't have enough blood power.\r\n", ch);
-        return TRUE;
-      }
-    }
-    else if (!IS_NPC(ch) && ch->mana < mana)
-    {
+    if (!IS_NPC(ch) && ch->mana < mana) {
       send_to_char("You don't have enough mana.\r\n", ch);
       return TRUE;
     }
@@ -427,21 +417,13 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
     {
       failed_casting(skill_table[sn], ch, victim, obj);
       learn_from_failure(ch, sn);
-      if (mana)
-      {
-        if (IS_VAMPIRE(ch))
-          gain_condition(ch, COND_BLOODTHIRST, -blood / 2);
-        else
-          ch->mana -= mana / 2;
+      if (mana) {
+        ch->mana -= mana / 2;
       }
       return TRUE;
     }
-    if (mana)
-    {
-      if (IS_VAMPIRE(ch))
-        gain_condition(ch, COND_BLOODTHIRST, -blood);
-      else
-        ch->mana -= mana;
+    if (mana) {
+      ch->mana -= mana;
     }
     start_timer(&time_used);
     retcode = (*skill_table[sn]->spell_fun) (sn, ch->level, ch, vo);
@@ -480,12 +462,8 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
     return TRUE;
   }
 
-  if (mana)
-  {
-    if (IS_VAMPIRE(ch))
-      gain_condition(ch, COND_BLOODTHIRST, -blood);
-    else
-      ch->mana -= mana;
+  if (mana) {
+    ch->mana -= mana;
   }
   ch->prev_cmd = ch->last_cmd;  /* haus, for automapping */
   ch->last_cmd = skill_table[sn]->skill_fun;
@@ -540,16 +518,7 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
     mana = IS_NPC(ch) ? 0 : UMAX(skill_table[sn]->min_mana,
                                     100 / (2 + ch->level - skill_table[sn]->skill_level[ch->Class]));
     blood = UMAX(1, (mana + 4) / 8);   /* NPCs don't have PCDatas. -- Altrag */
-    if (IS_VAMPIRE(ch))
-    {
-      if (ch->pcdata->condition[COND_BLOODTHIRST] < blood)
-      {
-        send_to_char("You don't have enough blood power.\r\n", ch);
-        return TRUE;
-      }
-    }
-    else if (!IS_NPC(ch) && ch->mana < mana)
-    {
+    if (!IS_NPC(ch) && ch->mana < mana) {
       send_to_char("You don't have enough mana.\r\n", ch);
       return TRUE;
     }
@@ -557,7 +526,6 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
   else
   {
     mana = 0;
-    blood = 0;
   }
 
   /*
@@ -695,21 +663,13 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
     {
       failed_casting(skill_table[sn], ch, victim, obj);
       learn_from_failure(ch, sn);
-      if (mana)
-      {
-        if (IS_VAMPIRE(ch))
-          gain_condition(ch, COND_BLOODTHIRST, -blood / 2);
-        else
-          ch->mana -= mana / 2;
+      if (mana) {
+        ch->mana -= mana / 2;
       }
       return TRUE;
     }
-    if (mana)
-    {
-      if (IS_VAMPIRE(ch))
-        gain_condition(ch, COND_BLOODTHIRST, -blood);
-      else
-        ch->mana -= mana;
+    if (mana) {
+      ch->mana -= mana;
     }
     start_timer(&time_used);
     retcode = (*skill_table[sn]->spell_fun) (sn, ch->level, ch, vo);
@@ -748,12 +708,8 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
     return TRUE;
   }
 
-  if (mana)
-  {
-    if (IS_VAMPIRE(ch))
-      gain_condition(ch, COND_BLOODTHIRST, -blood);
-    else
-      ch->mana -= mana;
+  if (mana) {
+    ch->mana -= mana;
   }
   ch->prev_cmd = ch->last_cmd;  /* haus, for automapping */
   ch->last_cmd = skill_table[sn]->skill_fun;
@@ -3629,16 +3585,9 @@ void do_bloodlet(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (ch->pcdata->condition[COND_BLOODTHIRST] < 10)
-  {
-    send_to_char("You are too drained to offer any blood...\r\n", ch);
-    return;
-  }
-
   WAIT_STATE(ch, PULSE_VIOLENCE);
   if (can_use_skill(ch, number_percent(), gsn_bloodlet))
   {
-    gain_condition(ch, COND_BLOODTHIRST, -7);
     act(AT_BLOOD, "Tracing a sharp nail over your skin, you let your blood spill.", ch, NULL, NULL, TO_CHAR);
     act(AT_BLOOD, "$n traces a sharp nail over $s skin, spilling a quantity of blood to the ground.", ch, NULL, NULL, TO_ROOM);
     learn_from_success(ch, gsn_bloodlet);
@@ -3653,80 +3602,6 @@ void do_bloodlet(CHAR_DATA* ch, const char* argument)
     act(AT_BLOOD, "You cannot manage to draw much blood...", ch, NULL, NULL, TO_CHAR);
     act(AT_BLOOD, "$n slices open $s skin, but no blood is spilled...", ch, NULL, NULL, TO_ROOM);
     learn_from_failure(ch, gsn_bloodlet);
-  }
-  return;
-}
-
-void do_feed(CHAR_DATA* ch, const char* argument)
-{
-  CHAR_DATA *victim;
-  short dam;
-  short temphit;
-
-  if (IS_NPC(ch) && IS_AFFECTED(ch, AFF_CHARM))
-  {
-    send_to_char("You can't concentrate enough for that.\r\n", ch);
-    return;
-  }
-
-  if (!IS_NPC(ch) && !IS_VAMPIRE(ch))
-  {
-    send_to_char("It is not of your nature to feed on living creatures.\r\n", ch);
-    return;
-  }
-  if (!can_use_skill(ch, 0, gsn_feed))
-  {
-    send_to_char("You have not yet practiced your new teeth.\r\n", ch);
-    return;
-  }
-
-  if ((victim = who_fighting(ch)) == NULL)
-  {
-    send_to_char("You aren't fighting anyone.\r\n", ch);
-    return;
-  }
-
-  if (ch->mount)
-  {
-    send_to_char("You can't do that while mounted.\r\n", ch);
-    return;
-  }
-
-  WAIT_STATE(ch, skill_table[gsn_feed]->beats);
-  if (can_use_skill(ch, number_percent(), gsn_feed))
-  {
-    dam = number_range(1, ch->level);
-    global_retcode = damage(ch, victim, dam, gsn_feed);
-    if (global_retcode == rNONE && !IS_NPC(ch) && dam
-        && ch->fighting && ch->pcdata->condition[COND_BLOODTHIRST] < (10 + ch->level))
-    {
-      gain_condition(ch, COND_BLOODTHIRST,
-                      UMIN(number_range(1, (ch->level + victim->level / 20) + 3),
-                            (10 + ch->level) - ch->pcdata->condition[COND_BLOODTHIRST]));
-      if (ch->pcdata->condition[COND_FULL] <= 37)
-        gain_condition(ch, COND_FULL, 2);
-      gain_condition(ch, COND_THIRST, 2);
-      act(AT_BLOOD, "You manage to suck a little life out of $N.", ch, NULL, victim, TO_CHAR);
-      act(AT_BLOOD, "$n sucks some of your blood!", ch, NULL, victim, TO_VICT);
-      learn_from_success(ch, gsn_feed);
-      temphit = ch->hit;
-      ch->hit += 1 + ch->level / 5;
-      if (ch->hit > ch->max_hit)
-        ch->hit = ch->max_hit;
-      if (ch->hit < temphit)
-        ch->hit = temphit;
-    }
-  }
-  else
-  {
-    global_retcode = damage(ch, victim, 0, gsn_feed);
-    if (global_retcode == rNONE && !IS_NPC(ch)
-        && ch->fighting && ch->pcdata->condition[COND_BLOODTHIRST] < (10 + ch->level))
-    {
-      act(AT_BLOOD, "The smell of $N's blood is driving you insane!", ch, NULL, victim, TO_CHAR);
-      act(AT_BLOOD, "$n is lusting after your blood!", ch, NULL, victim, TO_VICT);
-      learn_from_failure(ch, gsn_feed);
-    }
   }
   return;
 }
@@ -3979,10 +3854,7 @@ void do_mistwalk(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (IS_PKILL(ch) && ch->pcdata->condition[COND_BLOODTHIRST] > 22)
-    allowday = TRUE;
-  else
-    allowday = FALSE;
+  allowday = FALSE;
 
   if ((time_info.hour < 21 && time_info.hour > 5 && !allowday)
       || !victim->in_room
@@ -4004,11 +3876,6 @@ void do_mistwalk(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  /*
-   * Subtract 22 extra bp for mist walk from 0500 to 2100 SB 
-   */
-  if (time_info.hour < 21 && time_info.hour > 5 && !IS_NPC(ch))
-    gain_condition(ch, COND_BLOODTHIRST, -22);
   act(AT_DGREEN, "Your surroundings blur as you assume a form of churning mist!", ch, NULL, NULL, TO_CHAR);
   act(AT_DGREEN, "$n dissolves into a cloud of glowing mist, then vanishes!", ch, NULL, NULL, TO_ROOM);
   learn_from_success(ch, gsn_mistwalk);

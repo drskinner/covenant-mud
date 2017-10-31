@@ -66,7 +66,7 @@ const char *const liquid_types[LIQTYPE_TOP] = {
 };
 
 const char *const mod_types[MAX_CONDS] = {
-  "Drunk", "Full", "Thirst", "Bloodthirst"
+  "Drunk", "Full", "Thirst", "Wired"
 };
 
 void save_house_by_vnum(int vnum);
@@ -106,7 +106,7 @@ void save_liquids(void)
     fprintf(fp, "Type      %d\n", liq->type);
     fprintf(fp, "Vnum      %d\n", liq->vnum);
     fprintf(fp, "Mod       %d %d %d %d\n", liq->mod[COND_DRUNK], liq->mod[COND_FULL], liq->mod[COND_THIRST],
-             liq->mod[COND_BLOODTHIRST]);
+             liq->mod[COND_WIRED]);
     fprintf(fp, "%s", "End\n\n");
   }
   fprintf(fp, "%s", "#END\n");
@@ -161,7 +161,7 @@ LIQ_TABLE *fread_liquid(FILE * fp)
         liq->mod[COND_DRUNK] = fread_number(fp);
         liq->mod[COND_FULL] = fread_number(fp);
         liq->mod[COND_THIRST] = fread_number(fp);
-        liq->mod[COND_BLOODTHIRST] = fread_number(fp);
+        liq->mod[COND_WIRED] = fread_number(fp);
       }
       break;
 
@@ -1330,8 +1330,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
       gain_condition(ch, COND_THIRST, liq->mod[COND_THIRST]);
       gain_condition(ch, COND_FULL, liq->mod[COND_FULL]);
       gain_condition(ch, COND_DRUNK, liq->mod[COND_DRUNK]);
-      if (IS_VAMPIRE(ch))
-        gain_condition(ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST]);
+      gain_condition(ch, COND_WIRED, liq->mod[COND_WIRED]);
     }
     else if (!IS_NPC(ch) && obj->value[2] == 0)
       ch->pcdata->condition[COND_THIRST] = MAX_COND_VALUE;
@@ -1384,9 +1383,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
     gain_condition(ch, COND_DRUNK, liq->mod[COND_DRUNK]);
     gain_condition(ch, COND_FULL, liq->mod[COND_FULL]);
     gain_condition(ch, COND_THIRST, liq->mod[COND_THIRST]);
-
-    if (IS_VAMPIRE(ch))
-      gain_condition(ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST]);
+    gain_condition(ch, COND_WIRED, liq->mod[COND_WIRED]);
 
     if (liq->type == LIQTYPE_POISON)
     {
@@ -1433,28 +1430,18 @@ void do_drink(CHAR_DATA* ch, const char* argument)
       else if (ch->pcdata->condition[COND_THIRST] == MAX_COND_VALUE)
         send_to_char("Your stomach is full, you can't manage to get anymore down.\r\n", ch);
 
-      /*
-       * Hopefully this is the reason why that crap was happening. =0P 
-       */
-      if (IS_VAMPIRE(ch))
-      {
-        if (ch->pcdata->condition[COND_BLOODTHIRST] > (MAX_COND_VALUE / 2)
-            && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .4))
-          send_to_char("&rYou replenish your body with the vidal fluid.\r\n", ch);
-        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .4)
-                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .6))
-          send_to_char("&rYour thirst for blood begins to decrease.\r\n", ch);
-        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .6)
-                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .9))
-          send_to_char("&rThe thirst for blood begins to leave you...\r\n", ch);
-        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .9)
-                 && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE)
-          send_to_char("&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch);
-      }
-      else if (!IS_VAMPIRE(ch) && ch->pcdata->condition[COND_BLOODTHIRST] >= MAX_COND_VALUE)
-      {
-        ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
-      }
+      if (ch->pcdata->condition[COND_WIRED] > (MAX_COND_VALUE / 2)
+          && ch->pcdata->condition[COND_WIRED] < (MAX_COND_VALUE * .4))
+        send_to_char("You have had WAY too much caffeine.\r\n", ch);
+      else if (ch->pcdata->condition[COND_WIRED] >= (MAX_COND_VALUE * .4)
+               && ch->pcdata->condition[COND_WIRED] < (MAX_COND_VALUE * .6))
+        send_to_char("You feel a little jittery.\r\n", ch);
+      else if (ch->pcdata->condition[COND_WIRED] >= (MAX_COND_VALUE * .6)
+               && ch->pcdata->condition[COND_WIRED] < (MAX_COND_VALUE * .9))
+        send_to_char("You feel energized.\r\n", ch);
+      else if (ch->pcdata->condition[COND_WIRED] >= (MAX_COND_VALUE * .9)
+               && ch->pcdata->condition[COND_WIRED] < MAX_COND_VALUE)
+        send_to_char("You are beginning to feel more awake.\r\n", ch);
     }
 
     obj->value[1] -= amount;
@@ -1493,9 +1480,7 @@ void do_drink(CHAR_DATA* ch, const char* argument)
     gain_condition(ch, COND_DRUNK, liq->mod[COND_DRUNK]);
     gain_condition(ch, COND_FULL, liq->mod[COND_FULL]);
     gain_condition(ch, COND_THIRST, liq->mod[COND_THIRST]);
-
-    if (IS_VAMPIRE(ch))
-      gain_condition(ch, COND_BLOODTHIRST, liq->mod[COND_BLOODTHIRST]);
+    gain_condition(ch, COND_WIRED, liq->mod[COND_WIRED]);
 
     if (liq->type == LIQTYPE_POISON)
     {
@@ -1542,28 +1527,18 @@ void do_drink(CHAR_DATA* ch, const char* argument)
       else if (ch->pcdata->condition[COND_THIRST] == MAX_COND_VALUE)
         send_to_char("Your stomach is full, you can't manage to get anymore down.\r\n", ch);
 
-      /*
-       * Hopefully this is the reason why that crap was happening. =0P 
-       */
-      if (IS_VAMPIRE(ch))
-      {
-        if (ch->pcdata->condition[COND_BLOODTHIRST] > (MAX_COND_VALUE / 2)
-            && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .4))
-          send_to_char("&rYou replenish your body with the vidal fluid.\r\n", ch);
-        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .4)
-                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .6))
-          send_to_char("&rYour thirst for blood begins to decrease.\r\n", ch);
-        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .6)
-                 && ch->pcdata->condition[COND_BLOODTHIRST] < (MAX_COND_VALUE * .9))
-          send_to_char("&rThe thirst for blood begins to leave you...\r\n", ch);
-        else if (ch->pcdata->condition[COND_BLOODTHIRST] >= (MAX_COND_VALUE * .9)
-                 && ch->pcdata->condition[COND_BLOODTHIRST] < MAX_COND_VALUE)
-          send_to_char("&rYou drink the last drop of the fluid, the thirst for more leaves your body.\r\n", ch);
-      }
-      else if (!IS_VAMPIRE(ch) && ch->pcdata->condition[COND_BLOODTHIRST] >= MAX_COND_VALUE)
-      {
-        ch->pcdata->condition[COND_BLOODTHIRST] = MAX_COND_VALUE;
-      }
+      if (ch->pcdata->condition[COND_WIRED] > (MAX_COND_VALUE / 2)
+          && ch->pcdata->condition[COND_WIRED] < (MAX_COND_VALUE * .4))
+        send_to_char("You have had WAY too much caffeine.\r\n", ch);
+      else if (ch->pcdata->condition[COND_WIRED] >= (MAX_COND_VALUE * .4)
+               && ch->pcdata->condition[COND_WIRED] < (MAX_COND_VALUE * .6))
+        send_to_char("You feel a little jittery.\r\n", ch);
+      else if (ch->pcdata->condition[COND_WIRED] >= (MAX_COND_VALUE * .6)
+               && ch->pcdata->condition[COND_WIRED] < (MAX_COND_VALUE * .9))
+        send_to_char("You feel energized.\r\n", ch);
+      else if (ch->pcdata->condition[COND_WIRED] >= (MAX_COND_VALUE * .9)
+               && ch->pcdata->condition[COND_WIRED] < MAX_COND_VALUE)
+        send_to_char("You are beginning to feel more awake.\r\n", ch);
     }
 
     obj->value[1] -= amount;

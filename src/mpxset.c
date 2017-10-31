@@ -514,21 +514,21 @@ void do_mpmset(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "blood"))
+  if (!str_cmp(arg2, "wired"))
   {
     if (IS_NPC(victim))
     {
-      progbug("MpMset: can't set npc blood", ch);
+      progbug("MpMset: can't set NPC wired", ch);
       return;
     }
 
     if (value < 0 || value > MAX_LEVEL + 10)
     {
-      progbug("MpMset: Invalid pc blood", ch);
+      progbug("MpMset: Invalid PC wired value", ch);
       return;
     }
 
-    victim->pcdata->condition[COND_BLOODTHIRST] = value;
+    victim->pcdata->condition[COND_WIRED] = value;
     return;
   }
 

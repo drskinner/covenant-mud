@@ -498,10 +498,6 @@ void violence_update(void)
             do_gouge(ch, "");
             retcode = global_retcode;
             break;
-          case ATCK_FEED:
-            do_feed(ch, "");
-            retcode = global_retcode;
-            break;
           case ATCK_DRAIN:
             retcode = spell_energy_drain(skill_lookup("energy drain"), ch->level, ch, victim);
             break;
@@ -2287,22 +2283,6 @@ ch_ret damage(CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt)
     victim->mental_state = URANGE(20, victim->mental_state + (IS_PKILL(victim) ? 1 : 2), 100);
   }
 
-  /*
-   * Vampire self preservation          -Thoric
-   */
-  if (IS_VAMPIRE(victim))
-  {
-    if (dam >= (victim->max_hit / 10))  /* get hit hard, lose blood */
-      gain_condition(victim, COND_BLOODTHIRST, -1 - (victim->level / 20));
-    if (victim->hit <= (victim->max_hit / 8) && victim->pcdata->condition[COND_BLOODTHIRST] > 5)
-    {
-      gain_condition(victim, COND_BLOODTHIRST, -URANGE(3, victim->level / 10, 8));
-      victim->hit += URANGE(4, (victim->max_hit / 30), 15);
-      set_char_color(AT_BLOOD, victim);
-      send_to_char("You howl with rage as the beast within stirs!\r\n", victim);
-    }
-  }
-
   if (!npcvict && get_trust(victim) >= LEVEL_IMMORTAL && get_trust(ch) >= LEVEL_IMMORTAL && victim->hit < 1)
     victim->hit = 1;
   update_pos(victim);
@@ -2823,8 +2803,7 @@ void check_killer(CHAR_DATA * ch, CHAR_DATA * victim)
       ch->hit = ch->max_hit;
       ch->mana = ch->max_mana;
       ch->move = ch->max_move;
-      if (ch->pcdata)
-        ch->pcdata->condition[COND_BLOODTHIRST] = (10 + ch->level);
+
       update_pos(victim);
       if (victim != ch)
       {
@@ -3528,8 +3507,6 @@ OBJ_DATA *raw_kill(CHAR_DATA * ch, CHAR_DATA * victim)
   }
   victim->pcdata->condition[COND_FULL] = 12;
   victim->pcdata->condition[COND_THIRST] = 12;
-  if (IS_VAMPIRE(victim))
-    victim->pcdata->condition[COND_BLOODTHIRST] = (victim->level / 2);
 
   if (IS_SET(sysdata.save_flags, SV_DEATH))
     save_char_obj(victim);

@@ -1277,10 +1277,9 @@ void affect_modify(CHAR_DATA * ch, AFFECT_DATA * paf, bool fAdd)
       ch->pcdata->condition[COND_DRUNK] = URANGE(0, ch->pcdata->condition[COND_DRUNK] + mod, 48);
     break;
 
-  case APPLY_BLOOD:
+  case APPLY_WIRED:
     if (!IS_NPC(ch))
-      ch->pcdata->condition[COND_BLOODTHIRST] =
-        URANGE(0, ch->pcdata->condition[COND_BLOODTHIRST] + mod, ch->level + 10);
+      ch->pcdata->condition[COND_WIRED] = URANGE(0, ch->pcdata->condition[COND_WIRED] + mod, 48);
     break;
 
   case APPLY_MENTALSTATE:
@@ -3669,8 +3668,8 @@ const char *affect_loc_name(int location)
     return "thirst";
   case APPLY_DRUNK:
     return "drunk";
-  case APPLY_BLOOD:
-    return "blood";
+  case APPLY_WIRED:
+    return "wired";
   case APPLY_RECURRINGSPELL:
     return "recurring spell";
   case APPLY_CONTAGIOUS:
