@@ -1240,6 +1240,129 @@ void do_mix(CHAR_DATA* ch, const char* argument)
   return;
 }
 
+void do_sip(CHAR_DATA* ch, const char* argument)
+{
+  char arg[MAX_INPUT_LENGTH];
+  OBJ_DATA *obj;
+  LIQ_TABLE *liquid = NULL;
+  AFFECT_DATA af;
+
+  argument = one_argument(argument, arg);
+
+  /* munch optional words */
+
+  if (!str_cmp(arg, "from") && argument[0] != '\0')
+    argument = one_argument(argument, arg);
+
+  if (arg[0] == '\0') {
+    for (obj = ch->in_room->first_content; obj; obj = obj->next_content)
+      if ((obj->item_type == ITEM_FOUNTAIN))
+	break;
+
+    if (!obj) {
+      send_to_char("What are you trying to sip from?\r\n", ch);
+      return;
+    }
+  }
+  else {
+    if ((obj = get_obj_here(ch, arg)) == NULL) {
+      send_to_char("You can't find that to sip from.\r\n", ch);
+      return;
+    }
+  }
+
+  if (!IS_NPC(ch) && ch->pcdata->condition[COND_DRUNK] > MAX_COND_VALUE - 8) {
+    send_to_char("You fail to reach your mouth. *Hic*\r\n", ch);
+    return;
+  }
+
+  if (obj->count > 1 && obj->item_type != ITEM_FOUNTAIN)
+    separate_obj(obj);
+
+  switch (obj->item_type) {
+
+  default:
+    if (obj->carried_by == ch) {
+      act(AT_ACTION, "$n lifts $p up to $s mouth and tries to drink from it.",
+          ch, obj, NULL, TO_ROOM);
+      act(AT_ACTION, "You bring $p to your mouth and try drinking from it.",
+          ch, obj, NULL, TO_CHAR);
+      do_taste(ch, arg);
+    }
+    else {
+      act(AT_ACTION, "$n tries to take a drink from $p...(Is $e feeling ok?)",
+          ch, obj, NULL, TO_ROOM);
+      ch_printf(ch, "You try to drink from %s. It doesn't work.\r\n",
+                obj->short_descr);
+    }
+    break;
+
+  case ITEM_FOUNTAIN:
+    if (!oprog_use_trigger(ch, obj, NULL, NULL)) {
+      act(AT_ACTION, "$n sips from the fountain.", ch, NULL, NULL, TO_ROOM);
+      send_to_char("You take a sip from the fountain.\r\n", ch);
+    }
+
+    if (!IS_NPC(ch))
+      ch->pcdata->condition[COND_THIRST] += 5;
+    break;
+
+  case ITEM_DRINK_CON:
+    if (obj->value[1] <= 0) {
+      send_to_char("That vessel is empty.", ch);
+      return;
+    }
+
+    if ((liquid = get_liq_vnum(obj->value[2])) == NULL) {
+      bug("%s: bad liquid number %d.", __func__, obj->value[2]);
+      liquid = get_liq_vnum(0);
+    }
+
+    if (!oprog_use_trigger(ch, obj, NULL, NULL)) {
+      ch_printf(ch, "You take a sip from %s and taste the contents.\r\n",
+                obj->short_descr);
+      ch_printf(ch, "It tastes like %s.\r\n", liquid->shortdesc);
+      act(AT_ACTION, "$n takes a sip from $p.", ch, obj, NULL, TO_ROOM);
+    }
+
+    gain_condition(ch, COND_THIRST, liquid->mod[COND_THIRST] / 4);
+    gain_condition(ch, COND_FULL, liquid->mod[COND_FULL] / 4);
+    gain_condition(ch, COND_DRUNK, liquid->mod[COND_DRUNK] / 4);
+    gain_condition(ch, COND_WIRED, liquid->mod[COND_WIRED] / 4);
+
+    if ((!IS_NPC(ch)) && (ch->level <= 50)) {
+      if (ch->pcdata->condition[COND_FULL] > 40)
+        send_to_char("You are full.\r\n", ch);
+
+      if (ch->pcdata->condition[COND_THIRST] > 40)
+        send_to_char("You feel bloated.\r\n", ch);
+    }
+
+    if (obj->value[3])    /* The drink was poisoned! */
+    {
+      act(AT_POISON, "$n sputters and gags.", ch, NULL, NULL, TO_ROOM);
+      act(AT_POISON, "You sputter and gag.", ch, NULL, NULL, TO_CHAR);
+      ch->mental_state = URANGE(20, ch->mental_state + 5, 100);
+      af.type      = gsn_poison;
+      af.duration  = obj->value[3] / 4;
+      af.location  = APPLY_NONE;
+      af.modifier  = 0;
+      af.bitvector = meb(AFF_POISON);
+      affect_join(ch, &af);
+    }
+
+    obj->value[1] -= 1;         /* 1 ounce per sip -- Shamus */
+    if (obj->value[1] <= 0) {
+      obj->value[1] = 0;   /* Prevents negative values - Samson */
+      ch_printf(ch, "You drink the last drop from %s.\r\n", obj->short_descr);
+    }
+    break;
+  }
+
+  WAIT_STATE(ch, PULSE_PER_SECOND);
+  return;
+}
+
 /* modified do_drink function -Nopey */
 void do_drink(CHAR_DATA* ch, const char* argument)
 {
@@ -1276,14 +1399,13 @@ void do_drink(CHAR_DATA* ch, const char* argument)
     }
   }
 
-  if (obj->count > 1 && obj->item_type != ITEM_FOUNTAIN)
-    separate_obj(obj);
-
-  if (!IS_NPC(ch) && ch->pcdata->condition[COND_DRUNK] > MAX_COND_VALUE - 8)
-  {
-    send_to_char("You fail to reach your mouth.  *Hic*\r\n", ch);
+  if (!IS_NPC(ch) && ch->pcdata->condition[COND_DRUNK] > MAX_COND_VALUE - 8) {
+    send_to_char("You fail to reach your mouth. *Hic*\r\n", ch);
     return;
   }
+
+  if (obj->count > 1 && obj->item_type != ITEM_FOUNTAIN)
+    separate_obj(obj);
 
   switch (obj->item_type)
   {

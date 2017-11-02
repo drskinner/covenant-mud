@@ -25,6 +25,53 @@
 
 extern int top_exit;
 
+void do_taste(CHAR_DATA* ch, const char* argument)
+{
+  AFFECT_DATA af;
+  OBJ_DATA *obj;
+
+  if (argument[0] == '\0') {
+    send_to_char("What are you trying to taste?\r\n", ch);
+    return;
+  }
+
+  if ((obj = find_obj(ch, argument, TRUE)) == NULL)
+    return;
+
+  if (obj->item_type == ITEM_DRINK_CON) {
+    ch_printf(ch, "You probably aren't actually trying to taste %s.\r\n", obj->short_descr);
+    do_sip(ch, argument);
+    return;
+  }
+
+  if (obj->item_type != ITEM_FOOD) {
+    act(AT_ACTION, "$n puts $p in $s mouth.", ch, obj, NULL, TO_ROOM);
+    act(AT_ACTION, "It tastes just like $p. Remarkable.", ch, obj, NULL,
+        TO_CHAR);
+    return;
+  }
+
+  act(AT_ACTION, "$n tastes $p.", ch, obj, NULL, TO_ROOM);
+  act(AT_ACTION, "You taste $p. It seems edible.", ch, obj, NULL, TO_CHAR);
+
+  if (obj->value[3] != 0) {
+    act(AT_POISON, "But it has a strange, lingering aftertaste...",
+        ch, NULL, NULL, TO_CHAR);
+    act(AT_ACTION, "$e looks distinctly queasy.", ch, NULL, NULL, TO_ROOM);
+
+    ch->mental_state = URANGE(15, ch->mental_state + 5, 100);
+
+    af.type      = gsn_poison;
+    af.duration  = 2 + (abs(obj->value[3]));
+    af.location  = APPLY_NONE;
+    af.modifier  = 0;
+    af.bitvector = meb(AFF_POISON);
+    affect_join(ch, &af);
+  }
+
+  return;
+}
+
 void do_eat(CHAR_DATA* ch, const char* argument)
 {
   char buf[MAX_STRING_LENGTH];
