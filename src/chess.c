@@ -68,7 +68,7 @@ static char *print_big_board(CHAR_DATA * ch, GAME_BOARD_DATA * board)
   sprintf(s1, "&Y&W");
   sprintf(s2, "&z&z");
 
-  sprintf(retbuf, WHITE_FOREGROUND "\n\r&g     1      2      3      4      5      6      7      8\n\r");
+  sprintf(retbuf, WHITE_FOREGROUND "\n\r&g     1      2      3      4      5      6      7      8\r\n");
 
   for (x = 0; x < 8; x++)
   {
@@ -81,7 +81,7 @@ static char *print_big_board(CHAR_DATA * ch, GAME_BOARD_DATA * board)
       sprintf(buf2, buf, IS_WHITE(board->board[x][y]) ? s1 : s2);
       strcat(retbuf, buf2);
     }
-    strcat(retbuf, BLACK_BACKGROUND "\n\r");
+    strcat(retbuf, BLACK_BACKGROUND "\r\n");
 
     sprintf(buf, WHITE_FOREGROUND "&g%c ", 'A' + x);
     strcat(retbuf, buf);
@@ -93,7 +93,7 @@ static char *print_big_board(CHAR_DATA * ch, GAME_BOARD_DATA * board)
       sprintf(buf2, buf, IS_WHITE(board->board[x][y]) ? s1 : s2);
       strcat(retbuf, buf2);
     }
-    strcat(retbuf, BLACK_BACKGROUND "\n\r");
+    strcat(retbuf, BLACK_BACKGROUND "\r\n");
   }
 
   return (retbuf);

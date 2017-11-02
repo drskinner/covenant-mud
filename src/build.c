@@ -3914,7 +3914,7 @@ void do_oset(CHAR_DATA* ch, const char* argument)
             }
           }
           DISPOSE(paf);
-          send_to_char("Removed.\n\r", ch);
+          send_to_char("Removed.\r\n", ch);
           --top_affect;
           return;
         }
@@ -9340,7 +9340,7 @@ void do_odelete(CHAR_DATA* ch, const char* argument)
   if (get_trust(ch) < sysdata.level_modify_proto
       && (obj->vnum < ch->pcdata->area->low_o_vnum || obj->vnum > ch->pcdata->area->hi_o_vnum))
   {
-    send_to_char("That obj is not in your assigned range.\n\r", ch);
+    send_to_char("That obj is not in your assigned range.\r\n", ch);
     return;
   }
 
@@ -10035,7 +10035,7 @@ void do_findexit(CHAR_DATA* ch, const char* argument)
   if (IS_NPC(ch) || get_trust(ch) < LEVEL_CREATOR || !ch->pcdata
       || (!ch->pcdata->area && get_trust(ch) < LEVEL_GREATER))
   {
-    send_to_char_color("&YYou don't have an assigned area.\n\r", ch);
+    send_to_char_color("&YYou don't have an assigned area.\r\n", ch);
     return;
   }
 
@@ -10074,7 +10074,7 @@ void do_findexit(CHAR_DATA* ch, const char* argument)
 
       if ((l_range < tarea->low_r_vnum || h_range > tarea->hi_r_vnum) && get_trust(ch) < LEVEL_GREATER)
       {
-        send_to_char_color("&YThat is out of your vnum range.\n\r", ch);
+        send_to_char_color("&YThat is out of your vnum range.\r\n", ch);
         return;
       }
     }
@@ -10095,7 +10095,7 @@ void do_findexit(CHAR_DATA* ch, const char* argument)
           for (pexit = room->first_exit; pexit; pexit = pexit->next)
           {
             if (pexit->to_room->vnum == exvnum)
-              pager_printf(ch, "%5d) Direction: %-2s.  Key: %d Flags: %d Keywords: %s.\n\r",
+              pager_printf(ch, "%5d) Direction: %-2s.  Key: %d Flags: %d Keywords: %s.\r\n",
                             room->vnum,
                             dir_text[pexit->vdir],
                             pexit->key, pexit->exit_info, pexit->keyword[0] != '\0' ? pexit->keyword : "(none)");

@@ -1509,7 +1509,7 @@ bool flush_buffer(DESCRIPTOR_DATA * d, bool fPrompt)
 
     if (ch && !IS_NPC(ch) && xIS_SET(ch->act, PLR_ANSI))
     {
-      write_to_buffer(d, ANSI_RESET, 0);
+      write_to_buffer(d, ANSI_WHITE, 0);
       d->prevcolor = 0x08;
     }
 

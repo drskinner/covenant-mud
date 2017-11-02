@@ -2064,7 +2064,7 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
                         victim->pcdata->recent_site : "Unknown");
     pager_printf_color(ch, "&cPrevious IP: &w%-15s", victim->pcdata->prev_site ?
                         victim->pcdata->prev_site : "Unknown");
-    pager_printf_color(ch, "&cRank: &w%s\n\r",
+    pager_printf_color(ch, "&cRank: &w%s\r\n",
                         str_cmp(victim->pcdata->rank, "") ? victim->pcdata->rank : "(default)");
   }
   if (!IS_NPC(victim) && victim->pcdata->release_date != 0)
@@ -2786,7 +2786,7 @@ void do_oclaim(CHAR_DATA* ch, const char* argument)
   {
     if ((vch = get_char_world(ch, who)) == NULL)
     {
-      send_to_pager("They aren't here.\n\r", ch);
+      send_to_pager("They aren't here.\r\n", ch);
       return;
     }
     if (get_trust(ch) < get_trust(vch) && !IS_NPC(vch))
@@ -6903,7 +6903,7 @@ void do_cset(CHAR_DATA* ch, const char* argument)
     pager_printf_color(ch, "&wWizlock after reboot:          &W%s\r\n", (sysdata.wizlock) ? "ON" : "off");
     pager_printf_color(ch, "  &wSave flags: &W%s\r\n", flag_string(sysdata.save_flags, save_flag));
     pager_printf_color(ch, "&WCalendar:\r\n");
-    pager_printf_color(ch, "  &wSeconds per tick: &W%d   &wPulse per second: &W%d\n\r", sysdata.secpertick, sysdata.pulsepersec);
+    pager_printf_color(ch, "  &wSeconds per tick: &W%d   &wPulse per second: &W%d\r\n", sysdata.secpertick, sysdata.pulsepersec);
     pager_printf_color(ch, "  &wHours per day: &W%d &wDays per week: &W%d &wDays per month: &W%d &wMonths per year: &W%d &wDays per year: &W%d\r\n",
                         sysdata.hoursperday, sysdata.daysperweek, sysdata.dayspermonth, sysdata.monthsperyear, sysdata.daysperyear);
     pager_printf_color(ch, "  &wPULSE_TICK: &W%d &wPULSE_VIOLENCE: &W%d &wPULSE_MOBILE: &W%d &wPULSE_CALENDAR: &W%d\r\n",
@@ -10152,7 +10152,7 @@ void do_project(CHAR_DATA* ch, const char* argument)
     pproject->owner = STRALLOC(vch->name);
     pproject->taken = TRUE;
     write_projects();
-    ch_printf(ch, "Project assigned to %s.\n\r", vch->name);
+    ch_printf(ch, "Project assigned to %s.\r\n", vch->name);
     ch_printf(vch, "You have been assigned project %d.\r\n", pnum);
 
     return;

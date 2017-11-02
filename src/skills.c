@@ -3032,7 +3032,7 @@ void do_meditate(CHAR_DATA * ch, const char *argument)
       send_to_char("You can't concentrate enough for that.\r\n", ch);
       return;
     }
-    send_to_char_color("&BYou enter into a meditative state, hoping to collect mana from the cosmos.\n\r", ch);
+    send_to_char_color("&BYou enter into a meditative state, hoping to collect mana from the cosmos.\r\n", ch);
     add_timer(ch, TIMER_DO_FUN, UMAX(2, (skill_table[gsn_meditate]->beats / 8)), do_meditate, 1);
     ch->alloc_ptr = str_dup(argument);
     return;

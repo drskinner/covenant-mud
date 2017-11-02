@@ -1560,7 +1560,7 @@ void do_look(CHAR_DATA * ch, const char *argument)
         if (obj->full_desc && obj->full_desc[0] != '\0') {
           send_to_char_color(obj->full_desc, ch);
         } else {
-          ch_printf(ch, "You see nothing special about %s.\n\r", obj->short_descr);
+          ch_printf(ch, "You see nothing special about %s.\r\n", obj->short_descr);
         }
         if (obj->item_type == ITEM_PUDDLE)
         {
@@ -1605,7 +1605,7 @@ void do_look(CHAR_DATA * ch, const char *argument)
         if (obj->full_desc && obj->full_desc[0] != '\0') {
           send_to_char_color(obj->full_desc, ch);
         } else {
-          ch_printf(ch, "You see nothing special about %s.\n\r", obj->short_descr);
+          ch_printf(ch, "You see nothing special about %s.\r\n", obj->short_descr);
         }
         if (obj->item_type == ITEM_PUDDLE)
         {
@@ -2276,7 +2276,7 @@ void do_help(CHAR_DATA* ch, const char* argument)
   if (pHelp->level >= 0 && str_cmp(argument, "imotd")) {
     set_pager_color (AT_WHITE, ch);
     send_to_pager(pHelp->keyword, ch);
-    send_to_pager("\n\r", ch);
+    send_to_pager("\r\n", ch);
   }
 
   /* Strip leading '.' to allow initial blanks. */
