@@ -2657,7 +2657,7 @@ void do_clans(CHAR_DATA* ch, const char* argument)
       || !str_cmp(ch->name, clan->leader)
       || !str_cmp(ch->name, clan->number1) || !str_cmp(ch->name, clan->number2) || get_trust(ch) >= LEVEL_GREATER)
     ch_printf(ch, "Members    :  %d\r\n", clan->members);
-  ch_printf(ch, "Abbrev     :  %s\n\r", clan->abbrev ? clan->abbrev : "");
+  ch_printf(ch, "Abbrev     :  %s\r\n", clan->abbrev ? clan->abbrev : "");
   set_char_color(AT_BLOOD, ch);
   ch_printf(ch, "\r\nDescription:  %s\r\n", clan->description);
   return;
@@ -2709,7 +2709,7 @@ void do_orders(CHAR_DATA* ch, const char* argument)
       || !str_cmp(ch->name, order->leader)
       || !str_cmp(ch->name, order->number1) || !str_cmp(ch->name, order->number2) || get_trust(ch) >= LEVEL_GREATER)
     ch_printf(ch, "Members    :  %d\r\n", order->members);
-  ch_printf(ch, "Abbrev     :  %s\n\r", order->abbrev ? order->abbrev : "");
+  ch_printf(ch, "Abbrev     :  %s\r\n", order->abbrev ? order->abbrev : "");
   set_char_color(AT_DGREEN, ch);
   ch_printf(ch, "\r\nDescription:\r\n%s\r\n", order->description);
   return;
@@ -2802,7 +2802,7 @@ void do_guilds(CHAR_DATA* ch, const char* argument)
       || !str_cmp(ch->name, guild->leader)
       || !str_cmp(ch->name, guild->number1) || !str_cmp(ch->name, guild->number2) || get_trust(ch) >= LEVEL_GREATER)
     ch_printf(ch, "Members:   %d\r\n", guild->members);
-  ch_printf(ch, "Abbrev:    %s\n\r", guild->abbrev ? guild->abbrev : "");
+  ch_printf(ch, "Abbrev:    %s\r\n", guild->abbrev ? guild->abbrev : "");
   set_char_color(AT_HUNGRY, ch);
   ch_printf(ch, "Guild Description:\r\n%s\r\n", guild->description);
   return;

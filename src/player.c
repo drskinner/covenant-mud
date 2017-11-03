@@ -1427,6 +1427,6 @@ void do_favor(CHAR_DATA * ch, const char *argument)
   else
     mudstrlcpy(buf, "damned", MAX_STRING_LENGTH);
 
-  ch_printf(ch, "%s considers you to be %s.\n\r", ch->pcdata->deity->name, buf);
+  ch_printf(ch, "%s considers you to be %s.\r\n", ch->pcdata->deity->name, buf);
   return;
 }

@@ -5377,7 +5377,7 @@ void check_switch(CHAR_DATA * ch, bool possess)
   if (!possess)
   {
     set_char_color(AT_BLUE, ch->switched);
-    send_to_char("You suddenly forfeit the power to switch!\n\r", ch->switched);
+    send_to_char("You suddenly forfeit the power to switch!\r\n", ch->switched);
   }
   do_return(ch->switched, "");
 }

@@ -546,7 +546,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
         vnum++;
 
         if ((first_list && vnum >= first_list) || !first_list)
-          pager_printf(ch, "%2d%c %-12s%c %-24s : %-35s\n\r",
+          pager_printf(ch, "%2d%c %-12s%c %-24s : %-35s\r\n",
                         vnum,
                         is_note_to(ch, pnote) ? ')' : '}',
                         pnote->sender,
@@ -651,7 +651,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
         }
       }
       if (anum == 0 && name_list)
-        pager_printf(ch, "There are no notes posted by %s.\n\r", capitalize(arg));
+        pager_printf(ch, "There are no notes posted by %s.\r\n", capitalize(arg));
       if (board->olistmessg)
         act(AT_ACTION, board->olistmessg, ch, NULL, NULL, TO_CANSEE);
       else
@@ -677,7 +677,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
 
       for (pnote = board->first_note; pnote; pnote = pnote->next)
         if (is_note_to(ch, pnote) || (!mine && get_trust(ch) >= sysdata.read_all_mail))
-          ch_printf(ch, "%2d%c %s: %s\n\r",
+          ch_printf(ch, "%2d%c %s: %s\r\n",
                      ++vnum, is_note_to(ch, pnote) ? '-' : '}', pnote->sender, pnote->subject);
         else if (mine && get_trust(ch) >= sysdata.read_all_mail)
           vnum++;
@@ -829,7 +829,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
 
     pnote->no_remove = ch->level;
     write_board(board);
-    send_to_char("Noremove flag set.\n\r", ch);
+    send_to_char("Noremove flag set.\r\n", ch);
     return;
   }
 
@@ -1344,7 +1344,7 @@ void do_note(CHAR_DATA * ch, const char *arg_passed, bool IS_MAIL)
       }
       if (quill->value[0] < 1)
       {
-        send_to_char("Your quill is dry.\n\r", ch);
+        send_to_char("Your quill is dry.\r\n", ch);
         return;
       }
     }

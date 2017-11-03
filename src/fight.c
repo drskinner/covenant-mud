@@ -4222,7 +4222,7 @@ void do_flee(CHAR_DATA* ch, const char* argument)
     {
       if (ch->level > 1)
       {
-        snprintf(buf, MAX_STRING_LENGTH, "Curse the gods, you've lost %d experience!\n\r", los);
+        snprintf(buf, MAX_STRING_LENGTH, "Curse the gods, you've lost %d experience!\r\n", los);
         act(AT_FLEE, buf, ch, NULL, NULL, TO_CHAR);
         gain_exp(ch, 0 - los);
       }
