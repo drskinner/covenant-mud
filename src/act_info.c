@@ -626,10 +626,9 @@ void show_list_to_char(OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShowN
     case ITEM_FOOD:
       set_char_color(AT_HUNGRY, ch);
       break;
-    case ITEM_DRINK_CON:
     case ITEM_FOUNTAIN:
     case ITEM_PUDDLE:
-      set_char_color(AT_THIRSTY, ch);
+      set_char_color(AT_BLUE, ch);
       break;
     case ITEM_FIRE:
       set_char_color(AT_FIRE, ch);
@@ -1369,9 +1368,11 @@ void do_look(CHAR_DATA * ch, const char *argument)
 
       {
         LIQ_TABLE *liq = get_liq_vnum(obj->value[2]);
-        ch_printf(ch, "It's %s full of a %s liquid.\r\n",
-                   obj->value[1] < obj->value[0] / 4
-                   ? "less than" : obj->value[1] < 3 * obj->value[0] / 4 ? "about" : "more than", liq->color);
+        ch_printf(ch, "It's%sfull of a %s liquid.\n\r",
+                  obj->value[1] <=    obj->value[0] / 4 ? " less than half " :
+                  obj->value[1] < 3 * obj->value[0] / 4 ? " about half "     :
+                  obj->value[1] == obj->value[0] ? " " : " more than half ",
+                  liq->color);
       }
 
       if (EXA_prog_trigger)
