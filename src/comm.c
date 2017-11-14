@@ -2187,7 +2187,11 @@ void nanny_get_new_sex(DESCRIPTOR_DATA * d, char *argument)
     return;
   }
 
-  write_to_buffer(d, "\r\nSelect a class, or type help [class] to learn more about that class.\r\n[", 0);
+  write_to_buffer(d, "\r\nSelect a class, or type help [class] to learn more about that class.\r\n", 0);
+
+  write_to_buffer(d, "\r\nChoosing a class does not confine you to a specific set of skills.\r\n", 0);
+  write_to_buffer(d, "Think of your class selection as your character's natural aptitude.\r\n", 0);
+  write_to_buffer(d, "You will be able to learn skills from multiple classes as you progress.\r\n\r\n[", 0);
   buf[0] = '\0';
 
   for (iClass = 0; iClass < MAX_PC_CLASS; iClass++)
@@ -2242,6 +2246,7 @@ void nanny_get_new_class(DESCRIPTOR_DATA * d, const char *argument)
     write_to_buffer(d, "No such help topic.  Please choose a class: ", 0);
     return;
   }
+
 
   for (iClass = 0; iClass < MAX_PC_CLASS; iClass++)
   {
@@ -2489,12 +2494,14 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     /* weight calculation, based on a range of racial BMI values */
     my_bmi = number_range(race_table[ch->race]->bmi - 2,
                           race_table[ch->race]->bmi + 3);
-/*    my_bmi += class_table[ch->Class]->physique; */
+
+    my_bmi += class_table[ch->Class]->physique; 
+
     if (ch->sex == SEX_FEMALE)
       my_bmi -= 1;
     ch->weight = (int)((ch->height * ch->height * my_bmi) / 703);
 
-    if (ch->Class == CLASS_PALADIN)
+    if (ch->Class == CLASS_CRUSADER)
       ch->alignment = 1000;
 
     if ((iLang = skill_lookup("common")) < 0)

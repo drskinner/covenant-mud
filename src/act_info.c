@@ -277,20 +277,20 @@ char *format_obj_to_char(OBJ_DATA * obj, CHAR_DATA * ch, bool fShort)
   buf[0] = '\0';
   if (IS_OBJ_STAT(obj, ITEM_INVIS))
     mudstrlcat(buf, "(Invis) ", MAX_STRING_LENGTH);
-  if ((IS_AFFECTED(ch, AFF_DETECT_EVIL) || ch->Class == CLASS_PALADIN) && IS_OBJ_STAT(obj, ITEM_EVIL))
+  if ((IS_AFFECTED(ch, AFF_DETECT_EVIL) || ch->Class == CLASS_CRUSADER) && IS_OBJ_STAT(obj, ITEM_EVIL))
     mudstrlcat(buf, "(Red Aura) ", MAX_STRING_LENGTH);
 
-  if (ch->Class == CLASS_PALADIN && (IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
+  if (ch->Class == CLASS_CRUSADER && (IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
     mudstrlcat(buf, "(Smouldering Grey-White) ", MAX_STRING_LENGTH );
-  if (ch->Class == CLASS_PALADIN && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
+  if (ch->Class == CLASS_CRUSADER && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
     mudstrlcat(buf, "(Smouldering Red-White) ", MAX_STRING_LENGTH );
-  if (ch->Class == CLASS_PALADIN && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
+  if (ch->Class == CLASS_CRUSADER && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
     mudstrlcat(buf, "(Smouldering Red-Grey) ", MAX_STRING_LENGTH );
-  if (ch->Class == CLASS_PALADIN && (IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
+  if (ch->Class == CLASS_CRUSADER && (IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && !IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
     mudstrlcat(buf, "(Burning White) ", MAX_STRING_LENGTH );
-  if (ch->Class == CLASS_PALADIN && (IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
+  if (ch->Class == CLASS_CRUSADER && (IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && !IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
     mudstrlcat(buf, "(Burning Grey) ", MAX_STRING_LENGTH );
-  if (ch->Class == CLASS_PALADIN && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
+  if (ch->Class == CLASS_CRUSADER && (!IS_OBJ_STAT(obj, ITEM_ANTI_EVIL) && IS_OBJ_STAT(obj, ITEM_ANTI_NEUTRAL) && IS_OBJ_STAT(obj, ITEM_ANTI_GOOD))  )
     mudstrlcat(buf, "(Burning Red) ", MAX_STRING_LENGTH );
 
   if ((IS_AFFECTED(ch, AFF_DETECT_MAGIC) || xIS_SET(ch->act, PLR_HOLYLIGHT)) && IS_OBJ_STAT(obj, ITEM_MAGIC))
@@ -791,11 +791,11 @@ void show_char_to_char_0(CHAR_DATA * victim, CHAR_DATA * ch)
     mudstrlcat(buf, "(Translucent) ", MAX_STRING_LENGTH);
   if (IS_AFFECTED(victim, AFF_FAERIE_FIRE))
     mudstrlcat(buf, "(Pink Aura) ", MAX_STRING_LENGTH);
-  if (IS_EVIL(victim) && (IS_AFFECTED(ch, AFF_DETECT_EVIL) || ch->Class == CLASS_PALADIN))
+  if (IS_EVIL(victim) && (IS_AFFECTED(ch, AFF_DETECT_EVIL) || ch->Class == CLASS_CRUSADER))
     mudstrlcat(buf, "(Red Aura) ", MAX_STRING_LENGTH);
-  if (IS_NEUTRAL(victim) && ch->Class == CLASS_PALADIN)
+  if (IS_NEUTRAL(victim) && ch->Class == CLASS_CRUSADER)
     mudstrlcat(buf, "(Grey Aura) ", MAX_STRING_LENGTH);
-  if (IS_GOOD(victim) && ch->Class == CLASS_PALADIN)
+  if (IS_GOOD(victim) && ch->Class == CLASS_CRUSADER)
     mudstrlcat(buf, "(White Aura) ", MAX_STRING_LENGTH);
 
   if (IS_AFFECTED(victim, AFF_BERSERK))
@@ -1472,7 +1472,7 @@ void do_look(CHAR_DATA * ch, const char *argument)
      */
     if (pexit->to_room
         && (IS_AFFECTED(ch, AFF_SCRYING)
-             || ch->Class == CLASS_THIEF || IS_SET(pexit->exit_info, EX_xLOOK) || get_trust(ch) >= LEVEL_IMMORTAL))
+             || ch->Class == CLASS_ROGUE || IS_SET(pexit->exit_info, EX_xLOOK) || get_trust(ch) >= LEVEL_IMMORTAL))
     {
       if (!IS_SET(pexit->exit_info, EX_xLOOK) && get_trust(ch) < LEVEL_IMMORTAL)
       {
@@ -1487,7 +1487,7 @@ void do_look(CHAR_DATA * ch, const char *argument)
           int percent = LEARNED(ch, skill_lookup("scry"));
           if (!percent)
           {
-            if (ch->Class == CLASS_THIEF)
+            if (ch->Class == CLASS_ROGUE)
               percent = 95;
             else
               percent = 55;  /* 95 was too good -Thoric */

@@ -358,7 +358,7 @@ int dispel_casting(AFFECT_DATA * paf, CHAR_DATA * ch, CHAR_DATA * victim, int af
   bool is_mage = FALSE, has_detect = FALSE;
   EXT_BV ext_bv = meb(affect);
 
-  if (IS_NPC(ch) || ch->Class == CLASS_MAGE)
+  if (IS_NPC(ch) || ch->Class == CLASS_MYSTIC)
     is_mage = TRUE;
   if (IS_AFFECTED(ch, AFF_DETECT_MAGIC))
     has_detect = TRUE;
@@ -2655,7 +2655,7 @@ ch_ret spell_dispel_magic(int sn, int level, CHAR_DATA * ch, void *vo)
     return rSPELL_FAILED;
   }
 
-  if (IS_NPC(ch) || ch->Class == CLASS_MAGE)
+  if (IS_NPC(ch) || ch->Class == CLASS_MYSTIC)
     is_mage = TRUE;
 
   if (is_mage)

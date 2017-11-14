@@ -16,6 +16,7 @@ area/*
 backup/*
 boards/*
 clans/*
+classes/*.class
 corpses/*
 deleted/*
 gods/*

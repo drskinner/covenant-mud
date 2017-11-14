@@ -2876,7 +2876,7 @@ void do_group(CHAR_DATA* ch, const char* argument)
                      gch->level,
                      IS_NPC(gch) ? "Mob" : class_table[gch->Class]->who_name,
                      capitalize(PERS(gch, ch)),
-                     "????", "????", "????", "????", IS_VAMPIRE(gch) ? "bp" : "mana", "????", "????", "?????");
+                     "????", "????", "????", "????", "mana", "????", "????", "?????");
         else if (gch->alignment > 750)
           snprintf(buf, MAX_STRING_LENGTH, "%s", " A");
         else if (gch->alignment > 350)
@@ -2908,10 +2908,7 @@ void do_group(CHAR_DATA* ch, const char* argument)
         ch_printf(ch, "%5d", gch->hit);
         set_char_color(AT_GREY, ch);
         ch_printf(ch, "/%-5d ", gch->max_hit);
-        if (IS_VAMPIRE(gch))
-          set_char_color(AT_BLOOD, ch);
-        else
-          set_char_color(AT_LBLUE, ch);
+        set_char_color(AT_LBLUE, ch);
         if (gch->Class != CLASS_WARRIOR)
           ch_printf(ch, "%5d/%-5d ", gch->mana, gch->max_mana);
         else

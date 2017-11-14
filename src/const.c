@@ -40,10 +40,11 @@ const char *const npc_race[MAX_NPC_RACE] = {
 };
 
 const char *const npc_class[MAX_NPC_CLASS] = {
-  "mage", "cleric", "thief", "warrior", "vampire", "druid", "ranger",
-  "augurer", "paladin", "nephandi", "savage", "pc11", "pc12", "pc13",
-  "pc14", "pc15", "pc16", "pc17", "pc18", "pc19",
-  "baker", "butcher", "blacksmith", "mayor", "king", "queen"
+  "mystic", "alchemist", "rogue", "warrior", "inventor", "shaman",
+  "naturalist", "philosopher", "crusader", "bard", "Mystic GM",
+  "Alchemist GM", "Rogue GM", "Warrior GM", "Inventor GM", "Shaman GM",
+  "Naturalist GM", "Philosopher GM", "Crusader GM", "Bard GM",
+  "Riding Instructor", "Survivalist", "blacksmith", "mayor", "king", "queen"
 };
 
 /*

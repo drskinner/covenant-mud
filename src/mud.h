@@ -238,14 +238,14 @@ typedef bool SPEC_FUN(CHAR_DATA * ch);
 #define MAX_REXITS            20 /* Maximum exits allowed in 1 room */
 #define MAX_SKILL             500
 #define SPELL_SILENT_MARKER   "silent" /* No OK. or Failed. */
-#define MAX_CLASS             20
+#define MAX_PC_CLASS          10
+#define MAX_CLASS             23
 #define MAX_NPC_CLASS         26
 #define MAX_RACE              7
 #define MAX_NPC_RACE          90
 #define MAX_MSG               18
 #define MAX_OINVOKE_QUANTITY  20
 extern int MAX_PC_RACE;
-extern int MAX_PC_CLASS;
 extern bool mud_down;
 
 #define MAX_LEVEL                  65
@@ -863,17 +863,16 @@ typedef enum
 #define RACE_DRAGON         32
 
 #define CLASS_NONE     -1 /* For skill/spells according to guild */
-#define CLASS_MAGE      0
-#define CLASS_CLERIC    1
-#define CLASS_THIEF     2
-#define CLASS_WARRIOR   3
-#define CLASS_VAMPIRE   4
-#define CLASS_DRUID     5
-#define CLASS_RANGER    6
-#define CLASS_AUGURER   7 /* 7-7-96 SB */
-#define CLASS_PALADIN   8 /* 7-7-96 SB */
-#define CLASS_NEPHANDI  9
-#define CLASS_SAVAGE    10
+#define CLASS_MYSTIC        0
+#define CLASS_ALCHEMIST     1
+#define CLASS_ROGUE         2
+#define CLASS_WARRIOR       3
+#define CLASS_INVENTOR      4
+#define CLASS_SHAMAN        5
+#define CLASS_NATURALIST    6
+#define CLASS_PHILOSOPHER   7
+#define CLASS_CRUSADER      8
+#define CLASS_BARD          9
 
 /*
  * Languages -- Altrag
@@ -1049,6 +1048,7 @@ struct class_type
   int weapon; /* First weapon         */
   int guild;  /* Vnum of guild room      */
   short skill_adept;   /* Maximum skill level     */
+  short physique;   /* Adjustments to BMI at chargen */
   short thac0_00;   /* Thac0 for level  0      */
   short thac0_32;   /* Thac0 for level 32      */
   short hp_min;  /* Min hp gained on leveling  */
@@ -1701,9 +1701,9 @@ typedef enum
 {
   ITEM_GLOW, ITEM_HUM, ITEM_DARK, ITEM_NOLONGDESC, ITEM_EVIL, ITEM_INVIS, ITEM_MAGIC,
   ITEM_NODROP, ITEM_BLESS, ITEM_ANTI_GOOD, ITEM_ANTI_EVIL, ITEM_ANTI_NEUTRAL,
-  ITEM_NOREMOVE, ITEM_INVENTORY, ITEM_ANTI_MAGE, ITEM_ANTI_THIEF,
-  ITEM_ANTI_WARRIOR, ITEM_ANTI_CLERIC, ITEM_ORGANIC, ITEM_METAL, ITEM_DONATION,
-  ITEM_CLANOBJECT, ITEM_CLANCORPSE, ITEM_ANTI_VAMPIRE, ITEM_ANTI_DRUID,
+  ITEM_NOREMOVE, ITEM_INVENTORY, ITEM_ANTI_MAGE, ITEM_ANTI_ROGUE,
+  ITEM_ANTI_WARRIOR, ITEM_ANTI_BARD, ITEM_ORGANIC, ITEM_METAL, ITEM_DONATION,
+  ITEM_CLANOBJECT, ITEM_CLANCORPSE, ITEM_ANTI_INVENTOR, ITEM_ANTI_ALCHEMIST,
   ITEM_HIDDEN, ITEM_POISONED, ITEM_COVERING, ITEM_DEATHROT, ITEM_BURIED,
   ITEM_PROTOTYPE, ITEM_NOLOCATE, ITEM_GROUNDROT, ITEM_LOOTABLE, ITEM_PERSONAL,
   ITEM_MULTI_INVOKE, ITEM_ENCHANTED, ITEM_PERMANENT, ITEM_NOFILL, ITEM_DEATHDROP,
@@ -3292,7 +3292,6 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 #define GET_TIME_PLAYED(ch)     (((ch)->played + (current_time - (ch)->logon)) / 3600)
 #define CAN_CAST(ch)            ((ch)->Class != 2 && (ch)->Class != 3)
 
-#define IS_VAMPIRE(ch)          (!IS_NPC(ch) && (ch)->Class==CLASS_VAMPIRE)
 #define IS_GOOD(ch)             ((ch)->alignment >= 350)
 #define IS_EVIL(ch)             ((ch)->alignment <= -350)
 #define IS_NEUTRAL(ch)          (!IS_GOOD(ch) && !IS_EVIL(ch))
@@ -3301,8 +3300,7 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 #define GET_AC(ch)              ((ch)->armor                            \
                                  + (IS_AWAKE(ch)                        \
                                      ? dex_app[get_curr_dex(ch)].defensive \
-                                     : 0)                               \
-                                 + VAMP_AC(ch))
+				    : 0))
 #define GET_HITROLL(ch)         ((ch)->hitroll                          \
                                  +str_app[get_curr_str(ch)].tohit       \
                                  +(2-(abs((ch)->mental_state)/10)))
@@ -4668,7 +4666,6 @@ bool is_hating args((CHAR_DATA * ch, CHAR_DATA * victim));
 bool is_fearing args((CHAR_DATA * ch, CHAR_DATA * victim));
 bool is_safe args((CHAR_DATA * ch, CHAR_DATA * victim, bool SHOW));
 bool legal_loot args((CHAR_DATA * ch, CHAR_DATA * victim));
-short VAMP_AC args((CHAR_DATA * ch));
 bool check_illegal_pk args((CHAR_DATA * ch, CHAR_DATA * victim));
 OBJ_DATA *raw_kill(CHAR_DATA * ch, CHAR_DATA * victim);
 bool in_arena args((CHAR_DATA * ch));
