@@ -112,16 +112,10 @@ void advance_level(CHAR_DATA * ch)
     do_help(ch, "M_ADVHERO_");
   }
 
-  if (ch->level < LEVEL_IMMORTAL)
-  {
-    if (IS_VAMPIRE(ch))
-      snprintf(buf, MAX_STRING_LENGTH,
-                "Your gain is: %d/%d hp, %d/%d bp, %d/%d mv %d/%d prac.\r\n",
-                add_hp, ch->max_hit, 1, ch->level + 10, add_move, ch->max_move, add_prac, ch->practice);
-    else
-      snprintf(buf, MAX_STRING_LENGTH,
-                "Your gain is: %d/%d hp, %d/%d mana, %d/%d mv %d/%d prac.\r\n",
-                add_hp, ch->max_hit, add_mana, ch->max_mana, add_move, ch->max_move, add_prac, ch->practice);
+  if (ch->level < LEVEL_IMMORTAL) {
+    snprintf(buf, MAX_STRING_LENGTH,
+              "Your gain is: %d/%d hp, %d/%d mana, %d/%d mv %d/%d prac.\r\n",
+              add_hp, ch->max_hit, add_mana, ch->max_mana, add_move, ch->max_move, add_prac, ch->practice);
     set_char_color(AT_WHITE, ch);
     send_to_char(buf, ch);
   }
@@ -356,7 +350,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
     switch (iCond)
     {
     case COND_FULL:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_HUNGRY, ch);
         send_to_char("You are STARVING!\r\n", ch);
@@ -368,7 +362,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       break;
 
     case COND_THIRST:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_THIRSTY, ch);
         send_to_char("You are DYING of THIRST!\r\n", ch);
@@ -401,7 +395,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
     switch (iCond)
     {
     case COND_FULL:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_HUNGRY, ch);
         send_to_char("You are really hungry.\r\n", ch);
@@ -412,7 +406,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       break;
 
     case COND_THIRST:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_THIRSTY, ch);
         send_to_char("You are really thirsty.\r\n", ch);
@@ -436,7 +430,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
     switch (iCond)
     {
     case COND_FULL:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_HUNGRY, ch);
         send_to_char("You are hungry.\r\n", ch);
@@ -444,7 +438,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       break;
 
     case COND_THIRST:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_THIRSTY, ch);
         send_to_char("You are thirsty.\r\n", ch);
@@ -459,7 +453,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
     switch (iCond)
     {
     case COND_FULL:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_HUNGRY, ch);
         send_to_char("You are a mite peckish.\r\n", ch);
@@ -467,7 +461,7 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       break;
 
     case COND_THIRST:
-      if (ch->level < LEVEL_AVATAR && ch->Class != CLASS_VAMPIRE)
+      if (ch->level < LEVEL_AVATAR)
       {
         set_char_color(AT_THIRSTY, ch);
         send_to_char("You could use a sip of something refreshing.\r\n", ch);
@@ -502,7 +496,7 @@ void check_alignment(CHAR_DATA * ch)
   /*
    * Paladins need some restrictions, this is where we crunch 'em -h 
    */
-  if (ch->Class == CLASS_PALADIN)
+  if (ch->Class == CLASS_CRUSADER)
   {
     if (ch->alignment < 250)
     {

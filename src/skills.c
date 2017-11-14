@@ -1876,9 +1876,9 @@ void learn_from_success(CHAR_DATA * ch, int sn)
     if (ch->pcdata->learned[sn] == adept) /* fully learned! */
     {
       gain = 1000 * sklvl;
-      if (ch->Class == CLASS_MAGE)
+      if (ch->Class == CLASS_MYSTIC)
         gain *= 5;  /* h, mage upgrade */
-      if (ch->Class == CLASS_CLERIC)
+      if (ch->Class == CLASS_ALCHEMIST)
         gain *= 2;  /* h, mage upgrade */
       set_char_color(AT_WHITE, ch);
       ch_printf(ch, "You are now an adept of %s!  You gain %d bonus experience!\r\n", skill_table[sn]->name, gain);
@@ -1886,9 +1886,9 @@ void learn_from_success(CHAR_DATA * ch, int sn)
     else
     {
       gain = 20 * sklvl;
-      if (ch->Class == CLASS_MAGE)
+      if (ch->Class == CLASS_MYSTIC)
         gain *= 6;  /* h, mage upgrade */
-      if (ch->Class == CLASS_CLERIC)
+      if (ch->Class == CLASS_ALCHEMIST)
         gain *= 3;  /* h, mage upgrade */
       if (!ch->fighting && sn != gsn_hide && sn != gsn_sneak)
       {
@@ -3022,7 +3022,7 @@ void do_meditate(CHAR_DATA * ch, const char *argument)
 {
   char *arg;
   int percent;
-  int managain = (ch->Class == CLASS_DRUID ? 0 : 22);
+  int managain = (ch->Class == CLASS_SHAMAN ? 0 : 22);
 
   switch (ch->substate)
   {
@@ -3068,7 +3068,7 @@ void do_meditate(CHAR_DATA * ch, const char *argument)
   case SECT_LIGHT_WOODS:
   case SECT_HEAVY_WOODS:
   case SECT_MOUNTAIN:
-    if (ch->Class == CLASS_DRUID)
+    if (ch->Class == CLASS_SHAMAN)
       managain = 24;
     else
       managain += 2;
@@ -3127,7 +3127,7 @@ void do_trance(CHAR_DATA * ch, const char *argument)
 {
   char *arg;
   int percent;
-  int managain = (ch->Class == CLASS_DRUID ? 0 : 50);
+  int managain = (ch->Class == CLASS_SHAMAN ? 0 : 50);
 
   switch (ch->substate)
   {
@@ -3173,7 +3173,7 @@ void do_trance(CHAR_DATA * ch, const char *argument)
   case SECT_LIGHT_WOODS:
   case SECT_HEAVY_WOODS:
   case SECT_MOUNTAIN:
-    if (ch->Class == CLASS_DRUID)
+    if (ch->Class == CLASS_SHAMAN)
       managain = 50;
     else
       managain += 2;
@@ -3576,7 +3576,7 @@ void do_bloodlet(CHAR_DATA* ch, const char* argument)
 {
   OBJ_DATA *obj;
 
-  if (IS_NPC(ch) || !IS_VAMPIRE(ch))
+  if (IS_NPC(ch))
     return;
 
   if (ch->fighting)
@@ -4532,7 +4532,7 @@ bool check_tumble(CHAR_DATA * ch, CHAR_DATA * victim)
   int chances;
   int mod_tumble_by;
 
-  if (victim->Class != CLASS_THIEF || !IS_AWAKE(victim))
+  if (victim->Class != CLASS_ROGUE || !IS_AWAKE(victim))
     return FALSE;
   if (!IS_NPC(victim) && !victim->pcdata->learned[gsn_tumble] > 0)
     return FALSE;
@@ -5228,15 +5228,6 @@ void do_scan(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (IS_VAMPIRE(ch))
-  {
-    if (time_info.hour < 21 && time_info.hour > 5)
-    {
-      send_to_char("You have trouble seeing clearly through all the " "light.\r\n", ch);
-      max_dist = 1;
-    }
-  }
-
   if ((pexit = get_exit(ch->in_room, dir)) == NULL)
   {
     act(AT_GREY, "You can't see $t.", ch, dir_name[dir], NULL, TO_CHAR);
@@ -5341,8 +5332,6 @@ CHAR_DATA *scan_for_victim(CHAR_DATA * ch, EXIT_DATA * pexit, const char *name)
     return NULL;
 
   was_in_room = ch->in_room;
-  if (IS_VAMPIRE(ch) && time_info.hour < 21 && time_info.hour > 5)
-    max_dist = 1;
 
   if (ch->level < 50)
     --max_dist;

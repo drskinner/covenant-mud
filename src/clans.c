@@ -2995,26 +2995,24 @@ void do_shove(CHAR_DATA* ch, const char* argument)
 /* Check for class, assign percentage based on that. */
   if (ch->Class == CLASS_WARRIOR)
     schance = 70;
-  if (ch->Class == CLASS_VAMPIRE)
+  if (ch->Class == CLASS_INVENTOR)
     schance = 65;
-  if (ch->Class == CLASS_RANGER)
+  if (ch->Class == CLASS_NATURALIST)
     schance = 60;
-  if (ch->Class == CLASS_DRUID)
+  if (ch->Class == CLASS_SHAMAN)
     schance = 45;
-  if (ch->Class == CLASS_CLERIC)
+  if (ch->Class == CLASS_ALCHEMIST)
     schance = 35;
-  if (ch->Class == CLASS_THIEF)
+  if (ch->Class == CLASS_ROGUE)
     schance = 30;
-  if (ch->Class == CLASS_MAGE)
+  if (ch->Class == CLASS_MYSTIC)
     schance = 15;
-  if (ch->Class == CLASS_AUGURER)
+  if (ch->Class == CLASS_PHILOSOPHER)
     schance = 20;
-  if (ch->Class == CLASS_PALADIN)
+  if (ch->Class == CLASS_CRUSADER)
     schance = 55;
-  if (ch->Class == CLASS_NEPHANDI)
+  if (ch->Class == CLASS_BARD)
     schance = 20;
-  if (ch->Class == CLASS_SAVAGE)
-    schance = 70;
 
 /* Add 3 points to chance for every str point above 15, subtract for below 15 */
 
@@ -3197,17 +3195,17 @@ void do_drag(CHAR_DATA* ch, const char* argument)
 /* Check for class, assign percentage based on that. */
   if (ch->Class == CLASS_WARRIOR)
     schance = 70;
-  if (ch->Class == CLASS_VAMPIRE)
+  if (ch->Class == CLASS_INVENTOR)
     schance = 65;
-  if (ch->Class == CLASS_RANGER)
+  if (ch->Class == CLASS_NATURALIST)
     schance = 60;
-  if (ch->Class == CLASS_DRUID)
+  if (ch->Class == CLASS_SHAMAN)
     schance = 45;
-  if (ch->Class == CLASS_CLERIC)
+  if (ch->Class == CLASS_ALCHEMIST)
     schance = 35;
-  if (ch->Class == CLASS_THIEF)
+  if (ch->Class == CLASS_ROGUE)
     schance = 30;
-  if (ch->Class == CLASS_MAGE)
+  if (ch->Class == CLASS_MYSTIC)
     schance = 15;
 
 /* Add 3 points to chance for every str point above 15, subtract for 

@@ -3815,16 +3815,16 @@ const char *extra_bit_name(EXT_BV * extra_flags)
     mudstrlcat(buf, " groundrot", 512);
   if (xIS_SET(*extra_flags, ITEM_ANTI_MAGE))
     mudstrlcat(buf, " anti-mage", 512);
-  if (xIS_SET(*extra_flags, ITEM_ANTI_THIEF))
-    mudstrlcat(buf, " anti-thief", 512);
+  if (xIS_SET(*extra_flags, ITEM_ANTI_ROGUE))
+    mudstrlcat(buf, " anti-rogue", 512);
   if (xIS_SET(*extra_flags, ITEM_ANTI_WARRIOR))
     mudstrlcat(buf, " anti-warrior", 512);
-  if (xIS_SET(*extra_flags, ITEM_ANTI_CLERIC))
-    mudstrlcat(buf, " anti-cleric", 512);
-  if (xIS_SET(*extra_flags, ITEM_ANTI_DRUID))
-    mudstrlcat(buf, " anti-druid", 512);
-  if (xIS_SET(*extra_flags, ITEM_ANTI_VAMPIRE))
-    mudstrlcat(buf, " anti-vampire", 512);
+  if (xIS_SET(*extra_flags, ITEM_ANTI_ALCHEMIST))
+    mudstrlcat(buf, " anti-alchemist", 512);
+  if (xIS_SET(*extra_flags, ITEM_ANTI_BARD))
+    mudstrlcat(buf, " anti-bard", 512);
+  if (xIS_SET(*extra_flags, ITEM_ANTI_INVENTOR))
+    mudstrlcat(buf, " anti-inventor", 512);
   if (xIS_SET(*extra_flags, ITEM_ORGANIC))
     mudstrlcat(buf, " organic", 512);
   if (xIS_SET(*extra_flags, ITEM_METAL))

@@ -258,30 +258,6 @@ void strip_grapple(CHAR_DATA * ch)
 }
 
 /*
- * Get the current armor class for a vampire based on time of day
- */
-short VAMP_AC(CHAR_DATA * ch)
-{
-  if (IS_VAMPIRE(ch) && IS_OUTSIDE(ch))
-  {
-    switch (time_info.sunlight)
-    {
-    case SUN_DARK:
-      return -10;
-    case SUN_RISE:
-      return 5;
-    case SUN_LIGHT:
-      return 10;
-    case SUN_SET:
-      return 2;
-    default:
-      return 0;
-    }
-  }
-  return 0;
-}
-
-/*
  * Control the fights going on.
  * Called periodically by update_handler.
  * Many hours spent fixing bugs in here by Thoric, as noted by residual

@@ -30,7 +30,6 @@ bool load_race_file(const char *fname);
 
 /* global variables */
 int top_herb;
-int MAX_PC_CLASS;
 int MAX_PC_RACE;
 
 SKILLTYPE *skill_table[MAX_SKILL];
@@ -170,6 +169,10 @@ bool load_class_file(const char *fname)
       KEY("Name", Class->who_name, fread_string(fp));
       break;
 
+    case 'P':
+      KEY("Physique", Class->physique, fread_number(fp));
+      break;
+
     case 'R':
       KEY("Resist", Class->resist, fread_number(fp));
       break;
@@ -179,22 +182,21 @@ bool load_class_file(const char *fname)
       {
         int sn, lev, adp;
 
-        word = fread_word(fp);
-        lev = fread_number(fp);
         adp = fread_number(fp);
+        word = fread_word(fp);
+        lev = 1;
         sn = skill_lookup(word);
-        if (cl < 0 || cl >= MAX_CLASS)
-        {
+
+        if (cl < 0 || cl >= MAX_CLASS) {
           bug("%s: Skill %s -- class bad/not found (%d)", __func__, word, cl);
         }
-        else if (!IS_VALID_SN(sn))
-        {
-          bug("%s: Skill %s unknown", __func__, word);
-        }
-        else
-        {
-          skill_table[sn]->skill_level[cl] = lev;
-          skill_table[sn]->skill_adept[cl] = adp;
+        else {
+          if (!IS_VALID_SN(sn)) {
+            bug("%s: Skill %s unknown", __func__, word);
+          } else {
+            skill_table[sn]->skill_adept[cl] = adp;
+            skill_table[sn]->skill_level[cl] = lev;
+          }
         }
         fMatch = TRUE;
         break;
@@ -253,8 +255,6 @@ void load_classes()
   char classlist[256];
   int i;
 
-  MAX_PC_CLASS = 0;
-
   /*
    * Pre-init the class_table with blank classes
    */
@@ -274,13 +274,11 @@ void load_classes()
     if (filename[0] == '$')
       break;
 
-    if (!load_class_file(filename))
-    {
+    if (!load_class_file(filename)) {
       bug("Cannot load class file: %s", filename);
     }
-    else
-      ++MAX_PC_CLASS;
   }
+
   fclose(fpList);
   fpList = NULL;
   for (i = 0; i < MAX_CLASS; ++i)
@@ -322,8 +320,9 @@ void write_class_file(int cl)
   fprintf(fpout, "Mana        %d\n", Class->fMana);
   fprintf(fpout, "Expbase     %d\n", Class->exp_base);
   fprintf(fpout, "Affected    %s\n", print_bitvector(&Class->affected));
-  fprintf(fpout, "Resist         %d\n", Class->resist);
-  fprintf(fpout, "Suscept        %d\n", Class->suscept);
+  fprintf(fpout, "Resist      %d\n", Class->resist);
+  fprintf(fpout, "Suscept     %d\n", Class->suscept);
+  fprintf(fpout, "Physique    %d\n", Class->physique);
   for (x = 0; x < num_skills; ++x)
   {
     if (!skill_table[x]->name || skill_table[x]->name[0] == '\0')

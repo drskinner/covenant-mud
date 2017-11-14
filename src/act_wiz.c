@@ -5846,18 +5846,18 @@ void do_newbieset(CHAR_DATA* ch, const char* argument)
   obj = create_object(get_obj_index(OBJ_VNUM_SCHOOL_BANNER), 1);
   obj_to_char(obj, victim);
 
-  if ((victim->Class == CLASS_MAGE) || (victim->Class == CLASS_THIEF)
-      || (victim->Class == CLASS_VAMPIRE) || (victim->Class == CLASS_AUGURER))
+  if ((victim->Class == CLASS_MYSTIC) || (victim->Class == CLASS_ROGUE)
+      || (victim->Class == CLASS_INVENTOR) || (victim->Class == CLASS_PHILOSOPHER))
   {
     obj = create_object(get_obj_index(OBJ_VNUM_SCHOOL_DAGGER), 1);
     obj_to_char(obj, victim);
   }
-  else if ((victim->Class == CLASS_CLERIC) || (victim->Class == CLASS_DRUID))
+  else if ((victim->Class == CLASS_ALCHEMIST) || (victim->Class == CLASS_SHAMAN))
   {
     obj = create_object(get_obj_index(OBJ_VNUM_SCHOOL_MACE), 1);
     obj_to_char(obj, victim);
   }
-  else if ((victim->Class == CLASS_WARRIOR) || (victim->Class == CLASS_RANGER) || (victim->Class == CLASS_PALADIN))
+  else if ((victim->Class == CLASS_WARRIOR) || (victim->Class == CLASS_NATURALIST) || (victim->Class == CLASS_CRUSADER))
   {
     obj = create_object(get_obj_index(OBJ_VNUM_SCHOOL_SWORD), 1);
     obj_to_char(obj, victim);
@@ -8489,42 +8489,8 @@ void do_setclass(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "create"))
-  {
-    char filename[256];
-
-    if (MAX_PC_CLASS >= MAX_CLASS)
-    {
-      send_to_char("You need to up MAX_CLASS in mud and make clean.\r\n", ch);
-      return;
-    }
-
-    snprintf(filename, sizeof(filename), "%s.class", arg1);
-    if (!is_valid_filename(ch, CLASS_DIR, filename))
-      return;
-
-    if (!(create_new_class(MAX_PC_CLASS, arg1)))
-    {
-      send_to_char("Couldn't create a new class.\r\n", ch);
-      return;
-    }
-    write_class_file(MAX_PC_CLASS);
-    MAX_PC_CLASS++;
-
-    snprintf(classlist, 256, "%s%s", CLASS_DIR, CLASS_LIST);
-    if (!(fpList = fopen(classlist, "w")))
-    {
-      bug("%s", "Can't open class list for writing.");
-      return;
-    }
-
-    for (i = 0; i < MAX_PC_CLASS; ++i)
-      fprintf(fpList, "%s.class\n", class_table[i]->who_name);
-
-    fprintf(fpList, "%s", "$\n");
-    fclose(fpList);
-    fpList = NULL;
-    send_to_char("Done.\r\n", ch);
+  if (!str_cmp(arg2, "create")) {
+    send_to_char("Creating classes online has been deprecated.\r\n", ch);
     return;
   }
 
