@@ -312,6 +312,11 @@ void do_score(CHAR_DATA* ch, const char* argument)
   pager_printf(ch, "CON  : %2.2d(%2.2d)      Pos'n: %-21.21s  Weight: %5.5d (max %7.7d)\r\n",
                 get_curr_con(ch), ch->perm_con, buf, ch->carry_weight, can_carry_w(ch));
 
+  if (ch->furniture) {
+    sprintf(buf, " %s %s", prepositions[ch->furn_prep],
+            ch->furniture->short_descr);
+    pager_printf_color(ch, "%s", buf);
+  }
 
   /*
    * Fighting style support -haus

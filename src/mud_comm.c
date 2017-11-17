@@ -1211,7 +1211,6 @@ void do_mpgoto(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-
   one_argument(argument, arg);
   if (arg[0] == '\0')
   {
@@ -1228,6 +1227,10 @@ void do_mpgoto(CHAR_DATA* ch, const char* argument)
   in_room = ch->in_room;
   if (ch->fighting)
     stop_fighting(ch, TRUE);
+
+  if (ch->furniture)
+    do_stand(ch, "\r\n");
+
   char_from_room(ch);
   char_to_room(ch, location);
 
@@ -1487,6 +1490,8 @@ void do_mptransfer(CHAR_DATA* ch, const char* argument)
 
       if (victim->fighting)
         stop_fighting(victim, TRUE);
+      if (ch->furniture)
+        do_stand(ch, "\r\n");
       char_from_room(victim);
       victim->next_in_room = ChList;
       ChList = victim;

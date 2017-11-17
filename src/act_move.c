@@ -929,6 +929,11 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
       }
   }
 
+  /* added to account for furniture -- Shamus */
+
+  if (ch->furniture)
+    do_stand(ch, "\r\n");
+
   /*
    * check for traps on exit - later 
    */
@@ -2021,42 +2026,257 @@ void do_bashdoor(CHAR_DATA* ch, const char* argument)
 
 void do_stand(CHAR_DATA* ch, const char* argument)
 {
-  switch (ch->position)
-  {
+  char arg1[MAX_INPUT_LENGTH];
+  char arg2[MAX_INPUT_LENGTH];
+  char argtarg[MAX_INPUT_LENGTH];
+  char argprep[MAX_INPUT_LENGTH];
+
+  OBJ_DATA *obj = NULL;
+  OBJ_DATA *old_obj = NULL;
+  int on_obj = 0;
+  int prep = 0;
+  int default_prep = 0;
+  int old_prep = 0;
+
+  if (ch->position == POS_MOUNTED) {
+    send_to_char("Daredevil, eh? Dismount before you try standing.\r\n", ch);
+    return;
+  }
+
+#if 0
+  if (ch->in_hex)
+    if (IS_WATER_SECT(ch->in_hex->terrain) && (ch->in_hex->elevation >= 2)) {
+      send_to_char("The water is too deep for you to stand on the bottom.\r\n",
+                   ch);
+      return;
+    }
+
+  if (!IS_NPC(ch))
+    if (ch->pcdata->speed != 0)
+      do_stop(ch, "\r\n");
+#endif
+
+  /* Determine what arguments were passed, if any */
+
+  argument = one_argument(argument, arg1);
+  argument = one_argument(argument, arg2);
+
+  if (arg1[0] != '\0') {
+    if (arg2[0] != '\0') {
+      strcpy(argprep, arg1);
+      strcpy(argtarg, arg2);
+    }
+    else
+      strcpy(argtarg, arg1);
+  }
+
+  old_prep = ch->furn_prep;   /* We may need this later... */
+  old_obj = ch->furniture;
+
+  if ((arg1[0] != '\0') && (strcmp(arg1, "up"))){
+    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
+    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+
+    if (obj == NULL) {
+      send_to_char("You don't see that here.\r\n", ch);
+      return;
+    }
+
+    if (obj->item_type != ITEM_FURNITURE) {
+      if (obj->item_type == ITEM_SHELF)
+        send_to_char("There's no way that will support your weight.\r\n", ch);
+      else
+        send_to_char("That's not furniture! Stand somewhere else, please.\r\n",
+                     ch);
+      return;
+    }
+
+    if (obj->value[0] <= 0) {
+      send_to_char("You can't stand there.\r\n", ch);
+      return;
+    }
+
+    if ((obj->supporting >= obj->value[5]) && (obj != old_obj)) {
+      send_to_char("Someone has to move before you can stand there.\r\n", ch);
+      return;
+    }
+  }
+
+  if (ch->furniture)
+    ch->furniture->supporting--;
+
+  /*
+   * If no target object is supplied, no obj is implied for stand
+   *
+   * We must want the floor or the ground
+   */
+
+  if (obj == NULL)
+    ch->furniture = NULL;
+
+  /* Now, if we have our object, let's determine its default preposition */
+
+  else {
+    if (IS_SET(obj->value[4], VERB_ON))
+      default_prep = 0;
+    else if (IS_SET(obj->value[4], VERB_IN))
+      default_prep = 1;
+    else if (IS_SET(obj->value[4], VERB_AT))
+      default_prep = 2;
+    else if (IS_SET(obj->value[4], VERB_UNDER))
+      default_prep = 3;
+    else
+      default_prep = 0;
+
+    /* I want to stand here. Am I already standing here? */
+
+    if (ch->furniture == obj) /* Already on the preferred target object */
+      on_obj = 1;
+    else                      /* We must be moving */
+      ch->furniture = obj;
+
+    obj->supporting++;
+  }
+
+
+  prep = default_prep;
+
+  /* Did the player supply a preposition? */
+
+  if ((obj) && (arg2[0] != '\0')) {
+    if ((!strcmp(argprep, "on")) && (IS_SET(obj->value[0], VERB_ON)))
+      prep = 0;
+    else if ((!strcmp(argprep, "in")) && (IS_SET(obj->value[0], VERB_IN)))
+      prep = 1;
+    else if ((!strcmp(argprep, "at")) && (IS_SET(obj->value[0], VERB_AT)))
+      prep = 2;
+    else if ((!strcmp(argprep, "under")) &&
+             (IS_SET(obj->value[0], VERB_UNDER)))
+      prep = 3;
+  }
+
+  if (on_obj != 1)
+    ch->furn_prep = prep;
+
+  switch (ch->position) {
+
   case POS_SLEEPING:
-    if (IS_AFFECTED(ch, AFF_SLEEP))
-    {
+    if (IS_AFFECTED(ch, AFF_SLEEP)) {
       send_to_char("You can't seem to wake up!\r\n", ch);
       return;
     }
 
-    send_to_char("You wake and climb quickly to your feet.\r\n", ch);
-    act(AT_ACTION, "$n arises from $s slumber.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      send_to_char("You wake and climb quickly to your feet.\r\n", ch);
+      act(AT_ACTION, "$n arises from $s slumber.", ch, NULL, NULL, TO_ROOM);
+      if (ch->furniture) {
+        ch->furniture->supporting--;
+        ch->furniture = NULL;
+      }
+    }
+    else {
+      ch_printf(ch, "You rise from your sleep and go stand %s %s.\r\n",
+                prepositions[prep], obj->short_descr);
+      act(AT_ACTION, "$n arises and goes to stand $T $p.", ch, obj,
+          prepositions[prep], TO_ROOM);
+    }
     ch->position = POS_STANDING;
     break;
 
   case POS_RESTING:
-    send_to_char("You gather yourself and stand up.\r\n", ch);
-    act(AT_ACTION, "$n rises from $s rest.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      send_to_char("You gather yourself and stand up.\r\n", ch);
+      act(AT_ACTION, "$n rises from $s rest.", ch, NULL, NULL, TO_ROOM);
+    }
+    else {
+      ch_printf(ch, "You get up from your rest and stand %s %s.\r\n",
+                prepositions[prep], obj->short_descr);
+      act(AT_ACTION, "$n stops resting and goes to stand $T $p.", ch, obj,
+          prepositions[prep], TO_ROOM);
+    }
     ch->position = POS_STANDING;
     break;
 
   case POS_SITTING:
-    send_to_char("You move quickly to your feet.\r\n", ch);
-    act(AT_ACTION, "$n rises up.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        send_to_char("You move quickly to your feet.\r\n", ch);
+        act(AT_ACTION, "$n stands up.", ch, NULL, NULL, TO_ROOM);
+      }
+      else {
+        if (old_prep == PREP_IN) {
+          ch_printf(ch, "You stand up and climb out of %s.\r\n",
+                    old_obj->short_descr);
+          act(AT_ACTION, "$n stands up and climbs out of $p.", ch,
+              old_obj, NULL, TO_ROOM);
+        } else {
+          send_to_char("You move quickly to your feet.\r\n", ch);
+          act(AT_ACTION, "$n stands up.", ch, NULL, NULL, TO_ROOM);
+        }
+      }
+    } else {        /* obj != NULL */
+      ch_printf(ch, "You get up and stand %s %s.\r\n", prepositions[prep],
+                obj->short_descr);
+      act(AT_ACTION, "$n gets up and stands $T $p.", ch, obj,
+          prepositions[prep], TO_ROOM);
+    }
     ch->position = POS_STANDING;
     break;
 
   case POS_STANDING:
-    send_to_char("You are already standing.\r\n", ch);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You are already standing.\r\n");
+        return;
+      } else {
+        if (old_prep == PREP_UNDER) {
+          ch_printf(ch, "You step out from under %s.\r\n",
+                    old_obj->short_descr);
+          act(AT_ACTION, "$n steps out from under $p.", ch, old_obj, NULL,
+              TO_ROOM);
+        }
+        else if (old_prep == PREP_AT) {
+          ch_printf(ch, "You step away from %s.\r\n", old_obj->short_descr);
+          act(AT_ACTION, "$n steps away from $p.", ch, old_obj, NULL, TO_ROOM);
+        }
+        else if (old_prep == PREP_IN) {
+          ch_printf(ch, "You climb out of %s.\r\n", old_obj->short_descr);
+          act(AT_ACTION, "$n climbs out of $p.", ch, old_obj, NULL, TO_ROOM);
+        } else { /* old_prep == PREP_ON */
+          ch_printf(ch, "You hop down from %s.\r\n", old_obj->short_descr);
+          act(AT_ACTION, "$n hops down from $p.", ch, old_obj, NULL, TO_ROOM);
+        }
+      }
+    } else { /* obj != NULL */
+      if (old_obj == NULL) {
+        ch_printf(ch, "You stand %s %s.\r\n", prepositions[prep],
+                  obj->short_descr);
+        act(AT_ACTION, "$n stands $T $p.", ch, obj, prepositions[prep],
+            TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You are already standing %s %s.\r\n",
+                    prepositions[ch->furn_prep], obj->short_descr);
+          act(AT_ACTION, "$n shifts $s weight uncomfortably.", ch, NULL, NULL,
+              TO_ROOM);
+        }
+        else {
+          ch_printf(ch, "You step over to %s and stand %s that.\r\n",
+                    obj->short_descr, prepositions[prep]);
+          act(AT_ACTION, "$n walks over to stand $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        }
+      }
+    }
     break;
+
 
   case POS_FIGHTING:
   case POS_EVASIVE:
   case POS_DEFENSIVE:
   case POS_AGGRESSIVE:
   case POS_BERSERK:
-    send_to_char("You are already fighting!\r\n", ch);
+    send_to_char("You are busy fighting! Aren't you already standing?\r\n", ch);
     break;
   }
 
@@ -2065,33 +2285,279 @@ void do_stand(CHAR_DATA* ch, const char* argument)
 
 void do_sit(CHAR_DATA* ch, const char* argument)
 {
-  switch (ch->position)
-  {
+  char arg1[MAX_INPUT_LENGTH];
+  char arg2[MAX_INPUT_LENGTH];
+  char argtarg[MAX_INPUT_LENGTH];
+  char argprep[MAX_INPUT_LENGTH];
+
+  OBJ_DATA *obj = NULL;
+  OBJ_DATA *old_obj = NULL;
+  int on_obj = 0;
+  int prep = 0;
+  int default_prep = 0;
+  int old_prep = 0;
+
+  if (ch->position == POS_MOUNTED) {
+    send_to_char("You are already sitting--on your mount.\r\n", ch);
+    return;
+  }
+
+  /* Determine what arguments were passed, if any */
+
+  argument = one_argument(argument, arg1);
+  argument = one_argument(argument, arg2);
+
+  if (arg1[0] != '\0') {
+    if (arg2[0] != '\0') {
+      strcpy(argprep, arg1);
+      strcpy(argtarg, arg2);
+    }
+    else
+      strcpy(argtarg, arg1);
+  }
+
+  old_prep = ch->furn_prep;   /* We may need this later... */
+  old_obj = ch->furniture;
+
+  if (arg1[0] != '\0') {
+    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
+    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+
+    if (obj == NULL) {
+      send_to_char("You don't see that here.\r\n", ch);
+      return;
+    }
+
+    if (obj->item_type != ITEM_FURNITURE) {
+      if (obj->item_type == ITEM_SHELF)
+        send_to_char("You can't sit there.\r\n", ch);
+      else
+        send_to_char("That's not furniture! Sit somewhere else, please.\r\n",
+                     ch);
+      return;
+    }
+
+    if (obj->value[1] <= 0) {
+      send_to_char("You can't sit on that.\r\n", ch);
+      return;
+    }
+
+    if ((obj->supporting >= obj->value[5]) && (obj != old_obj)) {
+      send_to_char("Someone has to move before you can sit there.\r\n", ch);
+      return;
+    }
+  }
+
+  if (ch->furniture)
+    ch->furniture->supporting--;
+
+  /* If no target object is supplied, decide whether obj is implied */
+
+  if ((obj == NULL) && (old_obj) && (ch->position != POS_SITTING)) {
+    if (old_obj->value[1] > 0) {
+      obj = ch->furniture;
+    }
+  }
+
+  /* Still no object? I didn't want to sit there anyway */
+
+  if (obj == NULL)
+    ch->furniture = NULL;
+
+  /* Now, if we have our object, let's determine its default preposition */
+
+  else {
+    if (IS_SET(obj->value[4], VERB_ON))
+      default_prep = 0;
+    else if (IS_SET(obj->value[4], VERB_IN))
+      default_prep = 1;
+    else if (IS_SET(obj->value[4], VERB_AT))
+      default_prep = 2;
+    else if (IS_SET(obj->value[4], VERB_UNDER))
+      default_prep = 3;
+    else
+      default_prep = 0;
+
+    /* I want to sit on you. Am I already sitting on you? */
+
+    if (ch->furniture == obj) /* Already on the preferred target object */
+      on_obj = 1;
+    else                      /* We must be moving */
+      ch->furniture = obj;
+
+    obj->supporting++;
+  }
+
+  prep = default_prep;
+
+
+  /* Did the player supply a preposition? */
+
+  if ((obj) && (arg2[0] != '\0')) {
+    if ((!strcmp(argprep, "on")) && (IS_SET(obj->value[1], VERB_ON)))
+      prep = 0;
+    else if ((!strcmp(argprep, "in")) && (IS_SET(obj->value[1], VERB_IN)))
+      prep = 1;
+    else if ((!strcmp(argprep, "at")) && (IS_SET(obj->value[1], VERB_AT)))
+      prep = 2;
+    else if ((!strcmp(argprep, "under")) &&
+             (IS_SET(obj->value[1], VERB_UNDER)))
+      prep = 3;
+  }
+
+  if (on_obj != 1)
+    ch->furn_prep = prep;
+
+  switch (ch->position) {
+
   case POS_SLEEPING:
-    if (IS_AFFECTED(ch, AFF_SLEEP))
-    {
+    if (IS_AFFECTED(ch, AFF_SLEEP)) {
       send_to_char("You can't seem to wake up!\r\n", ch);
       return;
     }
 
-    send_to_char("You wake and sit up.\r\n", ch);
-    act(AT_ACTION, "$n wakes and sits up.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        send_to_char("You wake and sit up.\r\n", ch);
+        act(AT_ACTION, "$n wakes and sits up.", ch, NULL, NULL, TO_ROOM);
+      } else {
+        ch_printf(ch, "You wake up and go sit on the %s.\r\n",
+                  (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+        act(AT_ACTION, "$n wakes and sits on the $T.", ch, NULL,
+            (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+      }
+    } else {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You arise and sit %s %s.\r\n", prepositions[prep],
+		  obj->short_descr);
+        act(AT_ACTION, "$n wakes and sits $T $p.", ch, obj,
+            prepositions[prep], TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You arise and sit up %s %s.\r\n", prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n wakes and sits up $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        } else {
+          ch_printf(ch, "You arise from %s and sit %s %s.\r\n",
+                    old_obj->short_descr, prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n wakes up and sits $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        }
+      }
+    }
     ch->position = POS_SITTING;
     break;
 
   case POS_RESTING:
-    send_to_char("You stop resting and sit up.\r\n", ch);
-    act(AT_ACTION, "$n stops resting and sits up.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        send_to_char("You stop resting and sit up.\r\n", ch);
+        act(AT_ACTION, "$n stops resting and sits up.", ch, NULL, NULL,
+            TO_ROOM);
+      } else {
+        ch_printf(ch, "You get up and go sit on the %s.\r\n",
+                  (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+        act(AT_ACTION, "$n gets up and goes to sit on the $T.", ch, NULL,
+            (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+      }
+    } else {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You get up and go sit %s %s.\r\n", prepositions[prep],
+		  obj->short_descr);
+        act(AT_ACTION, "$n gets up and goes to sit $T $p.", ch, obj,
+            prepositions[prep], TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You rise to a sitting position %s %s.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n rises to a sitting position $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        } else {
+          ch_printf(ch, "You get up from %s and sit %s %s.\r\n",
+                    old_obj->short_descr, prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n gets up and goes to sit $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        }
+      }
+    }
     ch->position = POS_SITTING;
     break;
 
   case POS_STANDING:
-    send_to_char("You sit down.\r\n", ch);
-    act(AT_ACTION, "$n sits down.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      send_to_char("You sit down.\r\n", ch);
+      act(AT_ACTION, "$n sits down.", ch, NULL, NULL, TO_ROOM);
+    } else {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You sit down %s %s.\r\n", prepositions[prep],
+                  obj->short_descr);
+        act(AT_ACTION, "$n sits down $T $p.", ch, obj, prepositions[prep],
+            TO_ROOM);
+      } else {
+        if ((old_prep == PREP_IN) && (old_obj != obj)) {
+          ch_printf(ch, "You step out of %s and go sit %s %s.\r\n",
+                    old_obj->short_descr, prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n steps over and sits down $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        } else {
+          ch_printf(ch, "You sit down %s %s.\r\n", prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n sits down $T $p.", ch, obj, prepositions[prep],
+              TO_ROOM);
+        }
+      }
+    }
     ch->position = POS_SITTING;
     break;
+
   case POS_SITTING:
-    send_to_char("You are already sitting.\r\n", ch);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You are already sitting.\r\n");
+      } else {
+        if (old_prep == PREP_UNDER) {
+          ch_printf(ch, "You scoot out from under %s to sit somewhere",
+                    old_obj->short_descr);
+          ch_printf(ch, " else.\r\n");
+          act(AT_ACTION, "$n scoots from under $p and sits somewhere else.",
+              ch, old_obj, NULL, TO_ROOM);
+        } else if (old_prep == PREP_IN) { /* in */
+          ch_printf(ch, "You climb out of %s and sit on the %s.\r\n",
+                    old_obj->short_descr,
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n climbs out of $p and sits on the $T.",
+              ch, old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        } else {
+          ch_printf(ch, "You slide from your seat and sit beside %s.\r\n",
+                    old_obj->short_descr);
+          act(AT_ACTION, "$n slides from $s seat and sits beside $p.", ch,
+              old_obj, NULL, TO_ROOM);
+        }
+      }
+    } else { /* obj != NULL */
+      if (old_obj == NULL) {
+        ch_printf(ch, "You get up and go sit down %s %s.\r\n",
+                  prepositions[prep], obj->short_descr);
+        act(AT_ACTION, "$n gets up and goes to sit down $T $p.",
+            ch, obj, prepositions[prep], TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You are already sitting %s %s.\r\n",
+                    prepositions[ch->furn_prep], obj->short_descr);
+          act(AT_ACTION, "$n squirms in $s seat.", ch, NULL, NULL, TO_ROOM);
+        } else {
+          ch_printf(ch, "You get up and move over to sit %s %s.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n gets up and goes over to sit down $T $p.",
+              ch, obj, prepositions[prep], TO_ROOM);
+        }
+      }
+    }
+    ch->position = POS_SITTING;
     return;
 
   case POS_FIGHTING:
@@ -2099,10 +2565,7 @@ void do_sit(CHAR_DATA* ch, const char* argument)
   case POS_DEFENSIVE:
   case POS_AGGRESSIVE:
   case POS_BERSERK:
-    send_to_char("You are busy fighting!\r\n", ch);
-    return;
-  case POS_MOUNTED:
-    send_to_char("You are already sitting - on your mount.\r\n", ch);
+    send_to_char("Sit down while fighting? That's a neat trick.\r\n", ch);
     return;
   }
 
@@ -2111,33 +2574,293 @@ void do_sit(CHAR_DATA* ch, const char* argument)
 
 void do_rest(CHAR_DATA* ch, const char* argument)
 {
-  switch (ch->position)
-  {
+  char arg1[MAX_INPUT_LENGTH];
+  char arg2[MAX_INPUT_LENGTH];
+  char argtarg[MAX_INPUT_LENGTH];
+  char argprep[MAX_INPUT_LENGTH];
+
+  OBJ_DATA *obj = NULL;
+  OBJ_DATA *old_obj = NULL;
+  int on_obj = 0;
+  int prep = 0;
+  int default_prep = 0;
+  int old_prep = 0;
+
+  if (ch->position == POS_MOUNTED) {
+    send_to_char("You had better dismount first.\r\n", ch);
+    return;
+  }
+
+  /* Determine what arguments were passed, if any */
+
+  argument = one_argument(argument, arg1);
+  argument = one_argument(argument, arg2);
+
+  if (arg1[0] != '\0') {
+    if (arg2[0] != '\0') {
+      strcpy(argprep, arg1);
+      strcpy(argtarg, arg2);
+    }
+    else
+      strcpy(argtarg, arg1);
+  }
+
+  old_prep = ch->furn_prep;   /* We may need this later... */
+  old_obj = ch->furniture;
+
+  if (arg1[0] != '\0') {
+    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
+    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+
+    if (obj == NULL) {
+      send_to_char("You don't see that here.\r\n", ch);
+      return;
+    }
+
+    if (obj->item_type != ITEM_FURNITURE) {
+      if (obj->item_type == ITEM_SHELF)
+        ch_printf(ch, "No, you can't lie down on %s and relax.\r\n",
+                  obj->short_descr);
+      else
+        ch_printf(ch,
+                  "That's not furniture! Go rest somewhere else, please.\r\n");
+      return;
+    }
+
+    if (obj->value[2] <= 0) {
+      send_to_char("You can't lie down on that.\r\n", ch);
+      return;
+    }
+
+    if ((obj->supporting >= obj->value[5]) && (obj != old_obj)) {
+      send_to_char("Someone has to move before you can do that.\r\n", ch);
+      return;
+    }
+  }
+
+  if (ch->furniture)
+    ch->furniture->supporting--;
+
+  /* If no target object is supplied, decide whether obj is implied */
+
+  if ((obj == NULL) && (old_obj) && (ch->position != POS_RESTING)) {
+    if (old_obj->value[2] > 0) {
+      obj = ch->furniture;
+    }
+  }
+
+  /* Still no object? I didn't want to sit there anyway */
+
+  if (obj == NULL)
+    ch->furniture = NULL;
+
+  /* Now, if we have our object, let's determine its default preposition */
+
+  else {
+    if (IS_SET(obj->value[4], VERB_ON))
+      default_prep = 0;
+    else if (IS_SET(obj->value[4], VERB_IN))
+      default_prep = 1;
+    else if (IS_SET(obj->value[4], VERB_AT))
+      default_prep = 2;
+    else if (IS_SET(obj->value[4], VERB_UNDER))
+      default_prep = 3;
+    else
+      default_prep = 0;
+
+    /* I want to sit on you. Am I already sitting on you? */
+
+    if (ch->furniture == obj) /* Already on the preferred target object */
+      on_obj = 1;
+    else                      /* We must be moving */
+      ch->furniture = obj;
+
+    obj->supporting++;
+  }
+
+  prep = default_prep;
+
+  /* Did the player supply a preposition? */
+
+  if ((obj) && (arg2[0] != '\0')) {
+    if ((!strcmp(argprep, "on")) && (IS_SET(obj->value[2], VERB_ON)))
+      prep = 0;
+    else if ((!strcmp(argprep, "in")) && (IS_SET(obj->value[2], VERB_IN)))
+      prep = 1;
+    else if ((!strcmp(argprep, "at")) && (IS_SET(obj->value[2], VERB_AT)))
+      prep = 2;
+    else if ((!strcmp(argprep, "under")) &&
+             (IS_SET(obj->value[2], VERB_UNDER)))
+      prep = 3;
+  }
+
+  if (on_obj != 1)
+    ch->furn_prep = prep;
+
+  switch (ch->position) {
+
   case POS_SLEEPING:
-    if (IS_AFFECTED(ch, AFF_SLEEP))
-    {
+    if (IS_AFFECTED(ch, AFF_SLEEP)) {
       send_to_char("You can't seem to wake up!\r\n", ch);
       return;
     }
 
-    send_to_char("You rouse from your slumber.\r\n", ch);
-    act(AT_ACTION, "$n rouses from $s slumber.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        send_to_char("You rouse from your slumber.\r\n", ch);
+        act(AT_ACTION, "$n rouses from $s slumber.", ch, NULL, NULL, TO_ROOM);
+      } else {
+        ch_printf(ch, "You get up, lie down on the %s and relax.\r\n",
+                  (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+        act(AT_ACTION, "$n gets up and then lies down on the $T.", ch, NULL,
+            (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+      }
+    } else {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You arise and go lie down %s %s.\r\n",
+                  prepositions[prep], obj->short_descr);
+        act(AT_ACTION, "$n gets up and goes to recline $T $p.", ch, obj,
+            prepositions[prep], TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You wake up, but remain reclining %s %s.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n wakes up, but remains reclining $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        } else {
+          ch_printf(ch, "You arise from %s and go to recline %s %s.\r\n",
+                    old_obj->short_descr, prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n wakes up and goes to recline $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        }
+      }
+    }
     ch->position = POS_RESTING;
     break;
 
   case POS_RESTING:
-    send_to_char("You are already resting.\r\n", ch);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You are already resting.\r\n");
+      }
+      else {
+        if (old_prep == PREP_UNDER) {
+          ch_printf(ch, "You get up from your place under %s",
+                    old_obj->short_descr);
+          ch_printf(ch, " and lie down on the %s.\r\n",
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n gets up from under $p and lies down on the $T.",
+              ch, old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        }
+        else if (old_prep == PREP_IN) {   /* in */
+          ch_printf(ch, "You climb out of %s and lie down on the %s.\r\n",
+                    old_obj->short_descr,
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n climbs out of $p and lies down on the $T.",
+              ch, old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        }
+        else {
+          ch_printf(ch, "You slip from %s and lie down on the %s.\r\n",
+                    old_obj->short_descr,
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n slips from $p and lies down on the $T.", ch,
+              old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        }
+      }
+    } else { /* obj != NULL */
+      if (old_obj == NULL) {
+        ch_printf(ch, "You lie down %s %s.\r\n", prepositions[prep],
+                  obj->short_descr);
+        act(AT_ACTION, "$n lies down $T $p.", ch, obj, prepositions[prep],
+            TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You are already reclining %s %s.\r\n",
+                    prepositions[ch->furn_prep], obj->short_descr);
+          act(AT_ACTION, "$n shifts to a more comfortable position.",
+              ch, NULL, NULL, TO_ROOM);
+        } else {
+          ch_printf(ch, "You get up and move over to lie down %s %s.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n gets up and goes over to lie down $T $p.",
+              ch, obj, prepositions[prep], TO_ROOM);
+        }
+      }
+    }
     return;
 
   case POS_STANDING:
-    send_to_char("You sprawl out haphazardly.\r\n", ch);
-    act(AT_ACTION, "$n sprawls out haphazardly.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      ch_printf(ch, "You sprawl out on the %s.\r\n",
+                (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+      act(AT_ACTION, "$n sprawls out on the $T.", ch, NULL,
+          (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+    } else {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You lie down %s %s.\r\n", prepositions[prep],
+                  obj->short_descr);
+        act(AT_ACTION, "$n lies down $T $p.", ch, obj, prepositions[prep],
+            TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You lie down %s %s.\r\n", prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n lies down $T $p.", ch, obj, prepositions[prep],
+              TO_ROOM);
+        } else {
+          if (old_prep == PREP_IN) {
+            ch_printf(ch, "You step out of %s and go lie %s %s.\r\n",
+                      old_obj->short_descr, prepositions[prep],
+                      obj->short_descr);
+            act(AT_ACTION, "$n steps over and lies down $T $p.", ch, obj,
+                prepositions[prep], TO_ROOM);
+          } else {
+            ch_printf(ch, "You step away from %s and lie down %s %s.\r\n",
+                      old_obj->short_descr, prepositions[prep],
+                      obj->short_descr);
+            act(AT_ACTION, "$n lies down $T $p.", ch, obj, prepositions[prep],
+                TO_ROOM);
+          }
+        }
+      }
+    }
     ch->position = POS_RESTING;
     break;
 
   case POS_SITTING:
-    send_to_char("You lie back and sprawl out to rest.\r\n", ch);
-    act(AT_ACTION, "$n lies back and sprawls out to rest.", ch, NULL, NULL, TO_ROOM);
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        send_to_char("You lie back and relax.\r\n", ch);
+        act(AT_ACTION, "$n lies back and relaxes.", ch, NULL, NULL,
+            TO_ROOM);
+      } else {
+        ch_printf(ch, "You get up and go lie down on the %s.\r\n",
+                  (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+        act(AT_ACTION, "$n gets up and goes to lie on the $T.", ch, NULL,
+            (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+      }
+    } else {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You get up and go lie down %s %s.\r\n",
+                  prepositions[prep], obj->short_descr);
+        act(AT_ACTION, "$n gets up and goes to lie down $T $p.", ch, obj,
+            prepositions[prep], TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You lie back %s %s and relax.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n lies back $T $p and relaxes.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        } else {
+          ch_printf(ch, "You get up from %s and lie down %s %s.\r\n",
+                    old_obj->short_descr, prepositions[prep],
+                    obj->short_descr);
+          act(AT_ACTION, "$n gets up and goes to lie down $T $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+        }
+      }
+    }
     ch->position = POS_RESTING;
     break;
 
@@ -2146,10 +2869,7 @@ void do_rest(CHAR_DATA* ch, const char* argument)
   case POS_DEFENSIVE:
   case POS_AGGRESSIVE:
   case POS_BERSERK:
-    send_to_char("You are busy fighting!\r\n", ch);
-    return;
-  case POS_MOUNTED:
-    send_to_char("You'd better dismount first.\r\n", ch);
+    send_to_char("Fighting does tire one out, does it not?\r\n", ch);
     return;
   }
 
@@ -2157,51 +2877,305 @@ void do_rest(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-
 void do_sleep(CHAR_DATA* ch, const char* argument)
 {
-  switch (ch->position)
-  {
+  char arg1[MAX_INPUT_LENGTH];
+  char arg2[MAX_INPUT_LENGTH];
+  char argtarg[MAX_INPUT_LENGTH];
+  char argprep[MAX_INPUT_LENGTH];
+
+  OBJ_DATA *obj = NULL;
+  OBJ_DATA *old_obj = NULL;
+  int on_obj = 0;
+  int prep = 0;
+  int default_prep = 0;
+  int old_prep = 0;
+
+  if (ch->position == POS_MOUNTED) {
+    send_to_char("Dismount first!\r\n", ch);
+    return;
+  }
+
+  /* Determine what arguments were passed, if any */
+
+  argument = one_argument(argument, arg1);
+  argument = one_argument(argument, arg2);
+
+  if (arg1[0] != '\0') {
+    if (arg2[0] != '\0') {
+      strcpy(argprep, arg1);
+      strcpy(argtarg, arg2);
+    }
+    else
+      strcpy(argtarg, arg1);
+  }
+
+  old_prep = ch->furn_prep;   /* We may need this later... */
+  old_obj = ch->furniture;
+
+  if (arg1[0] != '\0') {
+    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
+    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+
+    if (obj == NULL) {
+      send_to_char("You don't see that here.\r\n", ch);
+      return;
+    }
+
+    if (obj->item_type != ITEM_FURNITURE) {
+      if (obj->item_type == ITEM_SHELF)
+        ch_printf(ch, "You won't be comfortable enough to sleep on %s.\r\n",
+                  obj->short_descr);
+      else
+        send_to_char("That's not furniture! Sleep somewhere else, please.\r\n",
+                     ch);
+      return;
+    }
+
+    if (obj->value[3] <= 0) {
+      send_to_char("You can't get comfortable enough to sleep there.\r\n",
+                   ch);
+      return;
+    }
+
+    if ((obj->supporting >= obj->value[5]) && (obj != old_obj)) {
+      send_to_char("Someone has to move before you can sleep there.\r\n", ch);
+      return;
+    }
+  }
+
+  if (ch->furniture)
+    ch->furniture->supporting--;
+
+  /* If no target object is supplied, decide whether obj is implied */
+
+  if ((obj == NULL) && (old_obj) && (ch->position != POS_SLEEPING)) {
+    if (old_obj->value[3] > 0) {
+      obj = ch->furniture;
+    }
+  }
+
+  /* Still no object? I didn't want to sleep there anyway */
+
+  if (obj == NULL)
+    ch->furniture = NULL;
+
+  /* Now, if we have our object, let's determine its default preposition */
+
+  else {
+    if (IS_SET(obj->value[4], VERB_ON))
+      default_prep = 0;
+    else if (IS_SET(obj->value[4], VERB_IN))
+      default_prep = 1;
+    else if (IS_SET(obj->value[4], VERB_AT))
+      default_prep = 2;
+    else if (IS_SET(obj->value[4], VERB_UNDER))
+      default_prep = 3;
+    else
+      default_prep = 0;
+
+    /* I want to sleep on you. Am I already sleeping on you? */
+
+    if (ch->furniture == obj) /* Already on the preferred target object */
+      on_obj = 1;
+    else                      /* We must be moving */
+      ch->furniture = obj;
+
+    obj->supporting++;
+  }
+
+  prep = default_prep;
+
+  /* Did the player supply a preposition? */
+
+  if ((obj) && (arg2[0] != '\0')) {
+    if ((!strcmp(argprep, "on")) && (IS_SET(obj->value[3], VERB_ON)))
+      prep = 0;
+    else if ((!strcmp(argprep, "in")) && (IS_SET(obj->value[3], VERB_IN)))
+      prep = 1;
+    else if ((!strcmp(argprep, "at")) && (IS_SET(obj->value[3], VERB_AT)))
+      prep = 2;
+    else if ((!strcmp(argprep, "under")) &&
+             (IS_SET(obj->value[3], VERB_UNDER)))
+      prep = 3;
+  }
+
+  if (on_obj != 1)
+    ch->furn_prep = prep;
+
+  switch (ch->position) {
+
   case POS_SLEEPING:
     send_to_char("You are already sleeping.\r\n", ch);
     return;
 
   case POS_RESTING:
-    if (ch->mental_state > 30 && (number_percent() + 10) < ch->mental_state)
-    {
-      send_to_char("You just can't seem to calm yourself down enough to sleep.\r\n", ch);
+    if (ch->mental_state > 30 && (number_percent() + 10) < ch->mental_state) {
+      send_to_char("You are much too restless to sleep.\r\n", ch);
       act(AT_ACTION, "$n closes $s eyes for a few moments, but just can't seem to go to sleep.", ch, NULL, NULL,
-           TO_ROOM);
+	  TO_ROOM);
       return;
     }
-    send_to_char("You close your eyes and drift into slumber.\r\n", ch);
-    act(AT_ACTION, "$n closes $s eyes and drifts into a deep slumber.", ch, NULL, NULL, TO_ROOM);
+
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You lie down on the %s and go to sleep.\r\n",
+                  (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+        act(AT_ACTION, "$n lies down on the $T and goes to sleep.", ch, NULL,
+            (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+      } else {
+        ch_printf(ch, "You get up from %s, lie down on the %s and fall ",
+                  old_obj->short_descr,
+                  (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+        ch_printf(ch, "asleep.\r\n");
+        act(AT_ACTION, "$n lies down on the $T and goes to sleep.", ch, NULL,
+            (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+      }
+    } else { /* obj != NULL */
+      if (old_obj == NULL) {
+        ch_printf(ch, "You drift off to sleep %s %s.\r\n",
+                  prepositions[prep], obj->short_descr);
+        act(AT_ACTION, "$n falls asleep $T $p.", ch, obj, prepositions[prep],
+            TO_ROOM);
+      } else {
+        if (on_obj) {
+          ch_printf(ch, "You drift off to sleep %s %s.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n falls asleep $T $p.", ch, obj, prepositions[prep],
+              TO_ROOM);
+        } else {
+          ch_printf(ch, "You stop resting, and walk over to %s.\r\n",
+                    obj->short_descr);
+          ch_printf(ch, "You drift off to sleep...\r\n");
+          act(AT_ACTION, "$n stops resting, and walks over to $p.", ch, obj,
+              prepositions[prep], TO_ROOM);
+          act(AT_ACTION, "$n falls asleep.", ch, NULL, NULL, TO_ROOM);
+        }
+      }
+    }
     ch->position = POS_SLEEPING;
     break;
 
   case POS_SITTING:
-    if (ch->mental_state > 30 && (number_percent() + 5) < ch->mental_state)
-    {
-      send_to_char("You just can't seem to calm yourself down enough to sleep.\r\n", ch);
+    if (ch->mental_state > 30 && (number_percent() + 5) < ch->mental_state) {
+      send_to_char("You feel much too restless to sleep.\r\n", ch);
       act(AT_ACTION, "$n closes $s eyes for a few moments, but just can't seem to go to sleep.", ch, NULL, NULL,
-           TO_ROOM);
+	  TO_ROOM);
       return;
     }
-    send_to_char("You slump over and fall dead asleep.\r\n", ch);
-    act(AT_ACTION, "$n nods off and slowly slumps over, dead asleep.", ch, NULL, NULL, TO_ROOM);
+
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        send_to_char("You lie back and fall asleep.\r\n", ch);
+        act(AT_ACTION, "$n lies back and falls asleep.", ch, NULL, NULL,
+            TO_ROOM);
+      } else {
+        if (old_prep == PREP_IN) {
+          ch_printf(ch, "You climb out of %s and go to sleep on the %s.\r\n",
+                    old_obj->short_descr,
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n climbs out of $p and goes to sleep on the $T.",
+              ch, old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        } else {
+          ch_printf(ch, "You get up from %s %s and go to sleep on the %s.\r\n",
+                    prepositions[old_prep], old_obj->short_descr,
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n gets up from $p and goes to sleep on the $T.",
+              ch, old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        }
+      }
+    } else { /* obj != NULL */
+      if (old_obj == NULL) {
+        ch_printf(ch, "You stand up, then lie down %s %s and fall asleep.\r\n",
+                  prepositions[prep], obj->short_descr);
+        act(AT_ACTION, "$n falls asleep $T $p.", ch, obj, prepositions[prep],
+            TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You lie back %s %s and fall asleep.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n falls asleep $T $p.", ch, obj, prepositions[prep],
+              TO_ROOM);
+        } else {
+          if (old_prep == PREP_IN) {
+            ch_printf(ch, "You climb out of %s and go to sleep %s %s.\r\n",
+                      old_obj->short_descr, prepositions[prep],
+                      obj->short_descr);
+            act(AT_ACTION, "$n gets up and goes to sleep $T $p.", ch, obj,
+                prepositions[prep], TO_ROOM);
+          } else {
+            ch_printf(ch, "You get up from your seat %s %s and ",
+                      prepositions[old_prep], old_obj->short_descr);
+            ch_printf(ch, "go to sleep %s %s.\r\n",
+                      prepositions[prep], obj->short_descr);
+            act(AT_ACTION, "$n goes to sleep $T $p.", ch, obj,
+                prepositions[prep], TO_ROOM);
+          }
+        }
+      }
+    }
     ch->position = POS_SLEEPING;
     break;
 
   case POS_STANDING:
-    if (ch->mental_state > 30 && number_percent() < ch->mental_state)
-    {
-      send_to_char("You just can't seem to calm yourself down enough to sleep.\r\n", ch);
+    if (ch->mental_state > 30 && number_percent() < ch->mental_state) {
+      send_to_char("You feel much too restless to sleep.\r\n", ch);
       act(AT_ACTION, "$n closes $s eyes for a few moments, but just can't seem to go to sleep.", ch, NULL, NULL,
-           TO_ROOM);
+	  TO_ROOM);
       return;
     }
-    send_to_char("You collapse into a deep sleep.\r\n", ch);
-    act(AT_ACTION, "$n collapses into a deep sleep.", ch, NULL, NULL, TO_ROOM);
+
+    if (obj == NULL) {
+      if (old_obj == NULL) {
+        ch_printf(ch, "You lie down on the %s and go to sleep.\r\n",
+                  (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+        act(AT_ACTION, "$n lies down on the $T and goes to sleep.",
+	    ch, NULL, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+      } else {
+        if (old_prep == PREP_IN) {
+          ch_printf(ch, "You step out of %s and go to sleep on the %s.\r\n",
+                    old_obj->short_descr,
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n steps out of $p and goes to sleep on the $T.",
+              ch, old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        } else {
+          ch_printf(ch, "You step away from %s and go to sleep on the %s.\r\n",
+                    old_obj->short_descr,
+                    (!IS_OUTSIDE(ch) ? "floor" : "ground"));
+          act(AT_ACTION, "$n gets up from $p and goes to sleep on the $T.",
+              ch, old_obj, (!IS_OUTSIDE(ch) ? "floor" : "ground"), TO_ROOM);
+        }
+      }
+    } else { /* obj != NULL */
+      if (old_obj == NULL) {
+        ch_printf(ch, "You lie down %s %s and fall asleep.\r\n",
+                  prepositions[prep], obj->short_descr);
+        act(AT_ACTION, "$n falls asleep $T $p.", ch, obj, prepositions[prep],
+            TO_ROOM);
+      } else {
+        if (on_obj == 1) {
+          ch_printf(ch, "You fall asleep %s %s.\r\n",
+                    prepositions[prep], obj->short_descr);
+          act(AT_ACTION, "$n falls asleep $T $p.", ch, obj, prepositions[prep],
+              TO_ROOM);
+        } else {
+          if (old_prep == PREP_IN) {
+            ch_printf(ch, "You step out of %s and go to sleep %s %s.\r\n",
+                      old_obj->short_descr, prepositions[prep],
+                      obj->short_descr);
+            act(AT_ACTION, "$n gets up and goes to sleep $T $p.", ch, obj,
+                prepositions[prep], TO_ROOM);
+          }
+          else {
+            ch_printf(ch, "You step away from %s and go to sleep %s %s.\r\n",
+                      old_obj->short_descr, prepositions[prep],
+                      obj->short_descr);
+            act(AT_ACTION, "$n goes to sleep $T $p.", ch, obj,
+                prepositions[prep], TO_ROOM);
+          }
+        }
+      }
+    }
     ch->position = POS_SLEEPING;
     break;
 
@@ -2210,10 +3184,7 @@ void do_sleep(CHAR_DATA* ch, const char* argument)
   case POS_DEFENSIVE:
   case POS_AGGRESSIVE:
   case POS_BERSERK:
-    send_to_char("You are busy fighting!\r\n", ch);
-    return;
-  case POS_MOUNTED:
-    send_to_char("You really should dismount first.\r\n", ch);
+    send_to_char("Strangely enough, you just don't feel all that sleepy.\r\n", ch);
     return;
   }
 

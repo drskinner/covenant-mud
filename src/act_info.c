@@ -854,8 +854,12 @@ void show_char_to_char_0(CHAR_DATA * victim, CHAR_DATA * ch)
       mudstrlcat(buf, PERS(victim, ch), MAX_STRING_LENGTH);
   }
 
-  if (!IS_NPC(victim) && !xIS_SET(ch->act, PLR_BRIEF))
-    mudstrlcat(buf, victim->pcdata->title, MAX_STRING_LENGTH);
+  if ((!IS_NPC(victim)) && (!xIS_SET(ch->act, PLR_BRIEF))
+      && (victim->furniture == NULL)) {
+    if (victim->pcdata->title[0] == '"')
+      mudstrlcat(buf, " ", MAX_STRING_LENGTH);
+    strcat(buf, victim->pcdata->title);
+  }
 
   if ((timer = get_timerptr(victim, TIMER_DO_FUN)) != NULL)
   {
@@ -877,47 +881,71 @@ void show_char_to_char_0(CHAR_DATA * victim, CHAR_DATA * ch)
     case POS_DEAD:
       mudstrlcat(buf, " is DEAD!!", MAX_STRING_LENGTH);
       break;
+
     case POS_MORTAL:
       mudstrlcat(buf, " is mortally wounded.", MAX_STRING_LENGTH);
       break;
+
     case POS_INCAP:
       mudstrlcat(buf, " is incapacitated.", MAX_STRING_LENGTH);
       break;
+
     case POS_STUNNED:
       mudstrlcat(buf, " is lying here stunned.", MAX_STRING_LENGTH);
       break;
+
     case POS_SLEEPING:
-      if (ch->position == POS_SITTING || ch->position == POS_RESTING)
-        mudstrlcat(buf, " is sleeping nearby.", MAX_STRING_LENGTH);
+      if (victim->furniture) {
+        sprintf(buf1, " is here, sleeping %s %s.",
+                prepositions[victim->furn_prep],
+                victim->furniture->short_descr);
+        mudstrlcat(buf, buf1, MAX_STRING_LENGTH);
+      }
       else
         mudstrlcat(buf, " is deep in slumber here.", MAX_STRING_LENGTH);
       break;
+
+
     case POS_RESTING:
-      if (ch->position == POS_RESTING)
-        mudstrlcat(buf, " is sprawled out alongside you.", MAX_STRING_LENGTH);
-      else if (ch->position == POS_MOUNTED)
-        mudstrlcat(buf, " is sprawled out at the foot of your mount.", MAX_STRING_LENGTH);
+      if (victim->furniture) {
+        sprintf(buf1, " is here, resting %s %s.",
+                prepositions[victim->furn_prep],
+                victim->furniture->short_descr);
+        mudstrlcat(buf, buf1, MAX_STRING_LENGTH);
+      }
       else
         mudstrlcat(buf, " is sprawled out here.", MAX_STRING_LENGTH);
       break;
+
     case POS_SITTING:
-      if (ch->position == POS_SITTING)
-        mudstrlcat(buf, " sits here with you.", MAX_STRING_LENGTH);
-      else if (ch->position == POS_RESTING)
-        mudstrlcat(buf, " sits nearby as you lie around.", MAX_STRING_LENGTH);
-      else
-        mudstrlcat(buf, " sits upright here.", MAX_STRING_LENGTH);
+      if (victim->furniture) {
+        sprintf(buf1, " is here, sitting %s %s.",
+                prepositions[victim->furn_prep],
+                victim->furniture->short_descr);
+        mudstrlcat(buf, buf1, MAX_STRING_LENGTH);
+      }
+      else {
+        mudstrlcat(buf, " is here, sitting on the ", MAX_STRING_LENGTH);
+        if (!IS_OUTSIDE(victim))
+          mudstrlcat(buf, "floor.", MAX_STRING_LENGTH);
+        else
+          mudstrlcat(buf, "ground.", MAX_STRING_LENGTH);
+      }
       break;
+
     case POS_STANDING:
-      if (IS_IMMORTAL(victim))
-        mudstrlcat(buf, " radiates with a godly light.", MAX_STRING_LENGTH);
-      else
+      if (victim->furniture) {
+        sprintf(buf1, " is here, standing %s %s.",
+                prepositions[victim->furn_prep],
+                victim->furniture->short_descr);
+        mudstrlcat(buf, buf1, MAX_STRING_LENGTH);
+      } else {
         if ((victim->in_room->sector_type == SECT_UNDERWATER)
             && !IS_AFFECTED(victim, AFF_AQUA_BREATH) && !IS_NPC(victim))
           mudstrlcat(buf, " is drowning here.", MAX_STRING_LENGTH);
         else if (victim->in_room->sector_type == SECT_UNDERWATER)
           mudstrlcat(buf, " is here in the water.", MAX_STRING_LENGTH);
-        else
+        else {
           if ((victim->in_room->sector_type == SECT_OCEANFLOOR)
               && !IS_AFFECTED(victim, AFF_AQUA_BREATH) && !IS_NPC(victim))
             mudstrlcat(buf, " is drowning here.", MAX_STRING_LENGTH);
@@ -925,15 +953,24 @@ void show_char_to_char_0(CHAR_DATA * victim, CHAR_DATA * ch)
             mudstrlcat(buf, " is standing here in the water.", MAX_STRING_LENGTH);
           else if (IS_AFFECTED(victim, AFF_FLOATING) || IS_AFFECTED(victim, AFF_FLYING))
             mudstrlcat(buf, " is hovering here.", MAX_STRING_LENGTH);
-          else
-            mudstrlcat(buf, " is standing here.", MAX_STRING_LENGTH);
+          else {
+            if (IS_IMMORTAL(victim))
+	      mudstrlcat(buf, " stands before you.", MAX_STRING_LENGTH);
+            else
+              mudstrlcat(buf, " is standing here.", MAX_STRING_LENGTH);
+          }
+        }
+      }
       break;
+
     case POS_SHOVE:
       mudstrlcat(buf, " is being shoved around.", MAX_STRING_LENGTH);
       break;
+
     case POS_DRAG:
       mudstrlcat(buf, " is being dragged around.", MAX_STRING_LENGTH);
       break;
+
     case POS_MOUNTED:
       mudstrlcat(buf, " is here, upon ", MAX_STRING_LENGTH);
       if (!victim->mount)
@@ -948,6 +985,7 @@ void show_char_to_char_0(CHAR_DATA * victim, CHAR_DATA * ch)
       else
         mudstrlcat(buf, "someone who left??", MAX_STRING_LENGTH);
       break;
+
     case POS_FIGHTING:
     case POS_EVASIVE:
     case POS_DEFENSIVE:
