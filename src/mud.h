@@ -1322,6 +1322,21 @@ struct smaug_affect
  ***************************************************************************/
 
 /*
+ * Bitvectors used for furniture; see online help for details  -- Shamus
+ */
+
+#define PREP_ON       0
+#define PREP_IN       1
+#define PREP_AT       2
+#define PREP_UNDER    3
+#define PREP_MAX      4
+
+#define VERB_ON       BV00
+#define VERB_IN       BV01
+#define VERB_AT       BV02
+#define VERB_UNDER    BV03
+
+/*
  * Well known mob virtual numbers.
  * Defined in #MOBILES.
  */
@@ -2250,6 +2265,8 @@ struct char_data
   NOTE_DATA *comments;
   OBJ_DATA *first_carrying;
   OBJ_DATA *last_carrying;
+  OBJ_DATA *furniture;
+  short furn_prep;
   ROOM_INDEX_DATA *in_room;
   ROOM_INDEX_DATA *was_in_room;
   PC_DATA *pcdata;
@@ -2533,6 +2550,7 @@ struct obj_data
   MPROG_ACT_LIST *mpact;  /* mudprogs */
   int mpactnum;  /* mudprogs */
   short wear_loc;
+  short supporting;
   short weight;
   int cost;
   short level;
@@ -3565,7 +3583,6 @@ extern const char *const ex_pwater[];
 extern const char *const ex_pair[];
 extern const char *const ex_pearth[];
 extern const char *const ex_pfire[];
-extern const char *const sector_name[];
 
 extern int const lang_array[];
 extern const char *const lang_names[];
@@ -3583,6 +3600,11 @@ extern const char *const ex_flags[];
 extern const char *const sec_flags[];
 
 extern const char *const login_msg[];
+
+/* New extern consts -- Shamus */
+
+extern const char *const sector_name[];
+extern const char *const prepositions[];
 
 /*
  * Global variables.

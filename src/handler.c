@@ -2430,6 +2430,13 @@ void extract_obj(OBJ_DATA * obj)
     }
   }
 
+  if (obj->supporting > 0) {
+    bug("extract_obj: attempt to extract VNUM %d in use as furniture!",
+	obj->pIndexData->vnum);
+    /* obj->supporting = 0; */
+    return;
+  }
+
   if (obj->carried_by)
     obj_from_char(obj);
   else if (obj->in_room)
@@ -2576,6 +2583,12 @@ void extract_char(CHAR_DATA * ch, bool fPull)
     update_room_reset(ch, TRUE);
     xREMOVE_BIT(ch->mount->act, ACT_MOUNTED);
     ch->mount = NULL;
+    ch->position = POS_STANDING;
+  }
+
+  if (ch->furniture) {
+    ch->furniture->supporting--;
+    ch->furniture = NULL;
     ch->position = POS_STANDING;
   }
 

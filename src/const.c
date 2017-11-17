@@ -18,12 +18,23 @@
 #include <stdio.h>
 #include "mud.h"
 
+/* Custom constant arrays -- Shamus */
+
 const char *const sector_name[SECT_MAX] = {
   "Inside", "City", "Wall", "Bridge", "Field", "Light Woods", "Heavy Woods",
   "Desert", "Hills", "Rough", "Mountain", "Snow", "Ice", "Swamp",
   "Fresh Water", "Salt Water", "Water No Swim", "Underwater", "Ocean Floor",
   "Underground", "In the Air", "Fire", "Smoke", "Unknown", "&RERROR!&w"
 };
+
+/* Prepositions used for furniture -- Shamus */
+
+const char *const prepositions[] =
+{
+  "on", "in", "at", "under"
+};
+
+/* Stock SmaugFUSS constants */
 
 const char *const npc_race[MAX_NPC_RACE] = {
   "human", "arial", "guri", "feryl", "flint", "kilgahari", "fahrin",          // 6

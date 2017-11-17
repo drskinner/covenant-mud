@@ -1385,6 +1385,9 @@ void transfer_char(CHAR_DATA * ch, CHAR_DATA * victim, ROOM_INDEX_DATA * locatio
   if (victim->fighting)
     stop_fighting(victim, TRUE);
 
+  if (victim->furniture)
+    do_stand(victim, "\r\n");
+
   if (!IS_NPC(ch))
   {
     act(AT_MAGIC, "$n disappears in a cloud of swirling colors.", victim, NULL, NULL, TO_ROOM);
@@ -1865,6 +1868,10 @@ void do_ostat(CHAR_DATA* ch, const char* argument)
   ch_printf_color(ch, "&cNumber: &w%d/%d   ", 1, get_obj_number(obj));
   ch_printf_color(ch, "&cWeight: &w%d/%d   ", obj->weight, get_obj_weight(obj));
   ch_printf_color(ch, "&cLayers: &w%d   ", obj->pIndexData->layers);
+
+  if (obj->item_type == ITEM_FURNITURE)
+    ch_printf_color(ch, "&cSupporting: &w%d  ", obj->supporting);
+
   ch_printf_color(ch, "&cWear_loc: &w%d\r\n", obj->wear_loc);
   ch_printf_color(ch, "&cCost: &Y%d  ", obj->cost);
   ch_printf_color(ch, "&cRent: &w%d  ", obj->pIndexData->rent);
@@ -2110,6 +2117,13 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
   pager_printf_color(ch, "&cFighting: &w%-13s   &cMaster : &w%-13s   &cLeader    : &w%s\r\n",
                       victim->fighting ? victim->fighting->who->name : "(none)",
                       victim->master ? victim->master->name : "(none)", victim->leader ? victim->leader->name : "(none)");
+
+  if (victim->furniture) {
+    pager_printf_color(ch, "&cFurniture:&w %s %s\n\r",
+                       prepositions[victim->furn_prep],
+                       victim->furniture->short_descr);
+  }
+
   if (IS_NPC(victim))
     pager_printf_color(ch, "&cHating  : &w%-13s   &cHunting: &w%-13s   &cFearing   : &w%s\r\n",
                         victim->hating ? victim->hating->name : "(none)",
@@ -2908,15 +2922,20 @@ void do_reboot(CHAR_DATA* ch, const char* argument)
   snprintf(buf, MAX_STRING_LENGTH, "Reboot by %s.", ch->name);
   do_echo(ch, buf);
 
-  if (!str_cmp(argument, "and sort skill table"))
-  {
+  if (!str_cmp(argument, "and sort skill table")) {
     sort_skill_table();
     save_skill_table();
   }
 
-  /*
-   * Save all characters before booting. 
-   */
+  /* Kick everybody off of the furniture. */
+  for (vch = first_char; vch; vch = vch->next) {
+    if (vch->furniture) {
+      vch->furniture->supporting--;
+      vch->furniture = NULL;
+    }
+  }
+
+  /* Save all characters before booting.*/
   if (str_cmp(argument, "nosave"))
     for (vch = first_char; vch; vch = vch->next)
       if (!IS_NPC(vch))
@@ -3460,6 +3479,11 @@ void do_purge(CHAR_DATA* ch, const char* argument)
   if (obj)
   {
     separate_obj(obj);
+    if (obj->supporting > 0) {
+      send_to_char("That piece of furniture is in use. Clear it off ", ch);
+      send_to_char("before trying to purge it.\r\n", ch);
+      return;
+    }
     act(AT_IMMORT, "$n purges $p.", ch, obj, NULL, TO_ROOM);
     act(AT_IMMORT, "You make $p disappear in a puff of smoke!", ch, obj, NULL, TO_CHAR);
     extract_obj(obj);

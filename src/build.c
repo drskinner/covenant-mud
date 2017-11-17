@@ -1056,6 +1056,9 @@ void do_goto(CHAR_DATA* ch, const char* argument)
     }
   }
 
+  if (ch->furniture)
+    do_stand(ch, "\r\n");
+
   in_room = ch->in_room;
   if (ch->fighting)
     stop_fighting(ch, TRUE);
