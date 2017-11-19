@@ -7768,13 +7768,13 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
   {
     ch_printf(ch, "Social: %s\r\n\r\nCNoArg: %s\r\n", social->name, social->char_no_arg);
     ch_printf(ch, "ONoArg: %s\r\nCFound: %s\r\nOFound: %s\r\n",
-               social->others_no_arg ? social->others_no_arg : "(not set)",
-               social->char_found ? social->char_found : "(not set)",
-               social->others_found ? social->others_found : "(not set)");
-    ch_printf(ch, "VFound: %s\r\nCAuto : %s\r\nOAuto : %s\r\n",
-               social->vict_found ? social->vict_found : "(not set)",
-               social->char_auto ? social->char_auto : "(not set)",
-               social->others_auto ? social->others_auto : "(not set)");
+              social->others_no_arg ? social->others_no_arg : "(not set)",
+              social->char_found ? social->char_found       : "(not set)",
+              social->others_found ? social->others_found   : "(not set)");
+    ch_printf(ch, "VFound: %s\r\nCAuto: %s\r\nOAuto: %s\r\n",
+              social->vict_found ? social->vict_found   : "(not set)",
+              social->char_auto ? social->char_auto     : "(not set)",
+              social->others_auto ? social->others_auto : "(not set)");
     ch_printf(ch, "CObject: %s\r\nOObject: %s\r\n",
               social->char_obj ? social->char_obj       : "(not set)",
               social->others_obj ? social->others_obj   : "(not set)");
