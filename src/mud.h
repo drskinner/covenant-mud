@@ -3518,6 +3518,8 @@ struct social_type
   const char *name;
   const char *char_no_arg;
   const char *others_no_arg;
+  const char *char_obj;
+  const char *others_obj;
   const char *char_found;
   const char *others_found;
   const char *vict_found;
