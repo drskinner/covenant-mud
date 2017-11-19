@@ -7731,21 +7731,12 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
   argument = one_argument(argument, arg1);
   argument = one_argument(argument, arg2);
 
-  if (arg1[0] == '\0')
-  {
-    send_to_char("Syntax: sedit <social> [field]\r\n", ch);
-    send_to_char("Syntax: sedit <social> create\r\n", ch);
-    if (get_trust(ch) > LEVEL_GOD)
-      send_to_char("Syntax: sedit <social> delete\r\n", ch);
-    if (get_trust(ch) > LEVEL_LESSER)
-      send_to_char("Syntax: sedit <save>\r\n", ch);
-    send_to_char("\r\nField being one of:\r\n", ch);
-    send_to_char("  cnoarg onoarg cfound ofound vfound cauto oauto\r\n", ch);
+  if (arg1[0] == '\0' || !str_cmp(arg1, "?") || !str_cmp(arg1, "help")) {
+    do_help(ch, "_sedit");
     return;
   }
 
-  if (get_trust(ch) > LEVEL_LESSER && !str_cmp(arg1, "save"))
-  {
+  if (get_trust(ch) > LEVEL_LESSER && !str_cmp(arg1, "save")) {
     save_socials();
     send_to_char("Saved.\r\n", ch);
     return;
@@ -7768,8 +7759,7 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!social)
-  {
+  if (!social) {
     send_to_char("Social not found.\r\n", ch);
     return;
   }
@@ -7778,26 +7768,27 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
   {
     ch_printf(ch, "Social: %s\r\n\r\nCNoArg: %s\r\n", social->name, social->char_no_arg);
     ch_printf(ch, "ONoArg: %s\r\nCFound: %s\r\nOFound: %s\r\n",
-               social->others_no_arg ? social->others_no_arg : "(not set)",
-               social->char_found ? social->char_found : "(not set)",
-               social->others_found ? social->others_found : "(not set)");
-    ch_printf(ch, "VFound: %s\r\nCAuto : %s\r\nOAuto : %s\r\n",
-               social->vict_found ? social->vict_found : "(not set)",
-               social->char_auto ? social->char_auto : "(not set)",
-               social->others_auto ? social->others_auto : "(not set)");
+              social->others_no_arg ? social->others_no_arg : "(not set)",
+              social->char_found ? social->char_found       : "(not set)",
+              social->others_found ? social->others_found   : "(not set)");
+    ch_printf(ch, "VFound: %s\r\nCAuto: %s\r\nOAuto: %s\r\n",
+              social->vict_found ? social->vict_found   : "(not set)",
+              social->char_auto ? social->char_auto     : "(not set)",
+              social->others_auto ? social->others_auto : "(not set)");
+    ch_printf(ch, "CObject: %s\r\nOObject: %s\r\n",
+              social->char_obj ? social->char_obj       : "(not set)",
+              social->others_obj ? social->others_obj   : "(not set)");
     return;
   }
 
-  if (get_trust(ch) > LEVEL_GOD && !str_cmp(arg2, "delete"))
-  {
+  if (get_trust(ch) > LEVEL_GOD && !str_cmp(arg2, "delete")) {
     unlink_social(social);
     free_social(social);
     send_to_char("Deleted.\r\n", ch);
     return;
   }
 
-  if (!str_cmp(arg2, "cnoarg"))
-  {
+  if (!str_cmp(arg2, "cnoarg")) {
     if (argument[0] == '\0' || !str_cmp(argument, "clear"))
     {
       send_to_char("You cannot clear this field.  It must have a message.\r\n", ch);
@@ -7810,8 +7801,7 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "onoarg"))
-  {
+  if (!str_cmp(arg2, "onoarg")) {
     if (social->others_no_arg)
       DISPOSE(social->others_no_arg);
     if (argument[0] != '\0' && str_cmp(argument, "clear"))
@@ -7820,8 +7810,7 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "cfound"))
-  {
+  if (!str_cmp(arg2, "cfound")) {
     if (social->char_found)
       DISPOSE(social->char_found);
     if (argument[0] != '\0' && str_cmp(argument, "clear"))
@@ -7830,8 +7819,7 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "ofound"))
-  {
+  if (!str_cmp(arg2, "ofound")) {
     if (social->others_found)
       DISPOSE(social->others_found);
     if (argument[0] != '\0' && str_cmp(argument, "clear"))
@@ -7840,8 +7828,7 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "vfound"))
-  {
+  if (!str_cmp(arg2, "vfound")) {
     if (social->vict_found)
       DISPOSE(social->vict_found);
     if (argument[0] != '\0' && str_cmp(argument, "clear"))
@@ -7850,8 +7837,7 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "cauto"))
-  {
+  if (!str_cmp(arg2, "cauto")) {
     if (social->char_auto)
       DISPOSE(social->char_auto);
     if (argument[0] != '\0' && str_cmp(argument, "clear"))
@@ -7860,12 +7846,29 @@ void do_sedit(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "oauto"))
-  {
+  if (!str_cmp(arg2, "oauto")) {
     if (social->others_auto)
       DISPOSE(social->others_auto);
     if (argument[0] != '\0' && str_cmp(argument, "clear"))
       social->others_auto = str_dup(argument);
+    send_to_char("Done.\r\n", ch);
+    return;
+  }
+
+  if (!str_cmp(arg2, "cobject")) {
+    if (social->char_obj)
+      DISPOSE(social->char_obj);
+    if (argument[0] != '\0' && str_cmp(argument, "clear"))
+      social->char_obj = str_dup(argument);
+    send_to_char("Done.\r\n", ch);
+    return;
+  }
+
+  if (!str_cmp(arg2, "oobject")) {
+    if (social->others_obj)
+      DISPOSE(social->others_obj);
+    if (argument[0] != '\0' && str_cmp(argument, "clear"))
+      social->others_obj = str_dup(argument);
     send_to_char("Done.\r\n", ch);
     return;
   }

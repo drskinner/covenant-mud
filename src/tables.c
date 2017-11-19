@@ -933,6 +933,10 @@ void save_socials()
         bug("Save_socials: NULL char_no_arg in hash bucket %d", x);
       if (social->others_no_arg)
         fprintf(fpout, "OthersNoArg %s~\n", social->others_no_arg);
+      if (social->char_obj)
+        fprintf(fpout, "CharObject   %s~\n", social->char_obj);
+      if (social->others_obj)
+        fprintf(fpout, "OthersObject %s~\n", social->others_obj);
       if (social->char_found)
         fprintf(fpout, "CharFound   %s~\n", social->char_found);
       if (social->others_found)
@@ -1452,6 +1456,7 @@ void fread_social(FILE * fp)
 
     case 'C':
       KEY("CharNoArg", social->char_no_arg, fread_string_nohash(fp));
+      KEY("CharObject", social->char_obj, fread_string_nohash(fp));
       KEY("CharFound", social->char_found, fread_string_nohash(fp));
       KEY("CharAuto", social->char_auto, fread_string_nohash(fp));
       break;
@@ -1482,6 +1487,7 @@ void fread_social(FILE * fp)
 
     case 'O':
       KEY("OthersNoArg", social->others_no_arg, fread_string_nohash(fp));
+      KEY("OthersObject", social->others_obj, fread_string_nohash(fp));
       KEY("OthersFound", social->others_found, fread_string_nohash(fp));
       KEY("OthersAuto", social->others_auto, fread_string_nohash(fp));
       break;

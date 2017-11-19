@@ -607,6 +607,7 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
 {
   char arg[MAX_INPUT_LENGTH];
   CHAR_DATA *victim, *victim_next;
+  OBJ_DATA *victobj;
   SOCIALTYPE *social;
   CHAR_DATA *removed[128];   /* What are the chances of more than 128? */
   ROOM_INDEX_DATA *room;
@@ -681,12 +682,14 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
     act(AT_SOCIAL, social->others_no_arg, ch, NULL, victim, TO_ROOM);
     act(AT_SOCIAL, social->char_no_arg, ch, NULL, victim, TO_CHAR);
   }
-  else if ((victim = get_char_room(ch, arg)) == NULL)
-  {
-    /*
-     * If they aren't in the room, they may be in the list of 
-     * people ignoring...                 
-     */
+  else if ((victim = get_char_room(ch, arg)) == NULL) {
+    if ((victobj = get_obj_here(ch, arg)) != NULL) {
+      act(AT_SOCIAL, social->others_obj, ch, NULL, victobj, TO_ROOM);
+      act(AT_SOCIAL, social->char_obj, ch, NULL, victobj, TO_CHAR);
+    }
+    else {
+      /* If they aren't in the room, they may be in the list of 
+       * people ignoring... */
     if (i != 0)
     {
       for (k = 0, victim = removed[0]; k < i; k++, victim = removed[k])
@@ -702,6 +705,7 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
 
     if (!victim)
       send_to_char("They aren't here.\r\n", ch);
+    }
   }
   else if (victim == ch)
   {

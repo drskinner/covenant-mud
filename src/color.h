@@ -154,6 +154,7 @@ DECLARE_DO_FUN(do_color);
 #define AT_LOG          AT_GREY
 #define AT_ROOM_NAME    AT_WHITE
 #define AT_ROOM_DESC    AT_PLAIN
+#define AT_SOCIAL       AT_PLAIN
 #define AT_SAY          35
 #define AT_GOSSIP       36
 #define AT_YELL         37
@@ -168,7 +169,6 @@ DECLARE_DO_FUN(do_color);
 #define AT_CONSIDER     46
 #define AT_REPORT       47
 #define AT_POISON       48
-#define AT_SOCIAL       49
 #define AT_DYING        50
 #define AT_DEAD         51
 #define AT_SKILL        52
