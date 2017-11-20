@@ -154,6 +154,7 @@ DECLARE_DO_FUN(do_color);
 #define AT_LOG          AT_GREY
 #define AT_ROOM_NAME    AT_WHITE
 #define AT_ROOM_DESC    AT_PLAIN
+#define AT_SHOUT        AT_LRED
 #define AT_SOCIAL       AT_PLAIN
 #define AT_SAY          35
 #define AT_GOSSIP       36
@@ -201,7 +202,6 @@ DECLARE_DO_FUN(do_color);
 #define AT_WHISPER      83 /* Added by Samson 9-29-98 for version 1.4 code */
 #define AT_DIVIDER      84 /* Added by Samson 9-29-98 for version 1.4 code */
 #define AT_MORPH        85 /* Added by Samson 9-29-98 for version 1.4 code */
-#define AT_SHOUT        86 /* Added by Samson 9-29-98 for shout channel */
 #define AT_RFLAGS       87 /* Added by Samson 12-20-98 for room flag display line */
 #define AT_STYPE        88 /* Added by Samson 12-20-98 for sector display line */
 #define AT_ANAME        89 /* Added by Samson 12-20-98 for filename display line */
