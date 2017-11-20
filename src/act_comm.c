@@ -503,7 +503,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
   case CHANNEL_SHOUT:
     set_char_color(AT_SHOUT, ch);
     ch_printf(ch, "You %s '%s'\r\n", verb, argument);
-    snprintf(buf, MAX_STRING_LENGTH, "$n %ss '$t'", verb);
+    snprintf(buf, MAX_STRING_LENGTH, "&R[&W$n&R] %ss, \"$t\"&w", verb);
     break;
 
   case CHANNEL_YELL:
