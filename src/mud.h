@@ -874,35 +874,28 @@ typedef enum
 #define CLASS_CRUSADER      8
 #define CLASS_BARD          9
 
-/*
- * Languages -- Altrag
- */
-#define LANG_COMMON      BV00 /* Human base language */
-#define LANG_ELVEN       BV01 /* Elven base language */
-#define LANG_DWARVEN     BV02 /* Dwarven base language */
-#define LANG_PIXIE       BV03 /* Pixie/Fairy base language */
-#define LANG_OGRE        BV04 /* Ogre base language */
-#define LANG_ORCISH      BV05 /* Orc base language */
-#define LANG_TROLLISH    BV06 /* Troll base language */
-#define LANG_RODENT      BV07 /* Small mammals */
-#define LANG_INSECTOID   BV08 /* Insects */
-#define LANG_MAMMAL      BV09 /* Larger mammals */
-#define LANG_REPTILE     BV10 /* Small reptiles */
-#define LANG_DRAGON      BV11 /* Large reptiles, Dragons */
-#define LANG_SPIRITUAL   BV12 /* Necromancers or undeads/spectres */
-#define LANG_MAGICAL     BV13 /* Spells maybe?  Magical creatures */
-#define LANG_GOBLIN      BV14 /* Goblin base language */
-#define LANG_GOD         BV15 /* Clerics possibly?  God creatures */
-#define LANG_ANCIENT     BV16 /* Prelude to a glyph read skill? */
-#define LANG_HALFLING    BV17 /* Halfling base language */
-#define LANG_CLAN              BV18 /* Clan language */
-#define LANG_GITH              BV19 /* Gith Language */
-#define LANG_GNOME       BV20
-#define LANG_UNKNOWN        0 /* Anything that doesnt fit a category */
-#define VALID_LANGS    (LANG_COMMON | LANG_ELVEN | LANG_DWARVEN | LANG_PIXIE \
-                         | LANG_OGRE | LANG_ORCISH | LANG_TROLLISH | LANG_GOBLIN \
-                         | LANG_HALFLING | LANG_GITH | LANG_GNOME)
-/* 19 Languages */
+/* Languages -- Altrag */
+/* Sorry, Altrag. Our languages are different. :) -- Myles */
+
+#define LANG_SAXON       BV00  /* Equivalent to English */
+#define LANG_CORONAISE   BV01  /* French */
+#define LANG_MESTIJO     BV02  /* Spanish */
+#define LANG_MOSSIK      BV03  /* Arabic (Cuendar/Qendar) */
+#define LANG_NADRALI     BV04  /* Indo-Aryan: Hindustani, Bengali, Punjabi */
+#define LANG_TARSCH      BV05  /* German/Austrian/Swiss */
+#define LANG_YNGLWSH     BV06  /* Welsh */
+#define LANG_ZENJI       BV07  /* Great Eastern (Asian) Mish-mash */
+#define LANG_THEPHIAN    BV08  /* (ancient) Greek */
+#define LANG_LATATIAN    BV09  /* Latin */
+#define LANG_ANIMAL      BV10  /* if I could talk to the animals... */
+#define LANG_MAGICAL     BV11  /* Spells maybe?  Magical creatures */
+#define LANG_ANCIENT     BV12  /* Prelude to a glyph read skill? */
+#define LANG_CLAN        BV13  /* Legacy clan support */
+#define LANG_UNKNOWN        0  /* Anything that doesnt fit a category */
+
+#define VALID_LANGS (LANG_SAXON | LANG_CORONAISE | LANG_MESTIJO | LANG_MOSSIK \
+                     | LANG_NADRALI | LANG_TARSCH | LANG_YNGLWSH | LANG_ZENJI \
+                     | LANG_THEPHIAN | LANG_LATATIAN)
 
 /*
  * TO types for act.
@@ -3056,16 +3049,17 @@ extern short gsn_slice;
 extern short gsn_tumble;
 
 /* Language gsns. -- Altrag */
-extern short gsn_common;
-extern short gsn_elven;
-extern short gsn_dwarven;
-extern short gsn_pixie;
-extern short gsn_ogre;
-extern short gsn_orcish;
-extern short gsn_trollish;
-extern short gsn_goblin;
-extern short gsn_halfling;
-extern short gsn_gnomish;
+
+extern short gsn_saxon;
+extern short gsn_coronaise;
+extern short gsn_mestijo;
+extern short gsn_mossik;
+extern short gsn_nadrali;
+extern short gsn_tarsch;
+extern short gsn_ynglwsh;
+extern short gsn_zenji;
+extern short gsn_thephian;
+extern short gsn_latatian;
 
 /*
  * Cmd flag names --Shaddai

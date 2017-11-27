@@ -111,7 +111,7 @@ char *translate(int percent, const char *in, const char *name)
   LANG_DATA *lng;
   static char log_buf[MAX_STRING_LENGTH];
 
-  if (percent > 99 || !str_cmp(name, "common"))
+  if (percent > 99 || !str_cmp(name, "saxon"))
   {
     mudstrlcpy(log_buf, in, MAX_STRING_LENGTH);
     return log_buf;
@@ -3260,16 +3260,15 @@ int knows_language(CHAR_DATA * ch, int language, CHAR_DATA * cch)
     return 100;
   if (IS_NPC(ch) && IS_SET(ch->speaks, (language & ~LANG_CLAN)))
     return 100;
-  /*
-   * everyone KNOWS common tongue 
-   */
-  if (IS_SET(language, LANG_COMMON))
+
+  /* everyone KNOWS Saxon */
+  if (IS_SET(language, LANG_SAXON))
     return 100;
 
   if (language & LANG_CLAN)
   {
     /*
-     * Clan = common for mobs.. snicker.. -- Altrag 
+     * Clan = Saxon for mobs.. snicker.. -- Altrag 
      */
     if (IS_NPC(ch) || IS_NPC(cch))
       return 100;
@@ -3333,21 +3332,18 @@ bool can_learn_lang(CHAR_DATA * ch, int language)
 }
 
 int const lang_array[] = {
-  LANG_COMMON, LANG_ELVEN, LANG_DWARVEN, LANG_PIXIE,
-  LANG_OGRE, LANG_ORCISH, LANG_TROLLISH, LANG_RODENT,
-  LANG_INSECTOID, LANG_MAMMAL, LANG_REPTILE,
-  LANG_DRAGON, LANG_SPIRITUAL, LANG_MAGICAL,
-  LANG_GOBLIN, LANG_GOD, LANG_ANCIENT, LANG_HALFLING,
-  LANG_CLAN, LANG_GITH, LANG_GNOME, LANG_UNKNOWN
+  LANG_SAXON, LANG_CORONAISE, LANG_MESTIJO, LANG_MOSSIK,
+  LANG_NADRALI, LANG_TARSCH, LANG_YNGLWSH, LANG_ZENJI,
+  LANG_THEPHIAN, LANG_LATATIAN, LANG_ANIMAL, LANG_MAGICAL,
+  LANG_ANCIENT, LANG_CLAN, LANG_UNKNOWN
 };
 
 const char *const lang_names[] = {
-  "common", "elvish", "dwarven", "pixie",
-  "ogre", "orcish", "trollese", "rodent",
-  "insectoid", "mammal", "reptile",
-  "dragon", "spiritual", "magical",
-  "goblin", "god", "ancient", "halfling",
-  "clan", "gith", "gnomish", "", "", "", "",
+  "saxon", "coronaise", "mestijo", "mossik",
+  "nadrali", "tarsch", "ynglwsh", "zenji",
+  "thephian", "latatian", "animal", "magical",
+  "ancient", "clan", "unknown", "", "",
+  "", "", "", "", "", "", "", "", "",
   "", "", "", "", "", "", "", ""   /* pad to 32 for compat with flag_string */
 };
 
@@ -3439,7 +3435,7 @@ void do_languages(CHAR_DATA* ch, const char* argument)
       return;
     }
     if (race_table[ch->race]->language & lang_array[lang] ||
-        lang_array[lang] == LANG_COMMON || ch->pcdata->learned[sn] >= 99)
+        lang_array[lang] == LANG_SAXON || ch->pcdata->learned[sn] >= 99)
     {
       act(AT_PLAIN, "You are already fluent in $t.", ch, lang_names[lang], NULL, TO_CHAR);
       return;

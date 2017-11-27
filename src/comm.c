@@ -2504,13 +2504,15 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     if (ch->Class == CLASS_CRUSADER)
       ch->alignment = 1000;
 
-    if ((iLang = skill_lookup("common")) < 0)
-      bug("%s", "Nanny: cannot find common language.");
+    if ((iLang = skill_lookup("saxon")) < 0)
+      bug("%s", "Nanny: cannot find saxon language.");
     else
       ch->pcdata->learned[iLang] = 100;
 
     /*
      * Give them their racial languages 
+     * We may be able to deprecate this block.
+     * Languages are regional, not racial. -- Shamus
      */
     if (race_table[ch->race])
     {
@@ -2544,6 +2546,18 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     ch->mana = UMAX(1, ch->max_mana);
     ch->move = ch->max_move;
     ch->gold = 0;
+
+    /* Initialize basic skills and hex location here */
+    /* Not ready yet. */
+#if 0
+    ch->pcdata->rank[gsn_saxon] = 1;
+    ch->pcdata->rank[gsn_travelling] = 1;
+    ch->pcdata->rank[gsn_basic_combat] = 1;
+
+    ch->xhex  = -1;
+    ch->yhex  = -1;
+#endif
+
     /*
      * Set player birthday to current mud day, -17 years - Samson 10-25-99
      */
