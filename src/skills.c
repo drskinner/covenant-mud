@@ -5966,9 +5966,6 @@ void do_fire(CHAR_DATA* ch, const char* argument)
     case DAM_STONE:
       msg = "You have no slingstones...\r\n";
       break;
-    case DAM_PEA:
-      msg = "You have no peas...\r\n";
-      break;
     }
     send_to_char(msg, ch);
     return;

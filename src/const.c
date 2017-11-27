@@ -265,13 +265,12 @@ const struct lck_app_type lck_app[26] = {
   {-120}   /* 25 */
 };
 
-const char *const attack_table[18] = {
-  "hit",
-  "slice", "stab", "slash", "whip", "claw",
-  "blast", "pound", "crush", "grep", "bite",
-  "pierce", "suction", "bolt", "arrow", "dart",
-  "stone", "pea"
+const char *const attack_table[23] = {
+  "hit", "pound", "crush", "smash", "spear", "pierce", "stab", "thrust",
+  "slice", "slash", "cleave", "chop", "smite", "whip", "claw", "bite",
+  "sting", "blast", "bolt", "arrow", "dart", "stone", "shield"
 };
+
 
 const char *s_blade_messages[24] = {
   "miss", "barely scratch", "scratch", "nick", "cut", "hit", "tear",

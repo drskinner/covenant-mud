@@ -932,44 +932,53 @@ int weapon_prof_bonus_check(CHAR_DATA * ch, OBJ_DATA * wield, int *gsn_ptr)
   *gsn_ptr = -1;
   if (!IS_NPC(ch) && ch->level > 5 && wield)
   {
-    switch (wield->value[3])
-    {
+    switch (wield->value[3]) {
     default:
       *gsn_ptr = -1;
       break;
+
     case DAM_HIT:
-    case DAM_SUCTION:
-    case DAM_BITE:
-    case DAM_BLAST:
-      *gsn_ptr = gsn_pugilism;
-      break;
-    case DAM_SLASH:
-    case DAM_SLICE:
-      *gsn_ptr = gsn_long_blades;
-      break;
-    case DAM_PIERCE:
-    case DAM_STAB:
-      *gsn_ptr = gsn_short_blades;
-      break;
-    case DAM_WHIP:
-      *gsn_ptr = gsn_flexible_arms;
-      break;
-    case DAM_CLAW:
-      *gsn_ptr = gsn_talonous_arms;
-      break;
     case DAM_POUND:
     case DAM_CRUSH:
       *gsn_ptr = gsn_bludgeons;
       break;
+
+    case DAM_SMASH:
+    case DAM_SPEAR:
+      *gsn_ptr = gsn_pole_weapons;
+
+    case DAM_SLASH:
+    case DAM_SLICE:
+    case DAM_THRUST:
+      *gsn_ptr = gsn_swords;
+      break;
+
+    case DAM_PIERCE:
+    case DAM_STAB:
+      *gsn_ptr = gsn_daggers;
+      break;
+
+    case DAM_SMITE:
+    case DAM_WHIP:
+    case DAM_CLAW:
+    case DAM_BITE:
+    case DAM_STING:
+    case DAM_BLAST:
+      *gsn_ptr = gsn_exotic_arms;
+      break;
+
     case DAM_BOLT:
     case DAM_ARROW:
     case DAM_DART:
     case DAM_STONE:
-    case DAM_PEA:
       *gsn_ptr = gsn_missile_weapons;
       break;
 
+    case DAM_SHIELD:
+      *gsn_ptr = gsn_shieldwork;
+      break;
     }
+
     if (*gsn_ptr != -1)
       bonus = (int)((LEARNED(ch, *gsn_ptr) - 50) / 10);
 
@@ -1863,7 +1872,7 @@ ch_ret damage(CHAR_DATA * ch, CHAR_DATA * victim, int dam, int dt)
       dam = ris_damage(victim, dam, RIS_POISON);
     else
       if (dt == (TYPE_HIT + DAM_POUND) || dt == (TYPE_HIT + DAM_CRUSH)
-          || dt == (TYPE_HIT + DAM_STONE) || dt == (TYPE_HIT + DAM_PEA))
+          || dt == (TYPE_HIT + DAM_STONE) || dt == (TYPE_HIT + DAM_DART))
         dam = ris_damage(victim, dam, RIS_BLUNT);
       else
         if (dt == (TYPE_HIT + DAM_STAB) || dt == (TYPE_HIT + DAM_PIERCE)

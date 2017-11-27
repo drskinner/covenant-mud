@@ -2463,14 +2463,14 @@ struct pc_data
   int timezone;
 };
 
-/*
- * Damage types from the attack_table[]
- */
+/* Damage types from the attack_table[] */
+
 typedef enum
 {
-  DAM_HIT, DAM_SLICE, DAM_STAB, DAM_SLASH, DAM_WHIP, DAM_CLAW,
-  DAM_BLAST, DAM_POUND, DAM_CRUSH, DAM_GREP, DAM_BITE, DAM_PIERCE,
-  DAM_SUCTION, DAM_BOLT, DAM_ARROW, DAM_DART, DAM_STONE, DAM_PEA
+  DAM_HIT, DAM_POUND, DAM_CRUSH, DAM_SMASH, DAM_SPEAR, DAM_PIERCE, DAM_STAB,
+  DAM_THRUST, DAM_SLICE, DAM_SLASH, DAM_CLEAVE, DAM_CHOP, DAM_SMITE,
+  DAM_WHIP, DAM_CLAW, DAM_BITE, DAM_STING, DAM_BLAST, DAM_BOLT,
+  DAM_ARROW, DAM_DART, DAM_STONE, DAM_SHIELD
 } damage_types;
 
 /*
@@ -3040,13 +3040,15 @@ extern short gsn_scribe;
 extern short gsn_brew;
 extern short gsn_climb;
 
-extern short gsn_pugilism;
-extern short gsn_long_blades;
-extern short gsn_short_blades;
-extern short gsn_flexible_arms;
-extern short gsn_talonous_arms;
+
 extern short gsn_bludgeons;
+extern short gsn_pole_weapons;
+extern short gsn_daggers;
+extern short gsn_swords;
+extern short gsn_axes;
+extern short gsn_exotic_arms;
 extern short gsn_missile_weapons;
+extern short gsn_shieldwork;
 
 extern short gsn_grip;
 extern short gsn_slice;
@@ -3547,7 +3549,7 @@ extern const struct lck_app_type lck_app[26];
 
 extern const struct race_type _race_table[MAX_RACE];
 extern struct race_type *race_table[MAX_RACE];
-extern const char *const attack_table[18];
+extern const char *const attack_table[23];
 
 extern const char **const s_message_table[18];
 extern const char **const p_message_table[18];
