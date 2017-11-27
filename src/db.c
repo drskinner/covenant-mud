@@ -95,13 +95,14 @@ bool MPSilent;
 bool DONT_UPPER;
 
 /* weaponry */
-short gsn_pugilism;
-short gsn_long_blades;
-short gsn_short_blades;
-short gsn_flexible_arms;
-short gsn_talonous_arms;
 short gsn_bludgeons;
+short gsn_pole_weapons;
+short gsn_daggers;
+short gsn_swords;
+short gsn_axes;
+short gsn_exotic_arms;
 short gsn_missile_weapons;
+short gsn_shieldwork;
 
 /* thief */
 short gsn_detrap;
@@ -570,13 +571,15 @@ void boot_db(bool fCopyOver)
     ASSIGN_GSN(gsn_style_aggressive, "aggressive style");
     ASSIGN_GSN(gsn_style_berserk, "berserk style");
 
-    ASSIGN_GSN(gsn_pugilism, "pugilism");
-    ASSIGN_GSN(gsn_long_blades, "long blades");
-    ASSIGN_GSN(gsn_short_blades, "short blades");
-    ASSIGN_GSN(gsn_flexible_arms, "flexible arms");
-    ASSIGN_GSN(gsn_talonous_arms, "talonous arms");
-    ASSIGN_GSN(gsn_bludgeons, "bludgeons");
+    ASSIGN_GSN(gsn_pole_weapons,    "pole weapons");
+    ASSIGN_GSN(gsn_swords,          "swords");
+    ASSIGN_GSN(gsn_daggers,         "daggers");
+    ASSIGN_GSN(gsn_axes,            "axes");
+    ASSIGN_GSN(gsn_exotic_arms,     "exotic arms");
+    ASSIGN_GSN(gsn_bludgeons,       "bludgeons");
     ASSIGN_GSN(gsn_missile_weapons, "missile weapons");
+    ASSIGN_GSN(gsn_shieldwork,      "shields");
+
     ASSIGN_GSN(gsn_detrap, "detrap");
     ASSIGN_GSN(gsn_backstab, "backstab");
     ASSIGN_GSN(gsn_circle, "circle");
