@@ -1818,7 +1818,7 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
          * no good for newbies at all 
          */
         if (!IS_IMMORTAL(ch) && !ch->speaking)
-          ch->speaking = LANG_COMMON;
+          ch->speaking = LANG_SAXON;
         /*
          * ch->speaking = race_table[ch->race]->language; 
          */

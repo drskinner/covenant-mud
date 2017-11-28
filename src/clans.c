@@ -1665,7 +1665,7 @@ void do_outcast(CHAR_DATA* ch, const char* argument)
   }
 
   if (victim->speaking & LANG_CLAN)
-    victim->speaking = LANG_COMMON;
+    victim->speaking = LANG_SAXON;
   REMOVE_BIT(victim->speaks, LANG_CLAN);
   --clan->members;
   if (clan->members < 0)
