@@ -578,7 +578,7 @@ void boot_db(bool fCopyOver)
     ASSIGN_GSN(gsn_exotic_arms,     "exotic arms");
     ASSIGN_GSN(gsn_bludgeons,       "bludgeons");
     ASSIGN_GSN(gsn_missile_weapons, "missile weapons");
-    ASSIGN_GSN(gsn_shieldwork,      "shields");
+    ASSIGN_GSN(gsn_shieldwork,      "shieldwork");
 
     ASSIGN_GSN(gsn_detrap, "detrap");
     ASSIGN_GSN(gsn_backstab, "backstab");
