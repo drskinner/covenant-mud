@@ -179,16 +179,16 @@ short gsn_chill_touch;
 short gsn_lightning_bolt;
 
 /* languages */
-short gsn_common;
-short gsn_elven;
-short gsn_dwarven;
-short gsn_pixie;
-short gsn_ogre;
-short gsn_orcish;
-short gsn_trollish;
-short gsn_goblin;
-short gsn_halfling;
-short gsn_gnomish;
+short gsn_saxon;
+short gsn_coronaise;
+short gsn_mestijo;
+short gsn_mossik;
+short gsn_nadrali;
+short gsn_tarsch;
+short gsn_ynglwsh;
+short gsn_zenji;
+short gsn_thephian;
+short gsn_latatian;
 
 // The total number of skills.
 // Note that the range [0; num_sorted_skills[ is
@@ -644,16 +644,17 @@ void boot_db(bool fCopyOver)
     ASSIGN_GSN(gsn_poison, "poison");
     ASSIGN_GSN(gsn_sleep, "sleep");
     ASSIGN_GSN(gsn_possess, "possess");
-    ASSIGN_GSN(gsn_common, "common");
-    ASSIGN_GSN(gsn_elven, "elven");
-    ASSIGN_GSN(gsn_dwarven, "dwarven");
-    ASSIGN_GSN(gsn_pixie, "pixie");
-    ASSIGN_GSN(gsn_ogre, "ogre");
-    ASSIGN_GSN(gsn_orcish, "orcish");
-    ASSIGN_GSN(gsn_trollish, "trollese");
-    ASSIGN_GSN(gsn_goblin, "goblin");
-    ASSIGN_GSN(gsn_halfling, "halfling");
-    ASSIGN_GSN(gsn_gnomish, "gnomish");
+
+    ASSIGN_GSN(gsn_saxon,     "saxon");
+    ASSIGN_GSN(gsn_coronaise, "coronaise");
+    ASSIGN_GSN(gsn_mestijo,   "mestijo");
+    ASSIGN_GSN(gsn_mossik,    "mossik");
+    ASSIGN_GSN(gsn_nadrali,   "nadrali");
+    ASSIGN_GSN(gsn_tarsch,    "tarsch");
+    ASSIGN_GSN(gsn_ynglwsh,   "ynglwsh");
+    ASSIGN_GSN(gsn_zenji,     "zenji");
+    ASSIGN_GSN(gsn_thephian,  "thephian");
+    ASSIGN_GSN(gsn_latatian,  "latatian");
   }
 
 #ifdef PLANES
@@ -1322,14 +1323,14 @@ void load_mobiles(AREA_DATA * tarea, FILE * fp)
       /*
        * Thanks to Nick Gammon for noticing this.
        * if (!pMobIndex->speaks)
-       * pMobIndex->speaks = race_table[pMobIndex->race]->language | LANG_COMMON;
+       * pMobIndex->speaks = race_table[pMobIndex->race]->language | LANG_SAXON;
        * if (!pMobIndex->speaking)
        * pMobIndex->speaking = race_table[pMobIndex->race]->language;
        */
       if (!pMobIndex->speaks)
-        pMobIndex->speaks = LANG_COMMON;
+        pMobIndex->speaks = LANG_SAXON;
       if (!pMobIndex->speaking)
-        pMobIndex->speaking = LANG_COMMON;
+        pMobIndex->speaking = LANG_SAXON;
 
       pMobIndex->hitroll = fread_number(fp);
       pMobIndex->damroll = fread_number(fp);
@@ -1356,8 +1357,8 @@ void load_mobiles(AREA_DATA * tarea, FILE * fp)
       pMobIndex->immune = 0;
       pMobIndex->susceptible = 0;
       pMobIndex->numattacks = 0;
-      pMobIndex->speaks = LANG_COMMON;
-      pMobIndex->speaking = LANG_COMMON;
+      pMobIndex->speaks = LANG_SAXON;
+      pMobIndex->speaking = LANG_SAXON;
       xCLEAR_BITS(pMobIndex->attacks);
       xCLEAR_BITS(pMobIndex->defenses);
     }
@@ -3006,8 +3007,8 @@ void clear_char(CHAR_DATA * ch)
   ch->xflags = 0;
   ch->race = 0;
   ch->Class = 3;
-  ch->speaking = LANG_COMMON;
-  ch->speaks = LANG_COMMON;
+  ch->speaking = LANG_SAXON;
+  ch->speaks = LANG_SAXON;
   ch->barenumdie = 1;
   ch->baresizedie = 4;
   ch->substate = 0;
@@ -7521,7 +7522,7 @@ void fread_fuss_mobile(FILE * fp, AREA_DATA * tarea)
         }
 
         if (!pMobIndex->speaks)
-          pMobIndex->speaks = LANG_COMMON;
+          pMobIndex->speaks = LANG_SAXON;
 
         fMatch = TRUE;
         break;
@@ -7542,7 +7543,7 @@ void fread_fuss_mobile(FILE * fp, AREA_DATA * tarea)
         }
 
         if (!pMobIndex->speaking)
-          pMobIndex->speaking = LANG_COMMON;
+          pMobIndex->speaking = LANG_SAXON;
 
         fMatch = TRUE;
         break;

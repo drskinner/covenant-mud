@@ -4025,7 +4025,7 @@ void do_immortalize(CHAR_DATA* ch, const char* argument)
   argument = one_argument(argument, arg);
   if (arg[0] == '\0')
   {
-    send_to_char("Syntax:  immortalize <char>\r\n", ch);
+    send_to_char("Syntax: immortalize <char>\r\n", ch);
     return;
   }
   if ((victim = get_char_room(ch, arg)) == NULL)
@@ -4080,7 +4080,7 @@ void do_immortalize(CHAR_DATA* ch, const char* argument)
           victim->pcdata->learned[sn] = 0;
     }
     if (victim->speaking & LANG_CLAN)
-      victim->speaking = LANG_COMMON;
+      victim->speaking = LANG_SAXON;
     REMOVE_BIT(victim->speaks, LANG_CLAN);
     --victim->pcdata->clan->members;
     if (!str_cmp(victim->name, victim->pcdata->clan->leader))

@@ -2504,13 +2504,15 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     if (ch->Class == CLASS_CRUSADER)
       ch->alignment = 1000;
 
-    if ((iLang = skill_lookup("common")) < 0)
-      bug("%s", "Nanny: cannot find common language.");
+    if ((iLang = skill_lookup("saxon")) < 0)
+      bug("%s", "Nanny: cannot find saxon language.");
     else
       ch->pcdata->learned[iLang] = 100;
 
     /*
      * Give them their racial languages 
+     * We may be able to deprecate this block.
+     * Languages are regional, not racial. -- Shamus
      */
     if (race_table[ch->race])
     {
@@ -2549,6 +2551,17 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     ch->pcdata->birthdate = (((time_info.year - 17) * 10000) +
 			     ((time_info.month + 1) * 100) +
 			     (time_info.day + 1));
+
+    /* Initialize basic skills and hex location here */
+    /* Not ready yet. */
+#if 0
+    ch->pcdata->rank[gsn_saxon] = 1;
+    ch->pcdata->rank[gsn_travelling] = 1;
+    ch->pcdata->rank[gsn_basic_combat] = 1;
+
+    ch->xhex  = -1;
+    ch->yhex  = -1;
+#endif
 
     snprintf(buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0]);
     set_title(ch, buf);

@@ -3014,7 +3014,7 @@ void do_mset(CHAR_DATA* ch, const char* argument)
             victim->pcdata->learned[sn] = 0;
       }
       if (victim->speaking & LANG_CLAN)
-        victim->speaking = LANG_COMMON;
+        victim->speaking = LANG_SAXON;
       REMOVE_BIT(victim->speaks, LANG_CLAN);
       --victim->pcdata->clan->members;
       if (!str_cmp(victim->name, victim->pcdata->clan->leader))
