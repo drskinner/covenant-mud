@@ -213,26 +213,6 @@ void re_equip_char(CHAR_DATA * ch)
   }
 }
 
-short find_old_age(CHAR_DATA * ch)
-{
-  short age;
-
-  if (IS_NPC(ch))
-    return -1;
-
-  age = ch->played / 86400;   /* Calculate realtime number of days played */
-
-  age = age / 7; /* Calculates rough estimate on number of mud years played */
-
-  age += 17;  /* Add 17 years, new characters begin at 17. */
-
-  ch->pcdata->day = (number_range(1, sysdata.dayspermonth) - 1);   /* Assign random day of birth */
-  ch->pcdata->month = (number_range(1, sysdata.monthsperyear) - 1);   /* Assign random month of birth */
-  ch->pcdata->year = time_info.year - age;  /* Assign birth year based on calculations above */
-
-  return age;
-}
-
 /*
  * Save a character and inventory.
  * Would be cool to save NPC's too for quest purposes,
@@ -383,8 +363,6 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   fprintf(fp, "Sex          %d\n", ch->sex);
   fprintf(fp, "Class        %d\n", ch->Class);
   fprintf(fp, "Race         %d\n", ch->race);
-  fprintf(fp, "Age          %d %d %d %d\n",
-           ch->pcdata->age_bonus, ch->pcdata->day, ch->pcdata->month, ch->pcdata->year);
   fprintf(fp, "Languages    %d %d\n", ch->speaks, ch->speaking);
   fprintf(fp, "Level        %d\n", ch->level);
   fprintf(fp, "Played       %d\n", ch->played + (int)(current_time - ch->logon));
@@ -424,6 +402,7 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   fprintf(fp, "SavingThrows %d %d %d %d %d\n",
            ch->saving_poison_death, ch->saving_wand, ch->saving_para_petri, ch->saving_breath, ch->saving_spell_staff);
   fprintf(fp, "Alignment    %d\n", ch->alignment);
+  fprintf(fp, "Birthdate    %d\n", ch->pcdata->birthdate);
   fprintf(fp, "Favor        %d\n", ch->pcdata->favor);
   fprintf(fp, "Glory        %d\n", ch->pcdata->quest_curr);
   fprintf(fp, "MGlory       %d\n", ch->pcdata->quest_accum);
@@ -837,9 +816,12 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
   ch->pcdata->condition[COND_THIRST] = 48;
   ch->pcdata->condition[COND_FULL] = 48;
   ch->pcdata->condition[COND_WIRED] = 0;
+
   ch->pcdata->nuisance = NULL;
   ch->pcdata->wizinvis = 0;
+  ch->pcdata->birthdate = 1150418;
   ch->pcdata->home_room = 10223;
+
   ch->pcdata->charmies = 0;
   ch->mental_state = -10;
   ch->mobinvis = 0;
@@ -1171,24 +1153,6 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
         break;
       }
 
-      if (file_ver < 5)
-        find_old_age(ch);
-      else
-      {
-        if (!str_cmp(word, "Age"))
-        {
-          line = fread_line(fp);
-          x1 = x2 = x3 = x4 = 0;
-          sscanf(line, "%d %d %d %d", &x1, &x2, &x3, &x4);
-          ch->pcdata->age_bonus = x1;
-          ch->pcdata->day = x2;
-          ch->pcdata->month = x3;
-          ch->pcdata->year = x4;
-          fMatch = TRUE;
-          break;
-        }
-      }
-
       if (!strcmp(word, "AttrMod"))
       {
         line = fread_line(fp);
@@ -1232,6 +1196,7 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       KEY("Bamfout", ch->pcdata->bamfout, fread_string_nohash(fp));
       KEY("Bestowments", ch->pcdata->bestowments, fread_string_nohash(fp));
       KEY("Bio", ch->pcdata->bio, fread_string(fp));
+      KEY("Birthdate", ch->pcdata->birthdate, fread_number(fp));
       break;
 
     case 'C':

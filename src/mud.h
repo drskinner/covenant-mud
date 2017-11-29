@@ -2414,7 +2414,8 @@ struct pc_data
   int mkills; /* Number of mobs killed         */
   int mdeaths;   /* Number of deaths due to mobs       */
   int illegal_pk;   /* Number of illegal pk's committed   */
-  int home_room; /* Where is my office? */
+  int birthdate;    /* yyyymmdd -- ISO-8601 FTW */
+  int home_room;    /* Where is my office? */
   int r_range_lo;   /* room range */
   int r_range_hi;
   int m_range_lo;   /* mob range  */
@@ -2448,11 +2449,6 @@ struct pc_data
   IMC_CHARDATA *imcchardata;
 #endif
   bool hotboot;  /* hotboot tracker */
-  short age_bonus;
-  short age;
-  short day;
-  short month;
-  short year;
   int timezone;
 };
 
@@ -3304,6 +3300,9 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 #define IS_AFFECTED(ch, sn)     (xIS_SET((ch)->affected_by, (sn)))
 #define HAS_BODYPART(ch, part)  ((ch)->xflags == 0 || IS_SET((ch)->xflags, (part)))
 #define GET_TIME_PLAYED(ch)     (((ch)->played + (current_time - (ch)->logon)) / 3600)
+#define BIRTH_DAY(ch)           ((ch)->pcdata->birthdate % 100)
+#define BIRTH_MONTH(ch)         (((ch)->pcdata->birthdate % 10000) / 100)
+#define BIRTH_YEAR(ch)          ((ch)->pcdata->birthdate / 10000)
 #define CAN_CAST(ch)            ((ch)->Class != 2 && (ch)->Class != 3)
 
 #define IS_GOOD(ch)             ((ch)->alignment >= 350)
@@ -3603,6 +3602,8 @@ extern const char *const login_msg[];
 
 extern const char *const sector_name[];
 extern const char *const prepositions[];
+extern const char *const zodiac_name[10];
+extern const char *const zodiac_icon[10];
 
 /*
  * Global variables.
@@ -4814,6 +4815,7 @@ int get_exp_worth(CHAR_DATA * ch);
 int exp_level(CHAR_DATA * ch, short level);
 short get_trust(CHAR_DATA * ch);
 short calculate_age(CHAR_DATA * ch);
+short get_zodiac_sign(CHAR_DATA * ch);
 short get_curr_str(CHAR_DATA * ch);
 short get_curr_int(CHAR_DATA * ch);
 short get_curr_wis(CHAR_DATA * ch);

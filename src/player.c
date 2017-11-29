@@ -144,23 +144,24 @@ void do_score(CHAR_DATA* ch, const char* argument)
   char buf[MAX_STRING_LENGTH];
   AFFECT_DATA *paf;
   int iLang;
-  /*const char *suf;
-    short day;
+  const char *suf;
+  int year;
+  short month, day;
 
-    day = ch->pcdata->day + 1;
+  year = BIRTH_YEAR(ch);
+  month = BIRTH_MONTH(ch);
+  day = BIRTH_DAY(ch);
 
-    if (day > 4 && day < 20)
+  if (day > 4 && day < 20)
     suf = "th";
-    else if (day % 10 == 1)
+  else if (day % 10 == 1)
     suf = "st";
-    else if (day % 10 == 2)
+  else if (day % 10 == 2)
     suf = "nd";
-    else if (day % 10 == 3)
+  else if (day % 10 == 3)
     suf = "rd";
-    else
+  else
     suf = "th";
-    * - Uncomment this if you want Birthdays dispayed on score for players - Kayle 1/22/08
-    */
 
   set_pager_color(AT_SCORE, ch);
 
@@ -170,14 +171,26 @@ void do_score(CHAR_DATA* ch, const char* argument)
 
   send_to_pager("----------------------------------------------------------------------------\r\n", ch);
 
-  /*if (time_info.day == ch->pcdata->day && time_info.month == ch->pcdata->month)
-    send_to_char("Today is your birthday!\r\n", ch);
-    else
-    ch_printf(ch, "Your birthday is: Day of %s, %d%s day in the Month of %s, in the year %d.\r\n",
-    day_name[ch->pcdata->day % sysdata.daysperweek], day, suf, month_name[ch->pcdata->month], ch->pcdata->year);
-    send_to_pager("----------------------------------------------------------------------------\r\n", ch);
-    * - Uncomment this if you want players to see their birthday's on score. - Kayle 1/22/08
-    */
+  pager_printf(ch, "Your birthday is: Day of %s, %d%s day in the Month of %s, in the year %d.\r\n",
+    day_name[day % sysdata.daysperweek], day, suf, month_name[month - 1], year);
+
+  /* The two hardest things in programming are off-by-one errors. */
+
+  if (day == (time_info.day + 1) && month == (time_info.month + 1))
+    pager_printf(ch, "Today is your birthday!\r\n");
+
+  send_to_pager("----------------------------------------------------------------------------\r\n", ch);
+
+  pager_printf_color(ch, "&GDate of Birth: &c%s %d %d\n\r",
+                     (month >= 1 && month <= 17) ?
+                     month_name[month - 1] : "&RBUG",
+                     day, year);
+
+  pager_printf_color(ch, "&GYou were born under the astrological sign of ");
+  pager_printf_color(ch, "&c%s&G,&c %s\n\r",
+                     zodiac_name[get_zodiac_sign(ch)], zodiac_icon[get_zodiac_sign(ch)]);
+
+  send_to_pager("----------------------------------------------------------------------------\r\n", ch);
 
   pager_printf(ch, "LEVEL: %-3d         Race : %-10.10s        Played: %ld hours\r\n",
                 ch->level, capitalize(get_race(ch)), (long int)GET_TIME_PLAYED(ch));

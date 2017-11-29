@@ -700,27 +700,56 @@ short get_trust(CHAR_DATA * ch)
   return ch->level;
 }
 
-/* One hopes this will do as planned and determine how old a PC is based on the birthdate
-   we record at creation. - Samson 10-25-99 */
+/* Simplified age calculation -- Shamus */
+
 short calculate_age(CHAR_DATA * ch)
 {
-  short age, num_days, ch_days;
+  int today;
+  short years;
 
   if (IS_NPC(ch))
-    return -1;
+    return 17;
 
-  num_days = (time_info.month + 1) * sysdata.dayspermonth;
-  num_days += time_info.day;
+  today = ((time_info.year * 10000) +
+           ((time_info.month + 1) * 100) +
+           (time_info.day + 1));
 
-  ch_days = (ch->pcdata->month + 1) * sysdata.dayspermonth;
-  ch_days += ch->pcdata->day;
+  years = (today - ch->pcdata->birthdate) / 10000;
 
-  age = time_info.year - ch->pcdata->year;
+  if (years < 0)
+    return 0;
+  else
+    return years;
+}
 
-  if (ch_days - num_days > 0)
-    age -= 1;
+/* Retrieve integer representation of character's star sign */
 
-  return age;
+short get_zodiac_sign(CHAR_DATA * ch)
+{
+  int date;
+
+  date = ch->pcdata->birthdate % 10000;
+
+  if (date >= 30 && date <= 319)    /* January 30 - February 19 */
+    return 1;
+  if (date >= 320 && date <= 509)   /* February 20 - April 09 */
+    return 2;
+  if (date >= 510 && date <= 633)   /* April 10 - May 33 */
+    return 3;
+  if (date >= 634 && date <= 823)   /* May 34 - June 23 */
+    return 4;
+  if (date >= 824 && date <= 1012)  /* June 24 - July 12 */
+    return 5;
+  if (date >= 1013 && date <= 1202) /* July 13 - August 02 */
+    return 6;
+  if (date >= 1203 && date <= 1326) /* August 03 - Hesper 26 */
+    return 7;
+  if (date >= 1327 && date <= 1516) /* Hesper 27 - November 16 */
+    return 8;
+  if (date >= 1517 && date <= 1705) /* November 17 - December 05 */
+    return 9;
+
+  return 0;  /* December 06 - January 30 */
 }
 
 /*
