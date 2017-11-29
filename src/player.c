@@ -422,7 +422,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
     }
   }
 
-  send_to_pager_color("\r\n", ch);
+  send_to_pager_color("&w\r\n", ch);
   return;
 }
 
