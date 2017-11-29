@@ -20,6 +20,16 @@
 
 /* Custom constant arrays -- Shamus */
 
+const char *const zodiac_name[10] = {
+  "Ursus", "Pulex", "Aratum", "Serpens", "Vacca",
+  "Poculum", "Curra", "Venatus", "Cuniculus", "Bubo"
+};
+
+const char *const zodiac_icon[10] = {
+  "the Bear", "the Flea", "the Plough", "the Snake", "the Cow",
+  "the Cups", "the Trickster", "the Hunter", "the Rabbit", "the Owl"
+};
+
 const char *const sector_name[SECT_MAX] = {
   "Inside", "City", "Wall", "Bridge", "Field", "Light Woods", "Heavy Woods",
   "Desert", "Hills", "Rough", "Mountain", "Snow", "Ice", "Swamp",

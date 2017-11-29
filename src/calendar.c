@@ -220,15 +220,15 @@ char *mini_c_time(time_t curtime, int tz)
 /* Time values modified to Alsherok calendar - Samson 5-6-99 */
 /* Time Values Modified to Smaug Calendar - Kayle 10-17-07 */
 const char *const day_name[] = {
-  "the Moon", "the Bull", "Deception", "Thunder", "Freedom",
-  "the Great Gods", "the Sun"
+  "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+  "Saturday", "Sunday"
 };
 
 const char *const month_name[] = {
-  "Winter", "the Winter Wolf", "the Frost Giant", "the Old Forces",
-  "the Grand Struggle", "the Spring", "Nature", "Futility", "the Dragon",
-  "the Sun", "the Heat", "the Battle", "the Dark Shades", "the Shadows",
-  "the Long Shadows", "the Ancient Darkness", "the Great Evil"
+  "January", "Eniero", "February", "Aratan",
+  "April", "May", "Mus", "June", "Grune",
+  "July", "Prentice", "August", "Hesper", "Lapine",
+  "November", "Valoria", "December"
 };
 
 const char *const season_name[] = {
@@ -504,8 +504,8 @@ void do_time(CHAR_DATA* ch, const char* argument)
 
   if (!IS_NPC(ch))
   {
-    if (day == ch->pcdata->day + 1 && time_info.month == ch->pcdata->month)
-      send_to_char("&WToday is your &Pb&pi&Yr&Oth&Yd&pa&Py&R!&D\r\n", ch);
+    if (day == BIRTH_DAY(ch) && (time_info.month + 1) == BIRTH_MONTH(ch))
+      send_to_char("&WToday is your &Gb&Yi&Cr&Bt&Mh&Bd&Ca&Yy&G!&w\r\n", ch);
   }
 
   /* Uncomment if you have Samson's Pfile Cleanup Snippet installed.

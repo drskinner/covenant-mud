@@ -2544,14 +2544,12 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     ch->mana = UMAX(1, ch->max_mana);
     ch->move = ch->max_move;
     ch->gold = 0;
-    /*
-     * Set player birthday to current mud day, -17 years - Samson 10-25-99
-     */
-    ch->pcdata->day = time_info.day;
-    ch->pcdata->month = time_info.month;
-    ch->pcdata->year = time_info.year - 17;
-    ch->pcdata->age = 17;
-    ch->pcdata->age_bonus = 0;
+
+    /* Set new birthdate field to current mud date 17 years ago -- Shamus */
+    ch->pcdata->birthdate = (((time_info.year - 17) * 10000) +
+			     ((time_info.month + 1) * 100) +
+			     (time_info.day + 1));
+
     snprintf(buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0]);
     set_title(ch, buf);
 
