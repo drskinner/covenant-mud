@@ -198,7 +198,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
   /* The two hardest things in programming are off-by-one errors. */
 
   if (day == (time_info.day + 1) && month == (time_info.month + 1))
-    pager_printf(ch, "&GToday is your b&Yi&Cr&Bt&Mh&Bd&Ca&Yy&G!\r\n");
+    pager_printf(ch, "&GToday is your &Mb&Yi&Cr&Bt&Mh&Bd&Ca&Yy&G!\r\n");
 
   pager_printf_color(ch, "&GHeight: &c%d&G'&c%d&G''  Weight: &c%d&Glbs.\r\n",
                      (ch->height)/12, (ch->height)%12, ch->weight);
