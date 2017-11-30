@@ -154,6 +154,7 @@ DECLARE_DO_FUN(do_color);
 #define AT_LOG          AT_GREY
 #define AT_ROOM_NAME    AT_WHITE
 #define AT_ROOM_DESC    AT_PLAIN
+#define AT_SCORE        AT_LGREEN
 #define AT_SHOUT        AT_LRED
 #define AT_SOCIAL       AT_PLAIN
 #define AT_SAY          35
@@ -188,7 +189,6 @@ DECLARE_DO_FUN(do_color);
 #define AT_FIRE         67
 #define AT_SOBER        68
 #define AT_WEAROFF      69
-#define AT_SCORE        71
 #define AT_RESET        72
 #define AT_DIEMSG       74
 #define AT_WARTALK      75
