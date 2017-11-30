@@ -168,7 +168,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
     pager_printf_color(ch, "&cFemale  ");
     break;
   default :
-    pager_printf_color(ch, "&cNeuter  ");
+    pager_printf_color(ch, "&cNon-Binary  ");
   }
 
   year = BIRTH_YEAR(ch);
@@ -186,7 +186,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
   else
     suffix = "th";
 
-  pager_printf_color(ch, "&GDate of Birth: &c%s %d%s, %d\r\n",
+  pager_printf_color(ch, "&GBirthdate: &c%s %d%s, %d\r\n",
                      (month >= 1 && month <= 17) ?
                      month_name[month - 1] : "&RBUG",
                      day, suffix, year);
