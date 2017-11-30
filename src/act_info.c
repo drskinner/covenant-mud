@@ -1406,7 +1406,7 @@ void do_look(CHAR_DATA * ch, const char *argument)
 
       {
         LIQ_TABLE *liq = get_liq_vnum(obj->value[2]);
-        ch_printf(ch, "It's%sfull of a %s liquid.\n\r",
+        ch_printf(ch, "It's%sfull of a %s liquid.\r\n",
                   obj->value[1] <=    obj->value[0] / 4 ? " less than half " :
                   obj->value[1] < 3 * obj->value[0] / 4 ? " about half "     :
                   obj->value[1] == obj->value[0] ? " " : " more than half ",
