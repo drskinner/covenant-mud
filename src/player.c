@@ -228,16 +228,16 @@ void do_score(CHAR_DATA* ch, const char* argument)
 
 #if false
    if (ch->level >= 51)
-     pager_printf_color(ch, "&GImmortal Level: &c%d&G\n\r&w", ch->level);
+     pager_printf_color(ch, "&GImmortal Level: &c%d&G\r\n&w", ch->level);
    else
-     pager_printf_color(ch, "&GYour level...%s: &c%d&G\n\r&w",
+     pager_printf_color(ch, "&GYour level...%s: &c%d&G\r\n&w",
 			capitalize(get_class(ch)), GET_LEVEL(ch));
 #endif
 
    if (ch->level >= 51)
-     pager_printf_color(ch, "&GImmortal Level: &c%d&G\n\r&w", ch->level);
+     pager_printf_color(ch, "&GImmortal Level: &c%d&G\r\n&w", ch->level);
    else
-     pager_printf_color(ch, "&GYour level...%s: &c%d&G\n\r&w",
+     pager_printf_color(ch, "&GYour level...%s: &c%d&G\r\n&w",
 			capitalize(get_class(ch)), ch->level);
 
   if (ch->alignment > 900)
