@@ -150,6 +150,7 @@ DECLARE_DO_FUN(do_color);
 
 #define AT_PLAIN        33
 #define AT_ACTION       AT_PLAIN
+#define AT_CHAT         AT_LGREEN
 #define AT_EXITS        AT_GREY
 #define AT_LOG          AT_GREY
 #define AT_ROOM_NAME    AT_WHITE

@@ -486,6 +486,12 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     snprintf(buf, MAX_STRING_LENGTH, "$n %ss '$t'", verb);
     break;
 
+  case CHANNEL_CHAT:
+    set_char_color(AT_CHAT, ch);
+    ch_printf(ch, "You %s '%s'\r\n", verb, argument);
+    snprintf(buf, MAX_STRING_LENGTH, "&G[&W$n&G] %ss, \"$t\"&w", verb);
+    break;
+
   case CHANNEL_IMMTALK:
     snprintf(buf, MAX_STRING_LENGTH, "&B::&W$n&B:: \"$t\"&w");
     position = ch->position;
