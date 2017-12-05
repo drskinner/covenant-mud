@@ -279,7 +279,7 @@ void found_prey(CHAR_DATA * ch, CHAR_DATA * victim)
       break;
     case 2:
       snprintf(buf, MAX_STRING_LENGTH, "I'm going to tear %s apart!", victname);
-      do_yell(ch, buf);
+      do_gossip(ch, buf);
       break;
     case 3:
       do_say(ch, "Just wait until I find you...");
@@ -297,7 +297,7 @@ void found_prey(CHAR_DATA * ch, CHAR_DATA * victim)
     case 0:
       do_say(ch, "C'mon out, you coward!");
       snprintf(buf, MAX_STRING_LENGTH, "%s is a bloody coward!", victname);
-      do_yell(ch, buf);
+      do_gossip(ch, buf);
       break;
     case 1:
       snprintf(buf, MAX_STRING_LENGTH, "Let's take this outside, %s", victname);
@@ -305,7 +305,7 @@ void found_prey(CHAR_DATA * ch, CHAR_DATA * victim)
       break;
     case 2:
       snprintf(buf, MAX_STRING_LENGTH, "%s is a yellow-bellied wimp!", victname);
-      do_yell(ch, buf);
+      do_gossip(ch, buf);
       break;
     case 3:
       act(AT_ACTION, "$n takes a few swipes at $N.", ch, NULL, victim, TO_NOTVICT);
@@ -320,7 +320,7 @@ void found_prey(CHAR_DATA * ch, CHAR_DATA * victim)
   {
   case 0:
     snprintf(buf, MAX_STRING_LENGTH, "Your blood is mine, %s!", victname);
-    do_yell(ch, buf);
+    do_gossip(ch, buf);
     break;
   case 1:
     snprintf(buf, MAX_STRING_LENGTH, "Alas, we meet again, %s!", victname);

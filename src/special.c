@@ -626,12 +626,12 @@ bool spec_executioner(CHAR_DATA * ch)
   if (xIS_SET(ch->in_room->room_flags, ROOM_SAFE))
   {
     snprintf(buf, MAX_STRING_LENGTH, "%s is a %s!  As well as a COWARD!", victim->name, crime);
-    do_yell(ch, buf);
+    do_gossip(ch, buf);
     return TRUE;
   }
 
   snprintf(buf, MAX_STRING_LENGTH, "%s is a %s!  PROTECT THE INNOCENT!  MORE BLOOOOD!!!", victim->name, crime);
-  do_yell(ch, buf);
+  do_gossip(ch, buf);
   multi_hit(ch, victim, TYPE_UNDEFINED);
   if (char_died(ch))
     return TRUE;
@@ -725,21 +725,21 @@ bool spec_guard(CHAR_DATA * ch)
   if (victim && xIS_SET(ch->in_room->room_flags, ROOM_SAFE))
   {
     snprintf(buf, MAX_STRING_LENGTH, "%s is a %s!  As well as a COWARD!", victim->name, crime);
-    do_yell(ch, buf);
+    do_gossip(ch, buf);
     return TRUE;
   }
 
   if (victim)
   {
     snprintf(buf, MAX_STRING_LENGTH, "%s is a %s!  PROTECT THE INNOCENT!!  BANZAI!!", victim->name, crime);
-    do_yell(ch, buf);
+    do_gossip(ch, buf);
     multi_hit(ch, victim, TYPE_UNDEFINED);
     return TRUE;
   }
 
   if (ech)
   {
-    act(AT_YELL, "$n screams 'PROTECT THE INNOCENT!!  BANZAI!!", ch, NULL, NULL, TO_ROOM);
+    act(AT_GOSSIP, "$n screams 'PROTECT THE INNOCENT!!  BANZAI!!", ch, NULL, NULL, TO_ROOM);
     multi_hit(ch, ech, TYPE_UNDEFINED);
     return TRUE;
   }

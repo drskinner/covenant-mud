@@ -152,6 +152,7 @@ DECLARE_DO_FUN(do_color);
 #define AT_ACTION       AT_PLAIN
 #define AT_CHAT         AT_LGREEN
 #define AT_EXITS        AT_GREY
+#define AT_GOSSIP       AT_YELLOW
 #define AT_LOG          AT_GREY
 #define AT_ROOM_NAME    AT_WHITE
 #define AT_ROOM_DESC    AT_PLAIN
@@ -159,8 +160,6 @@ DECLARE_DO_FUN(do_color);
 #define AT_SHOUT        AT_LRED
 #define AT_SOCIAL       AT_PLAIN
 #define AT_SAY          35
-#define AT_GOSSIP       36
-#define AT_YELL         37
 #define AT_TELL         38
 #define AT_HIT          39
 #define AT_HITME        40

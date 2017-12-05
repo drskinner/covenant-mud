@@ -2643,7 +2643,7 @@ void do_steal(CHAR_DATA* ch, const char* argument)
     act(AT_ACTION, "$n tried to steal from $N.\r\n", ch, NULL, victim, TO_NOTVICT);
 
     snprintf(buf, MAX_STRING_LENGTH, "%s is a bloody thief!", ch->name);
-    do_yell(victim, buf);
+    do_gossip(victim, buf);
 
     learn_from_failure(ch, gsn_steal);
     if (!IS_NPC(ch))
