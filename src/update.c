@@ -737,7 +737,7 @@ void mobile_update(void)
             snprintf(buf, MAX_STRING_LENGTH, "Someone save me from %s!", rch->name);
             break;
           }
-          do_yell(ch, buf);
+          do_gossip(ch, buf);
           found = TRUE;
           break;
         }

@@ -47,7 +47,7 @@ CHAR_DATA *find_keeper(CHAR_DATA * ch)
   {
     do_say(keeper, "Murderers are not welcome here!");
     snprintf(buf, MAX_STRING_LENGTH, "%s the KILLER is over here!\r\n", ch->name);
-    do_yell(keeper, buf);
+    do_gossip(keeper, buf);
     return NULL;
   }
 
@@ -55,7 +55,7 @@ CHAR_DATA *find_keeper(CHAR_DATA * ch)
   {
     do_say(keeper, "Thieves are not welcome here!");
     snprintf(buf, MAX_STRING_LENGTH, "%s the THIEF is over here!\r\n", ch->name);
-    do_yell(keeper, buf);
+    do_gossip(keeper, buf);
     return NULL;
   }
 
@@ -171,7 +171,7 @@ CHAR_DATA *find_fixer(CHAR_DATA * ch)
   {
     do_say(keeper, "Murderers are not welcome here!");
     snprintf(buf, MAX_STRING_LENGTH, "%s the KILLER is over here!\r\n", ch->name);
-    do_yell(keeper, buf);
+    do_gossip(keeper, buf);
     return NULL;
   }
 
@@ -179,7 +179,7 @@ CHAR_DATA *find_fixer(CHAR_DATA * ch)
   {
     do_say(keeper, "Thieves are not welcome here!");
     snprintf(buf, MAX_STRING_LENGTH, "%s the THIEF is over here!\r\n", ch->name);
-    do_yell(keeper, buf);
+    do_gossip(keeper, buf);
     return NULL;
   }
 

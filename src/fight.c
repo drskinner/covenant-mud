@@ -4031,7 +4031,7 @@ void do_murder(CHAR_DATA* ch, const char* argument)
   if (IS_PKILL(victim))
     do_wartalk(victim, buf);
   else
-    do_yell(victim, buf);
+    do_gossip(victim, buf);
   check_illegal_pk(ch, victim);
   check_attacker(ch, victim);
   multi_hit(ch, victim, TYPE_UNDEFINED);

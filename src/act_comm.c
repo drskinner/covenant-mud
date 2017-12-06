@@ -384,7 +384,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     return;
   }
 
-  if (channel == CHANNEL_YELL && xIS_SET(ch->in_room->room_flags, ROOM_NOYELL))
+  if (channel == CHANNEL_GOSSIP && xIS_SET(ch->in_room->room_flags, ROOM_NOGOSSIP))
   {
     send_to_char("You can't do that here.\r\n", ch);
     return;
@@ -411,7 +411,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     return;
   }
 
-  if (IS_SET(ch->deaf, channel) && channel != CHANNEL_WARTALK && channel != CHANNEL_YELL)
+  if (IS_SET(ch->deaf, channel) && channel != CHANNEL_WARTALK && channel != CHANNEL_GOSSIP)
   {
     ch_printf(ch, "You don't have the %s channel turned on. To turn it on, use the Channels command.\r\n", verb);
     return;
@@ -512,10 +512,10 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     snprintf(buf, MAX_STRING_LENGTH, "&R[&W$n&R] %ss, \"$t\"&w", verb);
     break;
 
-  case CHANNEL_YELL:
-    set_char_color(AT_YELL, ch);
+  case CHANNEL_GOSSIP:
+    set_char_color(AT_GOSSIP, ch);
     ch_printf(ch, "You %s '%s'\r\n", verb, argument);
-    snprintf(buf, MAX_STRING_LENGTH, "$n %ss '$t'", verb);
+    snprintf(buf, MAX_STRING_LENGTH, "&Y[&W$n&Y] %ss, \"$t\"&w", verb);
     break;
 
   case CHANNEL_QUEST:
@@ -594,8 +594,8 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
       if (xIS_SET(vch->in_room->room_flags, ROOM_SILENCE) || IS_SET(vch->in_room->area->flags, AFLAG_SILENCE))
         continue;
 
-      if (channel == CHANNEL_YELL
-          && (vch->in_room->area != ch->in_room->area || xIS_SET(vch->in_room->room_flags, ROOM_NOYELL)
+      if (channel == CHANNEL_GOSSIP
+          && (vch->in_room->area != ch->in_room->area || xIS_SET(vch->in_room->room_flags, ROOM_NOGOSSIP)
                || ((xIS_SET(vch->in_room->room_flags, ROOM_HOUSE) || xIS_SET(och->in_room->room_flags, ROOM_HOUSE))
                     && !in_same_house(ch, vch))))
         continue;
@@ -630,7 +630,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
       }
 
       position = vch->position;
-      if (channel != CHANNEL_SHOUT && channel != CHANNEL_YELL)
+      if (channel != CHANNEL_SHOUT && channel != CHANNEL_GOSSIP)
         vch->position = POS_STANDING;
 #ifndef SCRAMBLE
       if (speaking != -1 && (!IS_NPC(ch) || ch->speaking))
@@ -670,8 +670,8 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
         act(AT_SHOUT, lbuf, ch, sbuf, vch, TO_VICT);
       else if (channel == CHANNEL_HIGHGOD)
         act(AT_MUSE, lbuf, ch, sbuf, vch, TO_VICT);
-      else if (channel == CHANNEL_YELL)
-        act(AT_YELL, lbuf, ch, sbuf, vch, TO_VICT);
+      else if (channel == CHANNEL_GOSSIP)
+        act(AT_GOSSIP, lbuf, ch, sbuf, vch, TO_VICT);
       else if (channel == CHANNEL_QUEST)
         act(AT_QUEST, lbuf, ch, sbuf, vch, TO_VICT);
       else if (channel == CHANNEL_ASK)
@@ -877,14 +877,14 @@ void do_shout(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-void do_yell(CHAR_DATA* ch, const char* argument)
+void do_gossip(CHAR_DATA* ch, const char* argument)
 {
   if (NOT_AUTHED(ch))
   {
     send_to_char("Huh?\r\n", ch);
     return;
   }
-  talk_channel(ch, drunk_speech(argument, ch), CHANNEL_YELL, "yell");
+  talk_channel(ch, drunk_speech(argument, ch), CHANNEL_GOSSIP, "gossip");
   return;
 }
 
