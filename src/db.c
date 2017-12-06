@@ -2851,7 +2851,9 @@ OBJ_DATA *create_object(OBJ_INDEX_DATA * pObjIndex, int level)
   case ITEM_ODOR:
   case ITEM_CHANCE:
   case ITEM_PIECE:
+  case ITEM_OTHER:
     break;
+
   case ITEM_COOK:
   case ITEM_FOOD:
     /*
@@ -2864,6 +2866,7 @@ OBJ_DATA *create_object(OBJ_INDEX_DATA * pObjIndex, int level)
     else
       obj->timer = obj->value[1];
     break;
+
   case ITEM_BOAT:
   case ITEM_CORPSE_NPC:
   case ITEM_CORPSE_PC:
@@ -2899,6 +2902,7 @@ OBJ_DATA *create_object(OBJ_INDEX_DATA * pObjIndex, int level)
   case ITEM_QUIVER:
   case ITEM_SHOVEL:
   case ITEM_JOURNAL:
+  case ITEM_WORN:
     break;
 
   case ITEM_SALVE:
