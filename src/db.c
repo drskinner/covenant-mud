@@ -535,6 +535,7 @@ void boot_db(bool fCopyOver)
       lmonth = lday / sysdata.dayspermonth;
       time_info.month = lmonth % sysdata.monthsperyear;
       time_info.year = lmonth / sysdata.monthsperyear;
+      time_info.quarter = 0;
     }
 
     if (time_info.hour < sysdata.hoursunrise)

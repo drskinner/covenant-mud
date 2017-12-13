@@ -2263,138 +2263,129 @@ void time_update(void)
   echo = NULL;
   echo_color = AT_GREY;
 
-  ++time_info.hour; 
+  switch(++time_info.quarter) {
+  case 4:
+    time_info.quarter = 0;
+    time_info.hour++;
 
-  if (time_info.hour == sysdata.hourdaybegin || time_info.hour == sysdata.hoursunrise
-      || time_info.hour == sysdata.hournoon || time_info.hour == sysdata.hoursunset
-      || time_info.hour == sysdata.hournightbegin)
-  {
-    for (d = first_descriptor; d; d = d->next)
+    if (time_info.hour == sysdata.hourdaybegin || time_info.hour == sysdata.hoursunrise
+        || time_info.hour == sysdata.hournoon || time_info.hour == sysdata.hoursunset
+        || time_info.hour == sysdata.hournightbegin)
     {
-      if (d->connected == CON_PLAYING && IS_OUTSIDE(d->character) && !NO_WEATHER_SECT(d->character->in_room->sector_type) && IS_AWAKE(d->character))
+      for (d = first_descriptor; d; d = d->next)
       {
-        struct WeatherCell *cell = getWeatherCell(d->character->in_room->area);
+        if (d->connected == CON_PLAYING && IS_OUTSIDE(d->character) && !NO_WEATHER_SECT(d->character->in_room->sector_type) && IS_AWAKE(d->character))
+        {
+          struct WeatherCell *cell = getWeatherCell(d->character->in_room->area);
 
-        switch(time_info.hour)
-        {
-        case 6:
-        {
-          const char *echo_strings[4] = {
-            "The day has begun.\r\n",
-            "The day has begun.\r\n",
-            "The sky slowly begins to glow.\r\n",
-            "The sun slowly embarks upon a new day.\r\n"
-          };
-          time_info.sunlight = SUN_RISE;
-          echo = echo_strings[n];
-          echo_color = AT_YELLOW;
-          break;
-        }
-
-        case 7:
-        {
-          const char *echo_strings[4] = {
-            "The sun rises in the east.\r\n",
-            "The sun rises in the east.\r\n",
-            "The hazy sun rises over the horizon.\r\n",
-            "Day breaks as the sun lifts into the sky.\r\n"
-          };
-          time_info.sunlight = SUN_LIGHT;
-          echo = echo_strings[n];
-          echo_color = AT_BROWN;
-          break;
-        }
-
-        case 12:
-        {
-          if (getCloudCover(cell) > 21)
+          switch(time_info.hour)  {
+          case 6:
           {
-            echo = "It's noon.\r\n";
-          }
-          else
-          {
-            const char *echo_strings[2] = {
-              "The intensity of the sun heralds the noon hour.\r\n",
-              "The sun's bright rays beat down upon your shoulders.\r\n"
+            const char *echo_strings[4] = {
+              "The day has begun.\r\n",
+              "The day has begun.\r\n",
+              "The sky slowly begins to glow.\r\n",
+              "The sun slowly embarks upon a new day.\r\n"
             };
-
-            echo = echo_strings[n % 2];
+            time_info.sunlight = SUN_RISE;
+            echo = echo_strings[n];
+            echo_color = AT_YELLOW;
+            break;
           }
-          time_info.sunlight = SUN_LIGHT;
-          echo_color = AT_WHITE;
-          break;
-        }
 
-        case 18:
-        {
-          const char *echo_strings[4] = {
-            "The sun slowly disappears in the west.\r\n",
-            "The reddish sun sets past the horizon.\r\n",
-            "The sky turns a reddish orange as the sun ends its journey.\r\n",
-            "The sun's radiance dims as it sinks in the sky.\r\n"
-          };
-          time_info.sunlight = SUN_SET;
-          echo = echo_strings[n];
-          echo_color = AT_RED;
-          break;
-        }
-
-        case 19:
-        {
-          if (getCloudCover(cell) > 21)
+          case 7:
           {
-            const char *echo_strings[2] = {
-              "The night begins.\r\n",
-              "Twilight descends around you.\r\n"
+            const char *echo_strings[4] = {
+              "The sun rises in the east.\r\n",
+              "The sun rises in the east.\r\n",
+              "The hazy sun rises over the horizon.\r\n",
+              "Day breaks as the sun lifts into the sky.\r\n"
             };
-
-            echo = echo_strings[n % 2];
+            time_info.sunlight = SUN_LIGHT;
+            echo = echo_strings[n];
+            echo_color = AT_BROWN;
+            break;
           }
-          else
+
+          case 12:
           {
-            const char *echo_strings[2] = {
-              "The moon's gentle glow diffuses through the night sky.\r\n",
-              "The night sky gleams with glittering starlight.\r\n"
-            };
-
-            echo = echo_strings[n % 2];
+            if (getCloudCover(cell) > 21) {
+              echo = "It's noon.\r\n";
+            } else {
+              const char *echo_strings[2] = {
+                "The intensity of the sun heralds the noon hour.\r\n",
+                "The sun's bright rays beat down upon your shoulders.\r\n"
+              };
+              echo = echo_strings[n % 2];
+            }
+            time_info.sunlight = SUN_LIGHT;
+            echo_color = AT_WHITE;
+            break;
           }
-          time_info.sunlight = SUN_DARK;
-          echo_color = AT_DBLUE;
-          break;
-        }
-        }
 
-        if (!echo)
-          continue;
-        set_char_color(echo_color, d->character);
-        send_to_char(echo, d->character);
+          case 18:
+          {
+            const char *echo_strings[4] = {
+              "The sun slowly disappears in the west.\r\n",
+              "The reddish sun sets past the horizon.\r\n",
+              "The sky turns a reddish orange as the sun ends its journey.\r\n",
+              "The sun's radiance dims as it sinks in the sky.\r\n"
+            };
+            time_info.sunlight = SUN_SET;
+            echo = echo_strings[n];
+            echo_color = AT_RED;
+            break;
+          }
+
+          case 19:
+          {
+            if (getCloudCover(cell) > 21) {
+              const char *echo_strings[2] = {
+                "The night begins.\r\n",
+                "Twilight descends around you.\r\n"
+              };
+
+              echo = echo_strings[n % 2];
+            } else {
+              const char *echo_strings[2] = {
+                "The moon's gentle glow diffuses through the night sky.\r\n",
+                "The night sky gleams with glittering starlight.\r\n"
+              };
+              echo = echo_strings[n % 2];
+            }
+            time_info.sunlight = SUN_DARK;
+            echo_color = AT_DBLUE;
+            break;
+          }
+          }
+
+          if (!echo)
+            continue;
+          set_char_color(echo_color, d->character);
+          send_to_char(echo, d->character);
+	}
       }
     }
   }
 
-  if (time_info.hour == sysdata.hourmidnight)
-  {
+  if (time_info.hour == sysdata.hourmidnight) {
     time_info.hour = 0;
     time_info.day++;
     RandomizeCells();
   }
 
-  if (time_info.day >= sysdata.dayspermonth)
-  {
+  if (time_info.day >= sysdata.dayspermonth) {
     time_info.day = 0;
     time_info.month++;
   }
 
-  if (time_info.month >= sysdata.monthsperyear)
-  {
+  if (time_info.month >= sysdata.monthsperyear) {
     time_info.month = 0;
     time_info.year++;
   }
-  calc_season();  /* Samson 5-6-99 */
-  /*
-   * Save game world time - Samson 1-21-99 
-   */
+  calc_season(); /* Samson 5-6-99 */
+
+  /* Save game world time - Samson 1-21-99 */
   save_timedata();
 }
 
