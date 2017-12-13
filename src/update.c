@@ -340,10 +340,6 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
     return;
 
   condition = ch->pcdata->condition[iCond];
-  if (iCond == COND_WIRED)
-    ch->pcdata->condition[iCond] = URANGE(0, condition + value, 10 + ch->level);
-  else
-    ch->pcdata->condition[iCond] = URANGE(0, condition + value, 48);
 
   if (ch->pcdata->condition[iCond] == 0)
   {
@@ -373,13 +369,17 @@ void gain_condition(CHAR_DATA * ch, int iCond, int value)
       break;
 
     case COND_DRUNK:
-      if (condition != 0)
-      {
+      if (condition != 0) {
         set_char_color(AT_SOBER, ch);
         send_to_char("You are sober.\r\n", ch);
       }
       retcode = rNONE;
       break;
+
+    case COND_WIRED:
+      retcode = rNONE;
+      break;
+
     default:
       bug("Gain_condition: invalid condition type %d", iCond);
       retcode = rNONE;
