@@ -2924,7 +2924,7 @@ void do_mpapplyb(CHAR_DATA* ch, const char* argument)
     if (victim->fighting)
       stop_fighting(victim, TRUE);
     char_from_room(victim);
-    char_to_room(victim, get_room_index(ROOM_VNUM_SCHOOL));
+    char_to_room(victim, get_room_index(ROOM_VNUM_START));
     act(AT_WHITE, "$n enters this world from within a column of blinding light!", victim, NULL, NULL, TO_ROOM);
     do_look(victim, "auto");
     break;

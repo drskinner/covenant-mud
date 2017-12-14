@@ -2587,7 +2587,7 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
       }
     }
     if (!sysdata.WAIT_FOR_AUTH)
-      char_to_room(ch, get_room_index(ROOM_VNUM_SCHOOL));
+      char_to_room(ch, get_room_index(ROOM_VNUM_START));
     else
     {
       char_to_room(ch, get_room_index(ROOM_AUTH_START));
