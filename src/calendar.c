@@ -508,7 +508,7 @@ void do_time(CHAR_DATA* ch, const char* argument)
 
   if (!IS_NPC(ch)) {
     if (day == BIRTH_DAY(ch) && (time_info.month + 1) == BIRTH_MONTH(ch))
-      send_to_char("&BToday is your &Gb&Yi&Cr&Wt&Mh&Wd&Ca&Yy&G!&w\r\n", ch);
+      send_to_char("&BToday is your &Gb&Yi&Cr&Mt&Wh&Md&Ca&Yy&G!&w\r\n", ch);
   }
 
   ch_printf(ch, "\r\n");
