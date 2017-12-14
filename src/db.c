@@ -2661,7 +2661,7 @@ void area_update(void)
         pArea->age = -1;
       else
         pArea->age = number_range(0, reset_age / 5);
-      pRoomIndex = get_room_index(ROOM_VNUM_SCHOOL);
+      pRoomIndex = get_room_index(ROOM_VNUM_START);
       if (pRoomIndex != NULL && pArea == pRoomIndex->area && pArea->reset_frequency == 0)
         pArea->age = 15 - 3;
     }

@@ -1838,11 +1838,11 @@ typedef enum
 #define ROOM_VNUM_CHAT             1200
 #define ROOM_VNUM_TEMPLE          21001
 #define ROOM_VNUM_ALTAR           21194
-#define ROOM_VNUM_SCHOOL          10300
+#define ROOM_VNUM_START           10223
 #define ROOM_AUTH_START             100
 #define ROOM_VNUM_HALLOFFALLEN    21195
-#define ROOM_VNUM_DEADLY        3009
-#define ROOM_VNUM_HELL          6
+#define ROOM_VNUM_DEADLY           3009
+#define ROOM_VNUM_HELL                6
 
 /*
  * New bit values for sector types.  Code by Mystaric
