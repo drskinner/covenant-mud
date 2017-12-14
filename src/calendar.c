@@ -236,7 +236,7 @@ const char *const month_name[] = {
 };
 
 const char *const season_name[] = {
-  "&gspring", "&Ysummer", "&Oautumn", "&Cwinter"
+  "&gspring", "&rsummer", "&yautumn", "&cwinter"
 };
 
 /* Calling function must insure tstr buffer is large enough.
