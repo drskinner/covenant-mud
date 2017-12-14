@@ -671,6 +671,7 @@ typedef enum
 
 struct time_info_data
 {
+  int quarter;
   int hour;
   int day;
   int month;

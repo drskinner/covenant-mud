@@ -219,6 +219,10 @@ char *mini_c_time(time_t curtime, int tz)
 
 /* Time values modified to Alsherok calendar - Samson 5-6-99 */
 /* Time Values Modified to Smaug Calendar - Kayle 10-17-07 */
+const char *const quarter_name[] = {
+  "00", "15", "30", "45"
+};
+
 const char *const day_name[] = {
   "Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
   "Saturday", "Sunday"
@@ -232,7 +236,7 @@ const char *const month_name[] = {
 };
 
 const char *const season_name[] = {
-  "&gspring", "&Ysummer", "&Oautumn", "&Cwinter"
+  "&gspring", "&rsummer", "&yautumn", "&cwinter"
 };
 
 /* Calling function must insure tstr buffer is large enough.
@@ -469,8 +473,7 @@ void do_time(CHAR_DATA* ch, const char* argument)
 {
   HOLIDAY_DATA *holiday;
   extern char str_boot_time[];
-  // Uncomment if you have Samson's Pfile Cleanup Snippet installed.
-  //char buf[MSL];
+  extern char reboot_time[];
   const char *suf;
   short day;
 
@@ -487,39 +490,34 @@ void do_time(CHAR_DATA* ch, const char* argument)
   else
     suf = "th";
 
-  ch_printf(ch, "&wIt is &W%d&w o'clock &W%s&w, Day of &W%s&w,&W %d%s&w day in the Month of &W%s&w.\r\n"
-             "&wIt is the season of %s&w, in the year &W%d&w.\r\n"
-             "&wThe mud started up at  :  &W %s\r\n"
-             "&wThe system time        :  &W %s\r\n",
-             (time_info.hour % sysdata.hournoon == 0) ? sysdata.hournoon : time_info.hour % sysdata.hournoon,
-             time_info.hour >= sysdata.hournoon ? "pm" : "am", day_name[(time_info.day) % sysdata.daysperweek], day, suf,
-             month_name[time_info.month], season_name[time_info.season], time_info.year, str_boot_time,
-             c_time(current_time, -1));
+  set_char_color(AT_PLAIN, ch);
+  ch_printf(ch, "&BIt is&w %d:%s %s&B on&w %s ",
+                    (time_info.hour % 12 == 0) ? 12 : time_info.hour % 12,
+                    quarter_name[time_info.quarter],
+                    time_info.hour >= 12 ? "PM" : "AM",
+                    day_name[day % 7]);
+  ch_printf(ch, "&Bthe&w %d%s &Bof&w %s &Bin the year&w %d&B.\r\n",
+                    day, suf, month_name[time_info.month],
+                    time_info.year);
+  ch_printf(ch, "&BIt is the season of %s&B.&w\r\n", season_name[time_info.season]);
 
-  ch_printf(ch, "&wYour local time        :  &W %s&D\r\n", c_time(current_time, ch->pcdata->timezone));
   holiday = get_holiday(time_info.month, day - 1);
 
   if (holiday != NULL)
     ch_printf(ch, "&wIt's a holiday today:&W %s\r\n", holiday->name);
 
-  if (!IS_NPC(ch))
-  {
+  if (!IS_NPC(ch)) {
     if (day == BIRTH_DAY(ch) && (time_info.month + 1) == BIRTH_MONTH(ch))
-      send_to_char("&WToday is your &Gb&Yi&Cr&Bt&Mh&Bd&Ca&Yy&G!&w\r\n", ch);
+      send_to_char("&BToday is your &Gb&Yi&Cr&Wt&Mh&Wd&Ca&Yy&G!&w\r\n", ch);
   }
 
-  /* Uncomment if you have Samson's Pfile Cleanup Snippet installed.
-     if (IS_IMMORTAL(ch) && sysdata.CLEANPFILES == TRUE)
-     {
-     long ptime, curtime;
+  ch_printf(ch, "\r\n");
 
-     ptime = (long int)(new_pfile_time_t);
-     curtime = (long int)(current_time);
+  ch_printf(ch, "&BThe mud started up at:&w    %s\r", str_boot_time);
+  ch_printf(ch, "&BThe system time (E.S.T.):&w %s\r",
+		  (char *) ctime(&current_time));
+  ch_printf(ch, "&BNext Reboot is set for:&w   %s\r", reboot_time);
 
-     buf[0] = '\0';
-     sec_to_hms(ptime - curtime, buf);
-     ch_printf(ch, "&wThe next pfile cleanup is in&W %s&w.&D\r\n", buf);
-     } */
   return;
 }
 
