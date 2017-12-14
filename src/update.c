@@ -2263,8 +2263,7 @@ void time_update(void)
   echo = NULL;
   echo_color = AT_GREY;
 
-  switch(++time_info.quarter) {
-  case 4:
+  if (++time_info.quarter == 4) {
     time_info.quarter = 0;
     time_info.hour++;
 
