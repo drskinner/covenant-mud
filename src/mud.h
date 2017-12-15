@@ -1366,7 +1366,7 @@ struct smaug_affect
 #define ACT_MOUNTED        19 /* Is mounted     */
 #define ACT_SCHOLAR        20 /* Can teach languages  */
 #define ACT_SECRETIVE      21 /* actions aren't seen  */
-#define ACT_HARDHAT        22 /* Immune to falling item damage */
+#define ACT_BANKER         22 /* Handles bank transactions */
 #define ACT_MOBINVIS       23 /* Like wizinvis  */
 #define ACT_NOASSIST       24 /* Doesn't assist mobs  */
 #define ACT_AUTONOMOUS     25 /* Doesn't auto switch tanks */
@@ -2415,6 +2415,7 @@ struct pc_data
   int mkills; /* Number of mobs killed         */
   int mdeaths;   /* Number of deaths due to mobs       */
   int illegal_pk;   /* Number of illegal pk's committed   */
+  int balance;      /* bank balance */
   int birthdate;    /* yyyymmdd -- ISO-8601 FTW */
   int home_room;    /* Where is my office? */
   int r_range_lo;   /* room range */
@@ -3748,6 +3749,7 @@ DECLARE_DO_FUN(do_atobj);
 DECLARE_DO_FUN(do_auction);
 DECLARE_DO_FUN(do_authorize);
 DECLARE_DO_FUN(do_backstab);
+DECLARE_DO_FUN(do_balance);
 DECLARE_DO_FUN(do_balzhur);
 DECLARE_DO_FUN(do_bamfin);
 DECLARE_DO_FUN(do_bamfout);
@@ -3807,6 +3809,7 @@ DECLARE_DO_FUN(do_delay);
 DECLARE_DO_FUN(do_delet);
 DECLARE_DO_FUN(do_delete);
 DECLARE_DO_FUN(do_deny);
+DECLARE_DO_FUN(do_deposit);
 DECLARE_DO_FUN(do_description);
 DECLARE_DO_FUN(do_destro);
 DECLARE_DO_FUN(do_destroy);
@@ -4163,6 +4166,7 @@ DECLARE_DO_FUN(do_whisper);
 DECLARE_DO_FUN(do_who);
 DECLARE_DO_FUN(do_whois);
 DECLARE_DO_FUN(do_wimpy);
+DECLARE_DO_FUN(do_withdraw);
 DECLARE_DO_FUN(do_wizhelp);
 DECLARE_DO_FUN(do_wizlist);
 DECLARE_DO_FUN(do_wizlock);

@@ -25,7 +25,7 @@ L_FLAGS = $(PROF) $(SOLARIS_LINK) -lz $(NEED_DL)
 #D_FLAGS : For the DNS Slave process. No need in linking all the extra libs for this.
 D_FLAGS = -g2 -O $(PROF) $(SOLARIS_LINK)
 
-C_FILES = act_comm.c act_info.c act_move.c act_obj.c act_wiz.c ban.c boards.c \
+C_FILES = act_comm.c act_info.c act_move.c act_obj.c act_wiz.c ban.c bank.c boards.c \
           build.c calendar.c chess.c clans.c color.c comm.c comments.c const.c db.c deity.c \
           dns.c fight.c handler.c hashstr.c hint.c hotboot.c house.c imm_host.c interp.c \
           liquids.c magic.c makeobjs.c mapout.c mapper.c mccp.c \
