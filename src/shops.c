@@ -891,7 +891,7 @@ void do_value(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  snprintf(buf, MAX_STRING_LENGTH, "$n tells you 'I'll give you %d gold coins for $p.'", cost);
+  snprintf(buf, MAX_STRING_LENGTH, "$n tells you 'I'll give you %d cerons for $p.'", cost);
   act(AT_TELL, buf, keeper, obj, ch, TO_VICT);
   ch->reply = keeper;
 

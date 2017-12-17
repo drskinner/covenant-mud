@@ -402,6 +402,7 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
   fprintf(fp, "SavingThrows %d %d %d %d %d\n",
            ch->saving_poison_death, ch->saving_wand, ch->saving_para_petri, ch->saving_breath, ch->saving_spell_staff);
   fprintf(fp, "Alignment    %d\n", ch->alignment);
+  fprintf(fp, "Balance      %d\n", ch->pcdata->balance);
   fprintf(fp, "Birthdate    %d\n", ch->pcdata->birthdate);
   fprintf(fp, "Favor        %d\n", ch->pcdata->favor);
   fprintf(fp, "Glory        %d\n", ch->pcdata->quest_curr);
@@ -819,6 +820,7 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
 
   ch->pcdata->nuisance = NULL;
   ch->pcdata->wizinvis = 0;
+  ch->pcdata->balance = 0;
   ch->pcdata->birthdate = 1150418;
   ch->pcdata->home_room = 10223;
 
@@ -1192,6 +1194,7 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
       break;
 
     case 'B':
+      KEY("Balance", ch->pcdata->balance, fread_number(fp));
       KEY("Bamfin", ch->pcdata->bamfin, fread_string_nohash(fp));
       KEY("Bamfout", ch->pcdata->bamfout, fread_string_nohash(fp));
       KEY("Bestowments", ch->pcdata->bestowments, fread_string_nohash(fp));

@@ -152,7 +152,7 @@ const char *const act_flags[] = {
   "npc", "sentinel", "scavenger", "stopscript", "nosteal", "aggressive", "stayarea",
   "wimpy", "pet", "train", "practice", "immortal", "deadly", "polyself",
   "meta_aggr", "guardian", "running", "nowander", "mountable", "mounted",
-  "scholar", "secretive", "hardhat", "mobinvis", "noassist", "autonomous",
+  "scholar", "secretive", "banker", "mobinvis", "noassist", "autonomous",
   "pacifist", "noattack", "annoying", "statshield", "prototype"
 };
 

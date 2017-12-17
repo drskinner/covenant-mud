@@ -3085,10 +3085,7 @@ if (obj->in_room->first_person && number_percent() > 15)
   act(AT_WHITE, "$p falls on $n!", vch, obj, NULL, TO_ROOM);
   act(AT_WHITE, "$p falls on you!", vch, obj, NULL, TO_CHAR);
 
-  if (IS_NPC(vch) && xIS_SET(vch->act, ACT_HARDHAT))
-    act(AT_WHITE, "$p bounces harmlessly off your head!", vch, obj, NULL, TO_CHAR);
-  else
-    damage(vch, vch, dam * vch->level, TYPE_UNDEFINED);
+  damage(vch, vch, dam * vch->level, TYPE_UNDEFINED);
 }
 /*
  * Damage objects 

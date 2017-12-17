@@ -3093,7 +3093,7 @@ void do_split(CHAR_DATA* ch, const char* argument)
 
   if (amount == 0)
   {
-    send_to_char("You hand out zero coins, but no one notices.\r\n", ch);
+    send_to_char("You hand out zero cerons, but no one notices.\r\n", ch);
     return;
   }
 
@@ -3132,9 +3132,9 @@ void do_split(CHAR_DATA* ch, const char* argument)
   ch->gold += share + extra;
 
   set_char_color(AT_GOLD, ch);
-  ch_printf(ch, "You split %d gold coins.  Your share is %d gold coins.\r\n", amount, share + extra);
+  ch_printf(ch, "You split %d cerons.  Your share is %d cerons.\r\n", amount, share + extra);
 
-  snprintf(buf, MAX_STRING_LENGTH, "$n splits %d gold coins.  Your share is %d gold coins.", amount, share);
+  snprintf(buf, MAX_STRING_LENGTH, "$n splits %d cerons.  Your share is %d cerons.", amount, share);
 
   for (gch = ch->in_room->first_person; gch; gch = gch->next_in_room)
   {
