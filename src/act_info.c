@@ -1646,6 +1646,15 @@ void do_look(CHAR_DATA * ch, const char *argument)
         } else {
           ch_printf(ch, "You see nothing special about %s.\r\n", obj->short_descr);
         }
+        if (obj->item_type == ITEM_SHELF) {
+          if ((obj->value[4] < PREP_MAX) && (obj->value[4] > 0))
+            ch_printf(ch, "\r\n%s %s, you see:\r\n",
+                      capitalize(prepositions[obj->value[4]]),
+                      obj->short_descr);
+          else
+            ch_printf(ch, "\r\nOn %s, you see:\r\n", obj->short_descr);
+          show_list_to_char(obj->first_content, ch, TRUE, TRUE);
+        }
         if (obj->item_type == ITEM_PUDDLE)
         {
           LIQ_TABLE *liq = get_liq_vnum(obj->value[2]);

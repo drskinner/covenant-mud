@@ -1344,6 +1344,7 @@ void obj_update(void)
       break;
 
     case ITEM_CONTAINER:
+    case ITEM_SHELF:
       message = "$p falls apart, tattered from age.";
       AT_TEMP = AT_OBJECT;
       break;

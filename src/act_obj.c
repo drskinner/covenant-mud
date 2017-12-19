@@ -181,13 +181,15 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
 
   if (container)
   {
-    if (container->item_type == ITEM_KEYRING && !IS_OBJ_STAT(container, ITEM_COVERING))
-    {
+    if (container->item_type == ITEM_KEYRING && !IS_OBJ_STAT(container, ITEM_COVERING)) {
       act(AT_ACTION, "You remove $p from $P", ch, obj, container, TO_CHAR);
       act(AT_ACTION, "$n removes $p from $P", ch, obj, container, TO_ROOM);
     }
-    else
-    {
+    else if (container->item_type == ITEM_SHELF) {
+      act(AT_ACTION, "$n gets $p from $P.", ch, obj, container, TO_ROOM);
+      act(AT_ACTION, "You get $p from $P.", ch, obj, container, TO_CHAR);
+    }
+    else {
       act(AT_ACTION, IS_OBJ_STAT(container, ITEM_COVERING) ?
            "You get $p from beneath $P." : "You get $p from $P", ch, obj, container, TO_CHAR);
       act(AT_ACTION, IS_OBJ_STAT(container, ITEM_COVERING) ?
@@ -455,6 +457,7 @@ void do_get(CHAR_DATA* ch, const char* argument)
       break;
 
     case ITEM_CONTAINER:
+    case ITEM_SHELF:
     case ITEM_CORPSE_NPC:
     case ITEM_KEYRING:
     case ITEM_QUIVER:
@@ -664,6 +667,7 @@ void do_put(CHAR_DATA* ch, const char* argument)
 {
   char arg1[MAX_INPUT_LENGTH];
   char arg2[MAX_INPUT_LENGTH];
+  char buf[MAX_STRING_LENGTH];
   OBJ_DATA *container;
   OBJ_DATA *obj;
   OBJ_DATA *obj_next;
@@ -729,7 +733,9 @@ void do_put(CHAR_DATA* ch, const char* argument)
   else
   {
     if (container->item_type != ITEM_CONTAINER
-        && container->item_type != ITEM_KEYRING && container->item_type != ITEM_QUIVER)
+        && container->item_type != ITEM_SHELF
+        && container->item_type != ITEM_KEYRING 
+        && container->item_type != ITEM_QUIVER)
     {
       send_to_char("That's not a container.\r\n", ch);
       return;
@@ -814,13 +820,16 @@ void do_put(CHAR_DATA* ch, const char* argument)
       return;
     count = obj->count;
     obj->count = 1;
-    if (container->item_type == ITEM_KEYRING && !IS_OBJ_STAT(container, ITEM_COVERING))
-    {
+    if (container->item_type == ITEM_KEYRING && !IS_OBJ_STAT(container, ITEM_COVERING)) {
       act(AT_ACTION, "$n slips $p onto $P.", ch, obj, container, TO_ROOM);
       act(AT_ACTION, "You slip $p onto $P.", ch, obj, container, TO_CHAR);
     }
-    else
-    {
+    else if (container->item_type == ITEM_SHELF) {
+      snprintf(buf, MAX_STRING_LENGTH, "%s %s", prepositions[container->value[4]], container->short_descr);
+      act(AT_ACTION, "$n puts $p $T.", ch, obj, buf, TO_ROOM);
+      act(AT_ACTION, "You put $p $T.", ch, obj, buf, TO_CHAR);
+    }
+    else {
       act(AT_ACTION, IS_OBJ_STAT(container, ITEM_COVERING)
            ? "$n hides $p beneath $P." : "$n puts $p in $P.", ch, obj, container, TO_ROOM);
       act(AT_ACTION, IS_OBJ_STAT(container, ITEM_COVERING)
@@ -888,13 +897,16 @@ void do_put(CHAR_DATA* ch, const char* argument)
           split_obj(obj, number - cnt);
         cnt += obj->count;
         obj_from_char(obj);
-        if (container->item_type == ITEM_KEYRING)
-        {
+        if (container->item_type == ITEM_KEYRING) {
           act(AT_ACTION, "$n slips $p onto $P.", ch, obj, container, TO_ROOM);
           act(AT_ACTION, "You slip $p onto $P.", ch, obj, container, TO_CHAR);
         }
-        else
-        {
+	else if (container->item_type == ITEM_SHELF) {
+	  snprintf(buf, MAX_STRING_LENGTH, "%s %s", prepositions[container->value[4]], container->short_descr);
+	  act(AT_ACTION, "$n puts $p $T.", ch, obj, buf, TO_ROOM);
+	  act(AT_ACTION, "You put $p $T.", ch, obj, buf, TO_CHAR);
+	}
+        else {
           act(AT_ACTION, "$n puts $p in $P.", ch, obj, container, TO_ROOM);
           act(AT_ACTION, "You put $p in $P.", ch, obj, container, TO_CHAR);
         }

@@ -1418,26 +1418,21 @@ void do_open(CHAR_DATA* ch, const char* argument)
 
   if ((obj = get_obj_here(ch, arg)) != NULL)
   {
-    /*
-     * 'open object' 
-     */
-    if (obj->item_type != ITEM_CONTAINER)
-    {
-      ch_printf(ch, "%s is not a container.\r\n", capitalize(obj->short_descr));
+    /* 'open object' */
+
+    if ((obj->item_type != ITEM_CONTAINER) && (obj->item_type != ITEM_SHELF)) {
+      ch_printf(ch, "%s is not the sort of thing you can open.\r\n", capitalize(obj->short_descr));
       return;
     }
-    if (!IS_SET(obj->value[1], CONT_CLOSED))
-    {
+    if (!IS_SET(obj->value[1], CONT_CLOSED)) {
       ch_printf(ch, "%s is already open.\r\n", capitalize(obj->short_descr));
       return;
     }
-    if (!IS_SET(obj->value[1], CONT_CLOSEABLE))
-    {
+    if (!IS_SET(obj->value[1], CONT_CLOSEABLE)) {
       ch_printf(ch, "%s cannot be opened or closed.\r\n", capitalize(obj->short_descr));
       return;
     }
-    if (IS_SET(obj->value[1], CONT_LOCKED))
-    {
+    if (IS_SET(obj->value[1], CONT_LOCKED)) {
       ch_printf(ch, "%s is locked.\r\n", capitalize(obj->short_descr));
       return;
     }
@@ -1515,21 +1510,17 @@ void do_close(CHAR_DATA* ch, const char* argument)
 
   if ((obj = get_obj_here(ch, arg)) != NULL)
   {
-    /*
-     * 'close object' 
-     */
-    if (obj->item_type != ITEM_CONTAINER)
-    {
+    /* 'close object' */
+
+    if ((obj->item_type != ITEM_CONTAINER) && (obj->item_type != ITEM_SHELF)) {
       ch_printf(ch, "%s is not a container.\r\n", capitalize(obj->short_descr));
       return;
     }
-    if (IS_SET(obj->value[1], CONT_CLOSED))
-    {
+    if (IS_SET(obj->value[1], CONT_CLOSED)) {
       ch_printf(ch, "%s is already closed.\r\n", capitalize(obj->short_descr));
       return;
     }
-    if (!IS_SET(obj->value[1], CONT_CLOSEABLE))
-    {
+    if (!IS_SET(obj->value[1], CONT_CLOSEABLE)) {
       ch_printf(ch, "%s cannot be opened or closed.\r\n", capitalize(obj->short_descr));
       return;
     }
@@ -1641,31 +1632,25 @@ void do_lock(CHAR_DATA* ch, const char* argument)
 
   if ((obj = get_obj_here(ch, arg)) != NULL)
   {
-    /*
-     * 'lock object' 
-     */
-    if (obj->item_type != ITEM_CONTAINER)
-    {
-      send_to_char("That's not a container.\r\n", ch);
+    /* 'lock object' */
+
+    if ((obj->item_type != ITEM_CONTAINER) && (obj->item_type != ITEM_SHELF)) {
+      send_to_char("That's not lockable.\r\n", ch);
       return;
     }
-    if (!IS_SET(obj->value[1], CONT_CLOSED))
-    {
+    if (!IS_SET(obj->value[1], CONT_CLOSED)) {
       send_to_char("It's not closed.\r\n", ch);
       return;
     }
-    if (obj->value[2] < 0)
-    {
+    if (obj->value[2] < 0) {
       send_to_char("It can't be locked.\r\n", ch);
       return;
     }
-    if ((key = has_key(ch, obj->value[2])) == NULL)
-    {
+    if ((key = has_key(ch, obj->value[2])) == NULL) {
       send_to_char("You lack the key.\r\n", ch);
       return;
     }
-    if (IS_SET(obj->value[1], CONT_LOCKED))
-    {
+    if (IS_SET(obj->value[1], CONT_LOCKED)) {
       send_to_char("It's already locked.\r\n", ch);
       return;
     }
@@ -1758,31 +1743,25 @@ void do_unlock(CHAR_DATA* ch, const char* argument)
 
   if ((obj = get_obj_here(ch, arg)) != NULL)
   {
-    /*
-     * 'unlock object' 
-     */
-    if (obj->item_type != ITEM_CONTAINER)
-    {
-      send_to_char("That's not a container.\r\n", ch);
+    /* 'unlock object' */
+
+    if ((obj->item_type != ITEM_CONTAINER) && (obj->item_type != ITEM_SHELF)) {
+      send_to_char("Do you really expect to unlock that?\r\n", ch);
       return;
     }
-    if (!IS_SET(obj->value[1], CONT_CLOSED))
-    {
+    if (!IS_SET(obj->value[1], CONT_CLOSED)) {
       send_to_char("It's not closed.\r\n", ch);
       return;
     }
-    if (obj->value[2] < 0)
-    {
+    if (obj->value[2] < 0) {
       send_to_char("It can't be unlocked.\r\n", ch);
       return;
     }
-    if ((key = has_key(ch, obj->value[2])) == NULL)
-    {
+    if ((key = has_key(ch, obj->value[2])) == NULL) {
       send_to_char("You lack the key.\r\n", ch);
       return;
     }
-    if (!IS_SET(obj->value[1], CONT_LOCKED))
-    {
+    if (!IS_SET(obj->value[1], CONT_LOCKED)) {
       send_to_char("It's already unlocked.\r\n", ch);
       return;
     }
