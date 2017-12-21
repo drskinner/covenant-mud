@@ -4056,7 +4056,6 @@ DECLARE_DO_FUN(do_sacrifice);
 DECLARE_DO_FUN(do_save);
 DECLARE_DO_FUN(do_savearea);
 DECLARE_DO_FUN(do_say);
-DECLARE_DO_FUN(do_say_to);
 DECLARE_DO_FUN(do_scan);
 DECLARE_DO_FUN(do_scatter);
 DECLARE_DO_FUN(do_score);
