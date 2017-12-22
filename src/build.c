@@ -1770,24 +1770,22 @@ void do_mset(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!str_cmp(arg2, "rank"))
+  if (!str_cmp(arg2, "pretitle"))
   {
-    if (get_trust(ch) < LEVEL_GOD)
-    {
+    if (get_trust(ch) < LEVEL_GOD) {
       send_to_char("You can't do that.\r\n", ch);
       return;
     }
-    if (IS_NPC(victim))
-    {
+    if (IS_NPC(victim)) {
       send_to_char("Not on NPC's.\r\n", ch);
       return;
     }
     smash_tilde(argument);
-    DISPOSE(victim->pcdata->rank);
+    DISPOSE(victim->pcdata->pretitle);
     if (!argument || argument[0] == '\0' || !str_cmp(argument, "none"))
-      victim->pcdata->rank = str_dup("");
+      victim->pcdata->pretitle = str_dup("");
     else
-      victim->pcdata->rank = str_dup(argument);
+      victim->pcdata->pretitle = str_dup(argument);
     send_to_char("Ok.\r\n", ch);
     return;
   }

@@ -3123,7 +3123,7 @@ void free_char(CHAR_DATA * ch)
     DISPOSE(ch->pcdata->pwd);   /* no hash */
     DISPOSE(ch->pcdata->bamfin);   /* no hash */
     DISPOSE(ch->pcdata->bamfout);  /* no hash */
-    DISPOSE(ch->pcdata->rank);
+    DISPOSE(ch->pcdata->pretitle);
     STRFREE(ch->pcdata->title);
     STRFREE(ch->pcdata->bio);
     DISPOSE(ch->pcdata->bestowments); /* no hash */

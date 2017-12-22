@@ -435,8 +435,8 @@ void fwrite_char(CHAR_DATA * ch, FILE * fp)
     fprintf(fp, "Mentalstate  %d\n", ch->mental_state);
 
   fprintf(fp, "Password     %s~\n", ch->pcdata->pwd);
-  if (ch->pcdata->rank && ch->pcdata->rank[0] != '\0')
-    fprintf(fp, "Rank         %s~\n", ch->pcdata->rank);
+  if (ch->pcdata->pretitle && ch->pcdata->pretitle[0] != '\0')
+    fprintf(fp, "Pretitle     %s~\n", ch->pcdata->pretitle);
   if (ch->pcdata->bestowments && ch->pcdata->bestowments[0] != '\0')
     fprintf(fp, "Bestowments  %s~\n", ch->pcdata->bestowments);
   fprintf(fp, "Title        %s~\n", ch->pcdata->title);
@@ -959,7 +959,7 @@ bool load_char_obj(DESCRIPTOR_DATA * d, char *name, bool preload, bool copyover)
     ch->pcdata->pwd = str_dup("");
     ch->pcdata->bamfin = str_dup("");
     ch->pcdata->bamfout = str_dup("");
-    ch->pcdata->rank = str_dup("");
+    ch->pcdata->pretitle = str_dup("");
     ch->pcdata->bestowments = str_dup("");
     ch->pcdata->title = STRALLOC("");
     ch->pcdata->website = str_dup("");
@@ -1602,6 +1602,7 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
         break;
       }
       KEY("Practice", ch->practice, fread_number(fp));
+      KEY("Pretitle", ch->pcdata->pretitle, fread_string_nohash(fp));
       KEY("Prompt", ch->pcdata->prompt, fread_string(fp));
       if (!strcmp(word, "PTimer"))
       {
@@ -1613,7 +1614,6 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
 
     case 'R':
       KEY("Race", ch->race, fread_number(fp));
-      KEY("Rank", ch->pcdata->rank, fread_string_nohash(fp));
       KEY("Resistant", ch->resistant, fread_number(fp));
       KEY("Restore_time", ch->pcdata->restore_time, fread_number(fp));
 
@@ -1763,8 +1763,8 @@ void fread_char(CHAR_DATA * ch, FILE * fp, bool preload, bool copyover)
           ch->pcdata->bamfout = str_dup("");
         if (!ch->pcdata->bio)
           ch->pcdata->bio = STRALLOC("");
-        if (!ch->pcdata->rank)
-          ch->pcdata->rank = str_dup("");
+        if (!ch->pcdata->pretitle)
+          ch->pcdata->pretitle = str_dup("");
         if (!ch->pcdata->bestowments)
           ch->pcdata->bestowments = str_dup("");
         if (!ch->pcdata->title)

@@ -3092,8 +3092,8 @@ void do_who(CHAR_DATA* ch, const char* argument)
     else if (wch->pcdata->clan
              && !str_cmp(wch->name, wch->pcdata->clan->number2) && wch->pcdata->clan->tworank[0] != '\0')
       Class = wch->pcdata->clan->tworank;
-    else if (wch->pcdata->rank && wch->pcdata->rank[0] != '\0')
-      Class = wch->pcdata->rank;
+    else if (wch->pcdata->pretitle && wch->pcdata->pretitle[0] != '\0')
+      Class = wch->pcdata->pretitle;
 
     if (wch->pcdata->clan)
     {

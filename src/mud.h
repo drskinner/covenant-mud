@@ -2402,7 +2402,7 @@ struct pc_data
   const char *bamfin;
   const char *bamfout;
   const char *filename;   /* For the safe mset name -Shaddai */
-  const char *rank;
+  const char *pretitle;   /* For the LEFT column of who */
   const char *title;
   const char *bestowments;   /* Special bestowed commands     */
   const char *recent_site;   /* site a player started their most recent session from */
@@ -3995,6 +3995,7 @@ DECLARE_DO_FUN(do_poison_weapon);
 DECLARE_DO_FUN(do_pose);
 DECLARE_DO_FUN(do_pounce);
 DECLARE_DO_FUN(do_practice);
+DECLARE_DO_FUN(do_pretitle);
 DECLARE_DO_FUN(do_project);
 DECLARE_DO_FUN(do_prompt);
 DECLARE_DO_FUN(do_pset);
@@ -4011,7 +4012,6 @@ DECLARE_DO_FUN(do_quest);
 DECLARE_DO_FUN(do_qui);
 DECLARE_DO_FUN(do_quit);
 DECLARE_DO_FUN(do_racetalk);
-DECLARE_DO_FUN(do_rank);
 DECLARE_DO_FUN(do_rap);
 DECLARE_DO_FUN(do_rat);
 DECLARE_DO_FUN(do_rdelete);
