@@ -775,31 +775,31 @@ void do_bamfout(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-void do_rank(CHAR_DATA* ch, const char* argument)
+void do_pretitle(CHAR_DATA* ch, const char* argument)
 {
   set_char_color(AT_IMMORT, ch);
 
   if (IS_NPC(ch))
     return;
-  if (!argument || argument[0] == '\0')
-  {
-    send_to_char("Usage:  rank <string>.\r\n", ch);
-    send_to_char("   or:  rank none.\r\n", ch);
+
+  if (!argument || argument[0] == '\0') {
+    send_to_char("Usage:  pretitle <string>\r\n", ch);
+    send_to_char("   or:  pretitle none\r\n", ch);
     return;
   }
 
-  // clear the old rank
-  DISPOSE(ch->pcdata->rank);
+  // clear the old value
+  DISPOSE(ch->pcdata->pretitle);
 
-  if (!str_cmp(argument, "none"))
-    ch->pcdata->rank = str_dup("");
-  else
-  {
-    char* newrank = str_dup(argument);
-    smash_tilde(newrank);
-    ch->pcdata->rank = newrank;
+  if (!str_cmp(argument, "none")) {
+    ch->pcdata->pretitle = str_dup("");
+  } else {
+    char* new_value = str_dup(argument);
+    smash_tilde(new_value);
+    ch->pcdata->pretitle = new_value;
   }
-  send_to_char("Ok.\r\n", ch);
+
+  ch_printf(ch, "Pretitle set to: %s\r\n", ch->pcdata->pretitle);
   return;
 }
 
@@ -2071,8 +2071,8 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
                         victim->pcdata->recent_site : "Unknown");
     pager_printf_color(ch, "&cPrevious IP: &w%-15s", victim->pcdata->prev_site ?
                         victim->pcdata->prev_site : "Unknown");
-    pager_printf_color(ch, "&cRank: &w%s\r\n",
-                        str_cmp(victim->pcdata->rank, "") ? victim->pcdata->rank : "(default)");
+    pager_printf_color(ch, "&cPretitle: &w%s\r\n",
+                        str_cmp(victim->pcdata->pretitle, "") ? victim->pcdata->pretitle : "(default)");
   }
   if (!IS_NPC(victim) && victim->pcdata->release_date != 0)
     pager_printf_color(ch, "&cHelled until %24.24s by %s.\r\n",
@@ -3857,11 +3857,9 @@ void do_advance(CHAR_DATA* ch, const char* argument)
     victim->mana = victim->max_mana;
     victim->move = victim->max_move;
     advance_level(victim);
-    /*
-     * Rank fix added by Narn. 
-     */
-    DISPOSE(victim->pcdata->rank);
-    victim->pcdata->rank = str_dup("");
+
+    DISPOSE(victim->pcdata->pretitle);
+    victim->pcdata->pretitle = str_dup("");
     /*
      * Stuff added to make sure character's wizinvis level doesn't stay
      * higher than actual level, take wizinvis away from advance < 50 
@@ -5651,8 +5649,8 @@ void do_mortalize(CHAR_DATA * ch, const char *argument)
     victim->mana = victim->max_mana;
     victim->move = victim->max_move;
     advance_level(victim);
-    DISPOSE(victim->pcdata->rank);
-    victim->pcdata->rank = str_dup("");
+    DISPOSE(victim->pcdata->pretitle);
+    victim->pcdata->pretitle = str_dup("");
     if (xIS_SET(victim->act, PLR_WIZINVIS))
       victim->pcdata->wizinvis = victim->trust;
     if (xIS_SET(victim->act, PLR_WIZINVIS) && (victim->level <= LEVEL_AVATAR))

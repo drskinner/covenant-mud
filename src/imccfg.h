@@ -16,7 +16,7 @@
 #if defined(IMCSMAUG) || defined(IMCCHRONICLES)
 #define SMAUGSOCIAL
 #define SOCIAL_DATA SOCIALTYPE
-#define CH_IMCRANK(ch)           ((ch)->pcdata->rank)
+#define CH_IMCRANK(ch)           ((ch)->pcdata->pretitle)
 #endif
 
 #if defined(IMCROM)

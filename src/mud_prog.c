@@ -1490,13 +1490,6 @@ doneargs:
     return mprog_seval(chkobj->name, opr, rval, mob);
   }
 
-  if (!str_cmp(chck, "rank"))   /* Shaddai */
-  {
-    if (chkchar && !IS_NPC(chkchar))
-      return mprog_seval(chkchar->pcdata->rank, opr, rval, mob);
-    return FALSE;
-  }
-
   if (!str_cmp(chck, "mortinworld"))  /* -- Gorog */
   {
     DESCRIPTOR_DATA *d;
