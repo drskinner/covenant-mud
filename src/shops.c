@@ -687,7 +687,6 @@ void do_list(CHAR_DATA* ch, const char* argument)
     OBJ_DATA *obj;
     int cost;
     bool found;
-/*      bool listall; */
     int lower, upper;
 
     rest = one_argument(argument, arg);
@@ -740,7 +739,8 @@ void do_list(CHAR_DATA* ch, const char* argument)
         if (!found)
         {
           found = TRUE;
-          send_to_pager("[Lv Price] Item\r\n", ch);
+          send_to_pager("&W Cerons   Item in Stock&w\r\n", ch);
+          send_to_pager("&M----------------------------------------------------------------------------&w\r\n", ch);
         }
 
         if (obj->level <= upper)
@@ -755,7 +755,14 @@ void do_list(CHAR_DATA* ch, const char* argument)
           lower = -1;
         }
 
-        pager_printf(ch, "[%2d %5d] %s.\r\n", obj->level, cost, capitalize(obj->short_descr));
+        if (obj->item_type == ITEM_DRINK_CON) {
+          LIQ_TABLE *liq = get_liq_vnum(obj->value[2]);
+          pager_printf(ch, "&M[&Y%6d&M]  &Y%s of %s&w\r\n",
+                             cost, obj->short_descr, liq->name);
+        } else {
+          pager_printf(ch, "&M[&Y%6d&M]  &Y%s&w\r\n",
+                             cost, obj->short_descr);
+        }
       }
     }
 
