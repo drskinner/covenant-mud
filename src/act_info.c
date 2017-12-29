@@ -3015,8 +3015,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
     else
       mudstrlcpy(char_name, wch->name, MAX_INPUT_LENGTH);
 
-    snprintf(class_text, MAX_INPUT_LENGTH, "%s%2d %s", NOT_AUTHED(wch) ? "N" : " ", wch->level,
-              class_table[wch->Class]->who_name);
+    snprintf(class_text, MAX_INPUT_LENGTH, "%s", class_table[wch->Class]->who_name);
     Class = class_text;
     switch (wch->level)
     {
@@ -3168,7 +3167,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
       snprintf(invis_str, MAX_INPUT_LENGTH, "(%d) ", wch->pcdata->wizinvis);
     else
       invis_str[0] = '\0';
-    snprintf(buf, MAX_STRING_LENGTH, "%*s%-15s %s%s%s%s%s%s%s%s.%s%s%s\r\n",
+    snprintf(buf, MAX_STRING_LENGTH, "&Y%*s%-15s&m: &w%s%s%s%s%s%s%s%s.%s%s%s\r\n",
               (fGroup ? whogr->indent : 0), "",
               Class,
               invis_str,
@@ -3241,10 +3240,14 @@ void do_who(CHAR_DATA* ch, const char* argument)
 
   for (cur_who = first_mortal; cur_who; cur_who = next_who)
   {
-    if (!ch)
+    if (!ch) {
+      fprintf(whoout, "%s",
+               "\r\n-------------------------------[ PLAYER CHARACTERS ]-------------------------\r\n\r\n");
       fprintf(whoout, "%s", cur_who->text);
-    else
+    } else {
+      send_to_pager("\r\n&m-------------------------------[ &WPLAYER CHARACTERS&m ]--------------------------&w\r\n\r\n", ch);
       send_to_pager(cur_who->text, ch);
+    }
     next_who = cur_who->next;
     DISPOSE(cur_who->text);
     DISPOSE(cur_who);
@@ -3313,7 +3316,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
       fprintf(whoout, "%s",
                "\r\n-----------------------------------[ IMMORTALS ]-----------------------------\r\n\r\n");
     else
-      send_to_pager("\r\n-----------------------------------[ IMMORTALS ]------------------------------\r\n\r\n", ch);
+      send_to_pager("\r\n&m-----------------------------------[ &WIMMORTALS&m ]------------------------------&w\r\n\r\n", ch);
   }
 
   for (cur_who = first_imm; cur_who; cur_who = next_who)
@@ -3334,8 +3337,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  set_char_color(AT_YELLOW, ch);
-  ch_printf(ch, "%d player%s.\r\n", nMatch, nMatch == 1 ? "" : "s");
+  ch_printf(ch, "\r\n&mTotal visible players: &W%d&w\r\n", nMatch);
   return;
 }
 
