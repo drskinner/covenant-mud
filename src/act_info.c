@@ -3316,7 +3316,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
       fprintf(whoout, "%s",
                "\r\n-----------------------------------[ IMMORTALS ]-----------------------------\r\n\r\n");
     else
-      send_to_pager("\r\n&m-----------------------------------[ &WIMMORTALS &m]------------------------------&w\r\n\r\n", ch);
+      send_to_pager("\r\n&m-----------------------------------[ &WIMMORTALS&m ]------------------------------&w\r\n\r\n", ch);
   }
 
   for (cur_who = first_imm; cur_who; cur_who = next_who)
