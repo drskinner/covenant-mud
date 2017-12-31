@@ -150,12 +150,13 @@ DECLARE_DO_FUN(do_color);
 
 #define AT_PLAIN        33
 #define AT_ACTION       AT_PLAIN
+#define AT_BOARD        AT_PLAIN
 #define AT_CHAT         AT_LGREEN
 #define AT_EXITS        AT_GREY
 #define AT_GOSSIP       AT_YELLOW
 #define AT_LOG          AT_GREY
-#define AT_ROOM_NAME    AT_WHITE
 #define AT_ROOM_DESC    AT_PLAIN
+#define AT_ROOM_NAME    AT_WHITE
 #define AT_SCORE        AT_LGREEN
 #define AT_SHOUT        AT_LRED
 #define AT_SOCIAL       AT_PLAIN
@@ -224,9 +225,6 @@ DECLARE_DO_FUN(do_color);
 #define AT_PRAC4       106 /* Added by Samson 1-21-02 */
 #define AT_MXPPROMPT   107 /* Added by Samson 2-27-02 */
 #define AT_GUILDTALK   108 /* Added by Tarl 28 Nov 02 */
-#define AT_BOARD       109 /* Samson 10-14-03 */
-#define AT_BOARD2      110 /* Samson 10-14-03 */
-#define AT_BOARD3      111 /* Samson 10-14-03 */
 #define AT_AVATAR      112 // Samson 11-08-2014
 #define AT_MUSIC       113 // Samson 11-08-2014
 #define AT_QUEST       114 // Samson 11-08-2014
