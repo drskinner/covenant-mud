@@ -544,7 +544,6 @@ void interpret(CHAR_DATA * ch, char *argument)
   /*
    * Dispatch the command.
    */
-  ch->prev_cmd = ch->last_cmd;  /* haus, for automapping */
   ch->last_cmd = cmd->do_fun;
   start_timer(&time_used);
   (*cmd->do_fun) (ch, argument);

@@ -2265,7 +2265,6 @@ struct char_data
   ROOM_INDEX_DATA *was_in_room;
   PC_DATA *pcdata;
   DO_FUN *last_cmd;
-  DO_FUN *prev_cmd; /* mapping */
   void *dest_buf;   /* This one is to assign to differen things */
   const char *alloc_ptr;  /* Must str_dup and free this one */
   void *spare_ptr;

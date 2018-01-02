@@ -465,7 +465,6 @@ bool check_ability(CHAR_DATA * ch, char *command, char *argument)
   if (mana) {
     ch->mana -= mana;
   }
-  ch->prev_cmd = ch->last_cmd;  /* haus, for automapping */
   ch->last_cmd = skill_table[sn]->skill_fun;
   start_timer(&time_used);
   (*skill_table[sn]->skill_fun) (ch, argument);
@@ -711,7 +710,7 @@ bool check_skill(CHAR_DATA * ch, char *command, char *argument)
   if (mana) {
     ch->mana -= mana;
   }
-  ch->prev_cmd = ch->last_cmd;  /* haus, for automapping */
+
   ch->last_cmd = skill_table[sn]->skill_fun;
   start_timer(&time_used);
   (*skill_table[sn]->skill_fun) (ch, argument);
