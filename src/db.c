@@ -2989,7 +2989,6 @@ void clear_char(CHAR_DATA * ch)
   ch->switched = NULL;
   ch->first_affect = NULL;
   ch->last_affect = NULL;
-  ch->prev_cmd = NULL; /* maps */
   ch->last_cmd = NULL;
   ch->dest_buf = NULL;
   ch->alloc_ptr = NULL;
