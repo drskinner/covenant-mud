@@ -123,7 +123,6 @@ typedef struct obj_index_data OBJ_INDEX_DATA;
 typedef struct pc_data PC_DATA;
 typedef struct plane_data PLANE_DATA;
 typedef struct reset_data RESET_DATA;
-typedef struct map_index_data MAP_INDEX_DATA;   /* maps */
 typedef struct map_data MAP_DATA;   /* maps */
 typedef struct room_index_data ROOM_INDEX_DATA;
 typedef struct shop_data SHOP_DATA;
@@ -5079,11 +5078,6 @@ bool in_hash_table(const char *str);
 #define GA_IMMUNE       BV11
 #define GA_SUSCEPTIBLE  BV12
 #define GA_RIS          BV30
-
-/*
- *   Map Structures
- */
-DECLARE_DO_FUN(do_mapout);
 
 /*
  * mudprograms stuff

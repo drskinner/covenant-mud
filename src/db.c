@@ -85,8 +85,6 @@ int physicalobjects;
 int last_pkroom;
 time_t mud_start_time;
 
-MAP_INDEX_DATA *first_map; /* maps */
-
 AUCTION_DATA *auction;  /* auctions */
 OBJ_DATA *supermob_obj;
 
