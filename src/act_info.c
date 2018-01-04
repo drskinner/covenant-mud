@@ -92,8 +92,8 @@ const char *const where_name[] = {
 /* Match this to the number of days per month; this is the moon cycle */
 #define NUM_MONTHS 17
 /* Match this to the number of months defined in month_name[].  */
-#define MAP_WIDTH 72
-#define MAP_HEIGHT 8
+#define STAR_WIDTH 72
+#define STAR_HEIGHT 8
 /* Should be the string length and number of the constants below.*/
 
 const char *star_map[] = {
@@ -140,16 +140,16 @@ void look_sky(CHAR_DATA * ch)
     return;
   }
 
-  sunpos = (MAP_WIDTH * (24 - time_info.hour) / 24);
-  moonpos = (sunpos + time_info.day * MAP_WIDTH / NUM_DAYS) % MAP_WIDTH;
-  if ((moonphase = ((((MAP_WIDTH + moonpos - sunpos) % MAP_WIDTH) + (MAP_WIDTH / 16)) * 8) / MAP_WIDTH) > 4)
+  sunpos = (STAR_WIDTH * (24 - time_info.hour) / 24);
+  moonpos = (sunpos + time_info.day * STAR_WIDTH / NUM_DAYS) % STAR_WIDTH;
+  if ((moonphase = ((((STAR_WIDTH + moonpos - sunpos) % STAR_WIDTH) + (STAR_WIDTH / 16)) * 8) / STAR_WIDTH) > 4)
     moonphase -= 8;
-  starpos = (sunpos + MAP_WIDTH * time_info.month / NUM_MONTHS) % MAP_WIDTH;
+  starpos = (sunpos + STAR_WIDTH * time_info.month / NUM_MONTHS) % STAR_WIDTH;
 
   /*
    * The left end of the star_map will be straight overhead at midnight during month 0 
    */
-  for (linenum = 0; linenum < MAP_HEIGHT; linenum++)
+  for (linenum = 0; linenum < STAR_HEIGHT; linenum++)
   {
     if ((time_info.hour >= 6 && time_info.hour <= 18) && (linenum < 3 || linenum >= 6))
       continue;
@@ -157,15 +157,15 @@ void look_sky(CHAR_DATA * ch)
     mudstrlcpy(buf, " ", MAX_STRING_LENGTH);
 
     /*
-     * for (i = MAP_WIDTH/4; i <= 3*MAP_WIDTH/4; i++)
+     * for (i = STAR_WIDTH/4; i <= 3*STAR_WIDTH/4; i++)
      */
-    for (i = 1; i <= MAP_WIDTH; i++)
+    for (i = 1; i <= STAR_WIDTH; i++)
     {
       /*
        * plot moon on top of anything else...unless new moon & no eclipse 
        */
       if ((time_info.hour >= 6 && time_info.hour <= 18)   /* daytime? */
-          && (moonpos >= MAP_WIDTH / 4 - 2) && (moonpos <= 3 * MAP_WIDTH / 4 + 2)  /* in sky? */
+          && (moonpos >= STAR_WIDTH / 4 - 2) && (moonpos <= 3 * STAR_WIDTH / 4 + 2)  /* in sky? */
           && (i >= moonpos - 2) && (i <= moonpos + 2)   /* is this pixel near moon? */
           && ((sunpos == moonpos && time_info.hour == 12) || moonphase != 0) /*no eclipse */
           && (moon_map[linenum - 3][i + 2 - moonpos] == '@'))
@@ -176,7 +176,7 @@ void look_sky(CHAR_DATA * ch)
           mudstrlcat(buf, " ", MAX_STRING_LENGTH);
       }
       else if ((linenum >= 3) && (linenum < 6) && /* nighttime */
-               (moonpos >= MAP_WIDTH / 4 - 2) && (moonpos <= 3 * MAP_WIDTH / 4 + 2)   /* in sky? */
+               (moonpos >= STAR_WIDTH / 4 - 2) && (moonpos <= 3 * STAR_WIDTH / 4 + 2)   /* in sky? */
                && (i >= moonpos - 2) && (i <= moonpos + 2) /* is this pixel near moon? */
                && (moon_map[linenum - 3][i + 2 - moonpos] == '@'))
       {
@@ -199,7 +199,7 @@ void look_sky(CHAR_DATA * ch)
         }
         else
         {
-          switch (star_map[linenum][(MAP_WIDTH + i - starpos) % MAP_WIDTH])
+          switch (star_map[linenum][(STAR_WIDTH + i - starpos) % STAR_WIDTH])
           {
           default:
             mudstrlcat(buf, " ", MAX_STRING_LENGTH);
