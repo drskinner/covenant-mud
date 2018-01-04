@@ -3316,7 +3316,6 @@ void do_racetalk(CHAR_DATA* ch, const char* argument)
 void do_beep(CHAR_DATA* ch, const char* argument)
 {
   CHAR_DATA *victim;
-/*  char arg[MAX_INPUT_LENGTH]; */
   char log_buf[MAX_STRING_LENGTH];
 
   if (IS_NPC(ch)) {
@@ -3336,7 +3335,6 @@ void do_beep(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-/*  strcat(buf, argument); */
   if (((victim = get_char_world(ch, argument)) == NULL)) {
     send_to_char("No such character online.\r\n", ch);
     return;
