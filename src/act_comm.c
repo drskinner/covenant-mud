@@ -3312,3 +3312,57 @@ void do_racetalk(CHAR_DATA* ch, const char* argument)
   talk_channel(ch, argument, CHANNEL_RACETALK, "racetalk");
   return;
 }
+
+void do_beep(CHAR_DATA* ch, const char* argument)
+{
+  CHAR_DATA *victim;
+/*  char arg[MAX_INPUT_LENGTH]; */
+  char log_buf[MAX_STRING_LENGTH];
+
+  if (IS_NPC(ch)) {
+    snprintf(log_buf, MAX_STRING_LENGTH, "Attempt to force a mob to beep.");
+    log_string(log_buf);
+    return;
+  }
+
+  if (ch->switched) {
+    snprintf(log_buf, MAX_STRING_LENGTH, "Attempt to beep whilst switched.");
+    log_string(log_buf);
+    return;
+  }
+
+  if (argument[0] == '\0') {
+    send_to_char("Beep whom?\r\n", ch);
+    return;
+  }
+
+/*  strcat(buf, argument); */
+  if (((victim = get_char_world(ch, argument)) == NULL)) {
+    send_to_char("No such character online.\r\n", ch);
+    return;
+  }
+
+  if (IS_NPC(victim)) {
+    send_to_char("That's not a player!\r\n", ch);
+    return;
+  }
+
+  if (!IS_NPC(victim) && (!victim->desc)) {
+    send_to_char("That player is link-dead.\r\n", ch);
+    return;
+  }
+
+  if (!IS_NPC(victim) && (victim->switched) && IS_AFFECTED(victim->switched, AFF_POSSESS))
+    victim = victim->switched;
+
+  if (ch == victim) {
+    send_to_char("\007You beep yourself.\r\n", ch);
+    return;
+  }
+  else {
+    act(AT_IMMORT, "$N has been beeped.", ch, NULL, victim, TO_CHAR);
+    act(AT_IMMORT, "\007$n is beeping you.", ch, NULL, victim, TO_VICT);
+  }
+
+  return;
+}
