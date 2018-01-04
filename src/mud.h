@@ -3757,6 +3757,7 @@ DECLARE_DO_FUN(do_ban);
 DECLARE_DO_FUN(do_bash);
 DECLARE_DO_FUN(do_bashdoor);
 DECLARE_DO_FUN(do_beckon);
+DECLARE_DO_FUN(do_beep);
 DECLARE_DO_FUN(do_berserk);
 DECLARE_DO_FUN(do_bestow);
 DECLARE_DO_FUN(do_bestowarea);
