@@ -108,7 +108,7 @@ char *maphex_bottom(int xhex, int yhex)
     snprintf(bottom, 12, "%s&g/", bottom_of_hex[get_terrain(xhex, yhex)]);
   else
     snprintf(bottom, 12, "%s%d&g/", bottom_with_elevation[get_terrain(xhex, yhex)],
-            get_elevation(xhex, yhex));
+	     get_elevation(xhex, yhex));
 
   return bottom;
 }
@@ -234,14 +234,14 @@ void do_map(CHAR_DATA* ch, const char* argument)
 
   xhex = atoi(arg1);
   if ((xhex < 0) || (xhex >= MAP_WIDTH)) {
-    ch_printf(ch, "xhex out of range. Valid values are 0 to %d\n\r",
+    ch_printf(ch, "xhex out of range. Valid values are 0 to %d\r\n",
               MAP_WIDTH - 1);
     return;
   }
 
   yhex = atoi(arg2);
   if ((yhex < 0) || (yhex >= MAP_HEIGHT)) {
-    ch_printf(ch, "yhex out of range. Valid values are 0 to %d\n\r",
+    ch_printf(ch, "yhex out of range. Valid values are 0 to %d\r\n",
               MAP_HEIGHT - 1);
     return;
   }
