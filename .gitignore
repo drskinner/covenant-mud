@@ -20,6 +20,7 @@ classes/*.class
 corpses/*
 deleted/*
 gods/*
+map/*
 player/*
 races/*.race
 system/*.txt

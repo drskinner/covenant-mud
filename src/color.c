@@ -892,6 +892,13 @@ int colorcode(const char *src, char *dst, DESCRIPTOR_DATA * d, int dstlen, int *
         *vislen = 1;
       return 2;
 
+    case '-':
+      dst[0] = '~';
+      dst[1] = '\0';
+      if (vislen)
+        *vislen = 1;
+      return 2;
+
     case 'Z':  /* Random Ansi Foreground */
       if (ansi)
         mudstrlcpy(dst, random_ansi(1), dstlen);
