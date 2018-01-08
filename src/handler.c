@@ -606,6 +606,43 @@ int urange(int mincheck, int check, int maxcheck)
   return check;
 }
 
+/*                                                                                                                                            
+ * Return the terrain type of a hex. SECT_MAX if off the map;                                                                                 
+ * return SECT_ERROR if terrain type is invalid                                                                                               
+ */
+
+int get_terrain(int x, int y)
+{
+  int terrain;
+
+  if ((x < 0) || (y < 0) || (x >= MAP_WIDTH) || (y >= MAP_HEIGHT))
+    return SECT_MAX;
+  else
+    terrain = map_data[x][y]->terrain;
+
+  if ((terrain < 0) || (terrain >= SECT_MAX))
+    return SECT_ERROR;
+
+  return terrain;
+}
+
+/* Return the elevation of a hex. 0 if off the map or invalid */
+
+int get_elevation(int x, int y)
+{
+  int elevation = 0;
+
+  if ((x < 0) || (y < 0) || (x >= MAP_WIDTH) || (y >= MAP_HEIGHT))
+    return elevation;
+  else
+    elevation = map_data[x][y]->elevation;
+
+  if ((elevation < 0) || (elevation > 9))
+    return 0;
+
+  return elevation;
+}
+
 /*
  * Return how much exp a char has
  */

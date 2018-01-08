@@ -716,8 +716,10 @@ void boot_db(bool fCopyOver)
   fBootDb = FALSE;
   log_string("Initializing economy");
   initialize_economy();
-  if (fCopyOver)
-  {
+  log_string("Loading hex map");
+  load_map();
+
+  if (fCopyOver) {
     log_string("Loading world state...");
     load_world();
   }

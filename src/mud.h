@@ -123,7 +123,10 @@ typedef struct obj_index_data OBJ_INDEX_DATA;
 typedef struct pc_data PC_DATA;
 typedef struct plane_data PLANE_DATA;
 typedef struct reset_data RESET_DATA;
-typedef struct map_data MAP_DATA;   /* maps */
+
+typedef struct map_data MAP_DATA;   /* the game map */
+typedef struct hex_data HEX_DATA;
+
 typedef struct room_index_data ROOM_INDEX_DATA;
 typedef struct shop_data SHOP_DATA;
 typedef struct race_type RACE_TYPE;
@@ -2262,6 +2265,7 @@ struct char_data
   short furn_prep;
   ROOM_INDEX_DATA *in_room;
   ROOM_INDEX_DATA *was_in_room;
+  HEX_DATA *in_hex;
   PC_DATA *pcdata;
   DO_FUN *last_cmd;
   void *dest_buf;   /* This one is to assign to differen things */
@@ -2354,6 +2358,12 @@ struct char_data
   int retran;
   int regoto;
   short mobinvis;   /* Mobinvis level SB */
+
+  float xcart;      /* Stuff for hexmap--may need to be moved */
+  float ycart;      /* to accomodate mobs as well as PCs in RS */
+  int xhex;         /* Hexmap -- Shamus */
+  int yhex;
+
   short colors[MAX_COLORS];
   int home_vnum; /* hotboot tracker */
   int resetvnum;
@@ -3923,6 +3933,7 @@ DECLARE_DO_FUN(do_makeguild);
 DECLARE_DO_FUN(do_makerepair);
 DECLARE_DO_FUN(do_makeshop);
 DECLARE_DO_FUN(do_makewizlist);
+DECLARE_DO_FUN(do_map);
 DECLARE_DO_FUN(do_meditate);
 DECLARE_DO_FUN(do_memory);
 DECLARE_DO_FUN(do_message);
@@ -4359,6 +4370,9 @@ DECLARE_SPELL_FUN(spell_sacral_divinity);
 #define RACE_DIR    "../races/"    /* Races */
 #define WATCH_DIR   "../watch/"    /* Imm watch files --Gorog      */
 #define VAULT_DIR   "../vault/"    /* storage vaults */ 
+#define MAP_DIR     "../map/"      /* Big ol' hex map     */
+#define MAP_LIST    "covenant.map"
+
 
 /*
  * The watch directory contains a maximum of one file for each immortal
@@ -4585,6 +4599,10 @@ char *wordwrap args((char *txt, short wrap));
 RD *make_reset(char letter, int extra, int arg1, int arg2, int arg3);
 RD *add_reset(ROOM_INDEX_DATA * room, char letter, int extra, int arg1, int arg2, int arg3);
 void reset_area(AREA_DATA * pArea);
+
+/* map.c */
+void load_map(void);
+void display_map(CHAR_DATA* ch, int xhex, int yhex, int width, int height);
 
 /* db.c */
 void add_loginmsg(const char *name, short type, const char *argument);
@@ -4813,6 +4831,8 @@ void do_write_imm_host(void);
 void free_obj(OBJ_DATA * obj);
 CHAR_DATA *carried_by(OBJ_DATA * obj);
 AREA_DATA *get_area_obj(OBJ_INDEX_DATA * obj);
+int get_terrain(int x, int y);
+int get_elevation(int x, int y);
 int get_exp(CHAR_DATA * ch);
 int get_exp_worth(CHAR_DATA * ch);
 int exp_level(CHAR_DATA * ch, short level);
@@ -5078,6 +5098,23 @@ bool in_hash_table(const char *str);
 #define GA_IMMUNE       BV11
 #define GA_SUSCEPTIBLE  BV12
 #define GA_RIS          BV30
+
+/*  Map Structures -- Shamus */
+
+struct hex_data /* contains per-room data */
+{
+  short      terrain;       /* sector/terrain type */
+  short      elevation;
+  CHAR_DATA *first_person;
+  CHAR_DATA *last_person;
+  OBJ_DATA  *first_content; /* stuff on ground */
+  OBJ_DATA  *last_content;
+};
+
+#define MAP_WIDTH   200
+#define MAP_HEIGHT  200
+
+extern struct hex_data * map_data[MAP_WIDTH][MAP_HEIGHT];
 
 /*
  * mudprograms stuff
