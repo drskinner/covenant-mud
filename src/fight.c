@@ -286,6 +286,10 @@ void violence_update(void)
   lcw = trworld_create(TR_CHAR_WORLD_BACK);
   for (ch = last_char; ch; ch = trvch_wnext(lcw))
   {
+    /* Skip over players in RealSpace for now. -- Shamus */
+    if (!ch->in_room)
+      continue;
+
     set_cur_char(ch);
 
     /*

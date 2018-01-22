@@ -152,7 +152,7 @@ void WeatherMessage(const char *txt, int x, int y)
       {
          for (d = first_descriptor; d; d = d->next)
          {
-            if (d->connected == CON_PLAYING)
+            if (d->connected == CON_PLAYING && d->character->in_room)
             {
                if (d->character && (d->character->in_room->area == pArea) && IS_OUTSIDE(d->character)
                   && !NO_WEATHER_SECT(d->character->in_room->sector_type) && IS_AWAKE(d->character))

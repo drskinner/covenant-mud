@@ -2359,9 +2359,9 @@ struct char_data
   int regoto;
   short mobinvis;   /* Mobinvis level SB */
 
-  float xcart;      /* Stuff for hexmap--may need to be moved */
-  float ycart;      /* to accomodate mobs as well as PCs in RS */
-  int xhex;         /* Hexmap -- Shamus */
+  double xcart;      /* Stuff for hexmap -- Shamus */
+  double ycart;
+  int xhex;
   int yhex;
 
   short colors[MAX_COLORS];
@@ -2460,6 +2460,10 @@ struct pc_data
 #endif
   bool hotboot;  /* hotboot tracker */
   int timezone;
+
+  double realspeed;
+  int speed;
+  int heading;
 };
 
 /* Damage types from the attack_table[] */
@@ -3076,10 +3080,12 @@ extern const char *const cmd_flags[];
 int umin(int check, int ncheck);
 int umax(int check, int ncheck);
 int urange(int mincheck, int check, int maxcheck);
+double urange_d(double mincheck, double check, double maxcheck);
 
 #define UMIN(a, b)      (umin((a), (b)))
 #define UMAX(a, b)      (umax((a), (b)))
 #define URANGE(a, b, c)  (urange((a), (b), (c)))
+#define URANGE_D(a, b, c)  (urange_d((a), (b), (c)))
 #define LOWER(c)        ((c) >= 'A' && (c) <= 'Z' ? (c) + 'a' - 'A' : (c))
 #define UPPER(c)        ((c) >= 'a' && (c) <= 'z' ? (c) + 'A' - 'a' : (c))
 
@@ -3358,6 +3364,22 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
                                (sect) == SECT_UNDERWATER   || \
                                (sect) == SECT_OCEANFLOOR)
 
+#define FIRST_CONTENT(ch)     ((ch)->in_room ? \
+                               (ch)->in_room->first_content : \
+                               (ch)->in_hex->first_content)
+
+#define LAST_CONTENT(ch)      ((ch)->in_room ? \
+                               (ch)->in_room->last_content : \
+                               (ch)->in_hex->last_content)
+
+#define FIRST_PERSON(ch)      ((ch)->in_room ? \
+                               (ch)->in_room->first_person : \
+                               (ch)->in_hex->first_person)
+
+#define LOCATION_IS_DARK(ch)  ((ch)->in_room ? \
+                               room_is_dark(ch->in_room) : \
+                               FALSE)
+
 #define IS_DRUNK(ch, drunk)     (number_percent() < ((ch)->pcdata->condition[COND_DRUNK] * 2 / (drunk)))
 
 #define IS_CHARMED(ch)      (IS_AFFECTED((ch),AFF_CHARM))
@@ -3488,14 +3510,17 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 #define log_string(txt)         (log_string_plus((txt), LOG_NORMAL, LEVEL_LOG))
 #define dam_message(ch, victim, dam, dt)        (new_dam_message((ch), (victim), (dam), (dt), NULL))
 
-/*
- *  Defines for the command flags. --Shaddai
- */
-#define CMD_FLAG_POSSESS      BV00
-#define CMD_FLAG_POLYMORPHED  BV01
-#define CMD_WATCH             BV02  /* FB */
-#define CMD_FLAG_RETIRED      BV03
-#define CMD_FLAG_NO_ABORT     BV04
+/* Defines for the command flags. Revised for RealSpace. -- Shamus */
+
+#define CMD_FLAG_NO_POSSESS  BV00
+#define CMD_FLAG_NO_MAP      BV01
+#define CMD_FLAG_NO_ROOM     BV02
+#define CMD_FLAG_NO_MOB      BV03
+#define CMD_FLAG_NO_SPEED    BV04
+#define CMD_FLAG_NO_WATER    BV05
+#define CMD_WATCH            BV06
+#define CMD_FLAG_RETIRED     BV07
+#define CMD_FLAG_NO_ABORT    BV08
 
 /*
  * Structure for a command in the command lookup table.
@@ -3881,6 +3906,7 @@ DECLARE_DO_FUN(do_gwhere);
 DECLARE_DO_FUN(do_hedit);
 DECLARE_DO_FUN(do_hell);
 DECLARE_DO_FUN(do_help);
+DECLARE_DO_FUN(do_hexgoto);
 DECLARE_DO_FUN(do_hide);
 DECLARE_DO_FUN(do_hitall);
 DECLARE_DO_FUN(do_hl);
@@ -4469,6 +4495,7 @@ char *format_obj_to_char(OBJ_DATA * obj, CHAR_DATA * ch, bool fShort);
 void show_list_to_char(OBJ_DATA * list, CHAR_DATA * ch, bool fShort, bool fShowNothing);
 bool is_ignoring(CHAR_DATA * ch, CHAR_DATA * ign_ch);
 void show_race_line(CHAR_DATA * ch, CHAR_DATA * victim);
+void hex_look(CHAR_DATA * ch);
 
 /* act_move.c */
 void clear_vrooms args((void));
@@ -4601,6 +4628,11 @@ RD *add_reset(ROOM_INDEX_DATA * room, char letter, int extra, int arg1, int arg2
 void reset_area(AREA_DATA * pArea);
 
 /* map.c */
+void  hex_to_cartesian(int xhex, int yhex, double *xcart, double *ycart);
+void  cartesian_to_hex(int *xhex, int *yhex, double xcart, double ycart);
+void  navigate(CHAR_DATA *ch);
+void  update_location(CHAR_DATA *ch);
+double movement_modifier(int speed, int terrain);
 void load_map(void);
 void display_map(CHAR_DATA* ch, int xhex, int yhex, int width, int height);
 
@@ -4861,6 +4893,8 @@ bool is_affected args((CHAR_DATA * ch, int sn));
 void affect_join args((CHAR_DATA * ch, AFFECT_DATA * paf));
 void char_from_room args((CHAR_DATA * ch));
 void char_to_room args((CHAR_DATA * ch, ROOM_INDEX_DATA * pRoomIndex));
+void char_to_hex args((CHAR_DATA * ch, int xhex, int yhex));
+void char_from_hex args((CHAR_DATA * ch));
 OD *obj_to_char args((OBJ_DATA * obj, CHAR_DATA * ch));
 void obj_from_char args((OBJ_DATA * obj));
 int apply_ac args((OBJ_DATA * obj, int iWear));
@@ -5115,6 +5149,13 @@ struct hex_data /* contains per-room data */
 #define MAP_HEIGHT  200
 
 extern struct hex_data * map_data[MAP_WIDTH][MAP_HEIGHT];
+
+typedef enum
+{
+  SPEED_STOP, SPEED_WALK, SPEED_JOG, SPEED_RUN, SPEED_SPRINT,
+  SPEED_MOUNTWALK, SPEED_TROT, SPEED_CANTER, SPEED_GALLOP,
+  SPEED_MAX
+} speed_types;
 
 /*
  * mudprograms stuff

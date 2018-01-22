@@ -504,7 +504,8 @@ void do_wizhelp(CHAR_DATA* ch, const char* argument)
   set_pager_color(AT_PLAIN, ch);
   for (hash = 0; hash < 126; hash++)
     for (cmd = command_hash[hash]; cmd; cmd = cmd->next)
-      if (cmd->level >= LEVEL_HERO && cmd->level <= get_trust(ch))
+      if ((cmd->level >= LEVEL_HERO) && (cmd->level <= get_trust(ch))
+	  && !(ch->in_hex && IS_SET(cmd->flags, CMD_FLAG_NO_MAP)))
       {
         pager_printf(ch, "%-12s", cmd->name);
         if (++col % 6 == 0)
