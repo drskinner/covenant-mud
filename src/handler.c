@@ -606,6 +606,15 @@ int urange(int mincheck, int check, int maxcheck)
   return check;
 }
 
+double urange_double(double mincheck, double check, double maxcheck)
+{
+  if (check < mincheck)
+    return mincheck;
+  if (check > maxcheck)
+    return maxcheck;
+  return check;
+}
+
 /*                                                                                                                                            
  * Return the terrain type of a hex. SECT_MAX if off the map;                                                                                 
  * return SECT_ERROR if terrain type is invalid                                                                                               
@@ -1968,6 +1977,59 @@ void free_teleports(void)
   }
 }
 
+/* Move a char into a hex */
+
+void char_to_hex(CHAR_DATA *ch, int xhex, int yhex)
+{
+  HEX_DATA *pHex;
+
+  if ((xhex < 0) || (yhex < 0) || (xhex >= MAP_WIDTH) || (yhex >= MAP_HEIGHT))
+  {
+    bug("char_to_hex: Bad Hex %d %d", xhex, yhex);
+    return;
+  }
+
+  pHex = map_data[xhex][yhex];
+
+  if (!ch) {
+    bug("%s", "Char_to_hex: NULL ch!");
+    return;
+  }
+
+  if (!pHex) {
+    bug("Char_to_hex: %s -> NULL hex!", ch->name);
+    return;
+  }
+
+  LINK(ch, pHex->first_person, pHex->last_person,
+       next_in_room, prev_in_room);
+
+  /* We may want to do something about light sources illuminating hexes */
+
+  ch->in_hex = pHex;
+  ch->xhex = xhex;
+  ch->yhex = yhex;
+
+  return;
+}
+
+void char_from_hex(CHAR_DATA *ch)
+{
+  if (!ch->in_hex) {
+    bug("%s", "char_from_hex: ch->in_hex == NULL");
+    return;
+  }
+
+  UNLINK(ch, ch->in_hex->first_person, ch->in_hex->last_person,
+         next_in_room, prev_in_room);
+  /*  ch->was_in_hex  = ch->in_hex; */
+  ch->in_hex       = NULL;
+  ch->next_in_room = NULL;
+  ch->prev_in_room = NULL;
+
+  return;
+}
+
 /*
  * Give an obj to a char.
  */
@@ -2771,9 +2833,8 @@ void extract_char(CHAR_DATA * ch, bool fPull)
   return;
 }
 
-/*
- * Find a char in the room.
- */
+/* Find a char in the room or in the hex -- Shamus */
+
 CHAR_DATA *get_char_room(CHAR_DATA * ch, const char *argument)
 {
   char arg[MAX_INPUT_LENGTH];
@@ -2791,7 +2852,7 @@ CHAR_DATA *get_char_room(CHAR_DATA * ch, const char *argument)
 
   count = 0;
 
-  for (rch = ch->in_room->first_person; rch; rch = rch->next_in_room)
+  for (rch = FIRST_PERSON(ch); rch; rch = rch->next_in_room)
     if (can_see(ch, rch) && (nifty_is_name(arg, rch->name) || (IS_NPC(rch) && vnum == rch->pIndexData->vnum)))
     {
       if (number == 0 && !IS_NPC(rch))
@@ -2805,12 +2866,10 @@ CHAR_DATA *get_char_room(CHAR_DATA * ch, const char *argument)
 
   /*
    * If we didn't find an exact match, run through the list of characters
-   * again looking for prefix matching, ie gu == guard.
-   * Added by Narn, Sept/96
+   * again looking for prefix matching, ie gu == guard. -- Narn, Sept/96
    */
   count = 0;
-  for (rch = ch->in_room->first_person; rch; rch = rch->next_in_room)
-  {
+  for (rch = FIRST_PERSON(ch); rch; rch = rch->next_in_room) {
     if (!can_see(ch, rch) || !nifty_is_name_prefix(arg, rch->name))
       continue;
     if (number == 0 && !IS_NPC(rch))
@@ -2822,12 +2881,8 @@ CHAR_DATA *get_char_room(CHAR_DATA * ch, const char *argument)
   return NULL;
 }
 
+/* Find a char in the world. Revised to check hexes. -- Shamus */
 
-
-
-/*
- * Find a char in the world.
- */
 CHAR_DATA *get_char_world(CHAR_DATA * ch, const char *argument)
 {
   char arg[MAX_INPUT_LENGTH];
@@ -2839,68 +2894,65 @@ CHAR_DATA *get_char_world(CHAR_DATA * ch, const char *argument)
   if (!str_cmp(arg, "self"))
     return ch;
 
-  /*
-   * Allow reference by vnum for saints+         -Thoric
-   */
+  /* Allow reference by vnum for saints+ -- Thoric */
+
   if (get_trust(ch) >= LEVEL_SAVIOR && is_number(arg))
     vnum = atoi(arg);
   else
     vnum = -1;
 
-  /*
-   * check the room for an exact match 
-   */
-  for (wch = ch->in_room->first_person; wch; wch = wch->next_in_room)
-    if (can_see(ch, wch) && (nifty_is_name(arg, wch->name) || (IS_NPC(wch) && vnum == wch->pIndexData->vnum)))
+  /* check the room or hex for an exact match */
+
+  for (wch = FIRST_PERSON(ch); wch; wch = wch->next_in_room)
+    if (can_see(ch, wch)
+        && (nifty_is_name(arg, wch->name)
+            || (IS_NPC(wch) && vnum == wch->pIndexData->vnum)))
     {
       if (number == 0 && !IS_NPC(wch))
-        return wch;
+	return wch;
       else if (++count == number)
-        return wch;
+	return wch;
     }
 
   count = 0;
 
+  /* check the world for an exact match */
 
-
-  /*
-   * check the world for an exact match 
-   */
   for (wch = first_char; wch; wch = wch->next)
-    if (can_see(ch, wch) && (nifty_is_name(arg, wch->name) || (IS_NPC(wch) && vnum == wch->pIndexData->vnum)))
+    if (can_see(ch, wch)
+        && (nifty_is_name(arg, wch->name)
+            || (IS_NPC(wch) && vnum == wch->pIndexData->vnum)))
     {
       if (number == 0 && !IS_NPC(wch))
-        return wch;
+	return wch;
       else if (++count == number)
-        return wch;
+	return wch;
     }
 
-  /*
-   * bail out if looking for a vnum match 
-   */
+  /* bail out if looking for a vnum match */
   if (vnum != -1)
     return NULL;
 
   /*
    * If we didn't find an exact match, check the room for
-   * for a prefix match, ie gu == guard.
-   * Added by Narn, Sept/96
+   * for a prefix match, ie gu == guard. -- Narn, Sept/96
+   * Now checks room or hex as appropriate. -- Shamus
    */
   count = 0;
-  for (wch = ch->in_room->first_person; wch; wch = wch->next_in_room)
-  {
+
+  for (wch = FIRST_PERSON(ch); wch; wch = wch->next_in_room) {
     if (!can_see(ch, wch) || !nifty_is_name_prefix(arg, wch->name))
       continue;
     if (number == 0 && !IS_NPC(wch))
       return wch;
-    else if (++count == number)
-      return wch;
+    else
+      if (++count == number)
+        return wch;
   }
 
   /*
    * If we didn't find a prefix match in the room, run through the full list
-   * of characters looking for prefix matching, ie gu == guard.
-   * Added by Narn, Sept/96
+   * of characters looking for prefix matching, ie gu == guard. -- Narn, Sept/96
    */
   count = 0;
   for (wch = first_char; wch; wch = wch->next)
@@ -3083,7 +3135,7 @@ OBJ_DATA *get_obj_here(CHAR_DATA * ch, const char *argument)
 {
   OBJ_DATA *obj;
 
-  obj = get_obj_list_rev(ch, argument, ch->in_room->last_content);
+  obj = get_obj_list_rev(ch, argument, LAST_CONTENT(ch));
   if (obj)
     return obj;
 
@@ -3488,16 +3540,16 @@ bool can_see(CHAR_DATA * ch, CHAR_DATA * victim)
   if (!IS_NPC(ch) && xIS_SET(ch->act, PLR_HOLYLIGHT))
     return TRUE;
 
-  /*
-   * The miracle cure for blindness? -- Altrag 
-   */
-  if (!IS_AFFECTED(ch, AFF_TRUESIGHT))
-  {
+  /* The miracle cure for blindness? -- Altrag */
+
+  if (!IS_AFFECTED(ch, AFF_TRUESIGHT)) {
     if (IS_AFFECTED(ch, AFF_BLIND))
       return FALSE;
 
-    if (room_is_dark(ch->in_room) && !IS_AFFECTED(ch, AFF_INFRARED))
-      return FALSE;
+    /* TODO: Account for hexes -- Shamus */
+    if (ch->in_room)
+      if (room_is_dark(ch->in_room) && !IS_AFFECTED(ch, AFF_INFRARED))
+        return FALSE;
 
     if (IS_AFFECTED(victim, AFF_INVISIBLE) && !IS_AFFECTED(ch, AFF_DETECT_INVIS))
       return FALSE;
@@ -3552,21 +3604,20 @@ bool can_see_obj(CHAR_DATA * ch, OBJ_DATA * obj)
   if (IS_AFFECTED(ch, AFF_BLIND))
     return FALSE;
 
-  /*
-   * can see lights in the dark 
-   */
+  /* can see lights in the dark */
+
   if (obj->item_type == ITEM_LIGHT && obj->value[2] != 0)
     return TRUE;
 
-  if (room_is_dark(ch->in_room))
-  {
-    /*
-     * can see glowing items in the dark... invisible or not 
-     */
-    if (IS_OBJ_STAT(obj, ITEM_GLOW))
-      return TRUE;
-    if (!IS_AFFECTED(ch, AFF_INFRARED))
-      return FALSE;
+  /* TODO: Account for hexes -- Shamus */
+  if (ch->in_room) {  
+    if (room_is_dark(ch->in_room)) {
+      /* can see glowing items in the dark... invisible or not */
+      if (IS_OBJ_STAT(obj, ITEM_GLOW))
+        return TRUE;
+      if (!IS_AFFECTED(ch, AFF_INFRARED))
+        return FALSE;
+    }
   }
 
   if (IS_OBJ_STAT(obj, ITEM_INVIS) && !IS_AFFECTED(ch, AFF_DETECT_INVIS))

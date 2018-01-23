@@ -353,12 +353,10 @@ void do_get(CHAR_DATA* ch, const char* argument)
   {
     if (number <= 1 && str_cmp(arg1, "all") && str_prefix("all.", arg1))
     {
-      /*
-       * 'get obj' 
-       */
-      obj = get_obj_list(ch, arg1, ch->in_room->first_content);
-      if (!obj)
-      {
+      /* 'get obj' */
+
+      obj = get_obj_list(ch, arg1, FIRST_CONTENT(ch));
+      if (!obj) {
         act(AT_PLAIN, "I see no $T here.", ch, NULL, arg1, TO_CHAR);
         return;
       }
@@ -388,11 +386,11 @@ void do_get(CHAR_DATA* ch, const char* argument)
         chk = arg1;
       else
         chk = &arg1[4];
-      /*
-       * 'get all' or 'get all.obj' 
-       */
+
+      /* 'get all' or 'get all.obj' */
+
       found = FALSE;
-      for (obj = ch->in_room->last_content; obj; obj = obj_next)
+      for (obj = LAST_CONTENT(ch); obj; obj = obj_next)
       {
         obj_next = obj->prev_content;
         if ((fAll || nifty_is_name(chk, obj->name)) && can_see_obj(ch, obj))
@@ -1021,12 +1019,10 @@ void do_drop(CHAR_DATA* ch, const char* argument)
 
       ch->gold -= number;
 
-      for (obj = ch->in_room->first_content; obj; obj = obj_next)
-      {
+      for (obj = FIRST_CONTENT(ch); obj; obj = obj_next) {
         obj_next = obj->next_content;
 
-        switch (obj->pIndexData->vnum)
-        {
+        switch (obj->pIndexData->vnum) {
         case OBJ_VNUM_MONEY_ONE:
           number += 1;
           extract_obj(obj);

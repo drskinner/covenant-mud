@@ -132,6 +132,10 @@ void look_sky(CHAR_DATA * ch)
   char buf2[4];
   int starpos, sunpos, moonpos, moonphase, i, linenum;
 
+  if (ch->in_hex) {
+    return;
+  }
+
   send_to_pager("You gaze up towards the heavens and see:\r\n", ch);
 
   if (isModeratelyCloudy(getCloudCover(cell)))
@@ -1133,7 +1137,7 @@ void show_char_to_char(CHAR_DATA * list, CHAR_DATA * ch)
     {
       show_char_to_char_0(rch, ch);
     }
-    else if (room_is_dark(ch->in_room) && IS_AFFECTED(ch, AFF_INFRARED) && !(!IS_NPC(rch) && IS_IMMORTAL(rch)))
+    else if (LOCATION_IS_DARK(ch) && IS_AFFECTED(ch, AFF_INFRARED) && !(!IS_NPC(rch) && IS_IMMORTAL(rch)))
     {
       set_char_color(AT_BLOOD, ch);
       send_to_char("The red form of a living creature is here.\r\n", ch);
@@ -1278,14 +1282,17 @@ void do_look(CHAR_DATA * ch, const char *argument)
   if (!check_blind(ch))
     return;
 
-  if (!IS_NPC(ch)
-      && !xIS_SET(ch->act, PLR_HOLYLIGHT) && !IS_AFFECTED(ch, AFF_TRUESIGHT) && room_is_dark(ch->in_room))
-  {
-    set_char_color(AT_DGREY, ch);
-    send_to_char("It is pitch black ... \r\n", ch);
-    if (!*argument || !str_cmp(argument, "auto"))
+  if (ch->in_room) {
+    if (!IS_NPC(ch)
+        && !xIS_SET(ch->act, PLR_HOLYLIGHT)
+        && !IS_AFFECTED(ch, AFF_TRUESIGHT)
+        && room_is_dark(ch->in_room))
+    {
+      set_char_color(AT_DGREY, ch);
+      send_to_char("It is pitch black ... \n\r", ch);
       show_char_to_char(ch->in_room->first_person, ch);
-    return;
+      return;
+    }
   }
 
   argument = one_argument(argument, arg1);
@@ -1295,6 +1302,12 @@ void do_look(CHAR_DATA * ch, const char *argument)
   if (arg1[0] == '\0' || !str_cmp(arg1, "auto"))
   {
     /* 'look' or 'look auto' */
+
+    if (ch->in_hex) {
+      navigate(ch);
+      hex_look(ch);
+      return;
+    }
 
     set_char_color(AT_ROOM_NAME, ch);
     send_to_char(ch->in_room->name, ch);
@@ -1668,6 +1681,12 @@ void do_look(CHAR_DATA * ch, const char *argument)
   }
 
   send_to_char("You do not see that here.\r\n", ch);
+}
+
+void hex_look(CHAR_DATA * ch)
+{
+  send_to_char("hex_look: Coming Soon...\r\n", ch);
+  return;
 }
 
 void show_race_line(CHAR_DATA * ch, CHAR_DATA * victim)
@@ -2107,7 +2126,7 @@ void do_exits(CHAR_DATA* ch, const char* argument)
 
   if (!IS_NPC(ch)
       && !xIS_SET(ch->act, PLR_HOLYLIGHT)
-      && !IS_AFFECTED(ch, AFF_TRUESIGHT) && !IS_AFFECTED(ch, AFF_INFRARED) && room_is_dark(ch->in_room))
+      && !IS_AFFECTED(ch, AFF_TRUESIGHT) && !IS_AFFECTED(ch, AFF_INFRARED) && LOCATION_IS_DARK(ch))
   {
     set_char_color(AT_DGREY, ch);
     send_to_char("It is pitch black ... \r\n", ch);
@@ -3983,7 +4002,10 @@ void do_commands(CHAR_DATA* ch, const char* argument)
     for (hash = 0; hash < 126; hash++)
       for (command = command_hash[hash]; command; command = command->next)
         if (command->level < LEVEL_HERO
-            && command->level <= get_trust(ch) && (command->name[0] != 'm' || command->name[1] != 'p'))
+            && command->level <= get_trust(ch) 
+            && !(ch->in_hex && IS_SET(command->flags, CMD_FLAG_NO_MAP))
+            && !(ch->in_room && IS_SET(command->flags, CMD_FLAG_NO_ROOM))
+            && (command->name[0] != 'm' || command->name[1] != 'p'))
         {
           pager_printf(ch, "%-12s", command->name);
           if (++col % 6 == 0)
@@ -3999,7 +4021,10 @@ void do_commands(CHAR_DATA* ch, const char* argument)
       for (command = command_hash[hash]; command; command = command->next)
         if (command->level < LEVEL_HERO
             && command->level <= get_trust(ch)
-            && !str_prefix(argument, command->name) && (command->name[0] != 'm' || command->name[1] != 'p'))
+            && !str_prefix(argument, command->name)
+            && !(ch->in_hex && IS_SET(command->flags, CMD_FLAG_NO_MAP))
+            && !(ch->in_room && IS_SET(command->flags, CMD_FLAG_NO_ROOM))
+            && (command->name[0] != 'm' || command->name[1] != 'p'))
         {
           pager_printf(ch, "%-12s", command->name);
           found = TRUE;

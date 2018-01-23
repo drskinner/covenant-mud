@@ -250,15 +250,13 @@ void interpret(CHAR_DATA * ch, char *argument)
   struct timeval time_used;
   long tmptime;
 
-  if (!ch)
-  {
-    bug("%s: null ch!", __func__);
+  if (!ch) {
+    bug("%s: NULL ch!", __func__);
     return;
   }
 
-  if (!ch->in_room)
-  {
-    bug("%s: null in_room!", __func__);
+  if ((!ch->in_room) && (!ch->in_hex)) {
+    bug("interpret: NULL in_room or NULL in_hex!");
     return;
   }
 
@@ -522,7 +520,6 @@ void interpret(CHAR_DATA * ch, char *argument)
    * *  this function might be usefull elsewhere.  Also using the
    * *  send_to_char_color so we can colorize the strings if need be. --Shaddai
    */
-
   buf = check_cmd_flags(ch, cmd);
 
   if (buf[0] != '\0')
@@ -647,29 +644,36 @@ bool check_social(CHAR_DATA * ch, const char *command, const char *argument)
     return TRUE;
   }
 
-  /*
-   * Search room for chars ignoring social sender and 
-   * remove them from the room until social has been  
-   * completed              
-   */
-  room = ch->in_room;
-  for (victim = ch->in_room->first_person; victim; victim = victim_next)
-  {
-    if (i == 127)
-      break;
-    victim_next = victim->next_in_room;
-    if (is_ignoring(victim, ch))
+  /* Search room for chars ignoring social sender and remove them from
+     the room until social has been completed */
+
+  /* That's a bizarre way of doing things! -- Shamus */
+
+  /* Anyway, do we need to sort out ignore lists for hexes? Or should we
+     measure distances to see who can and cannot see a social? What defines
+     being "close" enough...? */
+
+  if (ch->in_room) {
+    room = ch->in_room;
+
+    for(victim = ch->in_room->first_person; victim; victim = victim_next)
     {
-      if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch))
-      {
-        removed[i] = victim;
-        i++;
-        UNLINK(victim, room->first_person, room->last_person, next_in_room, prev_in_room);
-      }
-      else
-      {
-        set_char_color(AT_IGNORE, victim);
-        ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see(victim, ch) ? "Someone" : ch->name);
+      if (i == 127)
+        break;
+
+      victim_next = victim->next_in_room;
+
+      if (is_ignoring(victim, ch)) {
+        if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch)) {
+	  removed[i] = victim;
+	  i++;
+	  UNLINK(victim, room->first_person, room->last_person, next_in_room, prev_in_room);
+        }
+        else {
+          set_char_color(AT_IGNORE, victim);
+	  ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n",
+		    !can_see(victim, ch) ? "Someone" : ch->name);
+        }
       }
     }
   }
@@ -1039,7 +1043,7 @@ void update_userec(struct timeval *time_used, struct timerset *userec)
  *  edited online to allow or disallow certain situations.  May be an idea
  *  to rework this so we can edit the message sent back online, as well as
  *  maybe a crude parsing language so we can add in new checks online without
- *  haveing to hard-code them in.     -- Shaddai   August 25, 1997
+ *  having to hard-code them in.     -- Shaddai   August 25, 1997
  */
 
 /* Needed a global here */
@@ -1047,11 +1051,19 @@ char cmd_flag_buf[MAX_STRING_LENGTH];
 
 char *check_cmd_flags(CHAR_DATA * ch, CMDTYPE * cmd)
 {
-
-  if (IS_AFFECTED(ch, AFF_POSSESS) && IS_SET(cmd->flags, CMD_FLAG_POSSESS))
+  if (IS_AFFECTED(ch, AFF_POSSESS) && IS_SET(cmd->flags, CMD_FLAG_NO_POSSESS))
     snprintf(cmd_flag_buf, MAX_STRING_LENGTH, "You can't %s while you are possessing someone!\r\n", cmd->name);
-  else if (ch->morph != NULL && IS_SET(cmd->flags, CMD_FLAG_POLYMORPHED))
-    snprintf(cmd_flag_buf, MAX_STRING_LENGTH, "You can't %s while you are polymorphed!\r\n", cmd->name);
+  else if ((!ch->in_room) && IS_SET(cmd->flags, CMD_FLAG_NO_MAP))
+    snprintf(cmd_flag_buf, MAX_STRING_LENGTH, "You can't use '%s' while you are on the map!\r\n", cmd->name);
+  else if ((ch->in_room) && IS_SET(cmd->flags, CMD_FLAG_NO_ROOM))
+    snprintf(cmd_flag_buf, MAX_STRING_LENGTH, "You need to be on the map to use '%s'.\r\n", cmd->name);
+  else if (IS_NPC(ch) && IS_SET(cmd->flags, CMD_FLAG_NO_MOB))
+    snprintf(cmd_flag_buf, MAX_STRING_LENGTH, "Mobs can't use '%s'. Return if you are switched.\r\n", cmd->name);
+#if false
+  /* In some contexts, such as logging out, ch->pcdata can be null */
+  else if ((ch->pcdata->speed > 0) && IS_SET(cmd->flags, CMD_FLAG_NO_SPEED))
+    snprintf(cmd_flag_buf, MAX_STRING_LENGTH, "You can't use '%s' while moving!\r\n", cmd->name);
+#endif
   else
     cmd_flag_buf[0] = '\0';
 

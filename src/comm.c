@@ -3796,8 +3796,14 @@ void display_prompt(DESCRIPTOR_DATA * d)
         break;
 
       case 'r':
-        if (IS_IMMORTAL(och))
-          pstat = ch->in_room->vnum;
+        if (IS_IMMORTAL(och)) {
+          if (ch->in_room)
+            pstat = ch->in_room->vnum;
+          else if (ch->in_hex)
+            snprintf(pbuf, MAX_STRING_LENGTH, "%d, %d", ch->xhex, ch->yhex);
+          else
+            snprintf(pbuf, MAX_STRING_LENGTH, "&RERROR!&w");
+        }
         break;
 
       case 'F':

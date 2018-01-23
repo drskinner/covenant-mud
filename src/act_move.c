@@ -419,6 +419,9 @@ short encumbrance(CHAR_DATA * ch, short move)
  */
 bool will_fall(CHAR_DATA * ch, int fall)
 {
+  if (!ch->in_room)
+    return FALSE;
+
   if (xIS_SET(ch->in_room->room_flags, ROOM_NOFLOOR)
       && CAN_GO(ch, DIR_DOWN)
       && (!IS_AFFECTED(ch, AFF_FLYING) || (ch->mount && !IS_AFFECTED(ch->mount, AFF_FLYING))))
@@ -1261,40 +1264,35 @@ EXIT_DATA *find_door(CHAR_DATA * ch, const char *arg, bool quiet)
     return NULL;
 
   pexit = NULL;
-  if (!str_cmp(arg, "n") || !str_cmp(arg, "north"))
-    door = 0;
-  else if (!str_cmp(arg, "e") || !str_cmp(arg, "east"))
-    door = 1;
-  else if (!str_cmp(arg, "s") || !str_cmp(arg, "south"))
-    door = 2;
-  else if (!str_cmp(arg, "w") || !str_cmp(arg, "west"))
-    door = 3;
-  else if (!str_cmp(arg, "u") || !str_cmp(arg, "up"))
-    door = 4;
-  else if (!str_cmp(arg, "d") || !str_cmp(arg, "down"))
-    door = 5;
-  else if (!str_cmp(arg, "ne") || !str_cmp(arg, "northeast"))
-    door = 6;
-  else if (!str_cmp(arg, "nw") || !str_cmp(arg, "northwest"))
-    door = 7;
-  else if (!str_cmp(arg, "se") || !str_cmp(arg, "southeast"))
-    door = 8;
-  else if (!str_cmp(arg, "sw") || !str_cmp(arg, "southwest"))
-    door = 9;
+  if      (!str_cmp(arg, "n")  || !str_cmp(arg, "north"))     door = 0;
+  else if (!str_cmp(arg, "e")  || !str_cmp(arg, "east"))      door = 1;
+  else if (!str_cmp(arg, "s")  || !str_cmp(arg, "south"))     door = 2;
+  else if (!str_cmp(arg, "w")  || !str_cmp(arg, "west"))      door = 3;
+  else if (!str_cmp(arg, "u")  || !str_cmp(arg, "up"))        door = 4;
+  else if (!str_cmp(arg, "d")  || !str_cmp(arg, "down"))      door = 5;
+  else if (!str_cmp(arg, "ne") || !str_cmp(arg, "northeast")) door = 6;
+  else if (!str_cmp(arg, "nw") || !str_cmp(arg, "northwest")) door = 7;
+  else if (!str_cmp(arg, "se") || !str_cmp(arg, "southeast")) door = 8;
+  else if (!str_cmp(arg, "sw") || !str_cmp(arg, "southwest")) door = 9;
   else
   {
-    for (pexit = ch->in_room->first_exit; pexit; pexit = pexit->next)
-    {
-      if ((quiet || IS_SET(pexit->exit_info, EX_ISDOOR)) && pexit->keyword && nifty_is_name(arg, pexit->keyword))
-        return pexit;
+    /* We're loooking for a named exit, but obviously we don't want to
+       go searching for exits if you're out in RealSpace -- Shamus */
+
+    if (ch->in_room) {
+      for (pexit = ch->in_room->first_exit; pexit; pexit = pexit->next) {
+        if ((quiet || IS_SET(pexit->exit_info, EX_ISDOOR))
+             && pexit->keyword
+             && nifty_is_name(arg, pexit->keyword))
+          return pexit;
+      }
     }
     if (!quiet)
       act(AT_PLAIN, "You see no $T here.", ch, NULL, arg, TO_CHAR);
     return NULL;
   }
 
-  if ((pexit = get_exit(ch->in_room, door)) == NULL)
-  {
+  if ((pexit = get_exit(ch->in_room, door)) == NULL) {
     if (!quiet)
       act(AT_PLAIN, "You see no $T here.", ch, NULL, arg, TO_CHAR);
     return NULL;
@@ -1303,14 +1301,12 @@ EXIT_DATA *find_door(CHAR_DATA * ch, const char *arg, bool quiet)
   if (quiet)
     return pexit;
 
-  if (IS_SET(pexit->exit_info, EX_SECRET))
-  {
+  if (IS_SET(pexit->exit_info, EX_SECRET)) {
     act(AT_PLAIN, "You see no $T here.", ch, NULL, arg, TO_CHAR);
     return NULL;
   }
 
-  if (!IS_SET(pexit->exit_info, EX_ISDOOR))
-  {
+  if (!IS_SET(pexit->exit_info, EX_ISDOOR)) {
     send_to_char("You can't do that.\r\n", ch);
     return NULL;
   }
@@ -2022,19 +2018,17 @@ void do_stand(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-#if 0
   if (ch->in_hex)
     if (IS_WATER_SECT(ch->in_hex->terrain) && (ch->in_hex->elevation >= 2)) {
       send_to_char("The water is too deep for you to stand on the bottom.\r\n",
                    ch);
       return;
     }
-
+#if 0
   if (!IS_NPC(ch))
     if (ch->pcdata->speed != 0)
       do_stop(ch, "\r\n");
 #endif
-
   /* Determine what arguments were passed, if any */
 
   argument = one_argument(argument, arg1);
@@ -2053,8 +2047,7 @@ void do_stand(CHAR_DATA* ch, const char* argument)
   old_obj = ch->furniture;
 
   if ((arg1[0] != '\0') && (strcmp(arg1, "up"))){
-    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
-    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+    obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch));
 
     if (obj == NULL) {
       send_to_char("You don't see that here.\r\n", ch);
@@ -2299,8 +2292,7 @@ void do_sit(CHAR_DATA* ch, const char* argument)
   old_obj = ch->furniture;
 
   if (arg1[0] != '\0') {
-    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
-    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+    obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch));
 
     if (obj == NULL) {
       send_to_char("You don't see that here.\r\n", ch);
@@ -2588,8 +2580,7 @@ void do_rest(CHAR_DATA* ch, const char* argument)
   old_obj = ch->furniture;
 
   if (arg1[0] != '\0') {
-    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
-    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+    obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch));
 
     if (obj == NULL) {
       send_to_char("You don't see that here.\r\n", ch);
@@ -2893,8 +2884,7 @@ void do_sleep(CHAR_DATA* ch, const char* argument)
   old_obj = ch->furniture;
 
   if (arg1[0] != '\0') {
-    /* obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch)); For hex map */
-    obj = get_obj_list(ch, argtarg, ch->in_room->first_content);
+    obj = get_obj_list(ch, argtarg, FIRST_CONTENT(ch));
 
     if (obj == NULL) {
       send_to_char("You don't see that here.\r\n", ch);
@@ -3419,8 +3409,10 @@ ch_ret pullcheck(CHAR_DATA * ch, int pulse)
   const char *tochar = NULL, *toroom = NULL, *objmsg = NULL;
   const char *destrm = NULL, *destob = NULL, *dtxt = "somewhere";
 
-  if ((room = ch->in_room) == NULL)
-  {
+  if (ch->in_hex)
+    return rNONE;
+
+  if ((room = ch->in_room) == NULL) {
     bug("%s: %s not in a room?!?", __func__, ch->name);
     return rNONE;
   }

@@ -2883,8 +2883,8 @@ void mprog_death_trigger(CHAR_DATA * killer, CHAR_DATA * mob)
 void mprog_login_trigger(CHAR_DATA *ch)
 {
   CHAR_DATA *vmob, *vmob_next;
-
-  for (vmob = ch->in_room->first_person; vmob; vmob = vmob_next)
+ 
+  for (vmob = FIRST_PERSON(ch); vmob; vmob = vmob_next)
   {
     vmob_next = vmob->next_in_room;
 
@@ -2904,7 +2904,7 @@ void mprog_void_trigger(CHAR_DATA *ch)
 {
   CHAR_DATA *vmob, *vmob_next;
 
-  for (vmob = ch->in_room->first_person; vmob; vmob = vmob_next)
+  for (vmob = FIRST_PERSON(ch); vmob; vmob = vmob_next)
   {
     vmob_next = vmob->next_in_room;
 
@@ -3003,7 +3003,7 @@ void mprog_greet_trigger(CHAR_DATA * ch)
   CHAR_DATA *script[1024];
 
   loop_ctrl = trvch_create(ch, TR_CHAR_ROOM_FORW);
-  for (vmob = ch->in_room->first_person; vmob; vmob = trvch_next(loop_ctrl))
+  for (vmob = FIRST_PERSON(ch); vmob; vmob = trvch_next(loop_ctrl))
   {
     if (!IS_NPC(vmob) || !can_see(vmob, ch)
         || (vmob->fighting && !HAS_PROG(vmob->pIndexData, GREET_IN_FIGHT_PROG))
@@ -3084,7 +3084,7 @@ void mprog_speech_trigger(const char *txt, CHAR_DATA * actor)
 {
   CHAR_DATA *vmob;
 
-  for (vmob = actor->in_room->first_person; vmob; vmob = vmob->next_in_room)
+  for (vmob = FIRST_PERSON(actor); vmob; vmob = vmob->next_in_room)
   {
     if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, SPEECH_PROG))
     {
@@ -3099,7 +3099,7 @@ void mprog_tell_trigger(const char *txt, CHAR_DATA * actor)
 {
   CHAR_DATA *vmob;
 
-  for (vmob = actor->in_room->first_person; vmob; vmob = vmob->next_in_room)
+  for (vmob = FIRST_PERSON(actor); vmob; vmob = vmob->next_in_room)
   {
     if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, TELL_PROG))
     {
@@ -3114,7 +3114,7 @@ bool mprog_command_trigger(CHAR_DATA * actor, char *txt)
 {
   CHAR_DATA *vmob;
 
-  for (vmob = actor->in_room->first_person; vmob; vmob = vmob->next_in_room)
+  for (vmob = FIRST_PERSON(actor); vmob; vmob = vmob->next_in_room)
   {
     if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, CMD_PROG))
     {
@@ -3260,7 +3260,7 @@ void oprog_greet_trigger(CHAR_DATA * ch)
 {
   OBJ_DATA *vobj;
 
-  for (vobj = ch->in_room->first_content; vobj; vobj = vobj->next_content)
+  for (vobj = FIRST_CONTENT(ch); vobj; vobj = vobj->next_content)
     if (HAS_PROG(vobj->pIndexData, GREET_PROG))
     {
       set_supermob(vobj);   /* not very efficient to do here */
@@ -3273,10 +3273,9 @@ void oprog_speech_trigger(const char *txt, CHAR_DATA * ch)
 {
   OBJ_DATA *vobj;
 
-  /*
-   * supermob is set and released in oprog_wordlist_check 
-   */
-  for (vobj = ch->in_room->first_content; vobj; vobj = vobj->next_content)
+  /* supermob is set and released in oprog_wordlist_check  */
+
+  for (vobj = FIRST_CONTENT(ch); vobj; vobj = vobj->next_content)
     if (HAS_PROG(vobj->pIndexData, SPEECH_PROG))
       oprog_wordlist_check(txt, supermob, ch, vobj, NULL, NULL, SPEECH_PROG, vobj);
 
@@ -3287,10 +3286,9 @@ bool oprog_command_trigger(CHAR_DATA * ch, char *txt)
 {
   OBJ_DATA *vobj;
 
-  /*
-   * supermob is set and released in oprog_wordlist_check 
-   */
-  for (vobj = ch->in_room->first_content; vobj; vobj = vobj->next_content)
+  /* supermob is set and released in oprog_wordlist_check  */
+
+  for (vobj = FIRST_CONTENT(ch); vobj; vobj = vobj->next_content)
     if (HAS_PROG(vobj->pIndexData, CMD_PROG))
       if (oprog_wordlist_check(txt, supermob, ch, vobj, NULL, NULL, CMD_PROG, vobj))
         return TRUE;
@@ -3664,126 +3662,135 @@ void rprog_act_trigger(const char *buf, ROOM_INDEX_DATA * room, CHAR_DATA * ch, 
 
 void rprog_leave_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, LEAVE_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, LEAVE_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, LEAVE_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, LEAVE_PROG);
+      release_supermob();
+    }
   }
 }
 
 /* login and void room triggers by Edmond */
+
 void rprog_login_trigger(CHAR_DATA *ch)
 {
-  if (HAS_PROG(ch->in_room, LOGIN_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, LOGIN_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, LOGIN_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, LOGIN_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_void_trigger(CHAR_DATA *ch)
 {
-  if (HAS_PROG(ch->in_room, VOID_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, VOID_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, VOID_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, VOID_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_enter_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, ENTER_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, ENTER_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, ENTER_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, ENTER_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_imminfo_trigger(CHAR_DATA *ch)
 {
-  if (HAS_PROG(ch->in_room, IMMINFO_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, IMMINFO_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, IMMINFO_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, IMMINFO_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_sleep_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, SLEEP_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, SLEEP_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, SLEEP_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, SLEEP_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_rest_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, REST_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, REST_PROG);
-    release_supermob();
+  if (ch->in_room) {  
+    if (HAS_PROG(ch->in_room, REST_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, REST_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_rfight_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, RFIGHT_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, RFIGHT_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, RFIGHT_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, RFIGHT_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_death_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, RDEATH_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, RDEATH_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, RDEATH_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, RDEATH_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_speech_trigger(const char *txt, CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, SPEECH_PROG))
-  {
-    /*
-     * supermob is set and released in rprog_wordlist_check 
-     */
-    rprog_wordlist_check(txt, supermob, ch, NULL, NULL, NULL, SPEECH_PROG, ch->in_room);
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, SPEECH_PROG)) {
+      /* supermob is set and released in rprog_wordlist_check */
+      rprog_wordlist_check(txt, supermob, ch, NULL, NULL, NULL, SPEECH_PROG, ch->in_room);
+    }
   }
 }
 
 bool rprog_command_trigger(CHAR_DATA * ch, char *txt)
 {
-  if (HAS_PROG(ch->in_room, CMD_PROG))
-  {
-    /*
-     * supermob is set and released in rprog_wordlist_check 
-     */
-    if (rprog_wordlist_check(txt, supermob, ch, NULL, NULL, NULL, CMD_PROG, ch->in_room))
-      return TRUE;
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, CMD_PROG)) {
+      /* supermob is set and released in rprog_wordlist_check */
+      if (rprog_wordlist_check(txt, supermob, ch, NULL, NULL, NULL, CMD_PROG, ch->in_room))
+        return TRUE;
+    }
   }
   return FALSE;
 }
 
 void rprog_random_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, RAND_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_percent_check(supermob, ch, NULL, NULL, NULL, RAND_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, RAND_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_percent_check(supermob, ch, NULL, NULL, NULL, RAND_PROG);
+      release_supermob();
+    }
   }
 }
 
@@ -3877,21 +3884,23 @@ void rprog_time_check(CHAR_DATA * mob, CHAR_DATA * actor, OBJ_DATA * obj, ROOM_I
 
 void rprog_time_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, TIME_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_time_check(supermob, NULL, NULL, ch->in_room, TIME_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, TIME_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_time_check(supermob, NULL, NULL, ch->in_room, TIME_PROG);
+      release_supermob();
+    }
   }
 }
 
 void rprog_hour_trigger(CHAR_DATA * ch)
 {
-  if (HAS_PROG(ch->in_room, HOUR_PROG))
-  {
-    rset_supermob(ch->in_room);
-    rprog_time_check(supermob, NULL, NULL, ch->in_room, HOUR_PROG);
-    release_supermob();
+  if (ch->in_room) {
+    if (HAS_PROG(ch->in_room, HOUR_PROG)) {
+      rset_supermob(ch->in_room);
+      rprog_time_check(supermob, NULL, NULL, ch->in_room, HOUR_PROG);
+      release_supermob();
+    }
   }
 }
 

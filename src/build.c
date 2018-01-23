@@ -179,11 +179,12 @@ const char *const trap_flags[] = {
   "r9", "r10", "r11", "r12", "r13", "r14", "r15"
 };
 
-const char *const cmd_flags[] = {
-  "possessed", "polymorphed", "watch", "retired", "noabort", "r5", "r6", "r7", "r8",
+const char *const cmd_flags[] =
+{
+  "no_possess", "no_map", "no_room", "no_mob", "no_speed", 
+  "no_water", "watch", "retired", "no_abort",
   "r9", "r10", "r11", "r12", "r13", "r14", "r15", "r16", "r17", "r18", "r19",
   "r20", "r21", "r22", "r23", "r24", "r25", "r26", "r27", "r28", "r29", "r30"
-  "r31"
 };
 
 const char *const wear_locs[] = {
@@ -1059,7 +1060,10 @@ void do_goto(CHAR_DATA* ch, const char* argument)
   if (ch->furniture)
     do_stand(ch, "\r\n");
 
-  in_room = ch->in_room;
+  in_room = NULL;
+  if (ch->in_room)
+    in_room = ch->in_room;
+
   if (ch->fighting)
     stop_fighting(ch, TRUE);
 
@@ -1071,11 +1075,12 @@ void do_goto(CHAR_DATA* ch, const char* argument)
   /* need to be ready for hexes! */
   if (ch->in_room) {
     ch->regoto = ch->in_room->vnum;
+    char_from_room(ch);
+  } else if (ch->in_hex) {
+    char_from_hex(ch);
   }
 
-  char_from_room(ch);
-  if (ch->mount)
-  {
+  if (ch->mount) {
     char_from_room(ch->mount);
     char_to_room(ch->mount, location);
   }
@@ -1088,8 +1093,12 @@ void do_goto(CHAR_DATA* ch, const char* argument)
 
   do_look(ch, "auto");
 
+  if (in_room == NULL)
+    return;
+
   if (ch->in_room == in_room)
     return;
+
   for (fch = in_room->first_person; fch; fch = fch_next)
   {
     fch_next = fch->next_in_room;
