@@ -3080,14 +3080,14 @@ extern const char *const cmd_flags[];
 int umin(int check, int ncheck);
 int umax(int check, int ncheck);
 int urange(int mincheck, int check, int maxcheck);
-double urange_d(double mincheck, double check, double maxcheck);
+double urange_double(double mincheck, double check, double maxcheck);
 
-#define UMIN(a, b)      (umin((a), (b)))
-#define UMAX(a, b)      (umax((a), (b)))
-#define URANGE(a, b, c)  (urange((a), (b), (c)))
-#define URANGE_D(a, b, c)  (urange_d((a), (b), (c)))
-#define LOWER(c)        ((c) >= 'A' && (c) <= 'Z' ? (c) + 'a' - 'A' : (c))
-#define UPPER(c)        ((c) >= 'a' && (c) <= 'z' ? (c) + 'A' - 'a' : (c))
+#define LOWER(c)                ((c) >= 'A' && (c) <= 'Z' ? (c) + 'a' - 'A' : (c))
+#define UPPER(c)                ((c) >= 'a' && (c) <= 'z' ? (c) + 'A' - 'a' : (c))
+#define UMIN(a, b)              (umin((a), (b)))
+#define UMAX(a, b)              (umax((a), (b)))
+#define URANGE(a, b, c)         (urange((a), (b), (c)))
+#define URANGE_DOUBLE(a, b, c)  (urange_double((a), (b), (c)))
 
 /*
  * Old-style Bit manipulation macros

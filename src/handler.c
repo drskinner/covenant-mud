@@ -606,7 +606,7 @@ int urange(int mincheck, int check, int maxcheck)
   return check;
 }
 
-double urange_d(double mincheck, double check, double maxcheck)
+double urange_double(double mincheck, double check, double maxcheck)
 {
   if (check < mincheck)
     return mincheck;

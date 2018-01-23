@@ -322,10 +322,10 @@ void hex_to_cartesian(int xhex, int yhex, double *xcart, double *ycart)
   bear = ((double)bearing + 90.0) * TWOPIOVER360;                           \
   tx = NAVIGATE_CENTERX + range * NAVIGATE_MAX_X_DIFF * 2 * (f1=cos(bear)); \
   ty = NAVIGATE_CENTERY + range * NAVIGATE_MAX_Y_DIFF * 2 * (f2=sin(bear)); \
-  tx = URANGE_D(NAVIGATE_CENTERX - NAVIGATE_MAX_X_DIFF, tx,  \
-                NAVIGATE_CENTERX + NAVIGATE_MAX_X_DIFF); \
-  ty = URANGE_D(NAVIGATE_CENTERY - NAVIGATE_MAX_Y_DIFF, ty,  \
-                NAVIGATE_CENTERY + NAVIGATE_MAX_Y_DIFF); \
+  tx = URANGE_DOUBLE(NAVIGATE_CENTERX - NAVIGATE_MAX_X_DIFF, tx,  \
+                     NAVIGATE_CENTERX + NAVIGATE_MAX_X_DIFF); \
+  ty = URANGE_DOUBLE(NAVIGATE_CENTERY - NAVIGATE_MAX_Y_DIFF, ty,  \
+                     NAVIGATE_CENTERY + NAVIGATE_MAX_Y_DIFF); \
   left[(int)ty][(int)(tx + 2)] = letter;
 
 /* The above has to be [tx + 2] to account for the colour code &g */
