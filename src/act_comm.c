@@ -1774,7 +1774,7 @@ void do_retell(CHAR_DATA* ch, const char* argument)
     else
     {
       set_char_color(AT_IGNORE, victim);
-      ch_printf(victim, "You attempy to ignore %s, but are unable to do so.\r\n", !can_see(victim, ch) ? "Someone" : ch->name);
+      ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see(victim, ch) ? "Someone" : ch->name);
     }
   }
 
