@@ -519,7 +519,7 @@ void do_hexgoto(CHAR_DATA* ch, const char* argument)
 
   if (!xIS_SET(ch->act, PLR_WIZINVIS)) {
     if (ch->pcdata && ch->pcdata->bamfout[0] != '\0') {
-      sprintf(buf, "%s %s", ch->name, ch->pcdata->bamfout);
+      snprintf(buf, MAX_STRING_LENGTH, "%s %s", ch->name, ch->pcdata->bamfout);
       act(AT_IMMORT, "$T", ch, NULL, wordwrap(buf, 78), TO_ROOM);
     }
     else
@@ -552,13 +552,89 @@ void do_hexgoto(CHAR_DATA* ch, const char* argument)
 
   if (!xIS_SET(ch->act, PLR_WIZINVIS)) {
     if (ch->pcdata && ch->pcdata->bamfin[0] != '\0') {
-      sprintf(buf, "%s %s", ch->name, ch->pcdata->bamfin);
+      snprintf(buf, MAX_STRING_LENGTH, "%s %s", ch->name, ch->pcdata->bamfin);
       act(AT_IMMORT, "$T", ch, NULL, wordwrap(buf, 78), TO_ROOM);
     }
     else
       act(AT_IMMORT, "$n appears in a swirling mist.", ch, NULL, NULL,
           TO_ROOM);
   }
+
+  return;
+}
+
+void do_hexstat(CHAR_DATA* ch, const char* argument)
+{
+  char buf[MAX_STRING_LENGTH];
+  char arg1[MAX_INPUT_LENGTH];
+  char arg2[MAX_INPUT_LENGTH];
+  HEX_DATA *location;
+  OBJ_DATA *obj;
+  CHAR_DATA *rch;
+  int xhex = 0;
+  int yhex = 0;
+
+  argument = one_argument(argument, arg1);
+  argument = one_argument(argument, arg2);
+
+  if ((arg1[0] == '\0') || (arg2[0] == '\0')) {
+    if (ch->in_hex) {
+      xhex = ch->xhex;
+      yhex = ch->yhex;
+    }
+    else {
+      send_to_char("Syntax: hexstat <xhex> <yhex>\r\n", ch);
+      return;
+    }
+  }
+
+  if ((xhex == 0) && (arg1[0] != '\0')) {
+    xhex = atoi(arg1);
+    if ((xhex < 0) || (xhex >= MAP_WIDTH)) {
+      ch_printf(ch, "Out of range. Valid values are 0 to %d.\r\n", MAP_WIDTH - 1);
+      return;
+    }
+  }
+
+  if ((yhex == 0) && (arg2[0] != '\0')) {
+    yhex = atoi(arg2);
+    if ((yhex < 0) || (yhex >= MAP_HEIGHT)) {
+      ch_printf(ch, "Out of range. Valid values are 0 to %d.\r\n", MAP_HEIGHT - 1);
+      return;
+    }
+  }
+
+  location = map_data[xhex][yhex];
+
+  ch_printf_color(ch, "&cHex: &w%d, %d   ", xhex, yhex);
+
+  if ((location->terrain >= 0) && (location->terrain < SECT_MAX))
+    snprintf(buf, MAX_STRING_LENGTH, "%s", sector_name[location->terrain]);
+  else
+    snprintf(buf, MAX_STRING_LENGTH, "&RError!&w");
+
+  ch_printf_color(ch, "&cTerrain: &w(%d) %s  &c%s: &w%d\r\n",
+                  location->terrain, buf,
+                  IS_WATER_SECT(location->terrain) ?
+                  "Depth" : "Elevation",
+                  location->elevation);
+
+  send_to_char_color("&cCharacters: &w", ch);
+  for (rch = location->first_person; rch; rch = rch->next_in_room) {
+    if (can_see(ch, rch)) {
+      send_to_char(" ", ch);
+      one_argument(rch->name, buf);
+      send_to_char(buf, ch);
+    }
+  }
+
+  send_to_char_color("\r\n&cObjects:    &w", ch);
+  for (obj = location->first_content; obj; obj = obj->next_content) {
+    send_to_char(" ", ch);
+    one_argument(obj->name, buf);
+    send_to_char(buf, ch);
+  }
+  send_to_char("\r\n", ch);
 
   return;
 }

@@ -3907,6 +3907,7 @@ DECLARE_DO_FUN(do_hedit);
 DECLARE_DO_FUN(do_hell);
 DECLARE_DO_FUN(do_help);
 DECLARE_DO_FUN(do_hexgoto);
+DECLARE_DO_FUN(do_hexstat);
 DECLARE_DO_FUN(do_hide);
 DECLARE_DO_FUN(do_hitall);
 DECLARE_DO_FUN(do_hl);
