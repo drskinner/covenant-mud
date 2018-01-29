@@ -2024,7 +2024,7 @@ typedef enum
 typedef enum
 {
   PLR_IS_NPC, PLR_BOUGHT_PET, PLR_SHOVEDRAG, PLR_AUTOEXIT, PLR_AUTOLOOT,
-  PLR_AUTOSAC, PLR_BLANK, PLR_OUTCAST, PLR_BRIEF, PLR_COMBINE, PLR_PROMPT,
+  PLR_AUTOSAC, PLR_BLANK, PLR_PASSPORT, PLR_BRIEF, PLR_COMBINE, PLR_PROMPT,
   PLR_TELNET_GA, PLR_HOLYLIGHT, PLR_WIZINVIS, PLR_ROOMVNUM, PLR_SILENCE,
   PLR_NO_EMOTE, PLR_ATTACKER, PLR_NO_TELL, PLR_LOG, PLR_DENY, PLR_FREEZE,
   PLR_THIEF, PLR_KILLER, PLR_LITTERBUG, PLR_ANSI, PLR_RIP, PLR_NICE, PLR_FLEE,
@@ -3380,9 +3380,11 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
                                room_is_dark(ch->in_room) : \
                                FALSE)
 
-#define IS_DRUNK(ch, drunk)     (number_percent() < ((ch)->pcdata->condition[COND_DRUNK] * 2 / (drunk)))
+#define HAS_PASSPORT(ch)      (!IS_NPC(ch) && xIS_SET(ch->act, PLR_PASSPORT))
 
-#define IS_CHARMED(ch)      (IS_AFFECTED((ch),AFF_CHARM))
+#define IS_DRUNK(ch, drunk)   (number_percent() < ((ch)->pcdata->condition[COND_DRUNK] * 2 / (drunk)))
+
+#define IS_CHARMED(ch)        (IS_AFFECTED((ch),AFF_CHARM))
 
 #define IS_CLANNED(ch)          (!IS_NPC((ch))                          \
                                  && (ch)->pcdata->clan                  \
@@ -4249,6 +4251,7 @@ DECLARE_DO_FUN(do_mpoload);
 DECLARE_DO_FUN(do_mposet);
 DECLARE_DO_FUN(do_mpoowner);
 DECLARE_DO_FUN(do_mppardon);
+DECLARE_DO_FUN(do_mppassport);
 DECLARE_DO_FUN(do_mppeace);
 DECLARE_DO_FUN(do_mppurge);
 DECLARE_DO_FUN(do_mpstat);
@@ -4679,13 +4682,14 @@ const char* smash_tilde args((const char *str));
 char* smash_tilde_copy args((const char *str));
 void hide_tilde args((char *str));
 const char *show_tilde args((const char *str));
-bool str_cmp args((const char *astr, const char *bstr));
-bool str_prefix args((const char *astr, const char *bstr));
-bool str_infix args((const char *astr, const char *bstr));
-bool str_suffix args((const char *astr, const char *bstr));
+bool str_cmp     args((const char *astr, const char *bstr));
+bool str_prefix  args((const char *astr, const char *bstr));
+bool str_infix   args((const char *astr, const char *bstr));
+bool str_suffix  args((const char *astr, const char *bstr));
 char *capitalize args((const char *str));
-char *strlower args((const char *str));
-char *strupper args((const char *str));
+char *strip_punc args((const char *str));
+char *strlower   args((const char *str));
+char *strupper   args((const char *str));
 const char *aoran args((const char *str));
 void append_file args((CHAR_DATA * ch, const char *file, const char *str));
 void append_to_file args((const char *file, const char *str));

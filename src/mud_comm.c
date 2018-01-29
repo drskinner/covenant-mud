@@ -1074,6 +1074,38 @@ void do_mppardon(CHAR_DATA* ch, const char* argument)
   return;
 }
 
+void do_mppassport(CHAR_DATA * ch, const char *argument)
+{
+  char arg[MAX_INPUT_LENGTH];
+  CHAR_DATA *victim;
+
+  if (!IS_NPC(ch) || IS_AFFECTED(ch, AFF_CHARM)) {
+    send_to_char("Huh?\r\n", ch);
+    return;
+  }
+
+  argument = one_argument(argument, arg);
+  if (arg[0] == '\0') {
+    progbug("mppassport(): missing argument", ch);
+    return;
+  }
+
+  if ((victim = get_char_room(ch, arg)) == NULL) {
+    progbug("mppassport(): target not present", ch);
+    return;
+  }
+
+  if (IS_NPC(victim)) {
+    progbug("mppassport(): trying to set NPC", ch);
+    return;
+  }
+
+  if (!xIS_SET(victim->act, PLR_PASSPORT))
+    xSET_BIT(victim->act, PLR_PASSPORT);
+
+  return;
+}
+
 /* lets the mobile purge all objects and other npcs in the room,
    or purge a specified object or mob in the room.  It can purge
    itself, but this had best be the last command in the MUDprogram
@@ -3018,12 +3050,14 @@ void do_mpdelay(CHAR_DATA* ch, const char* argument)
     progbug("Mpdelay: target not in room", ch);
     return;
   }
+#if 0
   if (IS_IMMORTAL(victim))
   {
     send_to_char("Not against immortals.\r\n", ch);
     progbug("Mpdelay: target is immortal", ch);
     return;
   }
+#endif
   argument = one_argument(argument, arg);
   if (!*arg || !is_number(arg))
   {

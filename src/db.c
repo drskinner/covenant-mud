@@ -4181,9 +4181,30 @@ char *capitalize(const char *str)
   return buf;
 }
 
-/*
- * Returns a lowercase string.
- */
+/* Remove all non-alphanumeric characters from a string -- Shamus */
+
+char *strip_punc(const char *str)
+{
+  static char buf[MAX_STRING_LENGTH];
+  int input_len;
+  int output_len = 0;
+
+  for (input_len = 0; str[input_len] != '\0'; input_len++)
+    if (isalpha(str[input_len])
+        || isdigit(str[input_len])
+        || isspace(str[input_len]))
+    {
+      buf[output_len] = str[input_len];
+      output_len++;
+    }
+
+  buf[output_len] = '\0';
+
+  return buf;
+}
+
+/* Returns a lowercase string. */
+
 char *strlower(const char *str)
 {
   static char strlow[MAX_STRING_LENGTH];
@@ -4195,9 +4216,8 @@ char *strlower(const char *str)
   return strlow;
 }
 
-/*
- * Returns an uppercase string.
- */
+/* Returns an uppercase string. */
+
 char *strupper(const char *str)
 {
   static char strup[MAX_STRING_LENGTH];

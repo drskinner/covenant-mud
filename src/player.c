@@ -213,16 +213,10 @@ void do_score(CHAR_DATA* ch, const char* argument)
 
   pager_printf_color(ch, "&GYou have &W%d &Gcerons.\r\n", ch->gold);
 
-  /* Getting ready for realspace... */
-
-  pager_printf_color(ch, "&GYour passport is &Rinvalid&G; you &Rmay not&G leave the city\r\n");
-
-#if false
   pager_printf_color(ch, "&GYour passport is %s.\r\n",
                      xIS_SET(ch->act, PLR_PASSPORT)
-                     ? "&Wvalid&G; you have permission to travel freely"
-                     : "&Rinvalid&G; you &Rmay not&G leave the city");
-#endif
+                       ? "&Wvalid&G; you have permission to travel freely"
+                       : "&Rinvalid&G; you &Rmay not&G leave the city");
 
   /* reimplement GET_LEVEL(ch) macro for level-less system -- Shamus */
 
@@ -422,7 +416,7 @@ void do_score(CHAR_DATA* ch, const char* argument)
     }
   }
 
-  send_to_pager_color("&w\r\n", ch);
+  send_to_pager_color("&w", ch);
   return;
 }
 
