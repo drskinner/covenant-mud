@@ -3050,14 +3050,14 @@ void do_mpdelay(CHAR_DATA* ch, const char* argument)
     progbug("Mpdelay: target not in room", ch);
     return;
   }
-#if 0
+
   if (IS_IMMORTAL(victim))
   {
     send_to_char("Not against immortals.\r\n", ch);
     progbug("Mpdelay: target is immortal", ch);
     return;
   }
-#endif
+
   argument = one_argument(argument, arg);
   if (!*arg || !is_number(arg))
   {
