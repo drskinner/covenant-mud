@@ -853,6 +853,9 @@ doneargs:
 
   if (chkchar)
   {
+    if (!str_cmp(chck, "haspassport")) {
+      return HAS_PASSPORT(chkchar) ? TRUE : FALSE;
+    }
     if (!str_cmp(chck, "ispacifist"))
     {
       return (IS_NPC(chkchar) && xIS_SET(chkchar->act, ACT_PACIFIST));
@@ -3086,11 +3089,10 @@ void mprog_speech_trigger(const char *txt, CHAR_DATA * actor)
 
   for (vmob = FIRST_PERSON(actor); vmob; vmob = vmob->next_in_room)
   {
-    if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, SPEECH_PROG))
-    {
+    if (IS_NPC(vmob) && HAS_PROG(vmob->pIndexData, SPEECH_PROG)) {
       if (IS_NPC(actor) && actor->pIndexData == vmob->pIndexData)
         continue;
-      mprog_wordlist_check(txt, vmob, actor, NULL, NULL, NULL, SPEECH_PROG);
+      mprog_wordlist_check(strip_punc(txt), vmob, actor, NULL, NULL, NULL, SPEECH_PROG);
     }
   }
 }

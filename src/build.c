@@ -166,7 +166,7 @@ const char *const pc_flags[] = {
 
 const char *const plr_flags[] = {
   "npc", "boughtpet", "shovedrag", "autoexits", "autoloot", "autosac", "blank",
-  "outcast", "brief", "combine", "prompt", "telnet_ga", "holylight",
+  "passport", "brief", "combine", "prompt", "telnet_ga", "holylight",
   "wizinvis", "roomvnum", "silence", "noemote", "attacker", "notell", "log",
   "deny", "freeze", "thief", "killer", "litterbug", "ansi", "rip", "nice",
   "flee", "autogold", "automap", "afk", "invisprompt", "compass"
