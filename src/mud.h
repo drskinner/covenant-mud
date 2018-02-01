@@ -1941,7 +1941,7 @@ typedef enum
 #define EX_PASSAGE                BV12
 #define EX_PORTAL                 BV13
 #define EX_RES1                   BV14
-#define EX_RES2                   BV15
+#define EX_REALSPACE              BV15
 #define EX_xCLIMB                 BV16
 #define EX_xENTER                 BV17
 #define EX_xLEAVE                 BV18
@@ -2583,6 +2583,8 @@ struct exit_data
   short distance;   /* how far to the next room   */
   short pull; /* pull of direction (current)   */
   short pulltype;   /* type of pull (current, wind)  */
+  short xhex;       /* realspace coordinates of exit */
+  short yhex;
 };
 
 /*

@@ -1704,29 +1704,42 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
   static const char *dir_text[] = { "n", "e", "s", "w", "u", "d", "ne", "nw", "se", "sw", "?" };
 
   one_argument(argument, arg);
+
   if (!str_cmp(arg, "ex") || !str_cmp(arg, "exits"))
   {
     location = ch->in_room;
 
-    ch_printf_color(ch, "&cExits for room '&W%s&c'  Vnum &W%d\r\n", location->name, location->vnum);
-    for (cnt = 0, pexit = location->first_exit; pexit; pexit = pexit->next)
-      ch_printf_color(ch,
-                       "&W%2d) &w%2s to %-5d  &cKey: &w%d  &cFlags: &w%d  &cKeywords: '&w%s&c'\r\n     Exdesc: &w%s     &cBack link: &w%d  &cVnum: &w%d  &cDistance: &w%d  &cPulltype: &w%s  &cPull: &w%d\r\n",
-                       ++cnt,
-                       dir_text[pexit->vdir],
-                       pexit->to_room ? pexit->to_room->vnum : 0,
-                       pexit->key,
-                       pexit->exit_info,
-                       pexit->keyword,
-                       pexit->description[0] != '\0'
-                       ? pexit->description : "(none).\r\n",
-                       pexit->rexit ? pexit->rexit->vnum : 0,
-                       pexit->rvnum, pexit->distance, pull_type_name(pexit->pulltype), pexit->pull);
+    ch_printf_color(ch, "&cExits for room '&w%s&c'  Vnum &w%d\r\n", location->name, location->vnum);
+    for (cnt = 0, pexit = location->first_exit; pexit; pexit = pexit->next) {
+      if (!IS_SET(pexit->exit_info, EX_REALSPACE)) {
+        ch_printf_color(ch, "&w%2d&c)&w %2s &cto&w %-5d  ", ++cnt,
+                        dir_text[pexit->vdir],
+                        pexit->to_room ? pexit->to_room->vnum : 0);
+      } else {
+        ch_printf_color(ch, "&w%2d&c)&w %2s &cto&w %d, %d  ", ++cnt,
+                        dir_text[pexit->vdir],
+                        pexit->xhex, pexit->yhex);
+      }
+      ch_printf_color(ch, "&cKey:&w %d  &cKeywords: '&w%s&c'\r\n", pexit->key,
+                      pexit->keyword);
+      if (pexit->description[0] != '\0')
+        ch_printf_color(ch, "     &cExdesc:&w %s", pexit->description);
+      if (pexit->exit_info != 0)
+        ch_printf_color(ch, "     &cFlags:&w %s\r\n",
+                        flag_string(pexit->exit_info, ex_flags));
+      if (!IS_SET(pexit->exit_info, EX_REALSPACE)) {
+        ch_printf_color(ch, "     &cBack link:&w %d  &cVnum:&w %d  ",
+                        pexit->rexit ? pexit->rexit->vnum : 0, pexit->rvnum);
+        ch_printf_color(ch, "&cPulltype:&w %s  ",
+                        pull_type_name(pexit->pulltype));
+        ch_printf_color(ch, "&cPull:&w %d\r\n", pexit->pull);
+      }
+    }
     return;
   }
+
   location = (arg[0] == '\0') ? ch->in_room : find_location(ch, arg);
-  if (!location)
-  {
+  if (!location) {
     send_to_char("No such location.\r\n", ch);
     return;
   }
