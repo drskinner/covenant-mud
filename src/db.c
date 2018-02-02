@@ -6063,11 +6063,25 @@ void fread_fuss_exit(FILE * fp, ROOM_INDEX_DATA * pRoomIndex)
       break;
 
     case 'T':
-      KEY("ToRoom", pexit->vnum, fread_number(fp));
+      if (!str_cmp(word, "ToHex")) {
+        char *ln = fread_line(fp);
+        int x1, x2;
+        x1 = x2 = 0;
+        fMatch = TRUE;
+
+        sscanf(ln, "%d %d", &x1, &x2);
+        pexit->xhex = x1;
+        pexit->yhex = x2;
+        break;
+      }
+      if (!str_cmp(word, "ToRoom")) {
+        KEY("ToRoom", pexit->vnum, fread_number(fp));
+        break;
+      }
       break;
     }
-    if (!fMatch)
-    {
+
+    if (!fMatch) {
       bug("%s: unknown word: %s", __func__, word);
       fread_to_eol(fp);
     }

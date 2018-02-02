@@ -651,7 +651,11 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
     return rNONE;
   }
 
-  if (IS_SET(pexit->exit_info, EX_NOMOB) && IS_NPC(ch) && !xIS_SET(ch->act, ACT_PET))
+  /* For now, no mobs in RS. Not even pets. -- Shamus */
+  if ((IS_SET(pexit->exit_info, EX_NOMOB)
+       || IS_SET(pexit->exit_info, EX_REALSPACE))
+      && IS_NPC(ch))
+    /* && IS_NPC(ch) && !xIS_SET(ch->act, ACT_PET)) */
   {
     act(AT_PLAIN, "Mobs can't enter there.", ch, NULL, NULL, TO_CHAR);
     return rNONE;
@@ -846,8 +850,7 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
 
     if (ch->mount)
     {
-      switch (ch->mount->position)
-      {
+      switch (ch->mount->position) {
       case POS_DEAD:
         send_to_char("Your mount is dead!\r\n", ch);
         return rNONE;
@@ -881,6 +884,13 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
 
       default:
         break;
+      }
+
+      if (!IS_SET(pexit->exit_info, EX_REALSPACE)) {
+        if (to_room->sector_type == SECT_INSIDE) {
+          send_to_char("Your mount refuses to go inside.\r\n", ch);
+          return rNONE;
+        }
       }
 
       if (!IS_FLOATING(ch->mount))
@@ -1002,22 +1012,42 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
     return global_retcode;
 
   char_from_room(ch);
-  char_to_room(ch, to_room);
-  if (ch->mount)
-  {
+  if (ch->mount) {
     rprog_leave_trigger(ch->mount);
-
-    /*
-     * Mount bug fix test. -Orion
-     */
-    if (char_died(ch->mount))
+    if (char_died(ch->mount)) /* Mount bug fix test. -- Orion */
       return global_retcode;
-
     if (ch->mount)
-    {
       char_from_room(ch->mount);
-      char_to_room(ch->mount, to_room);
+  }
+
+  /* If we want to put a "cleared for RS" skill in, this would be a good place
+     to make the check. Currently passport fills that requirement. -- Shamus */
+
+  if (IS_SET(pexit->exit_info, EX_REALSPACE)) {
+    if (!HAS_PASSPORT(ch)) {
+      do_help(ch, "_no_passport");
+      char_to_room(ch, ch->was_in_room);
+      if (ch->mount)
+        char_to_room(ch->mount, ch->was_in_room);
+      return retcode;
     }
+    else {
+      char_to_hex(ch, pexit->xhex, pexit->yhex);
+      hex_to_cartesian(ch->xhex, ch->yhex, &ch->xcart, &ch->ycart);
+      ch->pcdata->speed = 0;
+      ch->pcdata->realspeed = 0;
+      do_look(ch, "auto");
+      if (ch->mount) {
+        char_to_hex(ch->mount, pexit->xhex, pexit->yhex);
+        hex_to_cartesian(ch->mount->xhex, ch->mount->yhex, &ch->mount->xcart,
+                         &ch->mount->ycart);
+      }
+    }
+  }
+  else {
+    char_to_room(ch, to_room);
+    if (ch->mount)
+      char_to_room(ch->mount, to_room);
   }
 
   if (!IS_AFFECTED(ch, AFF_SNEAK) && (IS_NPC(ch) || !xIS_SET(ch->act, PLR_WIZINVIS)))
@@ -1062,17 +1092,20 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
       }
     }
     dtxt = rev_exit(door);
-    if (ch->mount)
-    {
+    if (ch->mount) {
       snprintf(buf, MAX_STRING_LENGTH, "$n %s from %s upon $N.", txt, dtxt);
       act(AT_ACTION, buf, ch, NULL, ch->mount, TO_ROOM);
     }
-    else
-    {
+    else {
       snprintf(buf, MAX_STRING_LENGTH, "$n %s from %s.", txt, dtxt);
       act(AT_ACTION, buf, ch, NULL, NULL, TO_ROOM);
     }
   }
+
+  /* Everything beyond this point applies to rooms only, so let's bail. -- Shamus */
+
+  if (ch->in_hex)
+    return retcode;
 
   if (!IS_IMMORTAL(ch) && !IS_NPC(ch) && ch->in_room->area != to_room->area)
   {

@@ -51,7 +51,7 @@ const char *const ex_pfire[] = { "lava", "hotair" };
 
 const char *const ex_flags[] = {
   "isdoor", "closed", "locked", "secret", "swim", "pickproof", "fly", "climb",
-  "dig", "eatkey", "nopassdoor", "hidden", "passage", "portal", "r1", "r2",
+  "dig", "eatkey", "nopassdoor", "hidden", "passage", "portal", "r1", "realspace",
   "can_climb", "can_enter", "can_leave", "auto", "noflee", "searchable",
   "bashed", "bashproof", "nomob", "window", "can_look", "isbolt", "bolted"
 };
