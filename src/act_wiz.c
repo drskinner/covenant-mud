@@ -499,21 +499,28 @@ void do_wizhelp(CHAR_DATA* ch, const char* argument)
 {
   CMDTYPE *cmd;
   int col, hash;
+  int clevel;
 
-  col = 0;
   set_pager_color(AT_PLAIN, ch);
-  for (hash = 0; hash < 126; hash++)
-    for (cmd = command_hash[hash]; cmd; cmd = cmd->next)
-      if ((cmd->level >= LEVEL_HERO) && (cmd->level <= get_trust(ch))
-	  && !(ch->in_hex && IS_SET(cmd->flags, CMD_FLAG_NO_MAP)))
-      {
-        pager_printf(ch, "%-12s", cmd->name);
-        if (++col % 6 == 0)
-          send_to_pager("\r\n", ch);
-      }
 
-  if (col % 6 != 0)
+  for (clevel = 51; clevel <= get_trust(ch); clevel++) {
     send_to_pager("\r\n", ch);
+
+    pager_printf_color(ch, "&WLevel %-2d:&w\r\n", clevel);
+    col = 0;
+
+    for (hash = 0; hash < 126; hash++)
+      for (cmd = command_hash[hash]; cmd; cmd = cmd->next)
+        if ((cmd->level == clevel) && (cmd->level <= get_trust(ch))
+            && !(ch->in_hex && IS_SET(cmd->flags, CMD_FLAG_NO_MAP))) {
+          pager_printf(ch, "%-12s", cmd->name);
+          if (++col % 6 == 0)
+            send_to_pager("\r\n", ch);
+        }
+    if (col %6 != 0)
+      send_to_pager("\r\n", ch);
+  }
+
   return;
 }
 
