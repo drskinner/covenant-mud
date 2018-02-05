@@ -3245,14 +3245,12 @@ void act(short AType, const char *format, CHAR_DATA * ch, const void *arg1, cons
   OBJ_DATA *obj2 = (OBJ_DATA *) arg2;
   int flags1 = ACTF_NONE, flags2 = ACTF_NONE;
 
-  /*
-   * Discard null and zero-length messages.
-   */
+  /* Discard null and zero-length messages. */
+
   if (!format || format[0] == '\0')
     return;
 
-  if (!ch)
-  {
+  if (!ch) {
     bug("%s: null ch. (%s)", __func__, format);
     return;
   }
@@ -3325,29 +3323,26 @@ void act(short AType, const char *format, CHAR_DATA * ch, const void *arg1, cons
     obj2 = NULL;
   }
 
-  if (!ch->in_room)
+  if ((!ch->in_room) && (!ch->in_hex))
     to = NULL;
   else if (type == TO_CHAR)
     to = ch;
-  else
-    to = ch->in_room->first_person;
+  else 
+    to = FIRST_PERSON(ch);
 
-  /*
-   * ACT_SECRETIVE handling
-   */
+  /* ACT_SECRETIVE handling */
+
   if (IS_NPC(ch) && xIS_SET(ch->act, ACT_SECRETIVE) && type != TO_CHAR)
     return;
 
   if (type == TO_VICT)
   {
-    if (!vch)
-    {
+    if (!vch) {
       bug("%s", "Act: null vch with TO_VICT.");
       bug("%s (%s)", ch->name, format);
       return;
     }
-    if (!vch->in_room)
-    {
+    if ((!vch->in_room) && (!vch->in_hex)) {
       bug("%s", "Act: vch in NULL room!");
       bug("%s -> %s (%s)", ch->name, vch->name, format);
       return;
@@ -3360,9 +3355,12 @@ void act(short AType, const char *format, CHAR_DATA * ch, const void *arg1, cons
     OBJ_DATA *to_obj;
 
     txt = act_string(format, NULL, ch, arg1, arg2, STRING_IMM);
-    if (HAS_PROG(to->in_room, ACT_PROG))
-      rprog_act_trigger(txt, to->in_room, ch, obj1, vch, obj2);
-    for (to_obj = to->in_room->first_content; to_obj; to_obj = to_obj->next_content)
+
+    if (to->in_room)
+      if (HAS_PROG(to->in_room, ACT_PROG))
+        rprog_act_trigger(txt, to->in_room, ch, obj1, vch, obj2);
+
+    for (to_obj = FIRST_CONTENT(to); to_obj; to_obj = to_obj->next_content)
       if (HAS_PROG(to_obj->pIndexData, ACT_PROG))
         oprog_act_trigger(txt, to_obj, ch, obj1, vch, obj2);
   }
