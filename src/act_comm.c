@@ -337,6 +337,7 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
   char buf2[MAX_STRING_LENGTH];
   DESCRIPTOR_DATA *d;
   int position;
+
 #ifndef SCRAMBLE
   int speaking = -1, lang;
 
@@ -347,6 +348,15 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
       break;
     }
 #endif
+
+  if (ch->in_room) {
+    if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE)
+	|| IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
+    {
+      send_to_char("You can't do that here.\r\n", ch);
+      return;
+    }
+  }
 
   if (IS_NPC(ch) && channel == CHANNEL_CLAN)
   {
@@ -375,12 +385,6 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
   if (!IS_PKILL(ch) && channel == CHANNEL_WARTALK)
   {
     send_to_char("Peacefuls have no need to use wartalk.\r\n", ch);
-    return;
-  }
-
-  if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
-  {
-    send_to_char("You can't do that here.\r\n", ch);
     return;
   }
 
@@ -537,10 +541,11 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
     break;
   }
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH))
-  {
-    snprintf(buf2, MAX_STRING_LENGTH, "%s: %s (%s)", IS_NPC(ch) ? ch->short_descr : ch->name, argument, verb);
-    append_to_file(LOG_FILE, buf2);
+  if (ch->in_room) {
+    if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH)) {
+      snprintf(buf2, MAX_STRING_LENGTH, "%s: %s (%s)", IS_NPC(ch) ? ch->short_descr : ch->name, argument, verb);
+      append_to_file(LOG_FILE, buf2);
+    }
   }
 
   for (d = first_descriptor; d; d = d->next)
@@ -591,14 +596,17 @@ void talk_channel(CHAR_DATA * ch, const char *argument, int channel, const char 
             && !(och->pcdata->council && !str_cmp(och->pcdata->council->name, "Newbie Council"))))
         continue;
 
-      if (xIS_SET(vch->in_room->room_flags, ROOM_SILENCE) || IS_SET(vch->in_room->area->flags, AFLAG_SILENCE))
-        continue;
+      if (vch->in_room)
+        if (xIS_SET(vch->in_room->room_flags, ROOM_SILENCE) || IS_SET(vch->in_room->area->flags, AFLAG_SILENCE))
+          continue;
 
-      if (channel == CHANNEL_GOSSIP
-          && (vch->in_room->area != ch->in_room->area || xIS_SET(vch->in_room->room_flags, ROOM_NOGOSSIP)
-               || ((xIS_SET(vch->in_room->room_flags, ROOM_HOUSE) || xIS_SET(och->in_room->room_flags, ROOM_HOUSE))
-                    && !in_same_house(ch, vch))))
-        continue;
+      if (vch->in_room && ch->in_room) {
+        if (channel == CHANNEL_GOSSIP
+            && (vch->in_room->area != ch->in_room->area || xIS_SET(vch->in_room->room_flags, ROOM_NOGOSSIP)
+                 || ((xIS_SET(vch->in_room->room_flags, ROOM_HOUSE) || xIS_SET(och->in_room->room_flags, ROOM_HOUSE))
+                      && !in_same_house(ch, vch))))
+          continue;
+      }
 
       if (channel == CHANNEL_CLAN || channel == CHANNEL_ORDER || channel == CHANNEL_GUILD)
       {
