@@ -1935,18 +1935,17 @@ void do_emote(CHAR_DATA* ch, const char* argument)
   mudstrlcpy(buf, argument, MAX_STRING_LENGTH);
   if (isalnum(plast[-1]))
     mudstrlcat(buf, ".", MAX_STRING_LENGTH);
-  for (vch = ch->in_room->first_person; vch; vch = vch->next_in_room)
+
+  for (vch = FIRST_PERSON(ch); vch; vch = vch->next_in_room)
   {
     char *sbuf = buf;
 
-    /*
-     * Check to see if character is ignoring emoter 
-     */
-    if (is_ignoring(vch, ch))
-    {
-      /*
-       * continue unless emoter is an immortal 
-       */
+    /* Check to see if character is ignoring emoter */
+
+    if (is_ignoring(vch, ch)) {
+
+      /* continue unless emoter is an immortal */
+
       if (!IS_IMMORTAL(ch) || get_trust(vch) > get_trust(ch))
         continue;
       else
@@ -1955,9 +1954,9 @@ void do_emote(CHAR_DATA* ch, const char* argument)
         ch_printf(vch, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see(vch, ch) ? "Someone" : ch->name);
       }
     }
+
 #ifndef SCRAMBLE
-    if (speaking != -1 && (!IS_NPC(ch) || ch->speaking))
-    {
+    if (speaking != -1 && (!IS_NPC(ch) || ch->speaking)) {
       int speakswell = UMIN(knows_language(vch, ch->speaking, ch),
                              knows_language(ch, ch->speaking, vch));
 
@@ -1977,11 +1976,12 @@ void do_emote(CHAR_DATA* ch, const char* argument)
   }
 
   ch->act = actflags;
-  if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH))
-  {
-    snprintf(buf, MAX_STRING_LENGTH, "%s %s (emote)", IS_NPC(ch) ? ch->short_descr : ch->name, argument);
-    append_to_file(LOG_FILE, buf);
-  }
+  if (ch->in_room)
+    if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH)) {
+      snprintf(buf, MAX_STRING_LENGTH, "%s %s (emote)", IS_NPC(ch) ? ch->short_descr : ch->name, argument);
+      append_to_file(LOG_FILE, buf);
+    }
+
   return;
 }
 
