@@ -2932,9 +2932,10 @@ void do_reboot(CHAR_DATA* ch, const char* argument)
 
   set_char_color(AT_IMMORT, ch);
 
-  if (str_cmp(argument, "mud now") && str_cmp(argument, "nosave") && str_cmp(argument, "and sort skill table"))
-  {
-    send_to_char("Syntax:  'reboot mud now' or 'reboot nosave'\r\n", ch);
+  if (str_cmp(argument, "save")
+      && str_cmp(argument, "nosave")
+      && str_cmp(argument, "and sort skill table")) {
+    send_to_char("Syntax: reboot {save|nosave|and sort skill table}\r\n", ch);
     return;
   }
 
@@ -2979,9 +2980,8 @@ void do_shutdown(CHAR_DATA* ch, const char* argument)
 
   set_char_color(AT_IMMORT, ch);
 
-  if (str_cmp(argument, "mud now") && str_cmp(argument, "nosave"))
-  {
-    send_to_char("Syntax:  'shutdown mud now' or 'shutdown nosave'\r\n", ch);
+  if (str_cmp(argument, "save") && str_cmp(argument, "nosave")) {
+    send_to_char("Syntax: shutdown {save|nosave}\r\n", ch);
     return;
   }
 
@@ -2992,14 +2992,14 @@ void do_shutdown(CHAR_DATA* ch, const char* argument)
   mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
   do_echo(ch, buf);
 
-  /*
-   * Save all characters before booting. 
-   */
+  /* Save all characters before booting. */
+
   if (str_cmp(argument, "nosave"))
     for (vch = first_char; vch; vch = vch->next)
       if (!IS_NPC(vch))
         save_char_obj(vch);
   mud_down = TRUE;
+
   return;
 }
 
