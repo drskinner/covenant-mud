@@ -2558,20 +2558,23 @@ void nanny_read_motd(DESCRIPTOR_DATA * d, const char *argument)
     ch->pcdata->rank[gsn_saxon] = 1;
     ch->pcdata->rank[gsn_travelling] = 1;
     ch->pcdata->rank[gsn_basic_combat] = 1;
+#endif
 
     ch->xhex  = -1;
     ch->yhex  = -1;
-#endif
 
     snprintf(buf, MAX_STRING_LENGTH, "the %s", title_table[ch->Class][ch->level][ch->sex == SEX_FEMALE ? 1 : 0]);
     set_title(ch, buf);
 
-    /*
-     * Added by Narn.  Start new characters with autoexit and autgold
-     * already turned on.  Very few people don't use those.
-     */
+    /* Added by Narn. Start new characters with autoexit and autgold
+       already turned on. Very few people don't use those. */
+
     xSET_BIT(ch->act, PLR_AUTOGOLD);
     xSET_BIT(ch->act, PLR_AUTOEXIT);
+
+    /* New players should have their pager enabled. -- Shamus */
+
+    SET_BIT(ch->pcdata->flags, PCFLAG_PAGERON);
 
     /*
      * Added by Brittany, Nov 24/96.  The object is the adventurer's guide
