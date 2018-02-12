@@ -155,6 +155,7 @@ DECLARE_DO_FUN(do_color);
 #define AT_EXITS        AT_GREY
 #define AT_GOSSIP       AT_YELLOW
 #define AT_LOG          AT_GREY
+#define AT_OBJECT       AT_PLAIN
 #define AT_ROOM_DESC    AT_PLAIN
 #define AT_ROOM_NAME    AT_WHITE
 #define AT_SCORE        AT_LGREEN
@@ -178,7 +179,6 @@ DECLARE_DO_FUN(do_color);
 #define AT_CARNAGE      53
 #define AT_DAMAGE       54
 #define AT_FLEE         55
-#define AT_OBJECT       58
 #define AT_PERSON       59
 #define AT_LIST         60
 #define AT_BYE          61
