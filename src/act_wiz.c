@@ -1843,7 +1843,7 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-void do_ostat(CHAR_DATA *ch, const char* argument)
+void do_ostat(CHAR_DATA* ch, const char* argument)
 {
   char arg[MAX_INPUT_LENGTH];
   AFFECT_DATA *paf;
@@ -1853,7 +1853,7 @@ void do_ostat(CHAR_DATA *ch, const char* argument)
 
   one_argument(argument, arg);
   if (arg[0] == '\0') {
-    send_to_char("Ostat what?\n\r", ch);
+    send_to_char("Ostat what?\r\n", ch);
     return;
   }
 
