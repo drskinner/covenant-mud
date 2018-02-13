@@ -754,9 +754,9 @@ void do_inventory(CHAR_DATA* ch, const char* argument)
   }
 
   if (victim != ch)
-    ch_printf(ch, "&R%s is carrying:\r\n", IS_NPC(victim) ? victim->short_descr : victim->name);
+    ch_printf(ch, "&W%s is carrying:&w\r\n", IS_NPC(victim) ? victim->short_descr : victim->name);
   else
-    send_to_char("&RYou are carrying:\r\n", ch);
+    send_to_char("&WYou are carrying:&w\r\n", ch);
 
   show_list_to_char(victim->first_carrying, ch, TRUE, TRUE);
   return;
@@ -781,9 +781,9 @@ void do_equipment(CHAR_DATA* ch, const char* argument)
   }
 
   if (victim != ch)
-    ch_printf(ch, "&R%s is using:\r\n", IS_NPC(victim) ? victim->short_descr : victim->name);
+    ch_printf(ch, "&W%s is using:&w\r\n", IS_NPC(victim) ? victim->short_descr : victim->name);
   else
-    send_to_char("&RYou are using:\r\n", ch);
+    send_to_char("&WYou are using:&w\r\n", ch);
 
   found = FALSE;
   set_char_color(AT_OBJECT, ch);

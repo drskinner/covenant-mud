@@ -857,7 +857,7 @@ void save_skill_table()
   if ((fpout = fopen(SKILL_FILE, "w")) == NULL)
   {
     perror(SKILL_FILE);
-    bug("Cannot open %s for writting", SKILL_FILE);
+    bug("Cannot open %s for writing", SKILL_FILE);
     return;
   }
 
