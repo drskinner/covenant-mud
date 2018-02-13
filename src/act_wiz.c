@@ -1900,8 +1900,8 @@ void do_ostat(CHAR_DATA *ch, const char* argument)
     ch_printf_color(ch, "&R%d  ", obj->timer);
   else
     ch_printf_color(ch, "&w%d  ", obj->timer);
-  ch_printf_color(ch, "&cLevel: &P%d    ", obj->level);
-  ch_printf_color(ch, "&cIndex level: &P%d\r\n", obj->pIndexData->level);
+  ch_printf_color(ch, "&cLevel: &M%d    ", obj->level);
+  ch_printf_color(ch, "&cIndex level: &M%d\r\n", obj->pIndexData->level);
   ch_printf_color(ch, "&cIn room: &w%d  ", obj->in_room == NULL ? 0 : obj->in_room->vnum);
   ch_printf_color(ch, "&cIn object: &w%s  ", obj->in_obj == NULL ? "(none)" : obj->in_obj->short_descr);
   ch_printf_color(ch, "&cCarried by: &C%s\r\n", obj->carried_by == NULL ? "(none)" : obj->carried_by->name);
@@ -1909,31 +1909,29 @@ void do_ostat(CHAR_DATA *ch, const char* argument)
   ch_printf(ch, "\r\n");
 
   ch_printf_color(ch,
-                  "&cValue 0: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\n\r",
+                  "&cValue 0: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
                   objvalue0[obj->item_type], obj->pIndexData->value[0],
                   obj->value[0]);
   ch_printf_color(ch,
-                  "&cValue 1: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\n\r",
+                  "&cValue 1: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
                   objvalue1[obj->item_type], obj->pIndexData->value[1],
                   obj->value[1]);
   ch_printf_color(ch,
-                  "&cValue 2: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\n\r",
+                  "&cValue 2: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
                   objvalue2[obj->item_type], obj->pIndexData->value[2],
                   obj->value[2]);
   ch_printf_color(ch,
-                  "&cValue 3: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\n\r",
+                  "&cValue 3: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
                   objvalue3[obj->item_type], obj->pIndexData->value[3],
                   obj->value[3]);
   ch_printf_color(ch,
-                  "&cValue 4: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\n\r",
+                  "&cValue 4: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
                   objvalue4[obj->item_type], obj->pIndexData->value[4],
                   obj->value[4]);
   ch_printf_color(ch,
-                  "&cValue 5: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\n\r",
+                  "&cValue 5: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
                   objvalue5[obj->item_type], obj->pIndexData->value[5],
                   obj->value[5]);
-
-  ch_printf(ch, "\r\n");
 
   if (obj->pIndexData->first_extradesc)
   {
