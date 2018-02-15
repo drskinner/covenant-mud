@@ -3639,6 +3639,13 @@ extern const char *const login_msg[];
 
 /* New extern consts -- Shamus */
 
+extern const char *const objvalue0[MAX_ITEM_TYPE + 1];
+extern const char *const objvalue1[MAX_ITEM_TYPE + 1];
+extern const char *const objvalue2[MAX_ITEM_TYPE + 1];
+extern const char *const objvalue3[MAX_ITEM_TYPE + 1];
+extern const char *const objvalue4[MAX_ITEM_TYPE + 1];
+extern const char *const objvalue5[MAX_ITEM_TYPE + 1];
+
 extern const char *const sector_name[];
 extern const char *const prepositions[];
 extern const char *const zodiac_name[10];

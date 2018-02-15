@@ -1843,7 +1843,6 @@ void do_rstat(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-/* Face-lift by Demora */
 void do_ostat(CHAR_DATA* ch, const char* argument)
 {
   char arg[MAX_INPUT_LENGTH];
@@ -1853,19 +1852,19 @@ void do_ostat(CHAR_DATA* ch, const char* argument)
   set_char_color(AT_CYAN, ch);
 
   one_argument(argument, arg);
-  if (arg[0] == '\0')
-  {
+  if (arg[0] == '\0') {
     send_to_char("Ostat what?\r\n", ch);
     return;
   }
+
   if (arg[0] != '\'' && arg[0] != '"' && strlen(argument) > strlen(arg))
     mudstrlcpy(arg, argument, MAX_INPUT_LENGTH);
 
-  if ((obj = get_obj_world(ch, arg)) == NULL)
-  {
+  if ((obj = get_obj_world(ch, arg)) == NULL) {
     send_to_char("Nothing like that in hell, earth, or heaven.\r\n", ch);
     return;
   }
+
   ch_printf_color(ch, "&cName: &C%s\r\n", obj->name);
   ch_printf_color(ch, "&cVnum: &w%d  ", obj->pIndexData->vnum);
   ch_printf_color(ch, "&cType: &w%s  ", item_type_name(obj));
@@ -1901,17 +1900,39 @@ void do_ostat(CHAR_DATA* ch, const char* argument)
     ch_printf_color(ch, "&R%d  ", obj->timer);
   else
     ch_printf_color(ch, "&w%d  ", obj->timer);
-  ch_printf_color(ch, "&cLevel: &P%d    ", obj->level);
-  ch_printf_color(ch, "&cIndex level: &P%d\r\n", obj->pIndexData->level);
+  ch_printf_color(ch, "&cLevel: &M%d    ", obj->level);
+  ch_printf_color(ch, "&cIndex level: &M%d\r\n", obj->pIndexData->level);
   ch_printf_color(ch, "&cIn room: &w%d  ", obj->in_room == NULL ? 0 : obj->in_room->vnum);
   ch_printf_color(ch, "&cIn object: &w%s  ", obj->in_obj == NULL ? "(none)" : obj->in_obj->short_descr);
   ch_printf_color(ch, "&cCarried by: &C%s\r\n", obj->carried_by == NULL ? "(none)" : obj->carried_by->name);
-  ch_printf_color(ch, "&cIndex Values : &w%d %d %d %d %d %d.\r\n",
-                   obj->pIndexData->value[0], obj->pIndexData->value[1],
-                   obj->pIndexData->value[2], obj->pIndexData->value[3],
-                   obj->pIndexData->value[4], obj->pIndexData->value[5]);
-  ch_printf_color(ch, "&cObject Values: &w%d %d %d %d %d %d.\r\n",
-                   obj->value[0], obj->value[1], obj->value[2], obj->value[3], obj->value[4], obj->value[5]);
+
+  ch_printf(ch, "\r\n");
+
+  ch_printf_color(ch,
+                  "&cValue 0: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
+                  objvalue0[obj->item_type], obj->pIndexData->value[0],
+                  obj->value[0]);
+  ch_printf_color(ch,
+                  "&cValue 1: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
+                  objvalue1[obj->item_type], obj->pIndexData->value[1],
+                  obj->value[1]);
+  ch_printf_color(ch,
+                  "&cValue 2: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
+                  objvalue2[obj->item_type], obj->pIndexData->value[2],
+                  obj->value[2]);
+  ch_printf_color(ch,
+                  "&cValue 3: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
+                  objvalue3[obj->item_type], obj->pIndexData->value[3],
+                  obj->value[3]);
+  ch_printf_color(ch,
+                  "&cValue 4: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
+                  objvalue4[obj->item_type], obj->pIndexData->value[4],
+                  obj->value[4]);
+  ch_printf_color(ch,
+                  "&cValue 5: &w%-20s  &cIndex:&w %3d  &cCurrent:&w %3d\r\n",
+                  objvalue5[obj->item_type], obj->pIndexData->value[5],
+                  obj->value[5]);
+
   if (obj->pIndexData->first_extradesc)
   {
     EXTRA_DESCR_DATA *ed;

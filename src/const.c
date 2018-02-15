@@ -37,6 +37,110 @@ const char *const sector_name[SECT_MAX] = {
   "Underground", "In the Air", "Fire", "Smoke", "Unknown", "&RERROR!&w"
 };
 
+/* Object item values */
+
+const char *const objvalue0[] =
+{
+  "not used", "not used", "not used", "not used", "not used",
+  "weapon condition", "capacity (pounds)", "stand bitvector", "not used",
+  "current armor class",
+  "not used", "not used", "not used", "not used", "not used",
+  "capacity (pounds)", "not used", "capacity (ounces)", "not used",
+  "fill value (ticks)",
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used"
+  "not used", "not used", "not used", "not used", "not used"
+};
+
+const char *const objvalue1[] =
+{
+  "not used", "not used", "not used", "not used", "not used",
+  "number of dice", "container flags", "sit bitvector", "not used",
+  "original armor class",
+  "not used", "not used", "not used", "not used", "not used",
+  "container flags", "not used", "quantity (ounces)", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used"
+  "not used", "not used", "not used", "not used", "not used"
+};
+
+const char *const objvalue2[] =
+{
+  "not used", "duration (ticks)", "not used", "not used", "not used",
+  "size of dice", "key VNUM if lockable", "rest bitvector", "not used",
+  "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "key VNUM if lockable", "not used", "liquid type", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used"
+  "not used", "not used", "not used", "not used", "not used"
+};
+
+const char *const objvalue3[] =
+{
+  "not used", "not used", "not used", "not used", "not used",
+  "weapon type", "shelf condition", "sleep bitvector", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "container condition", "not used", "poison? (-1 = yes)", "not used",
+  "not used",
+  "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used"
+  "not used", "not used", "not used", "not used", "not used"
+};
+
+const char *const objvalue4[] =
+{
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "prepositon for look", "default preposition", "not used",
+  "not used",
+  "not used", "not used", "not used", "not used", "not used",
+  "suppress? (0 == no)", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used"
+  "not used", "not used", "not used", "not used", "not used"
+};
+
+const char *const objvalue5[] =
+{
+  "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "capacity (people)", "not used", "not used",
+  "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used",
+  "not used", "not used", "not used", "not used", "not used", "not used"
+  "not used", "not used", "not used", "not used", "not used"
+};
+
 /* Prepositions used for furniture -- Shamus */
 
 const char *const prepositions[] =
