@@ -137,13 +137,6 @@ void do_mpstat(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (get_trust(ch) < LEVEL_GREATER && xIS_SET(victim->act, ACT_STATSHIELD))
-  {
-    set_pager_color(AT_IMMORT, ch);
-    send_to_pager("Their godly glow prevents you from getting a good look.\r\n", ch);
-    return;
-  }
-
   if (xIS_EMPTY(victim->pIndexData->progtypes))
   {
     ch_printf(ch, "No programs on mobile:  %s - #%d\r\n", victim->name, victim->pIndexData->vnum);

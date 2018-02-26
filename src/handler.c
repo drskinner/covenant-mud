@@ -2444,6 +2444,11 @@ OBJ_DATA *obj_to_room(OBJ_DATA * obj, ROOM_INDEX_DATA * pRoomIndex)
   return obj;
 }
 
+OBJ_DATA *obj_to_hex(OBJ_DATA * obj, int xhex, int yhex)
+{
+  return obj;
+}
+
 /*
  * Who's carrying an item -- recursive for nested objects       -Thoric
  */

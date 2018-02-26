@@ -2042,20 +2042,7 @@ void do_typo(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-void do_rent(CHAR_DATA* ch, const char* argument)
-{
-  set_char_color(AT_WHITE, ch);
-  send_to_char("There is no rent here.  Just save and quit.\r\n", ch);
-  return;
-}
-
-void do_qui(CHAR_DATA* ch, const char* argument)
-{
-  set_char_color(AT_RED, ch);
-  send_to_char("If you want to QUIT, you have to spell it out.\r\n", ch);
-  return;
-}
-
+#if 0
 void do_quit(CHAR_DATA* ch, const char* argument)
 {
   char log_buf[MAX_STRING_LENGTH];
@@ -2152,6 +2139,7 @@ void do_quit(CHAR_DATA* ch, const char* argument)
   log_string_plus(log_buf, LOG_COMM, level);
   return;
 }
+#endif
 
 void send_rip_screen(CHAR_DATA * ch)
 {
