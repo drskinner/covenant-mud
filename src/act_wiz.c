@@ -2087,13 +2087,6 @@ void do_mstat(CHAR_DATA* ch, const char* argument)
     send_to_pager("Their godly glow prevents you from getting a good look.\r\n", ch);
     return;
   }
-  if (IS_NPC(victim) && get_trust(ch) < LEVEL_GREATER && xIS_SET(victim->act, ACT_STATSHIELD))
-  {
-    set_pager_color(AT_IMMORT, ch);
-    send_to_pager("Their godly glow prevents you from getting a good look.\r\n", ch);
-    return;
-  }
-
   pager_printf_color(ch, "\r\n&c%s: &C%-20s", IS_NPC(victim) ? "Mobile name" : "Name", victim->name);
   if (!IS_NPC(victim))
     pager_printf_color(ch, "&cStatus : &w%-10s", CAN_PKILL(victim) ? "Deadly" :
@@ -3092,47 +3085,6 @@ void do_snoop(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-void do_statshield(CHAR_DATA* ch, const char* argument)
-{
-  char arg[MAX_INPUT_LENGTH];
-  CHAR_DATA *victim;
-
-  set_char_color(AT_IMMORT, ch);
-
-  one_argument(argument, arg);
-  if (IS_NPC(ch) || get_trust(ch) < LEVEL_GREATER)
-  {
-    send_to_char("Huh?\r\n", ch);
-    return;
-  }
-  if (arg[0] == '\0')
-  {
-    send_to_char("Statshield which mobile?\r\n", ch);
-    return;
-  }
-  if ((victim = get_char_world(ch, arg)) == NULL)
-  {
-    send_to_char("No such mobile.\r\n", ch);
-    return;
-  }
-  if (!IS_NPC(victim))
-  {
-    send_to_char("You can only statshield mobiles.\r\n", ch);
-    return;
-  }
-  if (xIS_SET(victim->act, ACT_STATSHIELD))
-  {
-    xREMOVE_BIT(victim->act, ACT_STATSHIELD);
-    ch_printf(ch, "You have lifted the statshield on %s.\r\n", victim->short_descr);
-  }
-  else
-  {
-    xSET_BIT(victim->act, ACT_STATSHIELD);
-    ch_printf(ch, "You have applied a statshield to %s.\r\n", victim->short_descr);
-  }
-  return;
-}
-
 void do_switch(CHAR_DATA* ch, const char* argument)
 {
   char arg[MAX_INPUT_LENGTH];
@@ -3161,12 +3113,6 @@ void do_switch(CHAR_DATA* ch, const char* argument)
   if (victim == ch)
   {
     send_to_char("Ok.\r\n", ch);
-    return;
-  }
-  if (IS_NPC(victim) && xIS_SET(victim->act, ACT_STATSHIELD) && get_trust(ch) < LEVEL_GREATER)
-  {
-    set_pager_color(AT_IMMORT, ch);
-    send_to_pager("Their godly glow prevents you from getting close enough.\r\n", ch);
     return;
   }
   if (victim->desc)

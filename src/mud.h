@@ -393,6 +393,7 @@ struct extended_bitvector
 #include "calendar.h" /* AFKMud Calendar Replacement - Samson */
 #include "weather.h"  /* Weather System Replacement - Kayle */
 #include "liquids.h"  /* SMAUG Liquidtable Replacement - Nopey */
+#include "rent.h"
 #ifdef IMC
 #include "imc.h"
 #endif
@@ -1375,7 +1376,7 @@ struct smaug_affect
 #define ACT_PACIFIST       26 /* Doesn't ever fight   */
 #define ACT_NOATTACK       27 /* No physical attacks */
 #define ACT_ANNOYING       28 /* Other mobs will attack */
-#define ACT_STATSHIELD     29 /* prevent statting */
+#define ACT_INNKEEPER      29 /* Can rent here */
 #define ACT_PROTOTYPE      30 /* A prototype mob   */
 /* 31 acts */
 
@@ -2510,8 +2511,8 @@ struct obj_index_data
   int vnum;
   int serial;
   int cost;
-  int rent;   /* Unused */
-  int magic_flags;  /*Need more bitvectors for spells - Scryn */
+  int rent;         /* Unused; may add to rent calculation -- Shamus */
+  int magic_flags;  /* Need more bitvectors for spells -- Scryn */
   int wear_flags;
   short count;
   short weight;
@@ -4018,6 +4019,7 @@ DECLARE_DO_FUN(do_nuisance);
 DECLARE_DO_FUN(do_oclaim);
 DECLARE_DO_FUN(do_ocreate);
 DECLARE_DO_FUN(do_odelete);
+DECLARE_DO_FUN(do_offer);
 DECLARE_DO_FUN(do_ofind);
 DECLARE_DO_FUN(do_oinvoke);
 DECLARE_DO_FUN(do_oldscore);
@@ -4918,7 +4920,8 @@ void unequip_char args((CHAR_DATA * ch, OBJ_DATA * obj));
 int count_obj_list(OBJ_INDEX_DATA * pObjIndex, OBJ_DATA * list);
 void obj_from_room args((OBJ_DATA * obj));
 OD *obj_to_room args((OBJ_DATA * obj, ROOM_INDEX_DATA * pRoomIndex));
-OD *obj_to_obj args((OBJ_DATA * obj, OBJ_DATA * obj_to));
+OD *obj_to_hex  args((OBJ_DATA * obj, int xhex, int yhex));
+OD *obj_to_obj  args((OBJ_DATA * obj, OBJ_DATA * obj_to));
 void obj_from_obj args((OBJ_DATA * obj));
 void extract_obj args((OBJ_DATA * obj));
 void extract_exit args((ROOM_INDEX_DATA * room, EXIT_DATA * pexit));

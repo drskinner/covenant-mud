@@ -153,7 +153,7 @@ const char *const act_flags[] = {
   "wimpy", "pet", "train", "practice", "immortal", "deadly", "polyself",
   "meta_aggr", "guardian", "running", "nowander", "mountable", "mounted",
   "scholar", "secretive", "banker", "mobinvis", "noassist", "autonomous",
-  "pacifist", "noattack", "annoying", "statshield", "prototype"
+  "pacifist", "noattack", "annoying", "innkeeper", "prototype"
 };
 
 const char *const pc_flags[] = {
@@ -1287,12 +1287,6 @@ void do_mset(CHAR_DATA* ch, const char* argument)
   }
 
   if (get_trust(ch) < get_trust(victim) && !IS_NPC(victim))
-  {
-    send_to_char("You can't do that!\r\n", ch);
-    ch->dest_buf = NULL;
-    return;
-  }
-  if (get_trust(ch) < LEVEL_GREATER && IS_NPC(victim) && xIS_SET(victim->act, ACT_STATSHIELD))
   {
     send_to_char("You can't do that!\r\n", ch);
     ch->dest_buf = NULL;
@@ -8401,13 +8395,6 @@ void do_mpedit(CHAR_DATA* ch, const char* argument)
   if (get_trust(ch) < victim->level || !IS_NPC(victim))
   {
     send_to_char("You can't do that!\r\n", ch);
-    return;
-  }
-
-  if (get_trust(ch) < LEVEL_GREATER && IS_NPC(victim) && xIS_SET(victim->act, ACT_STATSHIELD))
-  {
-    set_pager_color(AT_IMMORT, ch);
-    send_to_pager("Their godly glow prevents you from getting close enough.\r\n", ch);
     return;
   }
 
