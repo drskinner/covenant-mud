@@ -1376,7 +1376,7 @@ struct smaug_affect
 #define ACT_PACIFIST       26 /* Doesn't ever fight   */
 #define ACT_NOATTACK       27 /* No physical attacks */
 #define ACT_ANNOYING       28 /* Other mobs will attack */
-#define ACT_INNKEEPER       29 /* Can rent here */
+#define ACT_INNKEEPER      29 /* Can rent here */
 #define ACT_PROTOTYPE      30 /* A prototype mob   */
 /* 31 acts */
 
