@@ -1288,13 +1288,17 @@ void do_tell(CHAR_DATA* ch, const char* argument)
     }
 #endif
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
-  {
-    send_to_char("You can't do that here.\r\n", ch);
-    return;
+  if (ch->in_room) {
+    if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE)
+        || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
+    {
+      send_to_char("You can't do that here.\r\n", ch);
+      return;
+    }
   }
 
-  if (!IS_NPC(ch) && (xIS_SET(ch->act, PLR_SILENCE) || xIS_SET(ch->act, PLR_NO_TELL)))
+  if (!IS_NPC(ch) && (xIS_SET(ch->act, PLR_SILENCE)
+                      || xIS_SET(ch->act, PLR_NO_TELL)))
   {
     send_to_char("You can't do that.\r\n", ch);
     return;
@@ -1302,8 +1306,7 @@ void do_tell(CHAR_DATA* ch, const char* argument)
 
   argument = one_argument(argument, arg);
 
-  if (arg[0] == '\0' || argument[0] == '\0')
-  {
+  if (arg[0] == '\0' || argument[0] == '\0') {
     send_to_char("Tell whom what?\r\n", ch);
     return;
   }
@@ -1316,14 +1319,12 @@ void do_tell(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (ch == victim)
-  {
+  if (ch == victim) {
     send_to_char("You have a nice little chat with yourself.\r\n", ch);
     return;
   }
 
-  if (NOT_AUTHED(ch) && !NOT_AUTHED(victim) && !IS_IMMORTAL(victim))
-  {
+  if (NOT_AUTHED(ch) && !NOT_AUTHED(victim) && !IS_IMMORTAL(victim)) {
     send_to_char("They can't hear you because you are not authorized.\r\n", ch);
     return;
   }
@@ -1350,7 +1351,7 @@ void do_tell(CHAR_DATA* ch, const char* argument)
       send_to_char("That player is AFK, but will receive your message.\r\n", ch);
     else
     {
-      send_to_char("That player is afk.\r\n", ch);
+      send_to_char("That player is AFK.\r\n", ch);
       return;
     }
   }
@@ -1370,55 +1371,55 @@ void do_tell(CHAR_DATA* ch, const char* argument)
     return;
   }
 
-  if (!IS_NPC(victim) && (xIS_SET(victim->in_room->room_flags, ROOM_SILENCE) || IS_SET(victim->in_room->area->flags, AFLAG_SILENCE)))
-  {
-    if (IS_IMMORTAL(ch))
-      send_to_char("That player is in a silent room, but will receive your message.\r\n", ch);
-    else
+  if (victim->in_room) {
+    if (!IS_NPC(victim) && (xIS_SET(victim->in_room->room_flags, ROOM_SILENCE)
+                            || IS_SET(victim->in_room->area->flags, AFLAG_SILENCE)))
     {
-      act(AT_PLAIN, "A magical force prevents your message from being heard.", ch, NULL, victim, TO_CHAR);
-      return;
+      if (IS_IMMORTAL(ch))
+        send_to_char("That player is in a silent room, but will receive your message.\r\n", ch);
+      else
+      {
+        act(AT_PLAIN, "A magical force prevents your message from being heard.", ch, NULL, victim, TO_CHAR);
+        return;
+      }
     }
   }
 
   if (victim->desc  /* make sure desc exists first  -Thoric */
-      && victim->desc->connected == CON_EDITING && get_trust(ch) < LEVEL_GOD)
+      && victim->desc->connected == CON_EDITING 
+      && get_trust(ch) < LEVEL_GOD)
   {
     act(AT_PLAIN, "$E is currently in a writing buffer.  Please try again in a few minutes.", ch, 0, victim, TO_CHAR);
     return;
   }
 
-  /*
-   * Stopping people from sending tells whispers etc to people on their ignore list. -Leart
-   */
-  if (is_ignoring(ch, victim))
-  {
+  /* Stopping people from sending tells, whispers, etc. to people on their ignore list. -- Leart */
+
+  if (is_ignoring(ch, victim)) {
+
     /* If the sender is an imm then they can bypass this check */
+
     if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch))
     {
       set_char_color(AT_IGNORE, ch);
       ch_printf(ch, "You are currently ignoring %s.\r\n"
-                 "Please type 'ignore %s' to stop ignoring them, then try sending your tell to them again.\r\n",        victim->name, victim->name);
+                    "Please type 'ignore %s' to stop ignoring them, then try sending your tell to them again.\r\n",        
+                    victim->name, victim->name);
       return;
     }
   }
 
-  /*
-   * Check to see if target of tell is ignoring the sender 
-   */
-  if (is_ignoring(victim, ch))
-  {
-    /*
-     * If the sender is an imm then they cannot be ignored 
-     */
-    if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch))
-    {
+  /* Check to see if target of tell is ignoring the sender */
+
+  if (is_ignoring(victim, ch)) {
+
+    /* If the sender is an imm then they cannot be ignored */
+
+    if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch)) {
       set_char_color(AT_IGNORE, ch);
       ch_printf(ch, "%s is ignoring you.\r\n", victim->name);
       return;
-    }
-    else
-    {
+    } else {
       set_char_color(AT_IGNORE, victim);
       ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see(victim, ch) ? "Someone" : ch->name);
     }
@@ -1432,31 +1433,26 @@ void do_tell(CHAR_DATA* ch, const char* argument)
   {
     snprintf(buf, MAX_INPUT_LENGTH, "%s told you '%s'\r\n", capitalize(IS_NPC(ch) ? ch->short_descr : ch->name), argument);
 
-    /*
-     * get lasttell index... assumes names begin with characters 
-     */
+    /* get lasttell index...assumes names begin with characters */
+
     victim->pcdata->lt_index = tolower(IS_NPC(ch) ? ch->short_descr[0] : ch->name[0]) - 'a';
 
-    /*
-     * get rid of old messages 
-     */
+    /* get rid of old messages */
+
     if (victim->pcdata->tell_history[victim->pcdata->lt_index])
       STRFREE(victim->pcdata->tell_history[victim->pcdata->lt_index]);
 
-    /*
-     * store the new message 
-     */
+    /* store the new message */
+
     victim->pcdata->tell_history[victim->pcdata->lt_index] = STRALLOC(buf);
   }
 
   if (switched_victim)
     victim = switched_victim;
 
-  /*
-   * Bug fix by guppy@wavecomputers.net 
-   */
+  /* Bug fix by guppy@wavecomputers.net */
   MOBtrigger = FALSE;
-  act(AT_TELL, "You tell $N '$t'", ch, argument, victim, TO_CHAR);
+  act(AT_TELL, "&MYou tell $N '$t'&w", ch, argument, victim, TO_CHAR);
   position = victim->position;
   victim->position = POS_STANDING;
   MOBtrigger = FALSE;
@@ -1467,21 +1463,23 @@ void do_tell(CHAR_DATA* ch, const char* argument)
                            knows_language(ch, ch->speaking, victim));
 
     if (speakswell < 85)
-      act(AT_TELL, "$n tells you '$t'", ch, translate(speakswell, argument, lang_names[speaking]), victim, TO_VICT);
+      act(AT_TELL, "&M[&W$n&M] tells you '$t'&w", ch, translate(speakswell, argument, lang_names[speaking]), victim, TO_VICT);
     else
-      act(AT_TELL, "$n tells you '$t'", ch, argument, victim, TO_VICT);
+      act(AT_TELL, "&M[&W$n&M] tells you '$t'&w", ch, argument, victim, TO_VICT);
   }
   else
-    act(AT_TELL, "$n tells you '$t'", ch, argument, victim, TO_VICT);
+    act(AT_TELL, "&M[&W$n&M] tells you '$t'&w", ch, argument, victim, TO_VICT);
 
   MOBtrigger = TRUE;
 
   victim->position = position;
   victim->reply = ch;
-  if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH))
-  {
-    snprintf(buf, MAX_INPUT_LENGTH, "%s: %s (tell to) %s.",
-              IS_NPC(ch) ? ch->short_descr : ch->name, argument, IS_NPC(victim) ? victim->short_descr : victim->name);
+
+  if (ch->in_room)
+    if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH)) {
+      snprintf(buf, MAX_INPUT_LENGTH, "%s: %s (tell to) %s.",
+               IS_NPC(ch) ? ch->short_descr : ch->name, argument, 
+               IS_NPC(victim) ? victim->short_descr : victim->name);
     append_to_file(LOG_FILE, buf);
   }
 
@@ -1489,179 +1487,25 @@ void do_tell(CHAR_DATA* ch, const char* argument)
   return;
 }
 
+/* Refactored. do_reply() simply calls do_tell() because all of the
+   checks were duplicated. -- Shamus */
 void do_reply(CHAR_DATA* ch, const char* argument)
 {
   char buf[MAX_STRING_LENGTH];
   CHAR_DATA *victim;
-  int position;
-#ifndef SCRAMBLE
-  int speaking = -1, lang;
 
-  for (lang = 0; lang_array[lang] != LANG_UNKNOWN; lang++)
-    if (ch->speaking & lang_array[lang])
-    {
-      speaking = lang;
-      break;
-    }
-#endif
-
-  if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
-  {
-    send_to_char("You can't do that here.\r\n", ch);
-    return;
-  }
-
-  if (!IS_NPC(ch) && xIS_SET(ch->act, PLR_SILENCE))
-  {
-    send_to_char("Your message didn't get through.\r\n", ch);
-    return;
-  }
-
-  if ((victim = ch->reply) == NULL)
-  {
+  if ((victim = ch->reply) == NULL) {
     send_to_char("They aren't here.\r\n", ch);
     return;
   }
 
-  if (!IS_NPC(victim) && (victim->switched) && can_see(ch, victim) && (get_trust(ch) > LEVEL_AVATAR))
-  {
-    send_to_char("That player is switched.\r\n", ch);
-    return;
-  }
-  else if (!IS_NPC(victim) && (!victim->desc))
-  {
-    send_to_char("That player is link-dead.\r\n", ch);
-    return;
-  }
-
-  if (!IS_NPC(victim) && xIS_SET(victim->act, PLR_AFK))
-  {
-    send_to_char("That player is afk.\r\n", ch);
-    return;
-  }
-
-  if (IS_SET(victim->deaf, CHANNEL_TELLS) && (!IS_IMMORTAL(ch) || (get_trust(ch) < get_trust(victim))))
-  {
-    act(AT_PLAIN, "$E has $S tells turned off.", ch, NULL, victim, TO_CHAR);
-    return;
-  }
-
-  if ((!IS_IMMORTAL(ch) && !IS_AWAKE(victim))
-      || (!IS_NPC(victim) && xIS_SET(victim->in_room->room_flags, ROOM_SILENCE))
-      || (!IS_NPC(victim) && IS_SET(victim->in_room->area->flags, AFLAG_SILENCE)))
-  {
-    act(AT_PLAIN, "$E can't hear you.", ch, NULL, victim, TO_CHAR);
-    return;
-  }
-
-  if (victim->desc  /* make sure desc exists first  -Thoric */
-      && victim->desc->connected == CON_EDITING && get_trust(ch) < LEVEL_GOD)
-  {
-    act(AT_PLAIN, "$E is currently in a writing buffer.  Please try again in a few minutes.", ch, 0, victim, TO_CHAR);
-    return;
-  }
-
-  /*
-   * Stopping people from sending tells whispers etc to people on their ignore list. -Leart
-   */
-  if (is_ignoring(ch, victim))  
-  {
-    /* If the sender is an imm then they can bypass this check */
-    if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch))
-    {
-      set_char_color(AT_IGNORE, ch);
-      ch_printf(ch, "You are currently ignoring %s.\r\n"
-                 "Please type 'ignore %s' to stop ignoring them, then try sending your reply to them again.\r\n", victim->name, victim->name);
-      return;
-    }
-  }
-
-  /*
-   * Check to see if the receiver is ignoring the sender 
-   */
-  if (is_ignoring(victim, ch))
-  {
-    /*
-     * If the sender is an imm they cannot be ignored 
-     */
-    if (!IS_IMMORTAL(ch) || get_trust(victim) > get_trust(ch))
-    {
-      set_char_color(AT_IGNORE, ch);
-      ch_printf(ch, "%s is ignoring you.\r\n", victim->name);
-      return;
-    }
-    else
-    {
-      set_char_color(AT_IGNORE, victim);
-      ch_printf(victim, "You attempt to ignore %s, but are unable to do so.\r\n", !can_see(victim, ch) ? "Someone" : ch->name);
-    }
-  }
-
-  MOBtrigger = FALSE;
-  REMOVE_BIT(ch->deaf, CHANNEL_TELLS);
-  act(AT_TELL, "You tell $N '$t'", ch, argument, victim, TO_CHAR);
-  position = victim->position;
-  victim->position = POS_STANDING;
-  MOBtrigger = FALSE;
-
-#ifndef SCRAMBLE
-  if (speaking != -1 && (!IS_NPC(ch) || ch->speaking))
-  {
-    int speakswell = UMIN(knows_language(victim, ch->speaking, ch),
-                           knows_language(ch, ch->speaking, victim));
-
-    if (speakswell < 85)
-      act(AT_TELL, "$n tells you '$t'", ch, translate(speakswell, argument, lang_names[speaking]), victim, TO_VICT);
-    else
-      act(AT_TELL, "$n tells you '$t'", ch, argument, victim, TO_VICT);
-  }
-  else
-    act(AT_TELL, "$n tells you '$t'", ch, argument, victim, TO_VICT);
-#else
-  if (knows_language(victim, ch->speaking, ch) || (IS_NPC(ch) && !ch->speaking))
-    act(AT_TELL, "$n tells you '$t'", ch, argument, victim, TO_VICT);
-  else
-    act(AT_TELL, "$n tells you '$t'", ch, scramble(argument, ch->speaking), victim, TO_VICT);
-#endif
-  victim->position = position;
-  victim->reply = ch;
-  ch->retell = victim;
-  MOBtrigger = TRUE;
-
-  if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH))
-  {
-    snprintf(buf, MAX_STRING_LENGTH, "%s: %s (reply to) %s.",
-              IS_NPC(ch) ? ch->short_descr : ch->name, argument, IS_NPC(victim) ? victim->short_descr : victim->name);
-    append_to_file(LOG_FILE, buf);
-  }
-
-  if (!IS_NPC(victim) && IS_IMMORTAL(victim) && victim->pcdata->tell_history &&
-      isalpha(IS_NPC(ch) ? ch->short_descr[0] : ch->name[0]))
-  {
-    snprintf(buf, MAX_STRING_LENGTH, "%s told you '%s'\r\n", capitalize(IS_NPC(ch) ? ch->short_descr : ch->name),
-              argument);
-
-    /*
-     * get lasttell index... assumes names begin with characters 
-     */
-    victim->pcdata->lt_index = tolower(IS_NPC(ch) ? ch->short_descr[0] : ch->name[0]) - 'a';
-
-    /*
-     * get rid of old messages 
-     */
-    if (victim->pcdata->tell_history[victim->pcdata->lt_index])
-      STRFREE(victim->pcdata->tell_history[victim->pcdata->lt_index]);
-
-    /*
-     * store the new message 
-     */
-    victim->pcdata->tell_history[victim->pcdata->lt_index] = STRALLOC(buf);
-  }
-
-  mprog_tell_trigger(argument, ch);
+  snprintf(buf, MAX_STRING_LENGTH, "%s %s", victim->name, argument);
+  do_tell(ch, buf);
   return;
 }
 
+/* TODO: refactor out the code duplication between do_reply and do_tell
+   -- Shamus */
 void do_retell(CHAR_DATA* ch, const char* argument)
 {
   char buf[MAX_INPUT_LENGTH];
