@@ -1504,7 +1504,7 @@ void do_reply(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-/* TODO: refactor out the code duplication between do_reply and do_tell
+/* TODO: refactor out the code duplication between do_reply and do_retell
    -- Shamus */
 void do_retell(CHAR_DATA* ch, const char* argument)
 {
