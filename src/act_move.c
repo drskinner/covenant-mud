@@ -1230,24 +1230,40 @@ ch_ret move_char(CHAR_DATA * ch, EXIT_DATA * pexit, int fall)
 
 void do_north(CHAR_DATA* ch, const char* argument)
 {
+  if (ch->in_hex) {
+    do_heading(ch, "0");
+    return;
+  }
   move_char(ch, get_exit(ch->in_room, DIR_NORTH), 0);
   return;
 }
 
 void do_east(CHAR_DATA* ch, const char* argument)
 {
+  if (ch->in_hex) {
+    do_heading(ch, "90");
+    return;
+  }
   move_char(ch, get_exit(ch->in_room, DIR_EAST), 0);
   return;
 }
 
 void do_south(CHAR_DATA* ch, const char* argument)
 {
+  if (ch->in_hex) {
+    do_heading(ch, "180");
+    return;
+  }
   move_char(ch, get_exit(ch->in_room, DIR_SOUTH), 0);
   return;
 }
 
 void do_west(CHAR_DATA* ch, const char* argument)
 {
+  if (ch->in_hex) {
+    do_heading(ch, "270");
+    return;
+  }
   move_char(ch, get_exit(ch->in_room, DIR_WEST), 0);
   return;
 }
@@ -1266,25 +1282,25 @@ void do_down(CHAR_DATA* ch, const char* argument)
 
 void do_northeast(CHAR_DATA* ch, const char* argument)
 {
-  move_char(ch, get_exit(ch->in_room, DIR_NORTHEAST), 0);
+  do_heading(ch, "60");
   return;
 }
 
 void do_northwest(CHAR_DATA* ch, const char* argument)
 {
-  move_char(ch, get_exit(ch->in_room, DIR_NORTHWEST), 0);
+  do_heading(ch, "300");
   return;
 }
 
 void do_southeast(CHAR_DATA* ch, const char* argument)
 {
-  move_char(ch, get_exit(ch->in_room, DIR_SOUTHEAST), 0);
+  do_heading(ch, "120");
   return;
 }
 
 void do_southwest(CHAR_DATA* ch, const char* argument)
 {
-  move_char(ch, get_exit(ch->in_room, DIR_SOUTHWEST), 0);
+  do_heading(ch, "240");
   return;
 }
 

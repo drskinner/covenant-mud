@@ -490,6 +490,39 @@ void do_map(CHAR_DATA* ch, const char* argument)
   return;
 }
 
+/* Movement commands */
+
+void do_heading(CHAR_DATA* ch, const char* argument)
+{
+  char arg[MAX_INPUT_LENGTH];
+
+  int old_heading = ch->pcdata->heading;
+
+  argument = one_argument(argument, arg);
+
+  if (arg[0] == '\0') {
+    ch_printf(ch, "Your current heading is %d degrees.\r\n",
+              ch->pcdata->heading);
+    return;
+  }
+
+  if (!is_number(arg)) {
+    send_to_char("Heading does not support direction names yet.\r\n", ch);
+    return;
+  }
+
+  ch->pcdata->heading = acceptable_degree(atoi(arg));
+
+  if (ch->pcdata->heading == old_heading)
+    ch_printf(ch, "You are already heading in that direction.\r\n");
+  else
+    ch_printf(ch, "Heading changed to %d degrees.\r\n", ch->pcdata->heading);
+
+  return;
+}
+
+/* Immortal commands */
+
 void do_hexgoto(CHAR_DATA* ch, const char* argument)
 {
   char arg1[MAX_INPUT_LENGTH];

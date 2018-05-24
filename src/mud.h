@@ -3523,7 +3523,7 @@ void ext_toggle_bits args((EXT_BV * var, EXT_BV * bits));
 #define CMD_FLAG_NO_MOB      BV03
 #define CMD_FLAG_NO_SPEED    BV04
 #define CMD_FLAG_NO_WATER    BV05
-#define CMD_WATCH            BV06
+#define CMD_FLAG_WATCH       BV06
 #define CMD_FLAG_RETIRED     BV07
 #define CMD_FLAG_NO_ABORT    BV08
 
@@ -3915,6 +3915,7 @@ DECLARE_DO_FUN(do_gtell);
 DECLARE_DO_FUN(do_guilds);
 DECLARE_DO_FUN(do_guildtalk);
 DECLARE_DO_FUN(do_gwhere);
+DECLARE_DO_FUN(do_heading);
 DECLARE_DO_FUN(do_hedit);
 DECLARE_DO_FUN(do_hell);
 DECLARE_DO_FUN(do_help);
