@@ -394,7 +394,7 @@ void interpret(CHAR_DATA * ch, char *argument)
    */
   if (!IS_NPC(ch) && ch->desc && valid_watch(logline))
   {
-    if (found && IS_SET(cmd->flags, CMD_WATCH))
+    if (found && IS_SET(cmd->flags, CMD_FLAG_WATCH))
       write_watch_files(ch, cmd, logline);
     else if (IS_SET(ch->pcdata->flags, PCFLAG_WATCH))
       write_watch_files(ch, NULL, logline);

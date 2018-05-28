@@ -466,7 +466,7 @@ void do_watch(CHAR_DATA* ch, const char* argument)
       return;
     }
     else
-      SET_BIT(cmd->flags, CMD_WATCH);
+      SET_BIT(cmd->flags, CMD_FLAG_WATCH);
 
     CREATE(pinsert, WATCH_DATA, 1);
     pinsert->imm_level = get_trust(ch);

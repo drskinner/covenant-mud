@@ -8834,7 +8834,7 @@ void load_watchlist(void)
       {
         if (!str_cmp(pwatch->target_name, cmd->name))
         {
-          SET_BIT(cmd->flags, CMD_WATCH);
+          SET_BIT(cmd->flags, CMD_FLAG_WATCH);
           break;
         }
       }
