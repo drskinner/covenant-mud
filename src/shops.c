@@ -1113,8 +1113,8 @@ void do_appraise(CHAR_DATA* ch, const char* argument)
   }
 
   if ((obj = get_obj_carry(ch, arg)) == NULL) {
-    act(AT_TELL, "$n tells you 'You don't have that item.'", keeper, NULL, ch, TO_VICT);
-    ch->reply = keeper;
+    snprintf(buf, MAX_STRING_LENGTH, "%s You don't have that item.", ch->name);
+    do_tell(keeper, buf);
     return;
   }
 
