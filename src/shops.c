@@ -1072,7 +1072,7 @@ void appraise_all(CHAR_DATA * ch, CHAR_DATA * keeper, const char *fixstr)
              ch->name, total, cost == 1 ? "" : "s");
     do_tell(keeper, buf);
     snprintf(buf, MAX_STRING_LENGTH, 
-             "%s Remember, there is a 10 percent surchage to use 'repair all'", ch->name);
+             "%s Remember, there is a 10 percent surchage to use \"repair all\".", ch->name);
     do_tell(keeper, buf);
   }
 }
