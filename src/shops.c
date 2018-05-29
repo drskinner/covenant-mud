@@ -1042,32 +1042,38 @@ void appraise_all(CHAR_DATA * ch, CHAR_DATA * keeper, const char *fixstr)
              || obj->item_type == ITEM_WEAPON || obj->item_type == ITEM_WAND || obj->item_type == ITEM_STAFF))
     {
 
-      if (!can_drop_obj(ch, obj))
+      if (!can_drop_obj(ch, obj)) {
         ch_printf(ch, "You can't let go of %s.\r\n", obj->short_descr);
-      else if ((cost = get_repaircost(keeper, obj)) < 0)
+      } 
+        else if ((cost = get_repaircost(keeper, obj)) < 0)
       {
-        if (cost != -2)
-          act(AT_TELL, "$n tells you, 'Sorry, I can't do anything with $p.'", keeper, obj, ch, TO_VICT);
-        else
-          act(AT_TELL, "$n tells you, '$p looks fine to me!'", keeper, obj, ch, TO_VICT);
+        if (cost != -2) {
+          snprintf(buf, MAX_STRING_LENGTH,
+                   "%s Sorry, I can't do anything with %s.", ch->name, obj->short_descr);
+        } else {
+          snprintf(buf, MAX_STRING_LENGTH,
+                   "%s %s does not need any work done.", ch->name, cap_initial(obj->short_descr));
+        }
+        do_tell(keeper, buf);
       }
       else
       {
         snprintf(buf, MAX_STRING_LENGTH,
-                  "$N tells you, 'It will cost %d piece%s of gold to %s %s'",
-                  cost, cost == 1 ? "" : "s", fixstr, obj->short_descr);
-        act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
+                 "%s It will cost %d piece%s of gold to %s %s",
+                 ch->name, cost, cost == 1 ? "" : "s", fixstr, obj->short_descr);
+        do_tell(keeper, buf);
         total += cost;
       }
     }
   }
-  if (total > 0)
-  {
+  if (total > 0) {
     send_to_char("\r\n", ch);
-    snprintf(buf, MAX_STRING_LENGTH, "$N tells you, 'It will cost %d piece%s of gold in total.'", total,
-              cost == 1 ? "" : "s");
-    act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
-    act(AT_TELL, "$N tells you, 'Remember there is a 10% surcharge for repair all.'", ch, NULL, keeper, TO_CHAR);
+    snprintf(buf, MAX_STRING_LENGTH, "%s It will cost %d ceron%s in total.", 
+             ch->name, total, cost == 1 ? "" : "s");
+    do_tell(keeper, buf);
+    snprintf(buf, MAX_STRING_LENGTH, 
+             "%s Remember, there is a 10 percent surchage to use 'repair all'", ch->name);
+    do_tell(keeper, buf);
   }
 }
 
@@ -1082,8 +1088,7 @@ void do_appraise(CHAR_DATA* ch, const char* argument)
 
   one_argument(argument, arg);
 
-  if (arg[0] == '\0')
-  {
+  if (arg[0] == '\0') {
     send_to_char("Appraise what?\r\n", ch);
     return;
   }
@@ -1102,39 +1107,42 @@ void do_appraise(CHAR_DATA* ch, const char* argument)
     break;
   }
 
-  if (!strcmp(arg, "all"))
-  {
+  if (!strcmp(arg, "all")) {
     appraise_all(ch, keeper, fixstr);
     return;
   }
 
-  if ((obj = get_obj_carry(ch, arg)) == NULL)
-  {
+  if ((obj = get_obj_carry(ch, arg)) == NULL) {
     act(AT_TELL, "$n tells you 'You don't have that item.'", keeper, NULL, ch, TO_VICT);
     ch->reply = keeper;
     return;
   }
 
-  if (!can_drop_obj(ch, obj))
-  {
+  if (!can_drop_obj(ch, obj)) {
     send_to_char("You can't let go of it.\r\n", ch);
     return;
   }
 
-  if ((cost = get_repaircost(keeper, obj)) < 0)
-  {
-    if (cost != -2)
-      act(AT_TELL, "$n tells you, 'Sorry, I can't do anything with $p.'", keeper, obj, ch, TO_VICT);
-    else
-      act(AT_TELL, "$n tells you, '$p looks fine to me!'", keeper, obj, ch, TO_VICT);
+  if ((cost = get_repaircost(keeper, obj)) < 0) {
+    if (cost != -2) {
+      snprintf(buf, MAX_STRING_LENGTH, "%s Sorry, I can't do anything with %s.", 
+               ch->name, obj->short_descr);
+    } else {
+      snprintf(buf, MAX_STRING_LENGTH, "%s %s looks fine to me!", 
+               ch->name, cap_initial(obj->short_descr));
+    }
+    do_tell(keeper, buf);
     return;
   }
 
-  snprintf(buf, MAX_STRING_LENGTH, "$N tells you, 'It will cost %d piece%s of gold to %s that...'", cost,
-            cost == 1 ? "" : "s", fixstr);
-  act(AT_TELL, buf, ch, NULL, keeper, TO_CHAR);
-  if (cost > ch->gold)
-    act(AT_TELL, "$N tells you, 'Which I see you can't afford.'", ch, NULL, keeper, TO_CHAR);
+  snprintf(buf, MAX_STRING_LENGTH, "%s It will cost %d ceron%s to %s that...'", 
+           ch->name, cost, cost == 1 ? "" : "s", fixstr);
+  do_tell(keeper, buf);
+
+  if (cost > ch->gold) {
+    snprintf(buf, MAX_STRING_LENGTH, "%s Which you obviously can't afford,", ch->name);
+    do_tell(keeper, buf);
+  }
 
   return;
 }
