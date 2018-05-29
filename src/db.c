@@ -4145,33 +4145,25 @@ bool str_suffix(const char *astr, const char *bstr)
 
 /*
  * Returns an initial-capped string.
- * Rewritten by FearItself@AvP
+ * Rewritten by FearItself@AvP to leave colour intact.
  */
 char *capitalize(const char *str)
 {
   static char buf[MAX_STRING_LENGTH];
   char *dest = buf;
-  enum
-  { Normal, Color } state = Normal;
+  enum { Normal, Color } state = Normal;
   bool bFirst = TRUE;
   char c;
 
-  while ((c = *str++))
-  {
-    if (state == Normal)
-    {
-      if (c == '&' || c == '^' || c == '}')
-      {
+  while ((c = *str++)) {
+    if (state == Normal) {
+      if (c == '&' || c == '^' || c == '}') {
         state = Color;
-      }
-      else if (isalpha(c))
-      {
+      } else if (isalpha(c)) {
         c = bFirst ? toupper(c) : tolower(c);
         bFirst = FALSE;
       }
-    }
-    else
-    {
+    } else {
       state = Normal;
     }
     *dest++ = c;
@@ -4179,6 +4171,21 @@ char *capitalize(const char *str)
   *dest = c;
 
   return buf;
+}
+
+/* Capitialize initial but don't disturb the rest of the string -- Shamus */
+
+char *cap_initial(const char *str)
+{
+  static char capinit[MAX_STRING_LENGTH];
+  int i;
+
+  for (i = 0; str[i] != '\0'; i++)
+    capinit[i] = str[i];
+  capinit[i] = '\0';
+
+  capinit[0] = toupper(capinit[0]);
+  return capinit;
 }
 
 /* Remove all non-alphanumeric characters from a string -- Shamus */

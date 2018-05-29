@@ -158,11 +158,12 @@ DECLARE_DO_FUN(do_color);
 #define AT_OBJECT       AT_PLAIN
 #define AT_ROOM_DESC    AT_PLAIN
 #define AT_ROOM_NAME    AT_WHITE
+#define AT_SAY          AT_WHITE
 #define AT_SCORE        AT_LGREEN
 #define AT_SHOUT        AT_LRED
 #define AT_SOCIAL       AT_PLAIN
-#define AT_SAY          35
-#define AT_TELL         38
+#define AT_TELL         AT_PINK
+
 #define AT_HIT          39
 #define AT_HITME        40
 #define AT_IMMORT       41
