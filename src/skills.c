@@ -4599,11 +4599,6 @@ void do_poison_weapon(CHAR_DATA* ch, const char* argument)
     send_to_char("That weapon is already poisoned.\r\n", ch);
     return;
   }
-  if (IS_OBJ_STAT(obj, ITEM_CLANOBJECT))
-  {
-    send_to_char("It doesn't appear to be fashioned of a poisonable material.\r\n", ch);
-    return;
-  }
   /*
    * Now we have a valid weapon...check to see if we have the powder. 
    */

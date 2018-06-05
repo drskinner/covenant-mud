@@ -76,7 +76,7 @@ const char *const o_flags[] = {
   "glow", "hum", "dark", "nolongdesc", "evil", "invis", "magic", "nodrop", "bless",
   "antigood", "antievil", "antineutral", "noremove", "inventory",
   "antimage", "antithief", "antiwarrior", "anticleric", "organic", "metal",
-  "donation", "clanobject", "clancorpse", "antivampire", "antidruid",
+  "donation", "float", "clancorpse", "antivampire", "antidruid",
   "hidden", "poisoned", "covering", "deathrot", "buried", "prototype",
   "nolocate", "groundrot", "lootable", "personal", "multi_invoke", "enchanted",
   "permanent", "nofill", "deathdrop", "skinned"

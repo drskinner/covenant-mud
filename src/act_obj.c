@@ -962,7 +962,6 @@ void do_drop(CHAR_DATA* ch, const char* argument)
   OBJ_DATA *obj;
   OBJ_DATA *obj_next;
   bool found;
-  VAULT_DATA *vault;
   int number;
 
   argument = one_argument(argument, arg);
@@ -1036,7 +1035,7 @@ void do_drop(CHAR_DATA* ch, const char* argument)
       if (ch->in_room) {
         obj_to_room(create_money(number), ch->in_room);
         send_to_char("You let the money slip from your hand.\r\n", ch);
-        act(AT_ACTION, "$n drops some gold.", ch, NULL, NULL, TO_ROOM);
+        act(AT_ACTION, "$n drops some money.", ch, NULL, NULL, TO_ROOM);
       } else {
         obj_to_hex(create_money(number), ch->xhex, ch->yhex);
         if ((IS_WATER_SECT(ch->in_hex->terrain)) && (ch->in_hex->elevation > 0)) {
@@ -1045,6 +1044,7 @@ void do_drop(CHAR_DATA* ch, const char* argument)
               NULL, NULL, TO_ROOM);
         }
         else
+          send_to_char("You drop some coins onto the ground.\r\n", ch);
           act(AT_ACTION, "$n drops some money.", ch, NULL, NULL, TO_ROOM);
       }
 
@@ -1068,11 +1068,12 @@ void do_drop(CHAR_DATA* ch, const char* argument)
       return;
     }
 
-    if (ch->in_room->max_weight > 0 &&
+    if (ch->in_room &&
+        ch->in_room->max_weight > 0 &&
         ch->in_room->max_weight < get_real_obj_weight(obj) / obj->count + ch->in_room->weight)
     {
-      send_to_char("There is not enough room on the ground for that.\r\n", ch);
-      return;
+        send_to_char("There is not enough room on the ground for that.\r\n", ch);
+        return;
     }
 
     separate_obj(obj);
@@ -1089,14 +1090,14 @@ void do_drop(CHAR_DATA* ch, const char* argument)
       {
         if (IS_OBJ_STAT(obj, ITEM_FLOAT)) {
           ch_printf(ch, "%s bobs up to the surface of the water.\r\n",
-                    cap_initial(obj->short_desc));
+                    cap_initial(obj->short_descr));
           act(AT_ACTION,
               "$n drops $p, which bobs on the surface of the water.",
               ch, obj, NULL, TO_ROOM);
         }
         else {
           ch_printf(ch, "%s sinks to the bottom.\r\n",
-                    cap_initial(obj->short_desc));
+                    cap_initial(obj->short_descr));
           act(AT_ACTION, "You watch as $p sinks to the bottom.",
               ch, obj, NULL, TO_ROOM);
         }
@@ -1108,7 +1109,7 @@ void do_drop(CHAR_DATA* ch, const char* argument)
     if (char_died(ch) || obj_extracted(obj))
       return;
 
-    if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
+    if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
       save_house_by_vnum(ch->in_room->vnum); /* House Object Saving */
   }
   else
@@ -1183,14 +1184,14 @@ void do_drop(CHAR_DATA* ch, const char* argument)
             if (IS_OBJ_STAT(obj, ITEM_FLOAT)) {
               ch_printf(ch,
                         "%s bobs up to the surface of the water.\n\r",
-                        cap_initial(obj->short_desc));
+                        cap_initial(obj->short_descr));
               act(AT_ACTION,
                   "$n drops $p, which bobs on the surface of the water.",
                   ch, obj, NULL, TO_ROOM);
             }
             else {
               ch_printf(ch, "%s sinks to the bottom.\n\r",
-                        cap_initial(obj->short_desc));
+                        cap_initial(obj->short_descr));
               act(AT_ACTION, "You watch as $p sinks to the bottom.",
                   ch, obj, NULL, TO_ROOM);
             }
@@ -1216,7 +1217,7 @@ void do_drop(CHAR_DATA* ch, const char* argument)
     }
   }
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
+  if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
     save_house_by_vnum(ch->in_room->vnum); /* House Object Saving */
 
   if (IS_SET(sysdata.save_flags, SV_DROP))
@@ -2931,12 +2932,6 @@ void do_auction(CHAR_DATA* ch, const char* argument)
   if (obj->timer > 0)
   {
     send_to_char("You can't auction objects that are decaying.\r\n", ch);
-    return;
-  }
-
-  if (IS_OBJ_STAT(obj, ITEM_CLANOBJECT))
-  {
-    send_to_char("You can't auction clan items.\r\n", ch);
     return;
   }
 

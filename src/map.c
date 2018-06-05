@@ -89,6 +89,7 @@ void load_map()
       CREATE(hex, struct hex_data, 1);
       hex->terrain = 0;
       hex->elevation = echar;
+      hex->light = 0;
       hex->first_content = NULL;
       hex->last_content = NULL;
 
@@ -663,11 +664,9 @@ void do_hexstat(CHAR_DATA* ch, const char* argument)
 
   send_to_char_color("\r\n&cObjects:    &w", ch);
   for (obj = location->first_content; obj; obj = obj->next_content) {
-    send_to_char(" ", ch);
-    one_argument(obj->name, buf);
+    snprintf(buf, MAX_STRING_LENGTH, "%s\r\n", obj->name);
     send_to_char(buf, ch);
   }
-  send_to_char("\r\n", ch);
 
   return;
 }

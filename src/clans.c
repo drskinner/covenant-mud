@@ -1258,73 +1258,12 @@ void save_storeroom(CHAR_DATA *ch, int vnum)
 
 void do_make(CHAR_DATA* ch, const char* argument)
 {
-  char arg[MAX_INPUT_LENGTH];
-  OBJ_INDEX_DATA *pObjIndex;
-  OBJ_DATA *obj;
-  CLAN_DATA *clan;
-  int level;
-
-  if (IS_NPC(ch) || !ch->pcdata->clan)
-  {
+  if (IS_NPC(ch) || !ch->pcdata->clan) {
     send_to_char("Huh?\r\n", ch);
     return;
   }
 
-  clan = ch->pcdata->clan;
-
-  if (str_cmp(ch->name, clan->leader)
-      && str_cmp(ch->name, clan->deity) && (clan->clan_type != CLAN_GUILD || str_cmp(ch->name, clan->number1)))
-  {
-    send_to_char("Huh?\r\n", ch);
-    return;
-  }
-
-  argument = one_argument(argument, arg);
-
-  if (arg[0] == '\0')
-  {
-    send_to_char("Make what?\r\n", ch);
-    return;
-  }
-
-  pObjIndex = get_obj_index(clan->clanobj1);
-  level = 40;
-
-  if (!pObjIndex || !is_name(arg, pObjIndex->name))
-  {
-    pObjIndex = get_obj_index(clan->clanobj2);
-    level = 45;
-  }
-  if (!pObjIndex || !is_name(arg, pObjIndex->name))
-  {
-    pObjIndex = get_obj_index(clan->clanobj3);
-    level = 50;
-  }
-  if (!pObjIndex || !is_name(arg, pObjIndex->name))
-  {
-    pObjIndex = get_obj_index(clan->clanobj4);
-    level = 35;
-  }
-  if (!pObjIndex || !is_name(arg, pObjIndex->name))
-  {
-    pObjIndex = get_obj_index(clan->clanobj5);
-    level = 1;
-  }
-
-  if (!pObjIndex || !is_name(arg, pObjIndex->name))
-  {
-    send_to_char("You don't know how to make that.\r\n", ch);
-    return;
-  }
-
-  obj = create_object(pObjIndex, level);
-  xSET_BIT(obj->extra_flags, ITEM_CLANOBJECT);
-  if (CAN_WEAR(obj, ITEM_TAKE))
-    obj = obj_to_char(obj, ch);
-  else
-    obj = obj_to_room(obj, ch->in_room);
-  act(AT_MAGIC, "$n makes $p!", ch, obj, NULL, TO_ROOM);
-  act(AT_MAGIC, "You make $p!", ch, obj, NULL, TO_CHAR);
+  send_to_char("You don't know how to make that.\r\n", ch);
   return;
 }
 
