@@ -1072,8 +1072,8 @@ void do_drop(CHAR_DATA* ch, const char* argument)
         ch->in_room->max_weight > 0 &&
         ch->in_room->max_weight < get_real_obj_weight(obj) / obj->count + ch->in_room->weight)
     {
-        send_to_char("There is not enough room on the ground for that.\r\n", ch);
-        return;
+      send_to_char("There is not enough room on the ground for that.\r\n", ch);
+      return;
     }
 
     separate_obj(obj);
