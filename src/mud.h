@@ -1715,7 +1715,7 @@ typedef enum
   ITEM_NODROP, ITEM_BLESS, ITEM_ANTI_GOOD, ITEM_ANTI_EVIL, ITEM_ANTI_NEUTRAL,
   ITEM_NOREMOVE, ITEM_INVENTORY, ITEM_ANTI_MAGE, ITEM_ANTI_ROGUE,
   ITEM_ANTI_WARRIOR, ITEM_ANTI_BARD, ITEM_ORGANIC, ITEM_METAL, ITEM_DONATION,
-  ITEM_CLANOBJECT, ITEM_CLANCORPSE, ITEM_ANTI_INVENTOR, ITEM_ANTI_ALCHEMIST,
+  ITEM_FLOAT, ITEM_CLANCORPSE, ITEM_ANTI_INVENTOR, ITEM_ANTI_ALCHEMIST,
   ITEM_HIDDEN, ITEM_POISONED, ITEM_COVERING, ITEM_DEATHROT, ITEM_BURIED,
   ITEM_PROTOTYPE, ITEM_NOLOCATE, ITEM_GROUNDROT, ITEM_LOOTABLE, ITEM_PERSONAL,
   ITEM_MULTI_INVOKE, ITEM_ENCHANTED, ITEM_PERMANENT, ITEM_NOFILL, ITEM_DEATHDROP,
@@ -2540,6 +2540,9 @@ struct obj_data
   AFFECT_DATA *last_affect;
   OBJ_INDEX_DATA *pIndexData;
   ROOM_INDEX_DATA *in_room;
+  HEX_DATA *in_hex;
+  int xhex;
+  int yhex;
   const char *name;
   const char *short_descr;
   const char *description;
@@ -5158,6 +5161,7 @@ struct hex_data /* contains per-room data */
 {
   short      terrain;       /* sector/terrain type */
   short      elevation;
+  short      light;
   CHAR_DATA *first_person;
   CHAR_DATA *last_person;
   OBJ_DATA  *first_content; /* stuff on ground */

@@ -634,7 +634,7 @@ void fwrite_obj(CHAR_DATA * ch, OBJ_DATA * obj, FILE * fp, int iNest, short os_t
   if (!hotboot)
   {
     if ((ch && ch->level < obj->level)
-        || (obj->item_type == ITEM_KEY && !IS_OBJ_STAT(obj, ITEM_CLANOBJECT))
+        || (obj->item_type == ITEM_KEY)
         || ((os_type == OS_VAULT) && (obj->item_type == ITEM_CORPSE_PC))
         || obj_extracted(obj)
         || IS_OBJ_STAT(obj, ITEM_PROTOTYPE))

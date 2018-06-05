@@ -962,7 +962,6 @@ void do_drop(CHAR_DATA* ch, const char* argument)
   OBJ_DATA *obj;
   OBJ_DATA *obj_next;
   bool found;
-  VAULT_DATA *vault;
   int number;
 
   argument = one_argument(argument, arg);
@@ -979,8 +978,7 @@ void do_drop(CHAR_DATA* ch, const char* argument)
   else
     number = 0;
 
-  if (arg[0] == '\0')
-  {
+  if (arg[0] == '\0') {
     send_to_char("Drop what?\r\n", ch);
     return;
   }
@@ -988,32 +986,31 @@ void do_drop(CHAR_DATA* ch, const char* argument)
   if (ms_find_obj(ch))
     return;
 
-  if (!IS_NPC(ch) && xIS_SET(ch->act, PLR_LITTERBUG))
-  {
+  if (!IS_NPC(ch) && xIS_SET(ch->act, PLR_LITTERBUG)) {
     set_char_color(AT_YELLOW, ch);
-    send_to_char("A godly force prevents you from dropping anything...\r\n", ch);
+    send_to_char("A strange force prevents you from dropping anything...\r\n", ch);
     return;
   }
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_NODROP) && ch != supermob)
-  {
-    set_char_color(AT_MAGIC, ch);
-    send_to_char("A magical force stops you!\r\n", ch);
-    set_char_color(AT_TELL, ch);
-    send_to_char("Someone tells you, 'No littering here!'\r\n", ch);
-    return;
+  if (ch->in_room) {
+    if (xIS_SET(ch->in_room->room_flags, ROOM_NODROP) && ch != supermob) {
+      set_char_color(AT_MAGIC, ch);
+      send_to_char("A magical force stops you!\r\n", ch);
+      set_char_color(AT_TELL, ch);
+      send_to_char("Someone tells you, 'No littering here!'\r\n", ch);
+      return;
+    }
   }
 
-  if (number > 0)
-  {
-    /*
-     * 'drop NNNN coins' 
-     */
-    if (!str_cmp(arg, "coins") || !str_cmp(arg, "coin"))
+  if (number > 0) {
+
+    /* 'drop NNNN coins' or 'drop NNNN cerons' */
+
+    if (!str_cmp(arg, "coins") || !str_cmp(arg, "coin") ||
+        !str_cmp(arg, "cerons") || !str_cmp(arg, "ceron"))
     {
-      if (ch->gold < number)
-      {
-        send_to_char("You haven't got that many coins.\r\n", ch);
+      if (ch->gold < number) {
+        send_to_char("You haven't got that much money.\r\n", ch);
         return;
       }
 
@@ -1035,34 +1032,45 @@ void do_drop(CHAR_DATA* ch, const char* argument)
         }
       }
 
-      act(AT_ACTION, "$n drops some gold.", ch, NULL, NULL, TO_ROOM);
-      obj_to_room(create_money(number), ch->in_room);
-      send_to_char("You let the gold slip from your hand.\r\n", ch);
+      if (ch->in_room) {
+        obj_to_room(create_money(number), ch->in_room);
+        send_to_char("You let the money slip from your hand.\r\n", ch);
+        act(AT_ACTION, "$n drops some money.", ch, NULL, NULL, TO_ROOM);
+      } else {
+        obj_to_hex(create_money(number), ch->xhex, ch->yhex);
+        if ((IS_WATER_SECT(ch->in_hex->terrain)) && (ch->in_hex->elevation > 0)) {
+          send_to_char("You toss some coins into the water.\r\n", ch);
+          act(AT_ACTION, "$n tosses a few coins into the water.", ch,
+              NULL, NULL, TO_ROOM);
+        }
+        else
+          send_to_char("You drop some coins onto the ground.\r\n", ch);
+          act(AT_ACTION, "$n drops some money.", ch, NULL, NULL, TO_ROOM);
+      }
+
       if (IS_SET(sysdata.save_flags, SV_DROP))
         save_char_obj(ch);
       return;
     }
   }
 
-  if (number <= 1 && str_cmp(arg, "all") && str_prefix("all.", arg))
-  {
-    /*
-     * 'drop obj' 
-     */
-    if ((obj = get_obj_carry(ch, arg)) == NULL)
-    {
+  if (number <= 1 && str_cmp(arg, "all") && str_prefix("all.", arg)) {
+
+    /* 'drop obj' */
+
+    if ((obj = get_obj_carry(ch, arg)) == NULL) {
       send_to_char("You do not have that item.\r\n", ch);
       return;
     }
 
-    if (!can_drop_obj(ch, obj))
-    {
+    if (!can_drop_obj(ch, obj)) {
       send_to_char("You can't let go of it.\r\n", ch);
       return;
     }
 
-    if (ch->in_room->max_weight > 0
-        && ch->in_room->max_weight < get_real_obj_weight(obj) / obj->count + ch->in_room->weight)
+    if (ch->in_room &&
+        ch->in_room->max_weight > 0 &&
+        ch->in_room->max_weight < get_real_obj_weight(obj) / obj->count + ch->in_room->weight)
     {
       send_to_char("There is not enough room on the ground for that.\r\n", ch);
       return;
@@ -1073,24 +1081,36 @@ void do_drop(CHAR_DATA* ch, const char* argument)
     act(AT_ACTION, "You drop $p.", ch, obj, NULL, TO_CHAR);
 
     obj_from_char(obj);
-    obj = obj_to_room(obj, ch->in_room);
+
+    if (ch->in_room) {
+      obj = obj_to_room(obj, ch->in_room);
+    } else {
+      obj = obj_to_hex(obj, ch->xhex, ch->yhex);
+      if ((IS_WATER_SECT(ch->in_hex->terrain)) && (ch->in_hex->elevation > 0))
+      {
+        if (IS_OBJ_STAT(obj, ITEM_FLOAT)) {
+          ch_printf(ch, "%s bobs up to the surface of the water.\r\n",
+                    cap_initial(obj->short_descr));
+          act(AT_ACTION,
+              "$n drops $p, which bobs on the surface of the water.",
+              ch, obj, NULL, TO_ROOM);
+        }
+        else {
+          ch_printf(ch, "%s sinks to the bottom.\r\n",
+                    cap_initial(obj->short_descr));
+          act(AT_ACTION, "You watch as $p sinks to the bottom.",
+              ch, obj, NULL, TO_ROOM);
+        }
+      }
+    }
+
     oprog_drop_trigger(ch, obj);   /* mudprogs */
 
     if (char_died(ch) || obj_extracted(obj))
       return;
 
-    if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
+    if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
       save_house_by_vnum(ch->in_room->vnum); /* House Object Saving */
-
-    /*
-     * Clan storeroom saving 
-     */
-    if (xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM))
-    {
-      for (vault = first_vault; vault; vault = vault->next)
-        if (vault->vnum == ch->in_room->vnum)
-          save_storeroom(ch, vault->vnum);
-    }
   }
   else
   {
@@ -1106,24 +1126,34 @@ void do_drop(CHAR_DATA* ch, const char* argument)
       chk = arg;
     else
       chk = &arg[4];
-    /*
-     * 'drop all' or 'drop all.obj' 
-     */
-    if (xIS_SET(ch->in_room->room_flags, ROOM_NODROPALL) || xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM))
-    {
-      send_to_char("You can't seem to do that here...\r\n", ch);
-      return;
+
+    /* 'drop all' or 'drop all.obj' */
+
+    if (ch->in_room) {
+      if (xIS_SET(ch->in_room->room_flags, ROOM_NODROPALL) || xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM))
+      {
+        send_to_char("You can't seem to do that here...\r\n", ch);
+        return;
+      }
     }
 
     found = FALSE;
-    for (obj = ch->first_carrying; obj; obj = obj_next)
-    {
+    for (obj = ch->first_carrying; obj; obj = obj_next) {
       obj_next = obj->next_content;
 
       if ((fAll || nifty_is_name(chk, obj->name))
           && can_see_obj(ch, obj) && obj->wear_loc == WEAR_NONE && can_drop_obj(ch, obj)
           && (!ch->in_room->max_weight || ch->in_room->max_weight > get_real_obj_weight(obj) / obj->count + ch->in_room->weight))
       {
+        if (ch->in_room) {
+          if (!ch->in_room->max_weight || 
+               ch->in_room->max_weight > get_real_obj_weight(obj) / obj->count + ch->in_room->weight)
+          {
+            act(AT_ACTION, "There's not enough room to drop $p here.", ch, obj, NULL, TO_CHAR);
+            return;
+          }
+        }
+
         found = TRUE;
         if (HAS_PROG(obj->pIndexData, DROP_PROG) && obj->count > 1)
         {
@@ -1140,10 +1170,38 @@ void do_drop(CHAR_DATA* ch, const char* argument)
           cnt += obj->count;
           obj_from_char(obj);
         }
-        act(AT_ACTION, "$n drops $p.", ch, obj, NULL, TO_ROOM);
         act(AT_ACTION, "You drop $p.", ch, obj, NULL, TO_CHAR);
-        obj = obj_to_room(obj, ch->in_room);
+
+        if (ch->in_room) {
+          obj = obj_to_room(obj, ch->in_room);
+          act(AT_ACTION, "$n drops $p.", ch, obj, NULL, TO_ROOM);
+        }
+        else {
+          obj = obj_to_hex(obj, ch->xhex, ch->yhex);
+          if ((IS_WATER_SECT(ch->in_hex->terrain))
+              && (ch->in_hex->elevation > 0))
+          {
+            if (IS_OBJ_STAT(obj, ITEM_FLOAT)) {
+              ch_printf(ch,
+                        "%s bobs up to the surface of the water.\n\r",
+                        cap_initial(obj->short_descr));
+              act(AT_ACTION,
+                  "$n drops $p, which bobs on the surface of the water.",
+                  ch, obj, NULL, TO_ROOM);
+            }
+            else {
+              ch_printf(ch, "%s sinks to the bottom.\n\r",
+                        cap_initial(obj->short_descr));
+              act(AT_ACTION, "You watch as $p sinks to the bottom.",
+                  ch, obj, NULL, TO_ROOM);
+            }
+          }
+          else
+            act(AT_ACTION, "$n drops $p.", ch, obj, NULL, TO_ROOM);
+        }
+
         oprog_drop_trigger(ch, obj);   /* mudprogs */
+
         if (char_died(ch))
           return;
         if (number && cnt >= number)
@@ -1151,8 +1209,7 @@ void do_drop(CHAR_DATA* ch, const char* argument)
       }
     }
 
-    if (!found)
-    {
+    if (!found) {
       if (fAll)
         act(AT_PLAIN, "You are not carrying anything.", ch, NULL, NULL, TO_CHAR);
       else
@@ -1160,21 +1217,12 @@ void do_drop(CHAR_DATA* ch, const char* argument)
     }
   }
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
+  if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
     save_house_by_vnum(ch->in_room->vnum); /* House Object Saving */
-
-  /*
-   * Clan storeroom saving 
-   */
-  if (xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM))
-  {
-    for (vault = first_vault; vault; vault = vault->next)
-      if (vault->vnum == ch->in_room->vnum)
-        save_storeroom(ch, vault->vnum);
-  }
 
   if (IS_SET(sysdata.save_flags, SV_DROP))
     save_char_obj(ch); /* duping protector */
+
   return;
 }
 
@@ -2884,12 +2932,6 @@ void do_auction(CHAR_DATA* ch, const char* argument)
   if (obj->timer > 0)
   {
     send_to_char("You can't auction objects that are decaying.\r\n", ch);
-    return;
-  }
-
-  if (IS_OBJ_STAT(obj, ITEM_CLANOBJECT))
-  {
-    send_to_char("You can't auction clan items.\r\n", ch);
     return;
   }
 

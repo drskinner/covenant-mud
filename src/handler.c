@@ -2409,8 +2409,6 @@ void obj_from_room(OBJ_DATA * obj)
 OBJ_DATA *obj_to_room(OBJ_DATA * obj, ROOM_INDEX_DATA * pRoomIndex)
 {
   OBJ_DATA *otmp, *oret;
-  short count = obj->count;
-  short item_type = obj->item_type;
   AFFECT_DATA *paf;
 
   for (paf = obj->first_affect; paf; paf = paf->next)
@@ -2424,8 +2422,8 @@ OBJ_DATA *obj_to_room(OBJ_DATA * obj, ROOM_INDEX_DATA * pRoomIndex)
   for (otmp = pRoomIndex->first_content; otmp; otmp = otmp->next_content)
     if ((oret = group_object(otmp, obj)) == otmp)
     {
-      if (item_type == ITEM_FIRE)
-        pRoomIndex->light += count;
+      if (obj->item_type == ITEM_FIRE)
+        pRoomIndex->light += obj->count;
       return oret;
     }
 
@@ -2434,8 +2432,8 @@ OBJ_DATA *obj_to_room(OBJ_DATA * obj, ROOM_INDEX_DATA * pRoomIndex)
   obj->carried_by = NULL;
   obj->in_obj = NULL;
   obj->room_vnum = pRoomIndex->vnum;  /* hotboot tracker */
-  if (item_type == ITEM_FIRE)
-    pRoomIndex->light += count;
+  if (obj->item_type == ITEM_FIRE)
+    pRoomIndex->light += obj->count;
   falling++;
   obj_fall(obj, FALSE);
   falling--;
@@ -2446,7 +2444,60 @@ OBJ_DATA *obj_to_room(OBJ_DATA * obj, ROOM_INDEX_DATA * pRoomIndex)
 
 OBJ_DATA *obj_to_hex(OBJ_DATA * obj, int xhex, int yhex)
 {
+  OBJ_DATA *otmp, *oret;
+  HEX_DATA *pHex;
+
+  pHex = map_data[xhex][yhex];
+
+  for (otmp = pHex->first_content; otmp; otmp = otmp->next_content) {
+    if ((oret = group_object(otmp, obj)) == otmp) {
+      if (obj->item_type == ITEM_FIRE) {
+        pHex->light += obj->count;
+      }
+      return oret;
+    }
+  }
+
+  LINK(obj, pHex->first_content, pHex->last_content, next_content, prev_content);
+
+  obj->in_hex = pHex;
+  obj->xhex   = xhex;
+  obj->yhex   = yhex;
+  obj->in_obj = NULL;
+  obj->carried_by = NULL;
+
+  if (obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC)
+    write_corpses(NULL, obj->short_descr + 14, NULL);
+
   return obj;
+}
+
+void obj_from_hex(OBJ_DATA *obj)
+{
+  HEX_DATA *in_hex;
+
+  if ((in_hex = obj->in_hex) == NULL) {
+    bug("obj_from_hex: in_hex == NULL");
+    return;
+  }
+
+  UNLINK(obj, in_hex->first_content, in_hex->last_content,
+         next_content, prev_content);
+
+  /* uncover contents */
+
+#if 0
+  if (IS_OBJ_STAT(obj, ITEM_COVERING) && obj->first_content)
+    empty_obj(obj, NULL, obj->in_hex);
+#endif
+
+  obj->carried_by = NULL;
+  obj->in_obj     = NULL;
+  obj->in_hex     = NULL;
+
+  if (obj->pIndexData->vnum == OBJ_VNUM_CORPSE_PC)
+    write_corpses(NULL, obj->short_descr + 14, obj);
+  return;
 }
 
 /*
@@ -2576,6 +2627,8 @@ void extract_obj(OBJ_DATA * obj)
     obj_from_room(obj);
   else if (obj->in_obj)
     obj_from_obj(obj);
+  else if (obj->in_hex)
+    obj_from_hex(obj);
 
   while ((obj_content = obj->last_content) != NULL)
     extract_obj(obj_content);
@@ -3966,8 +4019,8 @@ const char *extra_bit_name(EXT_BV * extra_flags)
     mudstrlcat(buf, " metal", 512);
   if (xIS_SET(*extra_flags, ITEM_DONATION))
     mudstrlcat(buf, " donation", 512);
-  if (xIS_SET(*extra_flags, ITEM_CLANOBJECT))
-    mudstrlcat(buf, " clan", 512);
+  if (xIS_SET(*extra_flags, ITEM_FLOAT))
+    mudstrlcat(buf, " float", 512);
   if (xIS_SET(*extra_flags, ITEM_CLANCORPSE))
     mudstrlcat(buf, " clanbody", 512);
   if (xIS_SET(*extra_flags, ITEM_PERMANENT))
