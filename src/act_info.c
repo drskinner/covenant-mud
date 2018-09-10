@@ -1289,7 +1289,7 @@ void do_look(CHAR_DATA * ch, const char *argument)
         && room_is_dark(ch->in_room))
     {
       set_char_color(AT_DGREY, ch);
-      send_to_char("It is pitch black ... \n\r", ch);
+      send_to_char("It is pitch black ... \r\n", ch);
       show_char_to_char(ch->in_room->first_person, ch);
       return;
     }
@@ -1683,11 +1683,131 @@ void do_look(CHAR_DATA * ch, const char *argument)
   send_to_char("You do not see that here.\r\n", ch);
 }
 
-void hex_look(CHAR_DATA * ch)
+void hex_look(CHAR_DATA *ch)
 {
-  send_to_char("hex_look: Coming Soon...\r\n", ch);
+  char buf[MAX_STRING_LENGTH];
+  char buf2[MAX_STRING_LENGTH];
+  char list[MAX_STRING_LENGTH];
+  CHAR_DATA *vch;
+  OBJ_DATA  *obj;
+  int count = 0;
+  int i = 0;
+  int floating = 0;
+  int nonfloat = 0;
+
+  for (vch = ch->in_hex->first_person; vch; vch = vch->next_in_room)
+    if ((can_see(ch, vch)) && (ch != vch))
+      count++;
+
+  if (count > 0) {
+    i = 0;
+    sprintf(list, "Characters nearby:&w");
+    for (vch = ch->in_hex->first_person; vch; vch = vch->next_in_room)
+      if ((can_see(ch, vch)) && (ch != vch)) {
+	i++;
+	sprintf(buf, "%s%s%s", ((count >= 2) && (i == count)) ? " and " : " ",
+		IS_NPC(vch) ? vch->short_descr : vch->name,
+		(i == count) ? ".\r\n" : ((count >= 3) ? "," : " "));
+	strcat(list, buf);
+      }
+    ch_printf_color(ch, "&g\r\n");
+    ch_printf_color(ch, "%s", wordwrap(list, 78));
+  }
+
+  count = 0;
+  for (obj = ch->in_hex->first_content; obj; obj = obj->next_content) {
+    count++;
+    if (IS_OBJ_STAT(obj, ITEM_FLOAT))
+      floating++;
+  }
+
+  if (count > 0) {
+    i = 0;
+    if (IS_WATER_SECT(ch->in_hex->terrain)) {
+      if (floating > 0) {
+	sprintf(list, "Floating on the surface:&w");
+
+	for (obj = ch->in_hex->first_content; obj; obj = obj->next_content) {
+	  if (IS_OBJ_STAT(obj, ITEM_FLOAT)) {
+	    i++;
+
+	    sprintf(buf, "%s%s",
+		    ((floating >= 2) && (i == floating)) ? " and " : " ",
+		    obj->short_descr);
+
+	    if (obj->count > 1) {
+	      sprintf(buf2, " (%d)", obj->count);
+	      strcat(buf, buf2);
+	    }
+	    sprintf(buf2, "%s",
+		    (i == floating) ? ".\r\n" : ((floating >= 3) ? "," : " "));
+	    strcat(buf, buf2);
+
+	    strcat(list, buf);
+	  }
+	}
+	ch_printf_color(ch, "&g\r\n");
+	ch_printf_color(ch, "%s", wordwrap(list, 78));
+      }
+
+      if ((count - floating) > 0) {
+
+	i = 0;
+	nonfloat = (count - floating);
+	sprintf(list, "Settled on the bottom:&w");
+
+	for (obj = ch->in_hex->first_content; obj; obj = obj->next_content) {
+	  if (!IS_OBJ_STAT(obj, ITEM_FLOAT)) {
+	    i++;
+
+	    sprintf(buf, "%s%s",
+		    ((nonfloat >= 2) && (i == nonfloat)) ? " and " : " ",
+		    obj->short_descr);
+
+	    if (obj->count > 1) {
+	      sprintf(buf2, " (%d)", obj->count);
+	      strcat(buf, buf2);
+	    }
+	    sprintf(buf2, "%s",
+		    (i == nonfloat) ? ".\r\n" : ((nonfloat >= 3) ? "," : " "));
+	    strcat(buf, buf2);
+
+	    strcat(list, buf);
+	  }
+	}
+
+	ch_printf_color(ch, "&g\r\n");
+	ch_printf_color(ch, "%s", wordwrap(list, 78));
+      }
+    }
+    else {
+      sprintf(list, "Objects nearby:&w");
+
+      for (obj = ch->in_hex->first_content; obj; obj = obj->next_content) {
+	i++;
+
+	sprintf(buf, "%s%s", ((count >= 2) && (i == count)) ? " and " : " ",
+		obj->short_descr);
+
+	if (obj->count > 1) {
+	  sprintf(buf2, " (%d)", obj->count);
+	  strcat(buf, buf2);
+	}
+	sprintf(buf2, "%s",
+		(i == count) ? ".\r\n" : ((count >= 3) ? "," : " "));
+	strcat(buf, buf2);
+
+	strcat(list, buf);
+      }
+      ch_printf_color(ch, "&g\r\n");
+      ch_printf_color(ch, "%s", wordwrap(list, 78));
+    }
+  }
+
   return;
 }
+
+
 
 void show_race_line(CHAR_DATA * ch, CHAR_DATA * victim)
 {
