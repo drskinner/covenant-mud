@@ -163,6 +163,7 @@ DECLARE_DO_FUN(do_color);
 #define AT_SHOUT        AT_LRED
 #define AT_SOCIAL       AT_PLAIN
 #define AT_TELL         AT_PINK
+#define AT_WHISPER      AT_PURPLE
 
 #define AT_HIT          39
 #define AT_HITME        40
@@ -201,7 +202,6 @@ DECLARE_DO_FUN(do_color);
 #define AT_WHO          80 /* Added by Samson 9-29-98 for wholist */
 #define AT_RACETALK     81 /* Added by Samson 9-29-98 for version 1.4 code */
 #define AT_IGNORE       82 /* Added by Samson 9-29-98 for version 1.4 code */
-#define AT_WHISPER      83 /* Added by Samson 9-29-98 for version 1.4 code */
 #define AT_DIVIDER      84 /* Added by Samson 9-29-98 for version 1.4 code */
 #define AT_MORPH        85 /* Added by Samson 9-29-98 for version 1.4 code */
 #define AT_RFLAGS       87 /* Added by Samson 12-20-98 for room flag display line */

@@ -1069,10 +1069,11 @@ void do_whisper(CHAR_DATA* ch, const char* argument)
     }
 #endif
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
-  {
-    send_to_char("You can't do that here.\r\n", ch);
-    return;
+  if (ch->in_room) {
+    if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE)) {
+      send_to_char("You can't do that here.\r\n", ch);
+      return;
+    }
   }
 
   REMOVE_BIT(ch->deaf, CHANNEL_WHISPER);
@@ -1177,27 +1178,27 @@ void do_whisper(CHAR_DATA* ch, const char* argument)
                            knows_language(ch, ch->speaking, victim));
 
     if (speakswell < 85)
-      act(AT_WHISPER, "$n whispers to you '$t'", ch,
+      act(AT_WHISPER, "&m[&W$n&m] whispers to you '$t'&w", ch,
            translate(speakswell, argument, lang_names[speaking]), victim, TO_VICT);
     else
-      act(AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, TO_VICT);
+      act(AT_WHISPER, "&m[&W$n&m] whispers to you '$t'&w", ch, argument, victim, TO_VICT);
   }
   else
-    act(AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, TO_VICT);
+    act(AT_WHISPER, "&m[&W$n&m] whispers to you '$t'&w", ch, argument, victim, TO_VICT);
 #else
   if (!knows_language(vch, ch->speaking, ch) && (!IS_NPC(ch) || ch->speaking != 0))
-    act(AT_WHISPER, "$n whispers to you '$t'", ch,
+    act(AT_WHISPER, "&m[&W$n&m] whispers to you '$t'&w", ch,
          translate(speakswell, argument, lang_names[speaking]), victim, TO_VICT);
   else
-    act(AT_WHISPER, "$n whispers to you '$t'", ch, argument, victim, TO_VICT);
+    act(AT_WHISPER, "&m[&W$n&m] whispers to you '$t'&w", ch, argument, victim, TO_VICT);
 #endif
 
   MOBtrigger = TRUE;
-  if (!xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) && !IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
+  if (ch->in_room && !xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) && !IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
     act(AT_WHISPER, "$n whispers something to $N.", ch, argument, victim, TO_NOTVICT);
 
   victim->position = position;
-  if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH))
+  if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH))
   {
     snprintf(buf, MAX_INPUT_LENGTH, "%s: %s (whisper to) %s.",
               IS_NPC(ch) ? ch->short_descr : ch->name, argument, IS_NPC(victim) ? victim->short_descr : victim->name);
