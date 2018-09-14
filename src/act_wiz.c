@@ -5276,7 +5276,10 @@ void do_noresolve(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-/* Output of command reformmated by Samson 2-8-98, and again on 4-7-98 */
+/*
+ * Output of command reformmated by Samson 2-8-98, and again on 4-7-98
+ * And again, 20 years in the FUTURE. Greetings, time traveller! -- Shamus
+ */
 void do_users(CHAR_DATA* ch, const char* argument)
 {
   DESCRIPTOR_DATA *d;
@@ -5284,10 +5287,18 @@ void do_users(CHAR_DATA* ch, const char* argument)
   const char *st;
 
   set_pager_color(AT_PLAIN, ch);
-
   count = 0;
-  send_to_pager("Desc|     Constate      |Idle|    Player    | HostIP                   \r\n", ch);
-  send_to_pager("----+-------------------+----+--------------+--------------------------\r\n", ch);
+
+  send_to_pager("&B|&wDesc&B|&w     Constate     &B|&wIdle&B|&w    Player    &B|&w     Host IP     &B|&w", ch);
+  if (get_trust(ch) >= LEVEL_GOD)
+    send_to_pager("   Location   &B|&w", ch);
+  send_to_pager("\r\n", ch);
+
+  send_to_pager("&B|----|------------------|----|--------------|-----------------|", ch);
+  if (get_trust(ch) >= LEVEL_GOD)
+    send_to_pager("--------------|", ch);
+  send_to_pager("&w\r\n", ch);
+
   for (d = first_descriptor; d; d = d->next)
   {
     switch (d->connected)
@@ -5323,17 +5334,34 @@ void do_users(CHAR_DATA* ch, const char* argument)
       st = "Press enter";
       break;
     default:
-      st = "Invalid!!!!";
+      st = "&RInvalid!!!!&w";
       break;
     }
 
-    if (!argument || argument[0] == '\0')
-    {
-      if (get_trust(ch) >= LEVEL_ASCENDANT || (d->character && can_see(ch, d->character)))
+    if (!argument || argument[0] == '\0') {
+      if (get_trust(ch) >= LEVEL_ASCENDANT
+           || (d->character && can_see(ch, d->character)))
       {
         count++;
-        pager_printf(ch, " %3d| %-17s |%4d| %-12s | %s \r\n", d->descriptor, st, d->idle / 4,
-                      d->original ? d->original->name : d->character ? d->character->name : "(None!)", d->host);
+        pager_printf_color(ch, "&B|&w %3d&B|&w %-16s &B|&w%4d&B|&w %-12s &B|&w %-15s &B|&w",
+                               d->descriptor, st, d->idle / 4,
+                               d->original ? d->original->name : d->character ? d->character->name : "(None!)",
+                               d->host);
+        if (get_trust(ch) >= LEVEL_GOD && d->character) {
+          if (d->character->in_room) {
+            pager_printf_color(ch, " Room %7d &B|&w",
+	      d->character->in_room->vnum);
+          }
+	  else if (d->character->in_hex) {
+            pager_printf_color(ch, " Hex %3d, %3d &B|&w",
+                                   d->character->xhex,
+                                   d->character->yhex);
+          }
+          else {
+            pager_printf_color(ch, "             0 &B|&w");
+          }
+        }
+        pager_printf(ch, "\r\n");
       }
     }
     else
@@ -5342,12 +5370,31 @@ void do_users(CHAR_DATA* ch, const char* argument)
           && (!str_prefix(argument, d->host) || (d->character && !str_prefix(argument, d->character->name))))
       {
         count++;
-        pager_printf(ch, " %3d| %2d|%4d| %-12s | %s \r\n", d->descriptor, d->connected, d->idle / 4,
-                      d->original ? d->original->name : d->character ? d->character->name : "(None!)", d->host);
+        pager_printf_color(ch, "&B|&w %3d&B|&w %-16s &B|&w%4d&B|&w %-12s &B|&w %-15s &B|&w",
+                               d->descriptor, st, d->idle / 4,
+                               d->original ? d->original->name : d->character ? d->character->name : "(None!)",
+                               d->host);
+        if (get_trust(ch) >= LEVEL_GOD && d->character) {
+          if (d->character->in_room) {
+            pager_printf_color(ch, " Room %7d &B|&w",
+	      d->character->in_room->vnum);
+          }
+	  else if (d->character->in_hex) {
+            pager_printf_color(ch, " Hex %3d, %3d &B|&w",
+                                   d->character->xhex,
+                                   d->character->yhex);
+          }
+          else {
+            pager_printf_color(ch, "             0 &B|&w");
+          }
+        }
+        pager_printf(ch, "\r\n");
       }
     }
   }
-  pager_printf(ch, "%d user%s.\r\n", count, count == 1 ? "" : "s");
+  pager_printf(ch, "\r\n");
+  pager_printf(ch, "%d &Buser%s found.&w\r\n", count, count == 1 ? "" : "s");
+
   return;
 }
 
@@ -10468,7 +10515,7 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
     if (get_trust(ch) >= LEVEL_GOD)
       mudstrlcat(buf, "| Username", MAX_STRING_LENGTH);
     mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-    mudstrlcat(buf, "----+---+----+------+-------------", MAX_STRING_LENGTH);
+    mudstrlcat(buf, "----|---|----|------|-------------", MAX_STRING_LENGTH);
     if (get_trust(ch) >= LEVEL_SAVIOR)
       mudstrlcat(buf, "------------------", MAX_STRING_LENGTH);
     if (get_trust(ch) >= LEVEL_GOD)
@@ -10602,7 +10649,7 @@ void do_ipcompare(CHAR_DATA* ch, const char* argument)
   if (get_trust(ch) >= LEVEL_GOD)
     mudstrlcat(buf, "| Username", MAX_STRING_LENGTH);
   mudstrlcat(buf, "\r\n", MAX_STRING_LENGTH);
-  mudstrlcat(buf, "----+---+----+------+-------------", MAX_STRING_LENGTH);
+  mudstrlcat(buf, "----|---|----|------|-------------", MAX_STRING_LENGTH);
   if (get_trust(ch) >= LEVEL_SAVIOR)
     mudstrlcat(buf, "------------------", MAX_STRING_LENGTH);
   if (get_trust(ch) >= LEVEL_GOD)
