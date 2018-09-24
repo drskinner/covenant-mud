@@ -2490,12 +2490,25 @@ void do_gwhere(CHAR_DATA* ch, const char* argument)
   {
     for (d = first_descriptor; d; d = d->next)
       if ((d->connected == CON_PLAYING || d->connected == CON_EDITING)
-          && (victim = d->character) != NULL && !IS_NPC(victim) && victim->in_room
+          && (victim = d->character) != NULL && !IS_NPC(victim)
           && can_see(ch, victim) && victim->level >= low && victim->level <= high)
       {
-        pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
-                            victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
-                            victim->in_room->name);
+        pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   ",
+                           victim->level, victim->name);
+        if (victim->in_room) {
+          pager_printf_color(ch, "&c[&w%-5d - %-19.19s&c]&w   &c%-25.25s\r\n",
+                             victim->in_room->vnum,
+                             victim->in_room->area->name,
+                             victim->in_room->name);
+        } else if (victim->in_hex) {
+          pager_printf_color(ch, "&c[&wHex: %3d, %3d              &c]&w   ",
+                             victim->xhex, victim->yhex);
+          pager_printf_color(ch, "&c%s&w %d &c%s&w\r\n",
+                             IS_WATER_SECT(victim->in_hex->terrain) ?
+                             "Depth" : "Level",
+                             (victim->in_hex->elevation),
+                             sector_name[(victim->in_hex->terrain)]);
+        }
         count++;
       }
   }
@@ -2504,9 +2517,22 @@ void do_gwhere(CHAR_DATA* ch, const char* argument)
     for (victim = first_char; victim; victim = victim->next)
       if (IS_NPC(victim) && victim->in_room && can_see(ch, victim) && victim->level >= low && victim->level <= high)
       {
-        pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   [%-5d - %-19.19s]   &c%-25.25s\r\n",
-                            victim->level, victim->name, victim->in_room->vnum, victim->in_room->area->name,
-                            victim->in_room->name);
+        pager_printf_color(ch, "&c(&C%2d&c) &w%-12.12s   ",
+                           victim->level, victim->name);
+        if (victim->in_room) {
+          pager_printf_color(ch, "&c[&w%-5d - %-19.19s&c]&w   &c%-25.25s\r\n",
+                             victim->in_room->vnum,
+                             victim->in_room->area->name,
+                             victim->in_room->name);
+        } else if (victim->in_hex) {
+          pager_printf_color(ch, "&c[&wHex: %3d, %3d              &c]   ",
+                             victim->xhex, victim->yhex);
+          pager_printf_color(ch, "&c%s&w %d &c%s&w\r\n",
+                             IS_WATER_SECT(victim->in_hex->terrain) ?
+                             "Depth" : "Level",
+                             (victim->in_hex->elevation),
+                             sector_name[(victim->in_hex->terrain)]);
+        }
         count++;
       }
   }
