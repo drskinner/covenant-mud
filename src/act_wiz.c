@@ -2720,7 +2720,9 @@ void do_bodybag(CHAR_DATA* ch, const char* argument)
   return;
 }
 
-/* New owhere by Altrag, 03/14/96 */
+/* New owhere by Altrag, 1996-03-14 */
+/* Revived and made RS-aware by Shamus - 2018-10-04 */
+
 void do_owhere(CHAR_DATA* ch, const char* argument)
 {
   char buf[MAX_STRING_LENGTH];
@@ -2734,19 +2736,17 @@ void do_owhere(CHAR_DATA* ch, const char* argument)
     return;
 
   set_pager_color(AT_PLAIN, ch);
-
   argument = one_argument(argument, arg);
-  if (arg[0] == '\0')
-  {
+
+  if (arg[0] == '\0') {
     send_to_char("Owhere what?\r\n", ch);
     return;
   }
 
   argument = one_argument(argument, arg1);
-  if (arg1[0] != '\0' && !str_prefix(arg1, "nesthunt"))
-  {
-    if (!(obj = get_obj_world(ch, arg)))
-    {
+
+  if (arg1[0] != '\0' && !str_prefix(arg1, "nesthunt")) {
+    if (!(obj = get_obj_world(ch, arg))) {
       send_to_char("Nesthunt for what object?\r\n", ch);
       return;
     }
@@ -2756,13 +2756,16 @@ void do_owhere(CHAR_DATA* ch, const char* argument)
                     obj->pIndexData->vnum, obj_short(obj), obj->in_obj->pIndexData->vnum, obj->in_obj->short_descr);
       ++icnt;
     }
-    snprintf(buf, MAX_STRING_LENGTH, "[%5d] %-28s in ", obj->pIndexData->vnum, obj_short(obj));
+    snprintf(buf, MAX_STRING_LENGTH, "[%5d] %-28s ", obj->pIndexData->vnum, obj_short(obj));
     if (obj->carried_by)
-      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "invent [%5d] %s\r\n",
-                (IS_NPC(obj->carried_by) ? obj->carried_by->pIndexData->vnum : 0), PERS(obj->carried_by, ch));
+      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "inventory [%5d] %s\r\n",
+               (IS_NPC(obj->carried_by) ? obj->carried_by->pIndexData->vnum : 0), PERS(obj->carried_by, ch));
     else if (obj->in_room)
-      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "room   [%5d] %s\r\n", obj->in_room->vnum,
-                obj->in_room->name);
+      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "in room   [%5d] %s\r\n", obj->in_room->vnum,
+               obj->in_room->name);
+    else if (obj->in_hex)
+      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "in hex [%3d][%3d] %s\r\n",
+	       obj->xhex, obj->yhex, sector_name[(obj->in_hex->terrain)]);
     else if (obj->in_obj)
     {
       bug("%s", "do_owhere: obj->in_obj after NULL!");
@@ -2786,16 +2789,19 @@ void do_owhere(CHAR_DATA* ch, const char* argument)
       continue;
     found = TRUE;
 
-    snprintf(buf, MAX_STRING_LENGTH, "(%3d) [%5d] %-28s in ", ++icnt, obj->pIndexData->vnum, obj_short(obj));
+    snprintf(buf, MAX_STRING_LENGTH, "(%3d) [%5d] %-28s ", ++icnt, obj->pIndexData->vnum, obj_short(obj));
     if (obj->carried_by)
-      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "invent [%5d] %s\r\n",
+      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "inventory [%5d] %s\r\n",
                 (IS_NPC(obj->carried_by) ? obj->carried_by->pIndexData->vnum : 0), PERS(obj->carried_by, ch));
     else if (obj->in_room)
-      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "room   [%5d] %s\r\n", obj->in_room->vnum,
+      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "in room   [%5d] %s\r\n", obj->in_room->vnum,
                 obj->in_room->name);
     else if (obj->in_obj)
-      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "object [%5d] %s\r\n",
+      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "in object [%5d] %s\r\n",
                 obj->in_obj->pIndexData->vnum, obj_short(obj->in_obj));
+    else if (obj->in_hex)
+      snprintf(buf + strlen(buf), (MAX_STRING_LENGTH - strlen(buf)), "in hex [%3d][%3d] %s\r\n",
+	       obj->xhex, obj->yhex, sector_name[(obj->in_hex->terrain)]);
     else
     {
       bug("%s", "do_owhere: object doesnt have location!");
