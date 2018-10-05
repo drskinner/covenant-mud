@@ -759,7 +759,7 @@ void show_char_to_char_0(CHAR_DATA * victim, CHAR_DATA * ch)
   }
 
   if (!IS_NPC(victim) && xIS_SET(victim->act, PLR_AFK))
-    mudstrlcat(buf, "[AFK] ", MAX_STRING_LENGTH);
+    mudstrlcat(buf, "&c[&wAFK&c]&w ", MAX_STRING_LENGTH);
 
   if ((!IS_NPC(victim) && xIS_SET(victim->act, PLR_WIZINVIS))
       || (IS_NPC(victim) && xIS_SET(victim->act, ACT_MOBINVIS)))
@@ -771,17 +771,14 @@ void show_char_to_char_0(CHAR_DATA * victim, CHAR_DATA * ch)
     mudstrlcat(buf, buf1, MAX_STRING_LENGTH);
   }
 
-  if (!IS_NPC(victim))
-  {
-    if (IS_IMMORTAL(victim) && victim->level > LEVEL_AVATAR)
-      send_to_char_color("&P(&WImmortal&P) ", ch);
+  if (!IS_NPC(victim)) {
     if (victim->pcdata->clan
         && IS_SET(victim->pcdata->flags, PCFLAG_DEADLY)
         && victim->pcdata->clan->badge
         && (victim->pcdata->clan->clan_type != CLAN_ORDER && victim->pcdata->clan->clan_type != CLAN_GUILD))
-      ch_printf_color(ch, "&P%s ", victim->pcdata->clan->badge);
+      ch_printf_color(ch, "&R%s ", victim->pcdata->clan->badge);
     else if (CAN_PKILL(victim) && victim->level < LEVEL_IMMORTAL)
-      send_to_char_color("&P(&wUnclanned&P) ", ch);
+      send_to_char_color("&R(&wUnclanned&R) ", ch);
   }
 
   set_char_color(AT_PERSON, ch);
@@ -3310,7 +3307,7 @@ void do_who(CHAR_DATA* ch, const char* argument)
               Class,
               invis_str,
               (wch->desc && wch->desc->connected) ? "[WRITING] " : "",
-              xIS_SET(wch->act, PLR_AFK) ? "[AFK] " : "",
+              xIS_SET(wch->act, PLR_AFK) ? "&c[&wAFK&c]&w " : "",
               xIS_SET(wch->act, PLR_ATTACKER) ? "(ATTACKER) " : "",
               xIS_SET(wch->act, PLR_KILLER) ? "(KILLER) " : "",
               xIS_SET(wch->act, PLR_THIEF) ? "(THIEF) " : "",
