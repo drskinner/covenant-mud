@@ -954,19 +954,18 @@ void do_say(CHAR_DATA* ch, const char* argument)
   CHAR_DATA *vch;
   EXT_BV actflags;
   int arglen;
+
 #ifndef SCRAMBLE
   int speaking = -1, lang;
 
   for (lang = 0; lang_array[lang] != LANG_UNKNOWN; lang++)
-    if (ch->speaking & lang_array[lang])
-    {
+    if (ch->speaking & lang_array[lang]) {
       speaking = lang;
       break;
     }
 #endif
 
-  if (argument[0] == '\0')
-  {
+  if (argument[0] == '\0') {
     send_to_char("Say what?\r\n", ch);
     return;
   }
@@ -978,30 +977,30 @@ void do_say(CHAR_DATA* ch, const char* argument)
     --arglen;
   lastchar = argument[arglen];
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
-  {
-    send_to_char("You can't do that here.\r\n", ch);
-    return;
+  if (ch->in_room) {
+    if (xIS_SET(ch->in_room->room_flags, ROOM_SILENCE) || IS_SET(ch->in_room->area->flags, AFLAG_SILENCE))
+    {
+      send_to_char("You can't do that here.\r\n", ch);
+      return;
+    }
   }
 
   actflags = ch->act;
   if (IS_NPC(ch))
     xREMOVE_BIT(ch->act, ACT_SECRETIVE);
-  for (vch = ch->in_room->first_person; vch; vch = vch->next_in_room)
+  for (vch = FIRST_PERSON(ch); vch; vch = vch->next_in_room)
   {
     const char *sbuf = argument;
 
     if (vch == ch)
       continue;
 
-    /*
-     * Check to see if character is ignoring speaker 
-     */
+    /* Check to see if character is ignoring speaker */
+
     if (is_ignoring(vch, ch))
     {
-      /*
-       * continue unless speaker is an immortal 
-       */
+      /* continue unless speaker is an immortal */
+
       if (!IS_IMMORTAL(ch) || get_trust(vch) > get_trust(ch))
         continue;
       else
@@ -1012,8 +1011,7 @@ void do_say(CHAR_DATA* ch, const char* argument)
     }
 
 #ifndef SCRAMBLE
-    if (speaking != -1 && (!IS_NPC(ch) || ch->speaking))
-    {
+    if (speaking != -1 && (!IS_NPC(ch) || ch->speaking)) {
       int speakswell = UMIN(knows_language(vch, ch->speaking, ch),
                              knows_language(ch, ch->speaking, vch));
 
@@ -1034,8 +1032,7 @@ void do_say(CHAR_DATA* ch, const char* argument)
   MOBtrigger = FALSE;
   act(AT_SAY, "&WYou say '$T'&w", ch, NULL, drunk_speech(argument, ch), TO_CHAR);
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH))
-  {
+  if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_LOGSPEECH)) {
     snprintf(buf, MAX_STRING_LENGTH, "%s: %s", IS_NPC(ch) ? ch->short_descr : ch->name, argument);
     append_to_file(LOG_FILE, buf);
   }
