@@ -85,19 +85,22 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
   int weight;
   int amt; /* gold per-race multipliers */
 
-  if (!CAN_WEAR(obj, ITEM_TAKE) && (ch->level < sysdata.level_getobjnotake))
-  {
-    send_to_char("You can't take that.\r\n", ch);
-    return;
+  if (ch->level < sysdata.level_getobjnotake) {
+    if (ch->in_hex && IS_WATER_SECT(ch->in_hex->terrain) && (ch->in_hex->elevation >= 2))
+    {
+      send_to_char("You'd have to dive for it!\n\r", ch);
+      return;
+    }
+    if (!CAN_WEAR(obj, ITEM_TAKE)) {
+      send_to_char("You can't take that.\r\n", ch);
+      return;
+    }
   }
 
-  if (IS_SET(obj->magic_flags, ITEM_PKDISARMED) && !IS_NPC(ch))
-  {
-    if (CAN_PKILL(ch) && !get_timer(ch, TIMER_PKILLED))
-    {
-      if (!is_name(ch->name, obj->action_desc) && !IS_IMMORTAL(ch))
-      {
-        send_to_char_color("\r\n&bA godly force freezes your outstretched hand.\r\n", ch);
+  if (IS_SET(obj->magic_flags, ITEM_PKDISARMED) && !IS_NPC(ch)) {
+    if (CAN_PKILL(ch) && !get_timer(ch, TIMER_PKILLED)) {
+      if (!is_name(ch->name, obj->action_desc) && !IS_IMMORTAL(ch)) {
+        send_to_char_color("\r\n&bA mysterious force freezes your outstretched hand.\r\n", ch);
         return;
       }
       else
@@ -109,19 +112,17 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
     }
     else
     {
-      send_to_char_color("\r\n&BA godly force freezes your outstretched hand.\r\n", ch);
+      send_to_char_color("\r\n&BA mysterious force freezes your outstretched hand.\r\n", ch);
       return;
     }
   }
 
-  if (IS_OBJ_STAT(obj, ITEM_PROTOTYPE) && !can_take_proto(ch))
-  {
-    send_to_char("A godly force prevents you from getting close to it.\r\n", ch);
+  if (IS_OBJ_STAT(obj, ITEM_PROTOTYPE) && !can_take_proto(ch)) {
+    send_to_char("A strange force prevents you from getting close enough.\r\n", ch);
     return;
   }
 
-  if (ch->carry_number + get_obj_number(obj) > can_carry_n(ch))
-  {
+  if (ch->carry_number + get_obj_number(obj) > can_carry_n(ch)) {
     act(AT_PLAIN, "$d: you can't carry that many items.", ch, NULL, obj->short_descr, TO_CHAR);
     return;
   }
@@ -131,9 +132,8 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
   else
     weight = get_obj_weight(obj);
 
-  /*
-   * Money weight shouldn't count 
-   */
+  /* Money weight shouldn't count */
+
   if (obj->item_type != ITEM_MONEY)
   {
     if (obj->in_obj)
@@ -142,9 +142,8 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
       int inobj = 1;
       bool checkweight = FALSE;
 
-      /*
-       * need to make it check weight if its in a magic container 
-       */
+      /* need to make it check weight if it's in a magic container */
+
       if (tobj->item_type == ITEM_CONTAINER && IS_OBJ_STAT(tobj, ITEM_MAGIC))
         checkweight = TRUE;
 
@@ -153,16 +152,13 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
         tobj = tobj->in_obj;
         inobj++;
 
-        /*
-         * need to make it check weight if its in a magic container 
-         */
+        /* need to make it check weight if it's in a magic container */
         if (tobj->item_type == ITEM_CONTAINER && IS_OBJ_STAT(tobj, ITEM_MAGIC))
           checkweight = TRUE;
       }
 
-      /*
-       * need to check weight if not carried by ch or in a magic container. 
-       */
+      /* need to check weight if not carried by ch or in a magic container */
+
       if (!tobj->carried_by || tobj->carried_by != ch || checkweight)
       {
         if ((ch->carry_weight + weight) > can_carry_w(ch))
@@ -179,8 +175,7 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
     }
   }
 
-  if (container)
-  {
+  if (container) {
     if (container->item_type == ITEM_KEYRING && !IS_OBJ_STAT(container, ITEM_COVERING)) {
       act(AT_ACTION, "You remove $p from $P", ch, obj, container, TO_CHAR);
       act(AT_ACTION, "$n removes $p from $P", ch, obj, container, TO_ROOM);
@@ -199,20 +194,28 @@ void get_obj(CHAR_DATA * ch, OBJ_DATA * obj, OBJ_DATA * container)
       container->value[5]++;
     obj_from_obj(obj);
   }
-  else
-  {
-    act(AT_ACTION, "You get $p.", ch, obj, container, TO_CHAR);
-    act(AT_ACTION, "$n gets $p.", ch, obj, container, TO_ROOM);
-    obj_from_room(obj);
+  else {
+    if (ch->in_room) {
+      act(AT_ACTION, "You get $p.", ch, obj, container, TO_CHAR);
+      act(AT_ACTION, "$n gets $p.", ch, obj, container, TO_ROOM);
+      obj_from_room(obj);
+    } else {
+      act(AT_ACTION, IS_WATER_SECT(ch->in_hex->terrain) ?
+          "You fish $p out of the water." : "You get $p.",
+          ch, obj, container, TO_CHAR);
+      act(AT_ACTION, IS_WATER_SECT(ch->in_hex->terrain) ?
+          "$n fishes $p out of the water." : "$n gets $p.",
+          ch, obj, container, TO_ROOM);
+      obj_from_hex(obj);
+    }
   }
 
-  if (xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
+  if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_HOUSE))
     save_house_by_vnum(ch->in_room->vnum); /* House Object Saving */
 
-  /*
-   * Clan storeroom checks
-   */
-  if (xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM) && (!container || container->carried_by == NULL))
+  /* Clan storeroom checks */
+
+  if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_CLANSTOREROOM) && (!container || container->carried_by == NULL))
   {
     for (vault = first_vault; vault; vault = vault->next)
       if (vault->vnum == ch->in_room->vnum)
@@ -331,17 +334,15 @@ void do_get(CHAR_DATA* ch, const char* argument)
   else
     number = 0;
   argument = one_argument(argument, arg2);
-  /*
-   * munch optional words 
-   */
+
+  /* munch optional words (fear wordmunching!) */
+
   if (!str_cmp(arg2, "from") && argument[0] != '\0')
     argument = one_argument(argument, arg2);
 
-  /*
-   * Get type. 
-   */
-  if (arg1[0] == '\0')
-  {
+  /* Get type */
+
+  if (arg1[0] == '\0') {
     send_to_char("Get what?\r\n", ch);
     return;
   }
@@ -373,8 +374,7 @@ void do_get(CHAR_DATA* ch, const char* argument)
       bool fAll;
       char *chk;
 
-      if (xIS_SET(ch->in_room->room_flags, ROOM_DONATION))
-      {
+      if (ch->in_room && xIS_SET(ch->in_room->room_flags, ROOM_DONATION)) {
         send_to_char("The gods frown upon such a display of greed!\r\n", ch);
         return;
       }
@@ -411,44 +411,37 @@ void do_get(CHAR_DATA* ch, const char* argument)
         }
       }
 
-      if (!found)
-      {
+      if (!found) {
         if (fAll)
           send_to_char("I see nothing here.\r\n", ch);
         else
           act(AT_PLAIN, "I see no $T here.", ch, NULL, chk, TO_CHAR);
-      }
-      else if (IS_SET(sysdata.save_flags, SV_GET))
+      } else if (IS_SET(sysdata.save_flags, SV_GET)) {
         save_char_obj(ch);
+      }
     }
   }
   else
   {
-    /*
-     * 'get ... container' 
-     */
-    if (!str_cmp(arg2, "all") || !str_prefix("all.", arg2))
-    {
+    /* 'get ... container' */
+
+    if (!str_cmp(arg2, "all") || !str_prefix("all.", arg2)) {
       send_to_char("You can't do that.\r\n", ch);
       return;
     }
 
-    if ((container = get_obj_here(ch, arg2)) == NULL)
-    {
+    if ((container = get_obj_here(ch, arg2)) == NULL) {
       act(AT_PLAIN, "I see no $T here.", ch, NULL, arg2, TO_CHAR);
       return;
     }
 
-    switch (container->item_type)
-    {
+    switch (container->item_type) {
     default:
-      if (!IS_OBJ_STAT(container, ITEM_COVERING))
-      {
+      if (!IS_OBJ_STAT(container, ITEM_COVERING)) {
         send_to_char("That's not a container.\r\n", ch);
         return;
       }
-      if (ch->carry_weight + container->weight > can_carry_w(ch))
-      {
+      if (ch->carry_weight + container->weight > can_carry_w(ch)) {
         send_to_char("It's too heavy for you to lift.\r\n", ch);
         return;
       }
@@ -467,8 +460,7 @@ void do_get(CHAR_DATA* ch, const char* argument)
       CHAR_DATA *gch;
       const char *pd;
 
-      if (IS_NPC(ch))
-      {
+      if (IS_NPC(ch)) {
         send_to_char("You can't do that.\r\n", ch);
         return;
       }
@@ -486,13 +478,9 @@ void do_get(CHAR_DATA* ch, const char* argument)
         return;
       }
 
-      /*
-       * Killer/owner loot only if die to pkill blow --Blod 
-       */
-      /*
-       * Added check for immortal so IMMS can get things out of
-       * * corpses --Shaddai 
-       */
+      /* Killer/owner loot only if die to pkill blow --Blod */
+
+      /* Added check for immortal so IMMS can get things out of corpses --Shaddai */
 
       if (IS_OBJ_STAT(container, ITEM_CLANCORPSE)
           && !IS_NPC(ch) && !IS_IMMORTAL(ch)
@@ -546,9 +534,8 @@ void do_get(CHAR_DATA* ch, const char* argument)
 
     if (number <= 1 && str_cmp(arg1, "all") && str_prefix("all.", arg1))
     {
-      /*
-       * 'get obj container' 
-       */
+      /* 'get obj container' */
+
       obj = get_obj_list(ch, arg1, container->first_content);
       if (!obj)
       {
@@ -558,10 +545,9 @@ void do_get(CHAR_DATA* ch, const char* argument)
       }
       separate_obj(obj);
       get_obj(ch, obj, container);
-      /*
-       * Oops no wonder corpses were duping oopsie did I do that
-       * * --Shaddai
-       */
+
+      /* Oops no wonder corpses were duping oopsie did I do that --Shaddai */
+
       if (container->item_type == ITEM_CORPSE_PC)
         write_corpses(NULL, container->short_descr + 14, NULL);
       check_for_trap(ch, container, TRAP_GET);
@@ -576,11 +562,9 @@ void do_get(CHAR_DATA* ch, const char* argument)
       bool fAll;
       char *chk;
 
-      /*
-       * 'get all container' or 'get all.obj container' 
-       */
-      if (IS_OBJ_STAT(container, ITEM_DONATION))
-      {
+      /* 'get all container' or 'get all.obj container' */
+
+      if (IS_OBJ_STAT(container, ITEM_DONATION)) {
         send_to_char("The gods frown upon such an act of greed!\r\n", ch);
         return;
       }
@@ -601,6 +585,7 @@ void do_get(CHAR_DATA* ch, const char* argument)
       else
         chk = &arg1[4];
       found = FALSE;
+
       for (obj = container->first_content; obj; obj = obj_next)
       {
         obj_next = obj->next_content;
@@ -648,10 +633,9 @@ void do_get(CHAR_DATA* ch, const char* argument)
         check_for_trap(ch, container, TRAP_GET);
       if (char_died(ch))
         return;
-      /*
-       * Oops no wonder corpses were duping oopsie did I do that
-       * * --Shaddai
-       */
+
+      /* Oops no wonder corpses were duping oopsie did I do that --Shaddai */
+
       if (container->item_type == ITEM_CORPSE_PC)
         write_corpses(NULL, container->short_descr + 14, NULL);
       if (found && IS_SET(sysdata.save_flags, SV_GET))
