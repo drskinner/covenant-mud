@@ -38,6 +38,8 @@ void show_char_to_char_1(CHAR_DATA * victim, CHAR_DATA * ch);
 void show_char_to_char(CHAR_DATA * list, CHAR_DATA * ch);
 bool check_blind(CHAR_DATA * ch);
 void show_condition(CHAR_DATA * ch, CHAR_DATA * victim);
+int count_help_matches(const char* argument);
+void show_matching_help(CHAR_DATA* ch);
 
 /*
  * Keep players from defeating examine progs -Druid
@@ -2311,9 +2313,9 @@ HELP_DATA *get_help(CHAR_DATA * ch, const char *argument)
   }
   else
     lev = -2;
-  /*
-   * Tricky argument handling so 'help a b' doesn't match a.
-   */
+
+  /* Tricky argument handling so 'help a b' doesn't match a */
+
   argall[0] = '\0';
   while (argument[0] != '\0')
   {
@@ -2337,9 +2339,8 @@ HELP_DATA *get_help(CHAR_DATA * ch, const char *argument)
   return NULL;
 }
 
-/*
- * LAWS command
- */
+/* LAWS command */
+
 void do_laws(CHAR_DATA* ch, const char* argument)
 {
   char buf[1024];
@@ -2353,102 +2354,72 @@ void do_laws(CHAR_DATA* ch, const char* argument)
   }
 }
 
-/*
- * Now this is cleaner
- */
-/* Updated do_help command provided by Remcon of The Lands of Pabulum 03/20/2004 */
+int count_help_matches(const char* argument)
+{
+  int count;
+  HELP_DATA *help;
+
+  for (count = 0, help = first_help; help; help = help->next) {
+    if (nifty_is_name_prefix(argument, help->keyword)) {
+      ++count;
+    }
+  }
+  
+  return count;
+}
+
+void show_matching_help(CHAR_DATA* ch, const char* argument)
+{
+  HELP_DATA *help;
+
+  for (help = first_help; help; help = help->next) {
+    if (nifty_is_name_prefix(argument, help->keyword)) {
+      if (help->level <= get_trust(ch)) {
+        set_pager_color(AT_WHITE, ch);
+        send_to_pager(help->keyword, ch);
+        send_to_pager("\r\n", ch);
+        set_pager_color(AT_PLAIN, ch);
+
+        if (help->text[0] == '.') {
+          send_to_pager(help->text + 1, ch);
+        } else {
+          send_to_pager(help->text, ch);
+        }
+      } else {
+        send_to_char("No such help file!\r\n", ch);
+      }
+      break;
+    }
+  }
+
+  return;
+}
+
 void do_help(CHAR_DATA* ch, const char* argument)
 {
   HELP_DATA *pHelp;
-  const char *keyword;
-  char arg[MAX_INPUT_LENGTH];
-  char oneword[MAX_STRING_LENGTH], lastmatch[MAX_STRING_LENGTH];
-  short matched = 0, checked = 0, totalmatched = 0, found = 0;
-  bool uselevel = FALSE;
-  int value = 0;
+  char helplog[MAX_STRING_LENGTH];
 
-  set_pager_color(AT_NOTE, ch);
+  set_pager_color(AT_PLAIN, ch);
 
-  if (!argument || argument[0] == '\0')
-    argument = "summary";
-  if (!(pHelp = get_help(ch, argument)))
-  {
-    pager_printf(ch, "No help on \'%s\' found.\r\n", argument);
-    /*
-     * Get an arg incase they do a number seperate 
-     */
-    one_argument(argument, arg);
-    /*
-     * See if arg is a number if so update argument 
-     */
-    if (is_number(arg))
-    {
-      argument = one_argument(argument, arg);
-      if (argument && argument[0] != '\0')
-      {
-        value = atoi(arg);
-        uselevel = TRUE;
-      }
-      else  /* If no more argument put arg as argument */
-        argument = arg;
-    }
-    if (value > 0)
-      pager_printf(ch, "Checking for suggested helps that are level %d.\r\n", value);
-    send_to_pager("Suggested Help Files:\r\n", ch);
-    strncpy(lastmatch, " ", MAX_STRING_LENGTH);
-    for (pHelp = first_help; pHelp; pHelp = pHelp->next)
-    {
-      matched = 0;
-      if (!pHelp || !pHelp->keyword || pHelp->keyword[0] == '\0' || pHelp->level > get_trust(ch))
-        continue;
-      /*
-       * Check arg if its avaliable 
-       */
-      if (uselevel && pHelp->level != value)
-        continue;
-      keyword = pHelp->keyword;
-      while (keyword && keyword[0] != '\0')
-      {
-        matched = 0;   /* Set to 0 for each time we check lol */
-        keyword = one_argument(keyword, oneword);
-        /*
-         * Lets check only up to 10 spots
-         */
-        for (checked = 0; checked <= 10; checked++)
-        {
-          if (!oneword[checked] || !argument[checked])
-            break;
-          if (LOWER(oneword[checked]) == LOWER(argument[checked]))
-            matched++;
-        }
-        if ((matched > 1 && matched > (checked / 2)) || (matched > 0 && checked < 2))
-        {
-          pager_printf(ch, " %-20s ", oneword);
-          if (++found % 4 == 0)
-          {
-            found = 0;
-            send_to_pager("\r\n", ch);
-          }
-          strncpy(lastmatch, oneword, MAX_STRING_LENGTH);
-          totalmatched++;
-          break;
-        }
-      }
-    }
-    if (found != 0)
-      send_to_pager("\r\n", ch);
-    if (totalmatched == 0)
-    {
-      send_to_pager("No suggested help files.\r\n", ch);
-      return;
-    }
-    if (totalmatched == 1 && lastmatch[0] != '\0' && str_cmp(lastmatch, argument))
-    {
-      send_to_pager("Opening only suggested helpfile.\r\n", ch);
-      do_help(ch, lastmatch);
-      return;
+  if ((pHelp = get_help(ch, argument)) == NULL) {
+    if (count_help_matches(argument) == 1) {
+      show_matching_help(ch, argument);
+    } else {
+      pager_printf(ch, "&BNo help found for the word &w'%s'&B.\r\n\r\n", argument);
+      do_hlist(ch, argument);
     }
     return;
+  }
+
+  if (pHelp->keyword[1] == '_') {
+    send_to_char("No such help file!\r\n", ch);
+    return;
+  }
+
+  if (pHelp->keyword[0] != '\"') {
+    sprintf(helplog, "Old style: %s", pHelp->keyword);
+    append_file(ch, HELPLOG_FILE, helplog);
   }
 
   /* Make newbies do a help start. --Shaddai */
@@ -2457,9 +2428,10 @@ void do_help(CHAR_DATA* ch, const char* argument)
     SET_BIT(ch->pcdata->flags, PCFLAG_HELPSTART);
 
   if (pHelp->level >= 0 && str_cmp(argument, "imotd")) {
-    set_pager_color (AT_WHITE, ch);
+    set_pager_color(AT_WHITE, ch);
     send_to_pager(pHelp->keyword, ch);
     send_to_pager("\r\n", ch);
+    set_pager_color(AT_PLAIN, ch);
   }
 
   /* Strip leading '.' to allow initial blanks. */
@@ -2691,6 +2663,7 @@ void do_hlist(CHAR_DATA* ch, const char* argument)
 {
   int min, max, minlimit, maxlimit, cnt;
   char arg[MAX_INPUT_LENGTH];
+  char helplog[MAX_STRING_LENGTH];
   HELP_DATA *help;
   bool minfound, maxfound;
   const char *idx;
@@ -2711,8 +2684,7 @@ void do_hlist(CHAR_DATA* ch, const char* argument)
     {
       if (idx)
       {
-        set_char_color(AT_GREEN, ch);
-        ch_printf(ch, "You may only use a single keyword to index the list.\r\n");
+        ch_printf(ch, "&wYou may only use a &Bsingle keyword&w to index the list.\r\n");
         return;
       }
       idx = STRALLOC(arg);
@@ -2746,18 +2718,21 @@ void do_hlist(CHAR_DATA* ch, const char* argument)
     max = temp;
   }
 
-  set_pager_color(AT_GREEN, ch);
-  pager_printf(ch, "Help Topics in level range %d to %d:\r\n\r\n", min, max);
+  set_pager_color(AT_PLAIN, ch);
+  pager_printf(ch, "&BSuggested help topics (in level range &w%d&B to &w%d&B):&w\r\n\r\n", min, max);
   for (cnt = 0, help = first_help; help; help = help->next)
     if (help->level >= min && help->level <= max && (!idx || nifty_is_name_prefix(idx, help->keyword)))
     {
       pager_printf(ch, "  %3d %s\r\n", help->level, help->keyword);
       ++cnt;
     }
-  if (cnt)
-    pager_printf(ch, "\r\n%d pages found.\r\n", cnt);
-  else
-    send_to_char("None found.\r\n", ch);
+  if (cnt) {
+    pager_printf(ch, "\r\n%d &Bpage%s found.\r\n", cnt, cnt == 1 ? "" : "s");
+  } else {
+    send_to_char("&BNone found.&w\r\n", ch);
+    sprintf(helplog, "Not found: %s", idx);
+    append_file(ch, HELPLOG_FILE, helplog);
+  }
 
   if (idx)
     STRFREE(idx);
