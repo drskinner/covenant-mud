@@ -789,6 +789,7 @@ void game_loop(void)
       d_next = d->next;
 
       d->idle++;  /* make it so a descriptor can idle out */
+
       if (FD_ISSET(d->descriptor, &exc_set))
       {
         FD_CLR(d->descriptor, &in_set);
@@ -799,9 +800,13 @@ void game_loop(void)
         close_socket(d, TRUE);
         continue;
       }
-      else if ((!d->character && d->idle > 360)  /* 2 mins */
-               || (d->connected != CON_PLAYING && d->idle > 1200)  /* 5 mins */
-               || d->idle > 28800) /* 2 hrs  */
+      /*
+       * I don't know exactly what these idle counts represent, but we are running
+       * at 4 pulses per second, so my guess is 240 = 1 minute. -- Shamus
+       */ 
+      else if ((!d->character && d->idle > 2400)  /* 10 mins? */
+               || (d->connected != CON_PLAYING && d->idle > 4800)  /* 20 mins? */
+               || d->idle > 28800) /* 2 hrs?  */
       {
         write_to_descriptor(d, "Idle timeout... disconnecting.\r\n", 0);
         d->outtop = 0;
