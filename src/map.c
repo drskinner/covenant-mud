@@ -15,6 +15,20 @@ struct hex_data * map_data[MAP_WIDTH][MAP_HEIGHT];
 char *maphex_bottom(int xhex, int yhex);
 char *maphex_top(int xhex, int yhex);
 
+/*
+ * Some real world speeds (in kph)
+ *
+ * HUMAN: Walking 5, Jogging 8, Running 10, Sprinting 24
+ * HORSE: Walking 6.5, Trotting 13-19, Cantering 19-24,
+ *        Galloping 40-48
+ *
+ * TODO: Test various travel speeds for playability. -- Shamus
+ */
+const double speed_values[SPEED_MAX] =
+{
+  0.0, 0.05, 0.075, 0.085, 0.1, 0.065, 0.15, 0.21, 0.28
+};
+
 const char *const speed_name[SPEED_MAX] =
 {
   "Stopped  ", "Walking   ", "Jogging  ", "Running  ", "Sprinting",
@@ -166,6 +180,17 @@ int find_bearing(double x0, double y0, double x1, double y1)
   return acceptable_degree(degrees - 90);
 }
 
+int bearing_to_center(CHAR_DATA *ch)
+{
+  int bearing;
+  double fx, fy;
+
+  hex_to_cartesian(ch->xhex, ch->yhex, &fx, &fy);
+
+  bearing = find_bearing(ch->xcart, ch->ycart, fx, fy);
+  return bearing;
+}
+
 double find_hex_range(double x0, double y0, double x1, double y1)
 {
   double bearing, xscale;
@@ -305,6 +330,93 @@ void hex_to_cartesian(int xhex, int yhex, double *xcart, double *ycart)
     *xcart = (double) (xhex) * 3.0 * alpha + 2.0 * alpha;
     *ycart = (double) yhex  + 0.5;
   }
+}
+
+/* Given a point on the plane, tell me what hex tile I'm in -- Shamus */
+
+void cartesian_to_hex(int *xhex, int *yhex, double xcart, double ycart)
+{
+  double x, y, alpha=0.288675134, root_3 = 1.732050808;
+  int x_count, y_count, x_offset, y_offset;
+
+  if (xcart < alpha) {
+    x_count = -2;
+    x = xcart + 5 * alpha;
+  }
+  else {
+    x_count = (int) ((xcart - alpha) / root_3);
+    x = xcart - alpha - x_count * root_3;
+  }
+
+  y_count = (int) ycart;
+  y = ycart - y_count;
+
+  if ((x >= 0.0) && (x < (2.0 * alpha))) {
+    x_offset = 0;
+    y_offset = 0;
+  }
+
+  else if ((x >= (3.0 * alpha)) && (x < (5.0 * alpha))) {
+    if ((y >= 0.0) && (y < 0.5)) {
+      x_offset = 1;
+      y_offset = 0;
+    }
+    else {
+      x_offset = 1;
+      y_offset = 1;
+    }
+  }
+
+  else if ((x >= 2.0 * alpha) && (x < (3.0 * alpha))) {
+    if ((y >= 0.0) && (y < 0.5)) {
+      if ((2 * alpha * y) <= (x - 2.0 * alpha)) {
+        x_offset = 1;
+        y_offset = 0;
+      }
+      else {
+        x_offset = 0;
+        y_offset = 0;
+      }
+    }
+    else if ((2 * alpha * (1.0 - y)) > (x - 2.0 * alpha)) {
+      x_offset = 0;
+      y_offset = 0;
+    }
+    else {
+      x_offset = 1;
+      y_offset = 1;
+    }
+  }
+
+  else if ((y >= 0.0) && (y < 0.5)) {
+    if ((2 * alpha * y) <= (11.0 * alpha - x - 5.0 * alpha)) {
+      x_offset = 1;
+      y_offset = 0;
+    }
+    else {
+      x_offset = 2;
+      y_offset = 0;
+    }
+  }
+  else if ((2 * alpha * (y - 0.5) ) <= (x - 5.0 * alpha)) {
+    x_offset = 2;
+    y_offset = 0;
+  }
+  else {
+    x_offset = 1;
+    y_offset = 1;
+  }
+
+  *xhex = x_count * 2 + x_offset;
+  *yhex = y_count + y_offset;
+}
+
+void calculate_vector(double magnitude, int degrees, double *x, double *y)
+{
+  *x = magnitude * cos((double) (degrees + 90) * TWOPIOVER360);
+  *y = magnitude * sin((double) (degrees + 90) * TWOPIOVER360);
+  *x = -*x;                     /* Because 90 is to the right */
+  *y = -*y;                     /* Because y increases downwards */
 }
 
 #define NAVIGATE_LINES 13.0
@@ -518,6 +630,388 @@ void do_heading(CHAR_DATA* ch, const char* argument)
     ch_printf(ch, "You are already heading in that direction.\r\n");
   else
     ch_printf(ch, "Heading changed to %d degrees.\r\n", ch->pcdata->heading);
+
+  return;
+}
+
+void check_map_edge(CHAR_DATA *ch)
+{
+  bool edge = FALSE;
+
+  if (ch->xhex < 0) {
+    ch->xhex = 0;
+    edge = TRUE;
+  }
+  if (ch->xhex >= MAP_WIDTH) {
+    ch->xhex = MAP_WIDTH - 1;
+    edge = TRUE;
+  }
+
+  if (ch->yhex < 0) {
+    ch->yhex = 0;
+    edge = TRUE;
+  }
+  if (ch->yhex >= MAP_HEIGHT) {
+    ch->yhex = MAP_HEIGHT - 1;
+    edge = TRUE;
+  }
+
+  if (edge) {
+    send_to_char("You can't go any farther in this direction.\r\n", ch);
+    hex_to_cartesian(ch->xhex, ch->yhex, &ch->xcart, &ch->ycart);
+    do_stop(ch, "");
+  }
+  return;
+}
+
+void new_hex_entered(CHAR_DATA *ch, int oldx, int oldy, double dx, double dy)
+{
+  int elevation, oldelevation;
+  int oldterrain;
+  bool cliff = FALSE;
+
+  oldterrain = get_terrain(oldx, oldy);
+  oldelevation = get_elevation(oldx, oldy);
+  elevation = ch->in_hex->elevation;
+
+  if (!IS_WATER_SECT(oldterrain)) {
+    if (elevation > oldelevation + 2) {
+      send_to_char("The climb ahead is too steep for you.\r\n", ch);
+      cliff = TRUE;
+    }
+    if (elevation < oldelevation - 2) {
+      send_to_char("You notice a large drop in front of you.\r\n", ch);
+      cliff = TRUE;
+    }
+  }
+  if (IS_WATER_SECT(ch->in_hex->terrain) && (elevation >= 2)) {
+    send_to_char("That water is too deep for you to walk through.\r\n", ch);
+    cliff = TRUE;
+  }
+
+  if (cliff) {
+    do_stop(ch, "");
+    char_from_hex(ch);
+    ch->xcart -= (dx * 2);
+    ch->ycart -= (dy * 2);
+    char_to_hex(ch, oldx, oldy);
+  }
+
+  return;
+}
+
+double movement_modifier(int speed, int terrain)
+{
+  double realspeed;
+
+  realspeed = speed_values[speed];
+
+  switch (terrain) {
+  default:
+    break;
+
+  case SECT_CITY:
+    realspeed *= 1.05;
+    break;
+
+  case SECT_DESERT:
+    realspeed *= 0.90;
+    break;
+
+  case SECT_ROUGH:
+  case SECT_LIGHT_WOODS:
+    realspeed *= 0.85;
+    break;
+
+  case SECT_MOUNTAIN:
+  case SECT_HEAVY_WOODS:
+    realspeed *= 0.75;
+    break;
+
+  case SECT_FRESH_WATER:
+  case SECT_SALT_WATER:
+  case SECT_SWAMP:
+    realspeed *= 0.65;
+    break;
+  }
+
+  return realspeed;
+}
+
+void update_location(CHAR_DATA *ch)
+{
+  double dx = 0.0;
+  double dy = 0.0;
+  int oldx, oldy;
+  int entry;
+  ROOM_INDEX_DATA *room;
+  OBJ_DATA *obj;
+  char buf[MAX_STRING_LENGTH];
+
+  if (IS_NPC(ch))
+    return;
+
+  if (!ch->in_hex)
+    return;
+
+  if (ch->pcdata->speed <= 0)
+    return;
+
+  oldx = ch->xhex;
+  oldy = ch->yhex;
+
+  ch->pcdata->realspeed = movement_modifier(ch->pcdata->speed,
+                                            ch->in_hex->terrain);
+
+  calculate_vector(ch->pcdata->realspeed, ch->pcdata->heading, &dx, &dy);
+  ch->xcart += dx;
+  ch->ycart += dy;
+
+  cartesian_to_hex(&ch->xhex, &ch->yhex, ch->xcart, ch->ycart);
+  check_map_edge(ch);
+
+  /* Do the elevation check *before* moving ch! -- Shamus */
+
+  if ((oldx != ch->xhex) || (oldy != ch->yhex)) {
+    char_from_hex(ch);
+    char_to_hex(ch, ch->xhex, ch->yhex);
+    new_hex_entered(ch, oldx, oldy, dx, dy);
+    if (ch->mount) {
+      /* TODO: enable riding skill in new skill system */
+      /* learn_from_success(ch, gsn_riding); */
+    }
+  }
+
+  if (ch->mount) {
+    char_from_hex(ch->mount);
+    char_to_hex(ch->mount, ch->xhex, ch->yhex);
+    ch->mount->xcart = ch->xcart;
+    ch->mount->ycart = ch->ycart;
+  }
+
+  if (ch->in_hex->terrain == SECT_INSIDE) {
+    obj = get_obj_list(ch, "entrance", FIRST_CONTENT(ch));
+    if (obj) {
+      entry = (acceptable_degree(bearing_to_center(ch) + 180 + 45)) / 90;
+      sprintf(buf, "%d", obj->value[entry]);
+      room = find_location(ch, buf);
+      if (room) {
+        if (obj->full_desc && obj->full_desc[0] != '\0')
+          ch_printf(ch, "%s\r\n", obj->full_desc);
+        char_from_hex(ch);
+        ch->pcdata->speed = 0;
+        ch->pcdata->realspeed = 0;
+        char_to_room(ch, room);
+        do_look(ch, "auto");
+        if (ch->mount) {
+          char_from_hex(ch->mount);
+          char_to_room(ch->mount, room);
+        }
+      }
+    }
+  }
+  return;
+}
+
+void do_stop(CHAR_DATA* ch, const char *argument)
+{
+  ch->pcdata->speed = SPEED_STOP;
+  ch->pcdata->realspeed = 0.0;
+  if (ch->in_hex)
+    send_to_char("You come to a stop.\r\n", ch);
+  return;
+}
+
+void do_walk(CHAR_DATA* ch, const char *argument)
+{
+  if (ch->mount) {
+    if (ch->pcdata->speed == SPEED_MOUNTWALK) {
+      send_to_char("Your mount is already walking.\r\n", ch);
+      return;
+    }
+
+    if (ch->pcdata->speed > SPEED_MOUNTWALK) {
+      send_to_char("You slow your mount to a walking pace.\r\n", ch);
+      act(AT_ACTION, "$n slows $s mount to a walking pace.",
+          ch, NULL, NULL, TO_ROOM);
+    }
+    else {
+      send_to_char("You encourage your mount to walk.\r\n", ch);
+      act(AT_ACTION, "$n encourages $s mount to walk.",
+          ch, NULL, NULL, TO_ROOM);
+    }
+    ch->pcdata->speed = SPEED_MOUNTWALK;
+  }
+  else {
+    if (ch->pcdata->speed == SPEED_WALK) {
+      send_to_char("You are already walking.\r\n", ch);
+      return;
+    }
+
+    if (ch->pcdata->speed > SPEED_WALK) {
+      send_to_char("You slow to a walking pace.\r\n", ch);
+      act(AT_ACTION, "$n slows to a walk.", ch, NULL, NULL, TO_ROOM);
+    }
+    else {
+      send_to_char("You start walking.\r\n", ch);
+      act(AT_ACTION, "$n starts walking.", ch, NULL, NULL, TO_ROOM);
+    }
+    ch->pcdata->speed = SPEED_WALK;
+  }
+
+  return;
+}
+
+void do_jog(CHAR_DATA* ch, const char *argument)
+{
+  if (ch->pcdata->speed == SPEED_JOG) {
+    send_to_char("You are already jogging.\r\n", ch);
+    return;
+  }
+
+  if (ch->mount) {
+    do_trot(ch, "");
+    return;
+  }
+
+  if (ch->pcdata->speed > SPEED_JOG) {
+    send_to_char("You slow down to an easy jogging pace.\r\n", ch);
+    act(AT_ACTION, "$n slows to an easy jogging pace.",
+        ch, NULL, NULL, TO_ROOM);
+  }
+  else {
+    send_to_char("You start jogging.\r\n", ch);
+    act(AT_ACTION, "$n start jogging.", ch, NULL, NULL, TO_ROOM);
+  }
+  ch->pcdata->speed = SPEED_JOG;
+
+  return;
+}
+
+void do_run(CHAR_DATA* ch, const char *argument)
+{
+  if (ch->pcdata->speed == SPEED_RUN) {
+    send_to_char("You are already running.\r\n", ch);
+    return;
+  }
+
+  if (ch->mount) {
+    do_canter(ch, "");
+    return;
+  }
+
+  if (ch->pcdata->speed > SPEED_RUN) {
+    send_to_char("You slow to a normal running pace.\r\n", ch);
+    act(AT_ACTION, "$n slows to a normal running pace.",
+        ch, NULL, NULL, TO_ROOM);
+  }
+  else {
+    send_to_char("You break into a run.\r\n", ch);
+    act(AT_ACTION, "$n breaks into a run.", ch, NULL, NULL, TO_ROOM);
+  }
+  ch->pcdata->speed = SPEED_RUN;
+
+  return;
+}
+
+void do_sprint(CHAR_DATA* ch, const char *argument)
+{
+  if (ch->pcdata->speed == SPEED_SPRINT) {
+    send_to_char("You are already sprinting flat out!\r\n", ch);
+    return;
+  }
+
+  if (ch->mount) {
+    do_gallop(ch, "");
+    return;
+  }
+
+  send_to_char("You take off, sprinting.\r\n", ch);
+  act(AT_ACTION, "$n takes off, sprinting.", ch, NULL, NULL, TO_ROOM);
+  ch->pcdata->speed = SPEED_SPRINT;
+
+  return;
+}
+
+void do_canter(CHAR_DATA* ch, const char *argument)
+{
+  char buf[MAX_STRING_LENGTH];
+
+  if (!ch->mount) {
+    send_to_char("You are not mounted!\r\n", ch);
+    return;
+  }
+
+  if (ch->pcdata->speed == SPEED_CANTER) {
+    send_to_char("Your mount is already moving at a canter.\r\n", ch);
+    return;
+  }
+
+  if (ch->pcdata->speed > SPEED_CANTER) {
+    send_to_char("You slow to an easy canter.\r\n", ch);
+    act(AT_ACTION, "$n slows to an easy canter.",
+        ch, NULL, NULL, TO_ROOM);
+  }
+  else {
+    one_argument(ch->mount->name, buf);
+    ch_printf(ch, "You urge your %s into a easy canter.\r\n", buf);
+    act(AT_ACTION, "$n urges $s mount into a easy canter.", ch, NULL,
+        NULL, TO_ROOM);
+  }
+  ch->pcdata->speed = SPEED_CANTER;
+
+  return;
+}
+
+void do_trot(CHAR_DATA* ch, const char *argument)
+{
+  char buf[MAX_STRING_LENGTH];
+
+  if (!ch->mount) {
+    send_to_char("You are not mounted!\r\n", ch);
+    return;
+  }
+
+  if (ch->pcdata->speed == SPEED_TROT) {
+    send_to_char("Your mount is already moving at a trot.\r\n", ch);
+    return;
+  }
+
+  if (ch->pcdata->speed > SPEED_TROT) {
+    send_to_char("You slows to a steady trot.\r\n", ch);
+    act(AT_ACTION, "$n slows to a steady trot.",
+        ch, NULL, NULL, TO_ROOM);
+  }
+  else {
+    one_argument(ch->mount->name, buf);
+    ch_printf(ch, "You urge your %s into a steady trot.\r\n", buf);
+    act(AT_ACTION, "$n urges $s mount into a steady trot.", ch, NULL,
+        NULL, TO_ROOM);
+  }
+  ch->pcdata->speed = SPEED_TROT;
+
+  return;
+}
+
+void do_gallop(CHAR_DATA* ch, const char *argument)
+{
+  char buf[MAX_STRING_LENGTH];
+
+  if (!ch->mount) {
+    send_to_char("You are not mounted!\r\n", ch);
+    return;
+  }
+
+  if (ch->pcdata->speed == SPEED_GALLOP) {
+    send_to_char("Your mount is already galloping flat out!\r\n", ch);
+    return;
+  }
+
+  ch->pcdata->speed = SPEED_GALLOP;
+  one_argument(ch->mount->name, buf);
+  ch_printf(ch, "You spur your %s into a gallop.\r\n", buf);
+  act(AT_ACTION, "$n spurs $s mount into a gallop.", ch, NULL,
+      NULL, TO_ROOM);
 
   return;
 }
