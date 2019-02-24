@@ -2010,7 +2010,19 @@ void load_room_reset(ROOM_INDEX_DATA * room, FILE * fp)
       break;
     }
     break;
+
+  case 'X':
+    if (get_obj_index(arg1) == NULL && fBootDb) {
+      boot_log("Load_resets: %s (%d) '%c': object %d doesn't exist.",
+               room->area->filename, count, letter, arg1);
+      if (((arg2 < 0) || (arg2 >= MAP_WIDTH) || (arg3 < 0) || (arg3 >= MAP_HEIGHT)) && fBootDb) {
+        boot_log("Load_resets: %s (%d) '%c': bad hex %d, %d.",
+                 room->area->filename, count, letter, arg2, arg3);
+      }
+    }
+    break;
   }
+
   add_reset(room, letter, extra, arg1, arg2, arg3);
 
   if (!not01)

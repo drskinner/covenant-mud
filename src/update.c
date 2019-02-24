@@ -1554,9 +1554,12 @@ void char_check(void)
         }
       }
 
-      /*
-       * beat up on link dead players 
-       */
+      if (ch->in_hex) {
+        update_location(ch);
+      }
+
+      /* beat up on link dead players */
+
       if (!ch->desc)
       {
         CHAR_DATA *wch;

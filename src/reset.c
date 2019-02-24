@@ -492,6 +492,7 @@ void reset_room(ROOM_INDEX_DATA * room)
   CHAR_DATA *mob;
   OBJ_DATA *obj, *lastobj, *to_obj;
   ROOM_INDEX_DATA *pRoomIndex = NULL;
+  HEX_DATA *pHex = NULL;
   MOB_INDEX_DATA *pMobIndex = NULL;
   OBJ_INDEX_DATA *pObjIndex = NULL, *pObjToIndex;
   EXIT_DATA *pexit;
@@ -890,6 +891,28 @@ void reset_room(ROOM_INDEX_DATA * room)
         continue;
       }
       randomize_exits(pRoomIndex, pReset->arg2 - 1);
+      break;
+
+    case 'X':
+      if (!(pObjIndex = get_obj_index(pReset->arg1))) {
+        bug("reset_room: 'X': bad obj vnum %d.", pReset->arg1);
+        continue;
+      }
+
+      if ((pReset->arg2 < 0) || (pReset->arg2 >= MAP_WIDTH) ||
+	  (pReset->arg3 < 0) || (pReset->arg3 >= MAP_HEIGHT)) {
+        bug("reset_room: 'X': bad hex %d, %d.", pReset->arg2, pReset->arg3);
+        continue;
+      }
+
+      pHex = map_data[pReset->arg2][pReset->arg3];
+      if (count_obj_list(pObjIndex, pHex->first_content) >= 1) {
+	break;
+      }
+
+      obj = create_object(pObjIndex, 1);
+      obj->level = UMIN(obj->level, LEVEL_AVATAR);
+      obj_to_hex(obj, pReset->arg2, pReset->arg3);
       break;
     }
   }
